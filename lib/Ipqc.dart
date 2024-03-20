@@ -1,5 +1,6 @@
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
+import 'package:QCM/Jobcard.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
@@ -126,11 +127,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 ),
                 Expanded(
                     child: tabDashboard('Job Card', AppAssets.solarcell, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) =>
-                  //             SolarCell(appName: "appName")),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Jobcard()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
