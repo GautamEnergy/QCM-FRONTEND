@@ -328,89 +328,89 @@ class _ScoreDetailsState extends State<SolarCell> {
     print('sampleeeeeeeeeeeeeeeeeeeeeeeee');
     print(packagingSampleData);
     var SolarCellDetails = {
-      'LotNo': lotSizeController.text,
-      'SupplierName': supplierNameController.text,
-      'InvoiceNo': invoiceNoController.text,
-      'InvoiceDate': invoiceDate,
-      'RawMaterialSpecs': rawMaterialSpecsController.text,
-      'DateOfQualityCheck': dateOfQualityCheck,
-      'SupplierRMBatchNo': rMBatchNoController.text,
-      'RecieptDate': receiptDate,
-      'DocumentNo': 'GSPL/SC(IQC)/001',
-      'RevNo': 'Ver2.0/13-03-2024'
+      "LotNo": lotSizeController.text,
+      "SupplierName": supplierNameController.text,
+      "InvoiceNo": invoiceNoController.text,
+      "InvoiceDate": invoiceDate,
+      "RawMaterialSpecs": rawMaterialSpecsController.text,
+      "DateOfQualityCheck": dateOfQualityCheck,
+      "SupplierRMBatchNo": rMBatchNoController.text,
+      "RecieptDate": receiptDate,
+      "DocumentNo": "GSPL/SC(IQC)/001",
+      "RevNo": "Ver2.0/13-03-2024"
     };
 
     var SolarCell = {
-      'Packaging': {
-        'Characterstics': packagingCharactersticsController.text,
-        'MeasuringMethod': packagingMeasuringMethodController.text,
-        'Sampling': packagingSamplingController.text,
-        'SmapleSize': packagingSampleSizeController.text,
-        'Reference': packagingReferenceDocController.text,
-        'AcceptanceCriteria': packagingAcceptanceCriteriaController.text,
-        'Samples': '$packagingSampleData'
+      "Packaging": {
+        "Characterstics": packagingCharactersticsController.text,
+        "MeasuringMethod": packagingMeasuringMethodController.text,
+        "Sampling": packagingSamplingController.text,
+        "SmapleSize": packagingSampleSizeController.text,
+        "Reference": packagingReferenceDocController.text,
+        "AcceptanceCriteria": packagingAcceptanceCriteriaController.text,
+        "Samples": packagingSampleData
       },
-      'Visual': {
-        'Characterstics': visualCharactersticsController.text,
-        'MeasuringMethod': visualMeasuringMethodController.text,
-        'Sampling': visualSamplingController.text,
-        'Reference': visualReferenceDocController.text,
-        'AcceptanceCriteria': visualAcceptanceCriteriaController.text,
-        'Samples': '$visualSampleData'
+      "Visual": {
+        "Characterstics": visualCharactersticsController.text,
+        "MeasuringMethod": visualMeasuringMethodController.text,
+        "Sampling": visualSamplingController.text,
+        "Reference": visualReferenceDocController.text,
+        "AcceptanceCriteria": visualAcceptanceCriteriaController.text,
+        "Samples": visualSampleData
       },
-      'Physical': {
-        'Characterstics': physicalCharactersticsController.text,
-        'MeasuringMethod': physicalMeasuringMethodController.text,
-        'Sampling': physicalSamplingController.text,
-        'Reference': physicalReferenceDocController.text,
-        'AcceptanceCriteria': physicalAcceptanceCriteriaController.text,
-        'Samples': '$physicalSampleData'
+      "Physical": {
+        "Characterstics": physicalCharactersticsController.text,
+        "MeasuringMethod": physicalMeasuringMethodController.text,
+        "Sampling": physicalSamplingController.text,
+        "Reference": physicalReferenceDocController.text,
+        "AcceptanceCriteria": physicalAcceptanceCriteriaController.text,
+        "Samples": physicalSampleData
       },
-      'FrontBus': {
-        'Characterstics': frontbusCharactersticsController.text,
-        'MeasuringMethod': frontbusMeasuringMethodController.text,
-        'Sampling': frontbusSamplingController.text,
-        'Reference': frontbusReferenceDocController.text,
-        'AcceptanceCriteria': frontbusAcceptanceCriteriaController.text,
-        'Samples': '$frontbusSampleData'
+      "FrontBus": {
+        "Characterstics": frontbusCharactersticsController.text,
+        "MeasuringMethod": frontbusMeasuringMethodController.text,
+        "Sampling": frontbusSamplingController.text,
+        "Reference": frontbusReferenceDocController.text,
+        "AcceptanceCriteria": frontbusAcceptanceCriteriaController.text,
+        "Samples": frontbusSampleData
       },
-      'Verification': {
-        'Characterstics': verificationCharactersticsController.text,
-        'MeasuringMethod': verificationMeasuringMethodController.text,
-        'Sampling': verificationSamplingController.text,
-        'Reference': verificationReferenceDocController.text,
-        'AcceptanceCriteria': verificationAcceptanceCriteriaController.text,
-        'Samples': '$verificationSampleData'
+      "Verification": {
+        "Characterstics": verificationCharactersticsController.text,
+        "MeasuringMethod": verificationMeasuringMethodController.text,
+        "Sampling": verificationSamplingController.text,
+        "Reference": verificationReferenceDocController.text,
+        "AcceptanceCriteria": verificationAcceptanceCriteriaController.text,
+        "Samples": verificationSampleData
       },
-      'Electrical': {
-        'Characterstics': electricalCharactersticsController.text,
-        'MeasuringMethod': electricalMeasuringMethodController.text,
-        'Sampling': electricalSamplingController.text,
-        'Reference': electricalReferenceDocController.text,
-        'AcceptanceCriteria': electricalAcceptanceCriteriaController.text,
-        'Samples': '$electricalSampleData'
+      "Electrical": {
+        "Characterstics": electricalCharactersticsController.text,
+        "MeasuringMethod": electricalMeasuringMethodController.text,
+        "Sampling": electricalSamplingController.text,
+        "Reference": electricalReferenceDocController.text,
+        "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
+        "Samples": electricalSampleData
       },
-      'Performance': {
-        'Characterstics': performanceCharactersticsController.text,
-        'MeasuringMethod': performanceMeasuringMethodController.text,
-        'Sampling': performanceSamplingController.text,
-        'Reference': performanceReferenceDocController.text,
-        'AcceptanceCriteria': performanceAcceptanceCriteriaController.text,
-        'Samples': '$performanceSampleData'
+      "Performance": {
+        "Characterstics": performanceCharactersticsController.text,
+        "MeasuringMethod": performanceMeasuringMethodController.text,
+        "Sampling": performanceSamplingController.text,
+        "Reference": performanceReferenceDocController.text,
+        "AcceptanceCriteria": performanceAcceptanceCriteriaController.text,
+        "Samples": performanceSampleData
       }
     };
 
     var Rejected = {
-      'CheckTypes': [
-        {'Packaging': packagingRejection},
-        {'Visual': visualRejection},
-        {'Physical': physicalRejection},
-        {'FrontBus': frontbusRejection},
-        {'Verification': verificationRejection},
-        {'Electrical': electricalRejection},
-        {'Performance': performanceRejection},
+      "CheckTypes": [
+        {"Packaging": packagingRejection},
+        {"Visual": visualRejection},
+        {"Physical": physicalRejection},
+        {"FrontBus": frontbusRejection},
+        {"Verification": verificationRejection},
+        {"Electrical": electricalRejection},
+        {"Performance": performanceRejection},
       ],
-      'Reason': rejectionReasonController
+      "Reason": rejectionReasonController
     };
     setState(() {
       _isLoading = true;
@@ -421,14 +421,96 @@ class _ScoreDetailsState extends State<SolarCell> {
         "https://fair-gray-gharial-wig.cyclic.app/IQCSolarCell/AddIQCSolarCell";
     // final prefs = await SharedPreferences.getInstance();
     var params = {
-      "SolarCellDetails": SolarCellDetails,
-      "SolarCell": SolarCell,
-      "Rejected": Rejected
+      "CurrentUser": "jfidj923923923423k",
+      "SolarCellDetails": {
+        "LotNo": lotSizeController.text,
+        "SupplierName": supplierNameController.text,
+        "InvoiceNo": invoiceNoController.text,
+        "InvoiceDate": invoiceDate,
+        "RawMaterialSpecs": rawMaterialSpecsController.text,
+        "DateOfQualityCheck": dateOfQualityCheck,
+        "SupplierRMBatchNo": rMBatchNoController.text,
+        "RecieptDate": receiptDate,
+        "DocumentNo": "GSPL/SC(IQC)/001",
+        "RevNo": "Ver2.0/13-03-2024"
+      },
+      "SolarCell": {
+        "Packaging": {
+          "Characterstics": packagingCharactersticsController.text,
+          "MeasuringMethod": packagingMeasuringMethodController.text,
+          "Sampling": packagingSamplingController.text,
+          "SmapleSize": packagingSampleSizeController.text,
+          "Reference": packagingReferenceDocController.text,
+          "AcceptanceCriteria": packagingAcceptanceCriteriaController.text,
+          "Samples": packagingSampleData
+        },
+        "Visual": {
+          "Characterstics": visualCharactersticsController.text,
+          "MeasuringMethod": visualMeasuringMethodController.text,
+          "Sampling": visualSamplingController.text,
+          "Reference": visualReferenceDocController.text,
+          "AcceptanceCriteria": visualAcceptanceCriteriaController.text,
+          "Samples": visualSampleData
+        },
+        "Physical": {
+          "Characterstics": physicalCharactersticsController.text,
+          "MeasuringMethod": physicalMeasuringMethodController.text,
+          "Sampling": physicalSamplingController.text,
+          "Reference": physicalReferenceDocController.text,
+          "AcceptanceCriteria": physicalAcceptanceCriteriaController.text,
+          "Samples": physicalSampleData
+        },
+        "FrontBus": {
+          "Characterstics": frontbusCharactersticsController.text,
+          "MeasuringMethod": frontbusMeasuringMethodController.text,
+          "Sampling": frontbusSamplingController.text,
+          "Reference": frontbusReferenceDocController.text,
+          "AcceptanceCriteria": frontbusAcceptanceCriteriaController.text,
+          "Samples": frontbusSampleData
+        },
+        "Verification": {
+          "Characterstics": verificationCharactersticsController.text,
+          "MeasuringMethod": verificationMeasuringMethodController.text,
+          "Sampling": verificationSamplingController.text,
+          "Reference": verificationReferenceDocController.text,
+          "AcceptanceCriteria": verificationAcceptanceCriteriaController.text,
+          "Samples": verificationSampleData
+        },
+        "Electrical": {
+          "Characterstics": electricalCharactersticsController.text,
+          "MeasuringMethod": electricalMeasuringMethodController.text,
+          "Sampling": electricalSamplingController.text,
+          "Reference": electricalReferenceDocController.text,
+          "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
+          "Samples": electricalSampleData
+        },
+        "Performance": {
+          "Characterstics": performanceCharactersticsController.text,
+          "MeasuringMethod": performanceMeasuringMethodController.text,
+          "Sampling": performanceSamplingController.text,
+          "Reference": performanceReferenceDocController.text,
+          "AcceptanceCriteria": performanceAcceptanceCriteriaController.text,
+          "Samples": performanceSampleData
+        }
+      },
+      "Rejected": {
+        "Result": result,
+        "CheckTypes": [
+          {"Packaging": packagingRejection},
+          {"Visual": visualRejection},
+          {"Physical": physicalRejection},
+          {"FrontBus": frontbusRejection},
+          {"Verification": verificationRejection},
+          {"Electrical": electricalRejection},
+          {"Performance": performanceRejection},
+        ],
+        "Reason": rejectionReasonController.text
+      }
     };
     print(params);
     var response = await http.post(
       Uri.parse(url),
-      body: jsonEncode(params),
+      body: json.encode(params),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -647,7 +729,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                               "Lot Size",
                               style: AppStyles.textfieldCaptionTextStyle,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             TextFormField(
@@ -1390,6 +1472,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                 setState(() {
                                                   selectedPackagingTestValues[
                                                       index] = value!;
+                                                  packagingRemarksControllers[
+                                                          index]
+                                                      .text = '';
                                                 });
                                               },
                                             ),
@@ -1500,15 +1585,18 @@ class _ScoreDetailsState extends State<SolarCell> {
                                       // if (_formKey.currentState!.validate()) {
                                       //   // Perform action on submit button press
                                       //   print('Text Field Values:');
-                                      //   for (int i = 0;
-                                      //       i < numberOfPackagingSampleFields;
-                                      //       i++) {
-                                      //     packagingSampleData.add(
-                                      //         '{PackageSampleBarcode${i + 1}: ${packagingBarcodeControllers[i].text}, PackageSampleTest${i + 1}: ${selectedPackagingTestValues[i]}, {PackageSampleRemarks${i + 1}: ${packagingRemarksControllers[i].text}}');
-                                      //   }
+                                      for (int i = 0;
+                                          i < numberOfPackagingSampleFields;
+                                          i++) {
+                                        // packagingSampleData.add(
+                                        //     '{PackageSampleBarcode${i + 1}: ${packagingBarcodeControllers[i].text}, PackageSampleTest${i + 1}: ${selectedPackagingTestValues[i]}, {PackageSampleRemarks${i + 1}: ${packagingRemarksControllers[i].text}}');
+
+                                        packagingSampleData.add(
+                                            '{"PackageSampleBarcode${i + 1}":${packagingBarcodeControllers[i].text},"PackageSampleTest${i + 1}":${selectedPackagingTestValues[i]},"PackageSampleRemarks${i + 1}":${packagingRemarksControllers[i].text}}');
+                                      }
                                       //   print(packagingSampleData);
                                       //   setState(() {
-                                      //     setPage = "packagingresult";
+                                      //     setPage = "visual";
                                       //   });
                                       // }
                                       setState(() {
@@ -1998,6 +2086,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                         setState(() {
                                                           selectedVisualTestValues[
                                                               index] = value!;
+                                                          visualRemarksControllers[
+                                                                  index]
+                                                              .text = '';
                                                         });
                                                       },
                                                     ),
@@ -2103,12 +2194,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                               //     .validate()) {
                                               //   // Perform action on submit button press
                                               //   print('Text Field Values:');
-                                              //   for (int i = 0;
-                                              //       i < numberOfVisualSampleFields;
-                                              //       i++) {
-                                              //     visualSampleData.add(
-                                              //         '{VisualSampleBarcode${i + 1}: ${visualBarcodeControllers[i].text}, VisualSampleTest${i + 1}: ${selectedVisualTestValues[i]}, {VisualSampleRemarks${i + 1}: ${visualRemarksControllers[i].text}}');
-                                              //   }
+                                              for (int i = 0;
+                                                  i < numberOfVisualSampleFields;
+                                                  i++) {
+                                                visualSampleData.add(
+                                                    '{VisualSampleBarcode${i + 1}: ${visualBarcodeControllers[i].text}, VisualSampleTest${i + 1}: ${selectedVisualTestValues[i]}, VisualSampleRemarks${i + 1}: ${visualRemarksControllers[i].text}}');
+                                              }
                                               //   print(visualSampleData);
                                               //   setState(() {
                                               //     setPage = "physical";
@@ -2664,6 +2755,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                   selectedPhysicalTestValues[
                                                                           index] =
                                                                       value!;
+                                                                  physicalRemarksControllers[
+                                                                          index]
+                                                                      .text = '';
                                                                 });
                                                               },
                                                             ),
@@ -2786,13 +2880,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                       //   // Perform action on submit button press
                                                       //   print(
                                                       //       'Text Field Values:');
-                                                      //   for (int i = 0;
-                                                      //       i < numberOfPhysicalSampleFields;
-                                                      //       i++) {
-                                                      //     physicalSampleData
-                                                      //         .add(
-                                                      //             '{PhysicalSampleBarcode${i + 1}: ${physicalBarcodeControllers[i].text}, PhysicalSampleTest${i + 1}: ${selectedPhysicalTestValues[i]}, {PhysicalSampleRemarks${i + 1}: ${physicalRemarksControllers[i].text}}');
-                                                      //   }
+                                                      for (int i = 0;
+                                                          i < numberOfPhysicalSampleFields;
+                                                          i++) {
+                                                        physicalSampleData.add(
+                                                            '{PhysicalSampleBarcode${i + 1}: ${physicalBarcodeControllers[i].text}, PhysicalSampleTest${i + 1}: ${selectedPhysicalTestValues[i]}, PhysicalSampleRemarks${i + 1}: ${physicalRemarksControllers[i].text}}');
+                                                      }
                                                       //   print(
                                                       //       physicalSampleData);
                                                       //   setState(() {
@@ -3390,6 +3483,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             () {
                                                                           selectedFrontbusTestValues[index] =
                                                                               value!;
+                                                                          frontbusRemarksControllers[index].text =
+                                                                              '';
                                                                         });
                                                                       },
                                                                     ),
@@ -3521,14 +3616,13 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                               //   // Perform action on submit button press
                                                               //   print(
                                                               //       'Text Field Values:');
-                                                              //   for (int i =
-                                                              //           0;
-                                                              //       i < numberOfFrontbusSampleFields;
-                                                              //       i++) {
-                                                              //     frontbusSampleData
-                                                              //         .add(
-                                                              //             '{FrontbusSampleBarcode${i + 1}: ${frontbusBarcodeControllers[i].text}, FrontbusSampleTest${i + 1}: ${selectedFrontbusTestValues[i]}, {FrontbusSampleRemarks${i + 1}: ${frontbusRemarksControllers[i].text}}');
-                                                              //   }
+                                                              for (int i = 0;
+                                                                  i < numberOfFrontbusSampleFields;
+                                                                  i++) {
+                                                                frontbusSampleData
+                                                                    .add(
+                                                                        '{FrontbusSampleBarcode${i + 1}: ${frontbusBarcodeControllers[i].text}, FrontbusSampleTest${i + 1}: ${selectedFrontbusTestValues[i]}, FrontbusSampleRemarks${i + 1}: ${frontbusRemarksControllers[i].text}}');
+                                                              }
 
                                                               //   setState(
                                                               //       () {
@@ -4111,6 +4205,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                               onChanged: (bool? value) {
                                                                                 setState(() {
                                                                                   selectedVerificationTestValues[index] = value!;
+                                                                                  verificationRemarksControllers[index].text = '';
                                                                                 });
                                                                               },
                                                                             ),
@@ -4223,11 +4318,13 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                       //     .validate()) {
                                                                       //   // Perform action on submit button press
                                                                       //   print('Text Field Values:');
-                                                                      //   for (int i = 0;
-                                                                      //       i < numberOfVerificationSampleFields;
-                                                                      //       i++) {
-                                                                      //     verificationSampleData.add('{VerificationSampleBarcode${i + 1}: ${verificationBarcodeControllers[i].text}, VerificationSampleTest${i + 1}: ${selectedVerificationTestValues[i]}, {VerificationSampleRemarks${i + 1}: ${verificationRemarksControllers[i].text}}');
-                                                                      //   }
+                                                                      for (int i =
+                                                                              0;
+                                                                          i < numberOfVerificationSampleFields;
+                                                                          i++) {
+                                                                        verificationSampleData
+                                                                            .add('{VerificationSampleBarcode${i + 1}: ${verificationBarcodeControllers[i].text}, VerificationSampleTest${i + 1}: ${selectedVerificationTestValues[i]}, VerificationSampleRemarks${i + 1}: ${verificationRemarksControllers[i].text}}');
+                                                                      }
 
                                                                       //   setState(() {
                                                                       //     setPage = "electrical";
@@ -4703,6 +4800,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                       onChanged: (bool? value) {
                                                                                         setState(() {
                                                                                           selectedElectricalTestValues[index] = value!;
+                                                                                          electricalRemarksControllers[index].text = '';
                                                                                         });
                                                                                       },
                                                                                     ),
@@ -4787,9 +4885,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                               // if (_electricalsampleformKey.currentState!.validate()) {
                                                                               //   // Perform action on submit button press
                                                                               //   print('Text Field Values:');
-                                                                              //   for (int i = 0; i < numberOfElectricalSampleFields; i++) {
-                                                                              //     electricalSampleData.add('{ElectricalSampleBarcode${i + 1}: ${electricalBarcodeControllers[i].text}, ElectricalSampleTest${i + 1}: ${selectedElectricalTestValues[i]}, {ElectricalSampleRemarks${i + 1}: ${electricalRemarksControllers[i].text}}');
-                                                                              //   }
+                                                                              for (int i = 0; i < numberOfElectricalSampleFields; i++) {
+                                                                                electricalSampleData.add('{ElectricalSampleBarcode${i + 1}: ${electricalBarcodeControllers[i].text}, ElectricalSampleTest${i + 1}: ${selectedElectricalTestValues[i]}, ElectricalSampleRemarks${i + 1}: ${electricalRemarksControllers[i].text}}');
+                                                                              }
 
                                                                               //   setState(() {
                                                                               //     setPage = "performance";
@@ -5167,6 +5265,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               onChanged: (bool? value) {
                                                                                                 setState(() {
                                                                                                   selectedPerformanceTestValues[index] = value!;
+                                                                                                  performanceRemarksControllers[index].text = '';
                                                                                                 });
                                                                                               },
                                                                                             ),
@@ -5244,9 +5343,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                       // if (_performancesampleformKey.currentState!.validate()) {
                                                                                       //   // Perform action on submit button press
                                                                                       //   print('Text Field Values:');
-                                                                                      //   for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
-                                                                                      //     performanceSampleData.add('{PerformanceSampleBarcode${i + 1}: ${performanceBarcodeControllers[i].text}, PerformanceSampleTest${i + 1}: ${selectedPerformanceTestValues[i]}, {PerformanceSampleRemarks${i + 1}: ${performanceRemarksControllers[i].text}}');
-                                                                                      //   }
+                                                                                      for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
+                                                                                        performanceSampleData.add('{PerformanceSampleBarcode${i + 1}: ${performanceBarcodeControllers[i].text}, PerformanceSampleTest${i + 1}: ${selectedPerformanceTestValues[i]}, PerformanceSampleRemarks${i + 1}: ${performanceRemarksControllers[i].text}}');
+                                                                                      }
 
                                                                                       //   // setState(() {
                                                                                       //   //   setPage = "visual";
@@ -5379,6 +5478,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                           const SizedBox(
                                                                                             height: 10,
                                                                                           ),
+                                                                                        if (result == "Fail") const Center(child: Text("Rejection Note", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 238, 5, 5), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                                         if (result == "Fail")
                                                                                           Row(
                                                                                             mainAxisAlignment: MainAxisAlignment.center,

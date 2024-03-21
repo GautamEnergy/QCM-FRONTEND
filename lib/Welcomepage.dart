@@ -233,10 +233,10 @@ class _WelcomePageState extends State<WelcomePage> {
               width: 8,
             ),
             InkWell(
-                // onTap: () {
-                //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //       builder: (BuildContext context) => PublicDrawer()));
-                // },
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext context) => PublicDrawer()));
+                },
                 child: Image.asset(
                     menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                     height: 25)),

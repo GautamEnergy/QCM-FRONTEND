@@ -1,4 +1,5 @@
 import 'package:QCM/InOutList.dart';
+import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/attendance.dart';
 import 'package:QCM/components/appbar.dart';
@@ -133,78 +134,11 @@ class _PublicDrawerState extends State<PublicDrawer> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard('Employees', AppAssets.icDirectory, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => EmployeeList()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
-            SizedBox(
-              height: 10,
-            ),
-
-            //5th
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard(
-                        'Face Attendance', AppAssets.imgSelectedFace, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Attendance()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
-            SizedBox(
-              height: 10,
-            ),
-
-            //5th
-
-            //5th
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard(
-                        'Attendance Reports', AppAssets.imgAttendanceReport,
+                    child: tabDashboard('IQCP Test List', AppAssets.icDirectory,
                         () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (BuildContext context) => InOut()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard(
-                        'Salary Reports', AppAssets.imgSalaryReport, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => SalaryReport()),
+                          builder: (BuildContext context) => IqcpTestList()),
                       (Route<dynamic> route) => false);
                 })),
                 SizedBox(
@@ -212,50 +146,118 @@ class _PublicDrawerState extends State<PublicDrawer> {
                 ),
               ],
             ),
+
             SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard(
-                        'Daily Attendance', AppAssets.imgAttendanceList, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => InOut()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('Logout', AppAssets.iclogout, () async {
-                  final prefs = await SharedPreferences.getInstance();
 
-                  prefs.remove('site');
+            //5th
 
-                  prefs.remove('personid');
-                  prefs.remove('fullname');
-                  prefs.remove('department');
-                  prefs.remove('pic');
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //         child: tabDashboard(
+            //             'Face Attendance', AppAssets.imgSelectedFace, () {
+            //       Navigator.of(context).pushAndRemoveUntil(
+            //           MaterialPageRoute(
+            //               builder: (BuildContext context) => Attendance()),
+            //           (Route<dynamic> route) => false);
+            //     })),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //   ],
+            // ),
 
-                  prefs.setBool('islogin', false);
-                  prefs.remove('designation');
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MyApp()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
+            SizedBox(
+              height: 10,
             ),
+
+            //5th
+
+            //5th
+
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //         child: tabDashboard(
+            //             'Attendance Reports', AppAssets.imgAttendanceReport,
+            //             () {
+            //       Navigator.of(context).pushAndRemoveUntil(
+            //           MaterialPageRoute(
+            //               builder: (BuildContext context) => InOut()),
+            //           (Route<dynamic> route) => false);
+            //     })),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //         child: tabDashboard(
+            //             'Salary Reports', AppAssets.imgSalaryReport, () {
+            //       Navigator.of(context).pushAndRemoveUntil(
+            //           MaterialPageRoute(
+            //               builder: (BuildContext context) => SalaryReport()),
+            //           (Route<dynamic> route) => false);
+            //     })),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //   ],
+            // ),
+            SizedBox(
+              height: 10,
+            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //         child: tabDashboard(
+            //             'Daily Attendance', AppAssets.imgAttendanceList, () {
+            //       Navigator.of(context).pushAndRemoveUntil(
+            //           MaterialPageRoute(
+            //               builder: (BuildContext context) => InOut()),
+            //           (Route<dynamic> route) => false);
+            //     })),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //         child: tabDashboard('Logout', AppAssets.iclogout, () async {
+            //       final prefs = await SharedPreferences.getInstance();
+
+            //       prefs.remove('site');
+
+            //       prefs.remove('personid');
+            //       prefs.remove('fullname');
+            //       prefs.remove('department');
+            //       prefs.remove('pic');
+
+            //       prefs.setBool('islogin', false);
+            //       prefs.remove('designation');
+            //       Navigator.of(context).pushAndRemoveUntil(
+            //           MaterialPageRoute(
+            //               builder: (BuildContext context) => MyApp()),
+            //           (Route<dynamic> route) => false);
+            //     })),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //   ],
+            // ),
             SizedBox(
               height: 10,
             ),
@@ -289,8 +291,8 @@ class _PublicDrawerState extends State<PublicDrawer> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => EmployeeList()));
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  //     builder: (BuildContext context) => EmployeeList()));
                 },
                 child: Image.asset(
                     user ? AppAssets.imgSelectedPerson : AppAssets.imgPerson,
@@ -300,8 +302,8 @@ class _PublicDrawerState extends State<PublicDrawer> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => Attendance()));
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  //     builder: (BuildContext context) => Attendance()));
                 },
                 child: Image.asset(
                     face ? AppAssets.imgSelectedFace : AppAssets.imgFace,
