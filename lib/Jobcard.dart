@@ -127,29 +127,63 @@ class _JobcardState extends State<Jobcard> {
       'sunComment': sunCommentController.text,
       // Add more fields as needed
     };
-    // let data = [
-    //   {
-    //     Process:'Glass Washing',
-    //     EmployeeID:'',
-    //     Description:{
-    //       LotNo:'xyx',
-    //       size:'yz'
-    //     },
-    //   Comment:'comment'
-    //   },
-    //   {
-    //     Process:'Foil cutterr',
-    //     EmployeeID:'',
-    //     Description:{
-    //      EVA_Lot_No:'',
-    //      EVA_Size:'',
-    //      Backsheet_Lot:'',
-    //      Backsheet_size:''
-    //     },
-    //   Comment:'comment'
-    //   },
-
-    // ]
+    var d = [
+      {
+        "Process": 'Glass Washing',
+        "EmployeeID": '',
+        "Description": {
+          "Lot_No": lotNoController.text,
+          "size": lotSizeController.text
+        },
+        "Comment": glassCommentController.text
+      },
+      {
+        "Process": 'Foil cutterr',
+        "EmployeeID": '',
+        "Description": {
+          "EVA_Lot_No": evaLotNoController.text,
+          "EVA_Size": evaSizeController.text,
+          "Backsheet_Lot": backsheetLotController.text,
+          "Backsheet_size": backsheetSizeController.text
+        },
+        "Comment": foilCommentController.text
+      },
+      {
+        "Process": 'Tabbing & Stringing',
+        "EmployeeID": '',
+        "Description": {
+          "Cell_Lot_No": cellLotNoController.text,
+          "Cell_Type": cellTypeController.text,
+          "Cell_Size": cellSyzeController.text,
+          "Cell_Eff": cellEffController.text,
+          "Interconnect_Ribbon_Size": interconnectRibbonSizeController.text,
+          "Busbar_Size": busbarSizeController.text,
+          "Flux": fluxController.text
+        },
+        "Comment": tabbingCommentController.text
+      },
+      {
+        "Process": 'Bussing/InterConnection',
+        "EmployeeID": '',
+        "Description": {
+          "Cell_To_Cell_Gap": cellToCellGapController.text,
+          "String_To_String_Gap": stringToStringGapController.text,
+          "Soldering_Temp": solderingTempController.text
+        },
+        "Comment": bussingCommentController.text
+      },
+      {
+        "Process": 'Visual Inspection & Laminator',
+        "EmployeeID": '',
+        "Description": {
+          "Temperature": tempreatureController.text,
+          "Cycle_Time": cycleTimeController.text,
+          "Laminate_Quality": '',
+          "Backsheet_size": backsheetSizeController.text
+        },
+        "Comment": foilCommentController.text
+      }
+    ];
     print('Sending data to backend: $data');
   }
 
