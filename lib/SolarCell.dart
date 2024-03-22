@@ -27,8 +27,8 @@ import '../constant/app_helper.dart';
 import '../constant/app_styles.dart';
 
 class SolarCell extends StatefulWidget {
-  final String appName;
-  SolarCell({required this.appName});
+  final String? id;
+  SolarCell({this.id});
   _ScoreDetailsState createState() => _ScoreDetailsState();
 }
 
@@ -67,6 +67,7 @@ class _ScoreDetailsState extends State<SolarCell> {
       receiptDate,
       dateOfQualityCheck,
       personid,
+      designation,
       firstname,
       lastname,
       pic,
@@ -252,7 +253,7 @@ class _ScoreDetailsState extends State<SolarCell> {
   @override
   void initState() {
     super.initState();
-
+    store();
     setState(() {
       // Packaging
       packagingCharactersticsController.text = "Packing (Make type and rating)";
@@ -322,6 +323,16 @@ class _ScoreDetailsState extends State<SolarCell> {
     _isSearching = false;
 
     super.initState();
+  }
+
+  void store() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pic = prefs.getString('pic');
+      personid = prefs.getString('personid');
+      site = prefs.getString('site');
+      designation = prefs.getString('designation');
+    });
   }
 
   Future createData() async {
@@ -415,13 +426,14 @@ class _ScoreDetailsState extends State<SolarCell> {
     setState(() {
       _isLoading = true;
     });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site');
     FocusScope.of(context).unfocus();
 
-    final url =
-        "https://fair-gray-gharial-wig.cyclic.app/IQCSolarCell/AddIQCSolarCell";
-    // final prefs = await SharedPreferences.getInstance();
+    final url = (site! + "IQCSolarCell/AddIQCSolarCell");
+
     var params = {
-      "CurrentUser": "jfidj923923923423k",
+      "CurrentUser": personid,
       "SolarCellDetails": {
         "LotNo": lotSizeController.text,
         "SupplierName": supplierNameController.text,
@@ -515,26 +527,25 @@ class _ScoreDetailsState extends State<SolarCell> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Resssssssss");
+
     if (response.statusCode == 200) {
       setState(() {
         _isLoading = false;
       });
       var objData = json.decode(response.body);
+
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show(objData['data']['message'],
+        Toast.show("Solar Cell Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
-        setState(() {
-          setPage = 'second';
-          otp = objData['data']['sentotp']['otp'].toString();
-        });
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) => IqcpPage()));
       }
     } else {
       Toast.show("Error In Server",
@@ -1592,7 +1603,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                         //     '{PackageSampleBarcode${i + 1}: ${packagingBarcodeControllers[i].text}, PackageSampleTest${i + 1}: ${selectedPackagingTestValues[i]}, {PackageSampleRemarks${i + 1}: ${packagingRemarksControllers[i].text}}');
 
                                         packagingSampleData.add(
-                                            '{"PackageSampleBarcode${i + 1}":${packagingBarcodeControllers[i].text},"PackageSampleTest${i + 1}":${selectedPackagingTestValues[i]},"PackageSampleRemarks${i + 1}":${packagingRemarksControllers[i].text}}');
+                                            '{"PackageSampleBarcode${i + 1}":"${packagingBarcodeControllers[i].text}","PackageSampleTest${i + 1}":${selectedPackagingTestValues[i]},"PackageSampleRemarks${i + 1}":"${packagingRemarksControllers[i].text}"}');
                                       }
                                       //   print(packagingSampleData);
                                       //   setState(() {
@@ -2198,7 +2209,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                   i < numberOfVisualSampleFields;
                                                   i++) {
                                                 visualSampleData.add(
-                                                    '{VisualSampleBarcode${i + 1}: ${visualBarcodeControllers[i].text}, VisualSampleTest${i + 1}: ${selectedVisualTestValues[i]}, VisualSampleRemarks${i + 1}: ${visualRemarksControllers[i].text}}');
+                                                    '{VisualSampleBarcode${i + 1}: "${visualBarcodeControllers[i].text}", VisualSampleTest${i + 1}: ${selectedVisualTestValues[i]}, VisualSampleRemarks${i + 1}: "${visualRemarksControllers[i].text}"}');
                                               }
                                               //   print(visualSampleData);
                                               //   setState(() {
@@ -2884,7 +2895,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                           i < numberOfPhysicalSampleFields;
                                                           i++) {
                                                         physicalSampleData.add(
-                                                            '{PhysicalSampleBarcode${i + 1}: ${physicalBarcodeControllers[i].text}, PhysicalSampleTest${i + 1}: ${selectedPhysicalTestValues[i]}, PhysicalSampleRemarks${i + 1}: ${physicalRemarksControllers[i].text}}');
+                                                            '{PhysicalSampleBarcode${i + 1}: "${physicalBarcodeControllers[i].text}", PhysicalSampleTest${i + 1}: ${selectedPhysicalTestValues[i]}, PhysicalSampleRemarks${i + 1}: "${physicalRemarksControllers[i].text}"}');
                                                       }
                                                       //   print(
                                                       //       physicalSampleData);
@@ -3621,7 +3632,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                   i++) {
                                                                 frontbusSampleData
                                                                     .add(
-                                                                        '{FrontbusSampleBarcode${i + 1}: ${frontbusBarcodeControllers[i].text}, FrontbusSampleTest${i + 1}: ${selectedFrontbusTestValues[i]}, FrontbusSampleRemarks${i + 1}: ${frontbusRemarksControllers[i].text}}');
+                                                                        '{FrontbusSampleBarcode${i + 1}: "${frontbusBarcodeControllers[i].text}", FrontbusSampleTest${i + 1}: ${selectedFrontbusTestValues[i]}, FrontbusSampleRemarks${i + 1}: "${frontbusRemarksControllers[i].text}"}');
                                                               }
 
                                                               //   setState(
@@ -4323,7 +4334,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                           i < numberOfVerificationSampleFields;
                                                                           i++) {
                                                                         verificationSampleData
-                                                                            .add('{VerificationSampleBarcode${i + 1}: ${verificationBarcodeControllers[i].text}, VerificationSampleTest${i + 1}: ${selectedVerificationTestValues[i]}, VerificationSampleRemarks${i + 1}: ${verificationRemarksControllers[i].text}}');
+                                                                            .add('{VerificationSampleBarcode${i + 1}: "${verificationBarcodeControllers[i].text}", VerificationSampleTest${i + 1}: ${selectedVerificationTestValues[i]}, VerificationSampleRemarks${i + 1}: "${verificationRemarksControllers[i].text}"}');
                                                                       }
 
                                                                       //   setState(() {
@@ -4886,7 +4897,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                               //   // Perform action on submit button press
                                                                               //   print('Text Field Values:');
                                                                               for (int i = 0; i < numberOfElectricalSampleFields; i++) {
-                                                                                electricalSampleData.add('{ElectricalSampleBarcode${i + 1}: ${electricalBarcodeControllers[i].text}, ElectricalSampleTest${i + 1}: ${selectedElectricalTestValues[i]}, ElectricalSampleRemarks${i + 1}: ${electricalRemarksControllers[i].text}}');
+                                                                                electricalSampleData.add('{ElectricalSampleBarcode${i + 1}: "${electricalBarcodeControllers[i].text}", ElectricalSampleTest${i + 1}: ${selectedElectricalTestValues[i]}, ElectricalSampleRemarks${i + 1}: "${electricalRemarksControllers[i].text}"}');
                                                                               }
 
                                                                               //   setState(() {
@@ -5344,7 +5355,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                       //   // Perform action on submit button press
                                                                                       //   print('Text Field Values:');
                                                                                       for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
-                                                                                        performanceSampleData.add('{PerformanceSampleBarcode${i + 1}: ${performanceBarcodeControllers[i].text}, PerformanceSampleTest${i + 1}: ${selectedPerformanceTestValues[i]}, PerformanceSampleRemarks${i + 1}: ${performanceRemarksControllers[i].text}}');
+                                                                                        performanceSampleData.add('{PerformanceSampleBarcode${i + 1}: "${performanceBarcodeControllers[i].text}", PerformanceSampleTest${i + 1}: ${selectedPerformanceTestValues[i]}, PerformanceSampleRemarks${i + 1}: "${performanceRemarksControllers[i].text}"}');
                                                                                       }
 
                                                                                       //   // setState(() {
@@ -5449,6 +5460,13 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               onChanged: (val) {
                                                                                                 setState(() {
                                                                                                   result = val;
+                                                                                                  rejectionReasonController.text = '';
+                                                                                                  packagingRejection = false;
+                                                                                                  visualRejection = false;
+                                                                                                  physicalRejection = false;
+                                                                                                  frontbusRejection = false;
+                                                                                                  electricalRejection = false;
+                                                                                                  performanceRejection = false;
                                                                                                 });
                                                                                               },
                                                                                             ),

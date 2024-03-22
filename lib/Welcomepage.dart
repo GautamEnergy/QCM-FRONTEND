@@ -381,12 +381,6 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
                           AppAssets.icEllipse,
                         ),
                         fit: BoxFit.fill)),
-                // child: Image.asset(
-                //   AppAssets.icEllipse,
-                //   fit: BoxFit.fill,
-                //   height: 50,
-                //   width: 155,
-                // ),
               )),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -395,13 +389,13 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
               Padding(
                 padding: const EdgeInsets.only(left: 18.0, top: 15),
                 child: Text(title,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontFamily: appFontFamily,
                         fontSize: 16,
                         color: AppColors.textFieldCaptionColor)),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Center(

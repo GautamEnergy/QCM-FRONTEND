@@ -33,29 +33,27 @@ class _LoginPageState extends State<LoginPage> {
   String? uid, deviceType;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-  // String path = "http://192.168.1.14:1000/api/"; //local
-// String path = "http://hrmgalo.echonsol.com/api/"; // production
-// String path = "https://aws-da2r.onrender.com/api/"; // AWS
-  String path = "https://shy-jade-camel.cyclic.app/api/"; // Cyclic
+  // String path = "http://192.168.0.110:5000/"; //local
+  String path = "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic
 
   @override
   void initState() {
     print(path);
     setState(() {
-      employeeIdController.text = "G";
+      // employeeIdController.text = "G";
     });
     super.initState();
   }
 
-  void login(String empid, String password) async {
+  void login(String loginid, String password) async {
     final prefs = await SharedPreferences.getInstance();
 
     setState(() {
       _isLoading = true;
     });
-    final url = (path + 'login');
+    final url = (path + 'Employee/Login');
     var params = {
-      "empid": empid,
+      "loginid": loginid,
       "password": password,
     };
 
@@ -66,7 +64,8 @@ class _LoginPageState extends State<LoginPage> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+    print("Loginnnnnn");
+    print(response.statusCode);
     if (response.statusCode == 400) {
       setState(() {
         _isLoading = false;
@@ -97,17 +96,18 @@ class _LoginPageState extends State<LoginPage> {
           print(prefs.getString('site'));
           setState(() {
             _isLoading = false;
+            prefs.setBool('islogin', true);
             prefs.setString('site', path);
-            prefs.setString('personid', objData['data']['personid']);
+            prefs.setString('personid', objData['PersonData'][0]['PersonID']);
 
             prefs.setString(
-                'designation', objData['data']['designation'] ?? '');
+                'designation', objData['PersonData'][0]['Designation'] ?? '');
 
-            prefs.setString('fullname', objData['data']['fullname'] ?? '');
-            prefs.setString('department', objData['data']['department'] ?? '');
-            prefs.setString('pic', objData['data']['profilepic'] ?? '');
-
-            prefs.setBool('islogin', true);
+            prefs.setString('fullname', objData['PersonData'][0]['Name'] ?? '');
+            prefs.setString(
+                'department', objData['PersonData'][0]['Department'] ?? '');
+            prefs.setString(
+                'pic', objData['PersonData'][0]['ProfileImg'] ?? '');
 
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (BuildContext context) => WelcomePage()));
@@ -155,13 +155,13 @@ class _LoginPageState extends State<LoginPage> {
                             // ),
                             Center(
                               child: Image.asset(AppAssets.imgWelcome,
-                                  width: 290, height: 200, fit: BoxFit.fill),
+                                  width: 200, height: 150, fit: BoxFit.fill),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             Text(
-                              "Employee Id",
+                              "Login Id",
                               style: AppStyles.textfieldCaptionTextStyle,
                             ),
                             const SizedBox(
@@ -171,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                               controller: employeeIdController,
                               minLines: 1,
                               maxLines: null,
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
                               decoration: AppStyles.textFieldInputDecoration
                                   .copyWith(
@@ -180,8 +180,8 @@ class _LoginPageState extends State<LoginPage> {
                                       contentPadding: EdgeInsets.all(10)),
                               style: AppStyles.textInputTextStyle,
                               validator: (value) {
-                                if (value! == 'G' || value!.isEmpty) {
-                                  return 'Please enter employee id';
+                                if (value!.isEmpty) {
+                                  return 'Please enter login id';
                                 }
                                 return null;
                               },

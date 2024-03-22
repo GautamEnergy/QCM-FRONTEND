@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/LoginPage.dart';
+import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/attendance.dart';
@@ -102,11 +103,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
       _isLoading = true;
     });
 
-    final url = (site! + 'getEmployeeData');
+    final url = (site! + 'IQCSolarCell/GetIQCTests');
 
-    http.post(
+    http.get(
       Uri.parse(url),
-      body: jsonEncode(<String, String>{"personid": personid!}),
+      // body: jsonEncode(<String, String>{"personid": personid!}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -541,27 +542,25 @@ class _IqcpTestListState extends State<IqcpTestList> {
           List<UserData> data = aUserModel.data!;
           if (_hasBeenPressed == 'name') {
             data.sort((a, b) {
-              return a.fullname!
-                  .toLowerCase()
-                  .compareTo(b.fullname!.toLowerCase());
+              return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
             });
           } else if (_hasBeenPressed == 'company') {
             data.sort((a, b) {
-              return a.department!
+              return a.materialName!
                   .toLowerCase()
-                  .compareTo(b.department!.toLowerCase());
+                  .compareTo(b.materialName!.toLowerCase());
             });
           } else if (_hasBeenPressed == 'occupation') {
             data.sort((a, b) {
-              return a.employeeid!
+              return a.location!
                   .toLowerCase()
-                  .compareTo(b.employeeid!.toLowerCase());
+                  .compareTo(b.location!.toLowerCase());
             });
           } else if (_hasBeenPressed == 'location') {
             data.sort((a, b) {
-              return a.officialcontactno!
+              return a.invoiceNo!
                   .toLowerCase()
-                  .compareTo(b.officialcontactno ?? ''.toLowerCase());
+                  .compareTo(b.invoiceNo ?? ''.toLowerCase());
             });
           }
           return _user(aUserModel);
@@ -774,99 +773,81 @@ class _IqcpTestListState extends State<IqcpTestList> {
                   if (SearchController.text.isEmpty) {
                     return Container(
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if ((data.data![index].fullname ?? '')
+                            data.data![index].solarDetailID ?? '',
+                            data.data![index].materialName ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].invoiceNo ?? '',
+                            data.data![index].employeeID ?? ''));
+                  } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
-                      data.data![index].personalcontactno!
+                      data.data![index].materialName!
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if (data.data![index].officialcontactno!
+                            data.data![index].solarDetailID ?? '',
+                            data.data![index].materialName ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].invoiceNo ?? '',
+                            data.data![index].employeeID ?? ''));
+                  } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if (data.data![index].department!
+                            data.data![index].solarDetailID ?? '',
+                            data.data![index].materialName ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].invoiceNo ?? '',
+                            data.data![index].employeeID ?? ''));
+                  } else if (data.data![index].invoiceNo!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if ((data.data![index].employeementtype!)
+                            data.data![index].solarDetailID ?? '',
+                            data.data![index].materialName ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].invoiceNo ?? '',
+                            data.data![index].employeeID ?? ''));
+                  } else if ((data.data![index].employeeID!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if (data.data![index].employeeid!
+                            data.data![index].solarDetailID ?? '',
+                            data.data![index].materialName ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].invoiceNo ?? '',
+                            data.data![index].employeeID ?? ''));
+                  } else if (data.data![index].solarDetailID!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
+                            data.data![index].solarDetailID ?? '',
+                            data.data![index].materialName ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].invoiceNo ?? '',
+                            data.data![index].employeeID ?? ''));
                   } else {
                     return Container();
                   }
@@ -878,17 +859,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
     ]);
   }
 
-  Widget _tile(
-      String id,
-      String employeementtype,
-      String profilepic,
-      String name,
-      String officialcontactno,
-      String officialemail,
-      String department,
-      String employeeid,
-      String personalcontactno,
-      String personalemail) {
+  Widget _tile(String id, String materialname, String profilepic, String name,
+      String location, String invoiceno, String employeeid) {
     return InkWell(
       onTap: () {
         // Navigator.of(context).pushAndRemoveUntil(
@@ -948,38 +920,55 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         //Name
                         Row(children: <Widget>[
                           Flexible(
-                            child: Text(name,
+                            child: Text(materialname,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontFamily: appFontFamily,
                                     fontSize: 16,
                                     color: AppColors.lightBlackColor)),
                           ),
-                          // if (isMemberrole == 1)
-                          // ClipRRect(
-                          //   child: Image.asset(
-                          //     'images/badge.png',
-                          //     width: 20,
-                          //     height: 20,
-                          //   ),
-                          // ),
                         ]),
 
-                        //Occupication
-                        Text(department,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                fontFamily: appFontFamily)),
-
                         Row(children: <Widget>[
-                          Flexible(
-                            child: Text(employeeid,
-                                style: const TextStyle(
+                          ClipRRect(
+                            child: Image.asset(
+                              AppAssets.icLocate,
+                              width: 30,
+                              height: 30,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(location,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontFamily: appFontFamily,
                                   fontSize: 12,
-                                )),
+                                  fontFamily: appFontFamily)),
+                        ]),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        //Occupication
+                        Row(children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 95, 245, 8), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              employeeid,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(
+                                    255, 0, 0, 0), // Optional: Set text color
+                              ),
+                            ),
                           ),
                           const SizedBox(
                             width: 20,
@@ -988,17 +977,18 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(
-                                  255, 0, 0, 0), // Background color
+                              color: Color.fromARGB(
+                                  255, 104, 3, 236), // Background color
                               borderRadius: BorderRadius.circular(
                                   10), // Optional: Add border radius for rounded corners
                             ),
-                            child: const Text(
-                              "Solar Cell",
+                            child: Text(
+                              "By: $name",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
-                                color: Colors.white, // Optional: Set text color
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
                               ),
                             ),
                           ),
@@ -1241,26 +1231,25 @@ class _IqcpTestListState extends State<IqcpTestList> {
                     children: [
                       InkWell(
                         onTap: () {
-                          setState(() {
-                            print(id);
-                            if (detail == id) {
-                              detail = 'hide';
-                            } else {
-                              detail = id;
-                            }
-                          });
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      SolarCell(id: id)),
+                              (Route<dynamic> route) => false);
+                          // setState(() {
+                          //   print(id);
+                          //   if (detail == id) {
+                          //     detail = 'hide';
+                          //   } else {
+                          //     detail = id;
+                          //   }
+                          // });
                         },
-                        child: detail == id
-                            ? Image.asset(
-                                AppAssets.icMemberEdit,
-                                height: 40,
-                                width: 40,
-                              )
-                            : Image.asset(
-                                AppAssets.icMemberEdit,
-                                height: 40,
-                                width: 40,
-                              ),
+                        child: Image.asset(
+                          AppAssets.icApproved,
+                          height: 50,
+                          width: 50,
+                        ),
                       ),
                     ],
                   )

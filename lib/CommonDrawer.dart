@@ -134,7 +134,7 @@ class _PublicDrawerState extends State<PublicDrawer> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard('IQCP Test List', AppAssets.icDirectory,
+                    child: tabDashboard('IQCP Test List', AppAssets.icApproved,
                         () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
@@ -217,47 +217,47 @@ class _PublicDrawerState extends State<PublicDrawer> {
             SizedBox(
               height: 10,
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Expanded(
-            //         child: tabDashboard(
-            //             'Daily Attendance', AppAssets.imgAttendanceList, () {
-            //       Navigator.of(context).pushAndRemoveUntil(
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) => InOut()),
-            //           (Route<dynamic> route) => false);
-            //     })),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Expanded(
-            //         child: tabDashboard('Logout', AppAssets.iclogout, () async {
-            //       final prefs = await SharedPreferences.getInstance();
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // SizedBox(
+                //   width: 10,
+                // ),
+                // Expanded(
+                //     child: tabDashboard(
+                //         'Daily Attendance', AppAssets.imgAttendanceList, () {
+                //   Navigator.of(context).pushAndRemoveUntil(
+                //       MaterialPageRoute(
+                //           builder: (BuildContext context) => InOut()),
+                //       (Route<dynamic> route) => false);
+                // })),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: tabDashboard('Logout', AppAssets.iclogout, () async {
+                  final prefs = await SharedPreferences.getInstance();
 
-            //       prefs.remove('site');
+                  prefs.remove('site');
 
-            //       prefs.remove('personid');
-            //       prefs.remove('fullname');
-            //       prefs.remove('department');
-            //       prefs.remove('pic');
+                  prefs.remove('personid');
+                  prefs.remove('fullname');
+                  prefs.remove('department');
+                  prefs.remove('pic');
 
-            //       prefs.setBool('islogin', false);
-            //       prefs.remove('designation');
-            //       Navigator.of(context).pushAndRemoveUntil(
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) => MyApp()),
-            //           (Route<dynamic> route) => false);
-            //     })),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //   ],
-            // ),
+                  prefs.setBool('islogin', false);
+                  prefs.remove('designation');
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MyApp()),
+                      (Route<dynamic> route) => false);
+                })),
+                SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
             SizedBox(
               height: 10,
             ),

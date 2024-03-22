@@ -57,6 +57,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       PermanentStateController,
       PermanentCityController,
       departmentController,
+      locationController,
       reportingManagerController,
       designationController,
       profilepicture,
@@ -90,7 +91,10 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     {"label": 'O-', "value": 'O-'},
   ];
 
-  List departmentList = [], designationList = [], reportingManagerList = [];
+  List departmentList = [],
+      designationList = [],
+      reportingManagerList = [],
+      locationList = [];
 
   SharedPreferences? prefs;
   TextEditingController employeeIdController = new TextEditingController();
@@ -152,9 +156,10 @@ class _ScoreDetailsState extends State<AddEditProfile> {
   void initState() {
     _get();
     store();
+    getLocationData();
     getReportingManagerData();
     getDepartmentData();
-
+    getDsignationData();
     getState();
     super.initState();
   }
@@ -263,7 +268,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       });
       print("Bhaiiiii");
       print(departmentController);
-      getDsignationData(departmentController!);
+      getDsignationData();
       getState();
       getCity();
     }
@@ -1047,7 +1052,8 @@ class _ScoreDetailsState extends State<AddEditProfile> {
   getDepartmentData() async {
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
-    final url = (site! + 'getDepartmentList');
+
+    final url = (site! + 'QCM//GetDepartmentList');
 
     http.get(
       Uri.parse(url),
@@ -1064,16 +1070,15 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     });
   }
 
-  getDsignationData(String departmentId) async {
-    print("KKKKKKKKKKKKKK");
-    print(departmentId);
+  getDsignationData() async {
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
-    final url = (site! + 'getDesignationList');
 
-    http.post(
+    final url = (site! + 'QCM/GetDesignationList');
+
+    http.get(
       Uri.parse(url),
-      body: jsonEncode(<String, String>{"departmentid": departmentId}),
+      // body: jsonEncode(<String, String>{"departmentid": departmentId}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -1083,11 +1088,54 @@ class _ScoreDetailsState extends State<AddEditProfile> {
         setState(() {
           designationList = designationBody['data'];
         });
-        print("HHHHHHHHHHHHHHHH");
-        print(designationList);
-        //  prefs.setString(DBConst.directory, response.body);
       }
     });
+  }
+
+  getLocationData() async {
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site');
+
+    final url = (site! + 'QCM/GetWorkLocationList');
+
+    http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    ).then((response) {
+      if (mounted) {
+        var designationBody = jsonDecode(response.body);
+        setState(() {
+          locationList = designationBody['data'];
+        });
+      }
+    });
+  }
+
+  DropdownButtonFormField textLocation() {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        hintText: 'Please Select Work Location', // Add hint text here
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      borderRadius: BorderRadius.circular(20),
+      items: locationList
+          .map((label) => DropdownMenuItem(
+                child: Text(label['Location'],
+                    style: AppStyles.textInputTextStyle),
+                value: label['LocationID'].toString(),
+              ))
+          .toList(),
+      onChanged: (val) {
+        setState(() {
+          locationController = val!;
+        });
+      },
+      value: locationController != '' ? locationController : null,
+    );
   }
 
   DropdownButtonFormField textDepartment() {
@@ -1101,17 +1149,15 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       borderRadius: BorderRadius.circular(20),
       items: departmentList
           .map((label) => DropdownMenuItem(
-                child: Text(label['department'],
+                child: Text(label['Department'],
                     style: AppStyles.textInputTextStyle),
-                value: label['departmentid'].toString(),
+                value: label['DepartmentID'].toString(),
               ))
           .toList(),
       onChanged: (val) {
         setState(() {
           departmentController = val!;
-          designationController = '';
         });
-        getDsignationData(departmentController!);
       },
       value: departmentController != '' ? departmentController : null,
     );
@@ -1128,9 +1174,9 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       borderRadius: BorderRadius.circular(20),
       items: designationList
           .map((label) => DropdownMenuItem(
-                child: Text(label['designation'],
+                child: Text(label['Designation'],
                     style: AppStyles.textInputTextStyle),
-                value: label['designationid'].toString(),
+                value: label['DesignationID'].toString(),
               ))
           .toList(),
       onChanged: (val) {
@@ -1141,203 +1187,6 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       value: designationController != '' && designationController != null
           ? designationController
           : null,
-    );
-  }
-
-  TextFormField textBankName() {
-    return TextFormField(
-      controller: banknameController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Bank Name",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter bank name';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textAccountNumber() {
-    return TextFormField(
-      controller: accountNumberController,
-      maxLength: 18,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      // enabled: false,
-      decoration: AppStyles.textFieldInputDecoration
-          .copyWith(hintText: "Please Enter Account Number", counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "Please enter account number";
-        } else if (value.length < 6) {
-          return "Please enter valid account number";
-        } else {
-          return null;
-        }
-      },
-    );
-  }
-
-  TextFormField textIfscCode() {
-    return TextFormField(
-      controller: ifsccodeController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter IFSC Code",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter IFSC code';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textPanNumber() {
-    return TextFormField(
-      controller: pannumberController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter PAN Number",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter PAN number';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textBranchAddress() {
-    return TextFormField(
-      controller: branchaddressController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Branch Address",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter branch address';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textFamilyName() {
-    return TextFormField(
-      controller: familynameController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Name",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter name';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textFamilyRelation() {
-    return TextFormField(
-      controller: familyrelationController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Relation",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter relation';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textFamilyAddress() {
-    return TextFormField(
-      controller: familyaddressController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Address",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter address';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textFamilyContact() {
-    return TextFormField(
-      controller: familycontactnumberController,
-      maxLength: 10,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      // enabled: false,
-      decoration: AppStyles.textFieldInputDecoration
-          .copyWith(hintText: "Please Enter Contact Number", counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "Please enter contact number";
-        } else if (value.length < 10) {
-          return "Please enter valid contact number";
-        } else {
-          return null;
-        }
-      },
     );
   }
 
@@ -1352,7 +1201,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
 
-    final url = (site! + 'createEmployee'); // Prod
+    final url = (site! + 'Employee/Signup'); // Prod
 
     final response = await http.post(
       Uri.parse(url),
@@ -1372,14 +1221,15 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     );
 
     if (response.statusCode == 200) {
-      pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
+      //  pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
       var data = json.decode(response.body);
+
       setState(() {
-        setpersonid = data['data'][0][0]['vempid'];
+        setpersonid = data['data'][0][0]['vPersonID'];
       });
       if (data['data'][0].length > 0) {
         upload((personlogoBytes ?? []), (personLogoname ?? ''));
-        pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
+        // pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
       }
 
       Toast.show("Employee registered successfully.",
@@ -1404,14 +1254,14 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     var currentdate = DateTime.now().microsecondsSinceEpoch;
     var formData = FormData.fromMap({
       'personid': setpersonid,
-      "Image": MultipartFile.fromBytes(
+      "Profile": MultipartFile.fromBytes(
         bytes,
         filename: (name + (currentdate.toString()) + '.jpg'),
         contentType: MediaType("image", 'jpg'),
       ),
     });
 
-    _response = await _dio.post((site! + 'uploadProfileImg'), // Prod
+    _response = await _dio.post((site! + 'Employee/UploadProfileImg'), // Prod
 
         options: Options(
           contentType: 'multipart/form-data',
@@ -1432,40 +1282,40 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     }
   }
 
-  pdfFileUpload(List<int> bytes, String name) async {
-    final prefs = await SharedPreferences.getInstance();
-    site = prefs.getString('site');
+  // pdfFileUpload(List<int> bytes, String name) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   site = prefs.getString('site');
 
-    var currentdate = DateTime.now().microsecondsSinceEpoch;
-    var formData = FormData.fromMap({
-      'personid': setpersonid,
-      "File": MultipartFile.fromBytes(
-        bytes,
-        filename: (name + (currentdate.toString()) + '.pdf'),
-        contentType: MediaType("application", 'pdf'),
-      ),
-    });
+  //   var currentdate = DateTime.now().microsecondsSinceEpoch;
+  //   var formData = FormData.fromMap({
+  //     'personid': setpersonid,
+  //     "File": MultipartFile.fromBytes(
+  //       bytes,
+  //       filename: (name + (currentdate.toString()) + '.pdf'),
+  //       contentType: MediaType("application", 'pdf'),
+  //     ),
+  //   });
 
-    _response = await _dio.post((site! + 'UploadJoiningForms'), // Prod
+  //   _response = await _dio.post((site! + 'UploadJoiningForms'), // Prod
 
-        options: Options(
-          contentType: 'multipart/form-data',
-          followRedirects: false,
-          validateStatus: (status) => true,
-        ),
-        data: formData);
+  //       options: Options(
+  //         contentType: 'multipart/form-data',
+  //         followRedirects: false,
+  //         validateStatus: (status) => true,
+  //       ),
+  //       data: formData);
 
-    try {
-      if (_response!.data != null) {
-        // Toast.show("Profile photo updated.",
-        //     duration: Toast.lengthLong,
-        //     gravity: Toast.center,
-        //     backgroundColor: Colors.indigoAccent);
-      }
-    } catch (err) {
-      print("Error");
-    }
-  }
+  //   try {
+  //     if (_response!.data != null) {
+  //       // Toast.show("Profile photo updated.",
+  //       //     duration: Toast.lengthLong,
+  //       //     gravity: Toast.center,
+  //       //     backgroundColor: Colors.indigoAccent);
+  //     }
+  //   } catch (err) {
+  //     print("Error");
+  //   }
+  // }
 
   Widget _user() {
     return Form(
@@ -1675,7 +1525,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(height: 5),
-            textJobLocation(),
+            textLocation(),
             const SizedBox(height: 15),
 
             Text(
@@ -1728,7 +1578,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                     createData(
                         employeeIdController.text,
                         loginIdController.text,
-                        joblocationController.text,
+                        locationController ?? "",
                         fullnameController.text,
                         departmentController ?? "",
                         designationController ?? "");

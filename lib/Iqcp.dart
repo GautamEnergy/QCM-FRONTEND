@@ -128,8 +128,7 @@ class _WelcomePageState extends State<IqcpPage> {
                     child: tabDashboard('Solar Cell', AppAssets.solarcell, () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              SolarCell(appName: "appName")),
+                          builder: (BuildContext context) => SolarCell(id: "")),
                       (Route<dynamic> route) => false);
                 })),
                 SizedBox(
@@ -284,10 +283,10 @@ class _WelcomePageState extends State<IqcpPage> {
               width: 8,
             ),
             InkWell(
-                // onTap: () {
-                //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //       builder: (BuildContext context) => PublicDrawer()));
-                // },
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext context) => PublicDrawer()));
+                },
                 child: Image.asset(
                     menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                     height: 25)),
