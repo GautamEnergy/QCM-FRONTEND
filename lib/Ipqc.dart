@@ -128,7 +128,7 @@ class _WelcomePageState extends State<IpqcPage> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard('Job Card', AppAssets.solarcell, () {
+                    child: tabDashboard('Job Card', AppAssets.jobcard, () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (BuildContext context) => Jobcard()),
@@ -153,7 +153,7 @@ class _WelcomePageState extends State<IpqcPage> {
                 ),
                 Expanded(
                     child: tabDashboard(
-                        'Pre-Lam IPQC Check Sheet', AppAssets.planet, () {
+                        'Pre-Lam IPQC Check Sheet', AppAssets.prelam, () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (BuildContext context) => PreLam()),
@@ -164,7 +164,7 @@ class _WelcomePageState extends State<IpqcPage> {
                 ),
                 Expanded(
                     child: tabDashboard(
-                        'Post-Lam IPQC Check Sheet', AppAssets.icDirectory, () {
+                        'Post-Lam IPQC Check Sheet', AppAssets.postlam, () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (BuildContext context) => Postlam()),
@@ -188,8 +188,7 @@ class _WelcomePageState extends State<IpqcPage> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard(
-                        'Junction Box', AppAssets.imgAttendanceReport, () {
+                    child: tabDashboard('Testing', AppAssets.testing, () {
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(
                   //         builder: (BuildContext context) => InOut()),
@@ -199,13 +198,16 @@ class _WelcomePageState extends State<IpqcPage> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard(
-                        'Aluminium Frame', AppAssets.imgSalaryReport, () {
+                    child: tabDashboard('Machine Monitering', AppAssets.machine,
+                        () {
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(
                   //         builder: (BuildContext context) => SalaryReport()),
                   //     (Route<dynamic> route) => false);
                 })),
+                SizedBox(
+                  width: 10,
+                ),
                 SizedBox(
                   width: 10,
                 ),
@@ -223,7 +225,7 @@ class _WelcomePageState extends State<IpqcPage> {
                 ),
                 Expanded(
                     child: tabDashboard(
-                        'Backsheet', AppAssets.imgAttendanceList, () {
+                        'Frame Measurement', AppAssets.framemeasurement, () {
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(
                   //         builder: (BuildContext context) => InOut()),
@@ -232,6 +234,15 @@ class _WelcomePageState extends State<IpqcPage> {
                 SizedBox(
                   width: 10,
                 ),
+                Expanded(
+                    child: tabDashboard(
+                        'Sealant Measurement', AppAssets.sealantmeasurement,
+                        () {
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => SalaryReport()),
+                  //     (Route<dynamic> route) => false);
+                })),
               ],
             ),
             SizedBox(

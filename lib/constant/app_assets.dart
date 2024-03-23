@@ -3,6 +3,8 @@ class AppAssets {
 
   static String icMenuSelected = 'assets/icons/ic_menu_selected.png';
   static String icDirectory = 'assets/icons/bow.png';
+  static String postlam = 'assets/icons/postlam.png';
+  static String fqc = 'assets/icons/fqc.png';
   static String icMenuUnSelected = 'assets/icons/menu.png';
   static String icNotificationUnSelected = 'assets/icons/notifications.png';
   static String icNotificationSelected =
@@ -13,8 +15,12 @@ class AppAssets {
   static String icHomeUnSelected = 'assets/icons/ic_home_unselected.png';
   static String imgLogo = 'assets/images/galo_logo.png';
   static String imgAttendanceList = 'assets/icons/papers.png';
+  static String framemeasurement = 'assets/icons/framemeasure.png';
   static String imgSalaryReport = 'assets/icons/frame.png';
+  static String sealantmeasurement = 'assets/icons/sealant.png';
+  static String machine = 'assets/icons/machine.png';
   static String imgAttendanceReport = 'assets/icons/tool.png';
+  static String testing = 'assets/icons/testing.png';
   static String imgWelcome = 'assets/images/Welcome.png';
   static String imgRight = 'assets/images/rightmarkicon.png';
   static String audioThankYou = 'assets/images/thankyou.mp3';
@@ -40,6 +46,8 @@ class AppAssets {
   static String icAppLogoHorizontal = 'assets/icons/ic_applogo_horizontal.png';
   static String home = 'assets/icons/ic_home_selected.png';
   static String solarcell = 'assets/icons/solar-cell.png';
+  static String jobcard = 'assets/icons/jobcard.png';
+  static String IQCP = 'assets/icons/iqcp.png';
   static String search = 'assets/icons/attendance_icon.png';
 
   static String menu = 'assets/icons/menu.png';
@@ -48,6 +56,8 @@ class AppAssets {
   static String icgallery = 'assets/icons/gallery.png';
   static String icbooking = 'assets/icons/booking.png';
   static String planet = 'assets/icons/planet.png';
+  static String prelam = 'assets/icons/prelam.png';
+  static String ipqc = 'assets/icons/ipqc.png';
   static String icservice = 'assets/icons/Service.png';
   static String icfeedback = 'assets/icons/feedback.png';
   static String icaward = 'assets/icons/award.png';

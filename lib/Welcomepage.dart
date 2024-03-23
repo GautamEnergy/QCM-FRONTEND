@@ -126,7 +126,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     width: 10,
                   ),
                   Expanded(
-                      child: tabDashboard('IQCP', AppAssets.solarcell, () {
+                      child: tabDashboard('IQCP', AppAssets.IQCP, () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) => IqcpPage()),
@@ -148,7 +148,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     width: 10,
                   ),
                   Expanded(
-                      child: tabDashboard('IPQC', AppAssets.planet, () {
+                      child: tabDashboard('IPQC', AppAssets.ipqc, () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) => IpqcPage()),
@@ -170,7 +170,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     width: 10,
                   ),
                   Expanded(
-                      child: tabDashboard('FQC', AppAssets.icDirectory, () {
+                      child: tabDashboard('FQC', AppAssets.fqc, () {
                     // Navigator.of(context).pushAndRemoveUntil(
                     //     MaterialPageRoute(
                     //         builder: (BuildContext context) => EmployeeList()),
