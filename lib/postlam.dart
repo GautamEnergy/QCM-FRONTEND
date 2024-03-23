@@ -2495,7 +2495,9 @@ class _PostlamState extends State<Postlam> {
                     //       builder: (BuildContext context) => Attendance()));
                     // },
                     child: Image.asset(
-                        face ? AppAssets.imgSelectedFace : AppAssets.imgFace,
+                        face
+                            ? AppAssets.icSearchSelected
+                            : AppAssets.icSearchUnSelected,
                         height: 25)),
                 const SizedBox(
                   width: 8,

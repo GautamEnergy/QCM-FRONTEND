@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/LoginPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/constant/app_assets.dart';
@@ -15,6 +16,7 @@ import 'package:http/http.dart' as http;
 
 class SplashScreen extends StatefulWidget {
   final String? apptype;
+
   SplashScreen({this.apptype});
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -23,6 +25,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   List splashscreen = [];
   String? screen;
+  late String pic, site, designation, department, personid;
   // _get() async {
   //   print("Bhanuuuuuuuu.....>???");
   //   print(widget.apptype);
@@ -55,6 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     // _get();
     Future.delayed(Duration(seconds: 2), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -63,7 +67,10 @@ class _SplashScreenState extends State<SplashScreen> {
         Timer(
             Duration(seconds: 2),
             () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => WelcomePage())));
+                builder: (BuildContext context) =>
+                    department == 'IQCP' && designation == 'QC'
+                        ? IqcpPage()
+                        : WelcomePage())));
       } else {
         Timer(
             Duration(seconds: 3),
@@ -71,6 +78,21 @@ class _SplashScreenState extends State<SplashScreen> {
                 builder: (BuildContext context) => LoginPage())));
       }
     });
+    getLocalData();
+  }
+
+  void getLocalData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pic = prefs.getString('pic')!;
+      personid = prefs.getString('personid')!;
+      site = prefs.getString('site')!;
+      designation = prefs.getString('designation')!;
+      department = prefs.getString('department')!;
+    });
+    print(designation);
+    print(department);
+    print("Hi...?");
   }
 
   @override

@@ -24,7 +24,6 @@ import '../constant/app_styles.dart';
 class PreLam extends StatefulWidget {
   const PreLam({super.key});
 
-
   @override
   _PrelamState createState() => _PrelamState();
 }
@@ -2599,7 +2598,9 @@ class _PrelamState extends State<PreLam> {
                     //       builder: (BuildContext context) => Attendance()));
                     // },
                     child: Image.asset(
-                        face ? AppAssets.imgSelectedFace : AppAssets.imgFace,
+                        face
+                            ? AppAssets.icSearchSelected
+                            : AppAssets.icSearchUnSelected,
                         height: 25)),
                 const SizedBox(
                   width: 8,

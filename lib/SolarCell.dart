@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
@@ -67,10 +68,11 @@ class _ScoreDetailsState extends State<SolarCell> {
       receiptDate,
       dateOfQualityCheck,
       personid,
-      designation,
       firstname,
       lastname,
       pic,
+      designation,
+      department,
       ImagePath,
       organizationName,
       // organizationtype,
@@ -332,6 +334,7 @@ class _ScoreDetailsState extends State<SolarCell> {
       personid = prefs.getString('personid');
       site = prefs.getString('site');
       designation = prefs.getString('designation');
+      department = prefs.getString('department');
     });
   }
 
@@ -426,8 +429,6 @@ class _ScoreDetailsState extends State<SolarCell> {
     setState(() {
       _isLoading = true;
     });
-    final prefs = await SharedPreferences.getInstance();
-    site = prefs.getString('site');
     FocusScope.of(context).unfocus();
 
     final url = (site! + "IQCSolarCell/AddIQCSolarCell");
@@ -527,13 +528,12 @@ class _ScoreDetailsState extends State<SolarCell> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+    print("Resssssssss");
     if (response.statusCode == 200) {
       setState(() {
         _isLoading = false;
       });
       var objData = json.decode(response.body);
-
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
@@ -1603,7 +1603,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                         //     '{PackageSampleBarcode${i + 1}: ${packagingBarcodeControllers[i].text}, PackageSampleTest${i + 1}: ${selectedPackagingTestValues[i]}, {PackageSampleRemarks${i + 1}: ${packagingRemarksControllers[i].text}}');
 
                                         packagingSampleData.add(
-                                            '{"PackageSampleBarcode${i + 1}":"${packagingBarcodeControllers[i].text}","PackageSampleTest${i + 1}":${selectedPackagingTestValues[i]},"PackageSampleRemarks${i + 1}":"${packagingRemarksControllers[i].text}"}');
+                                            '{"PackageSampleBarcode${i + 1}":${packagingBarcodeControllers[i].text},"PackageSampleTest${i + 1}":${selectedPackagingTestValues[i]},"PackageSampleRemarks${i + 1}":${packagingRemarksControllers[i].text}}');
                                       }
                                       //   print(packagingSampleData);
                                       //   setState(() {
@@ -5721,7 +5721,10 @@ class _ScoreDetailsState extends State<SolarCell> {
                 InkWell(
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomePage()));
+                          builder: (BuildContext context) =>
+                              department == 'IQCP' && designation == 'QC'
+                                  ? IqcpPage()
+                                  : WelcomePage()));
                     },
                     child: Image.asset(
                         home
@@ -5750,16 +5753,18 @@ class _ScoreDetailsState extends State<SolarCell> {
                     //       builder: (BuildContext context) => Attendance()));
                     // },
                     child: Image.asset(
-                        face ? AppAssets.imgSelectedFace : AppAssets.imgFace,
+                        face
+                            ? AppAssets.icSearchSelected
+                            : AppAssets.icSearchUnSelected,
                         height: 25)),
                 const SizedBox(
                   width: 8,
                 ),
                 InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => PublicDrawer()));
-                    // },
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => PublicDrawer()));
+                    },
                     child: Image.asset(
                         menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                         height: 25)),

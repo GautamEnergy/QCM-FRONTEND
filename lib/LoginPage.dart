@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/components/app_loader.dart';
@@ -30,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
 
   List device = [];
   bool otpsend = false, _isLoading = false;
-  String? uid, deviceType;
+  String? uid, deviceType, designation, department;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   // String path = "http://192.168.0.110:5000/"; //local
@@ -92,12 +93,15 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (objData['status'] == true) {
+        print("KYAYAYYYYYYY");
+        print(objData['token']);
         if (mounted) {
           print(prefs.getString('site'));
           setState(() {
             _isLoading = false;
             prefs.setBool('islogin', true);
             prefs.setString('site', path);
+            prefs.setString('token', objData['token']);
             prefs.setString('personid', objData['PersonData'][0]['PersonID']);
 
             prefs.setString(
@@ -108,9 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                 'department', objData['PersonData'][0]['Department'] ?? '');
             prefs.setString(
                 'pic', objData['PersonData'][0]['ProfileImg'] ?? '');
-
+            designation = prefs.getString('designation')!;
+            department = prefs.getString('department')!;
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => WelcomePage()));
+                builder: (BuildContext context) =>
+                    department == 'IQCP' && designation == 'QC'
+                        ? IqcpPage()
+                        : WelcomePage()));
           });
           print(prefs.getString('site'));
         }

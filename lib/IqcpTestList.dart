@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/LoginPage.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -45,6 +46,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
   String? _paymentModeController;
   List paymentModeData = [];
   String? personid,
+      token,
       vCard,
       firstname,
       lastname,
@@ -52,6 +54,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
       logo,
       site,
       designation,
+      department,
       ImagePath,
       detail,
       businessname,
@@ -89,8 +92,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
       personid = prefs.getString('personid');
       site = prefs.getString('site');
       designation = prefs.getString('designation');
+      department = prefs.getString('department');
+      token = prefs.getString('token');
     });
-    print(site);
+    print(designation);
+    print(department);
     print("Hi...?");
 
     userdata = getData();
@@ -105,9 +111,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
 
     final url = (site! + 'IQCSolarCell/GetIQCTests');
 
-    http.get(
+    http.post(
       Uri.parse(url),
-      // body: jsonEncode(<String, String>{"personid": personid!}),
+      body: jsonEncode(<String, String>{"token": token!}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -405,7 +411,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return WelcomePage();
+                      return department == 'IQCP' && designation == 'QC'
+                          ? IqcpPage()
+                          : WelcomePage();
                     }));
                   },
                 ),
@@ -435,7 +443,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                 bottomNavigationBar: Container(
                   height: 60,
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 235, 224, 163),
+                    color: Color.fromARGB(255, 245, 203, 19),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
@@ -449,7 +457,10 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        WelcomePage()));
+                                        department == 'IQCP' &&
+                                                designation == 'QC'
+                                            ? IqcpPage()
+                                            : WelcomePage()));
                           },
                           child: Image.asset(
                               home
@@ -483,8 +494,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                           },
                           child: Image.asset(
                               face
-                                  ? AppAssets.imgSelectedFace
-                                  : AppAssets.imgFace,
+                                  ? AppAssets.icSearchSelected
+                                  : AppAssets.icSearchUnSelected,
                               height: 25)),
                       const SizedBox(
                         width: 8,
@@ -1225,34 +1236,35 @@ class _IqcpTestListState extends State<IqcpTestList> {
                       ],
                     )),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      SolarCell(id: id)),
-                              (Route<dynamic> route) => false);
-                          // setState(() {
-                          //   print(id);
-                          //   if (detail == id) {
-                          //     detail = 'hide';
-                          //   } else {
-                          //     detail = id;
-                          //   }
-                          // });
-                        },
-                        child: Image.asset(
-                          AppAssets.icApproved,
-                          height: 50,
-                          width: 50,
+                  if (designation != 'QC')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SolarCell(id: id)),
+                                (Route<dynamic> route) => false);
+                            // setState(() {
+                            //   print(id);
+                            //   if (detail == id) {
+                            //     detail = 'hide';
+                            //   } else {
+                            //     detail = id;
+                            //   }
+                            // });
+                          },
+                          child: Image.asset(
+                            AppAssets.icApproved,
+                            height: 50,
+                            width: 50,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
+                      ],
+                    )
                 ],
               ),
             ),

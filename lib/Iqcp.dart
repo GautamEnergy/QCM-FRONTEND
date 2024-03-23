@@ -30,6 +30,8 @@ class IqcpPage extends StatefulWidget {
 
 class _WelcomePageState extends State<IqcpPage> {
   String? firstname,
+      designation,
+      department,
       lastname,
       personid,
       pic,
@@ -51,6 +53,8 @@ class _WelcomePageState extends State<IqcpPage> {
   void store() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      designation = prefs.getString('designation');
+      department = prefs.getString('department');
       personid = prefs.getString('personid');
       firstname = prefs.getString('firstname');
       lastname = prefs.getString('lastname');
@@ -97,7 +101,8 @@ class _WelcomePageState extends State<IqcpPage> {
       backgroundColor: AppColors.lightBlack,
       appBar: GautamAppBar(
         organization: "organizationtype",
-        isBackRequired: true,
+        isBackRequired:
+            department == 'IQCP' && designation == 'QC' ? false : true,
         memberId: "personid",
         imgPath: "ImagePath",
         memberPic: pic,
@@ -250,7 +255,10 @@ class _WelcomePageState extends State<IqcpPage> {
             InkWell(
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => WelcomePage()));
+                      builder: (BuildContext context) =>
+                          department == 'IQCP' && designation == 'QC'
+                              ? IqcpPage()
+                              : WelcomePage()));
                 },
                 child: Image.asset(
                     home
@@ -262,8 +270,10 @@ class _WelcomePageState extends State<IqcpPage> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => AddEditProfile()));
+                  if (designation != 'QC') {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => AddEditProfile()));
+                  }
                 },
                 child: Image.asset(
                     user ? AppAssets.imgSelectedPerson : AppAssets.imgPerson,
@@ -277,7 +287,9 @@ class _WelcomePageState extends State<IqcpPage> {
                 //       builder: (BuildContext context) => Attendance()));
                 // },
                 child: Image.asset(
-                    face ? AppAssets.imgSelectedFace : AppAssets.imgFace,
+                    face
+                        ? AppAssets.icSearchSelected
+                        : AppAssets.icSearchUnSelected,
                     height: 25)),
             const SizedBox(
               width: 8,

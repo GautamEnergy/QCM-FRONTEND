@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/LoginPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
@@ -50,6 +51,7 @@ class _DirectoryState extends State<EmployeeList> {
       logo,
       site,
       designation,
+      department,
       ImagePath,
       detail,
       businessname,
@@ -87,6 +89,7 @@ class _DirectoryState extends State<EmployeeList> {
       personid = prefs.getString('personid');
       site = prefs.getString('site');
       designation = prefs.getString('designation');
+      department = prefs.getString('department');
     });
     print(site);
     print("Hi...?");
@@ -433,7 +436,7 @@ class _DirectoryState extends State<EmployeeList> {
                 bottomNavigationBar: Container(
                   height: 60,
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 235, 224, 163),
+                    color: Color.fromARGB(255, 245, 203, 19),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
@@ -447,7 +450,10 @@ class _DirectoryState extends State<EmployeeList> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        WelcomePage()));
+                                        department == 'IQCP' &&
+                                                designation == 'QC'
+                                            ? IqcpPage()
+                                            : WelcomePage()));
                           },
                           child: Image.asset(
                               home

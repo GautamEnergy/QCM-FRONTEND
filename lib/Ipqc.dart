@@ -1,5 +1,6 @@
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Jobcard.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -33,6 +34,8 @@ class IpqcPage extends StatefulWidget {
 
 class _WelcomePageState extends State<IpqcPage> {
   String? firstname,
+      designation,
+      department,
       lastname,
       personid,
       pic,
@@ -54,6 +57,8 @@ class _WelcomePageState extends State<IpqcPage> {
   void store() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      designation = prefs.getString('designation');
+      department = prefs.getString('department');
       personid = prefs.getString('personid');
       firstname = prefs.getString('firstname');
       lastname = prefs.getString('lastname');
@@ -72,8 +77,8 @@ class _WelcomePageState extends State<IpqcPage> {
 
   @override
   void initState() {
-    super.initState();
     store();
+    super.initState();
   }
 
   adminbuttons() {
@@ -266,7 +271,10 @@ class _WelcomePageState extends State<IpqcPage> {
             InkWell(
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => WelcomePage()));
+                      builder: (BuildContext context) =>
+                          department == 'IQCP' && designation == 'QC'
+                              ? IqcpPage()
+                              : WelcomePage()));
                 },
                 child: Image.asset(
                     home
@@ -278,8 +286,10 @@ class _WelcomePageState extends State<IpqcPage> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => AddEditProfile()));
+                  if (designation != 'QC') {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => AddEditProfile()));
+                  }
                 },
                 child: Image.asset(
                     user ? AppAssets.imgSelectedPerson : AppAssets.imgPerson,
@@ -293,7 +303,9 @@ class _WelcomePageState extends State<IpqcPage> {
                 //       builder: (BuildContext context) => Attendance()));
                 // },
                 child: Image.asset(
-                    face ? AppAssets.imgSelectedFace : AppAssets.imgFace,
+                    face
+                        ? AppAssets.icSearchSelected
+                        : AppAssets.icSearchUnSelected,
                     height: 25)),
             const SizedBox(
               width: 8,

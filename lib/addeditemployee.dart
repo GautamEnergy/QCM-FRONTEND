@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:dio/src/response.dart' as Response;
@@ -63,6 +64,8 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       profilepicture,
       personLogoname,
       personid,
+      designation,
+      department,
       setpersonid,
       firstname,
       _selectedFileName,
@@ -167,6 +170,8 @@ class _ScoreDetailsState extends State<AddEditProfile> {
   void store() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      designation = prefs.getString('designation');
+      department = prefs.getString('department');
       pic = prefs.getString('pic');
       personid = prefs.getString('personid');
       site = prefs.getString('site');
@@ -376,7 +381,9 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 logo: "logo",
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return WelcomePage();
+                    return department == 'IQCP' && designation == 'QC'
+                        ? IqcpPage()
+                        : WelcomePage();
                   }));
                 },
               ),

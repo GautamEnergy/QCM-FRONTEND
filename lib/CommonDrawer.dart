@@ -1,4 +1,5 @@
 import 'package:QCM/InOutList.dart';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/attendance.dart';
@@ -27,6 +28,8 @@ class PublicDrawer extends StatefulWidget {
 
 class _PublicDrawerState extends State<PublicDrawer> {
   String? firstname,
+      designation,
+      department,
       lastname,
       personid,
       pic,
@@ -48,6 +51,8 @@ class _PublicDrawerState extends State<PublicDrawer> {
   void store() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      designation = prefs.getString('designation');
+      department = prefs.getString('department');
       personid = prefs.getString('personid');
       firstname = prefs.getString('firstname');
       lastname = prefs.getString('lastname');
@@ -127,7 +132,10 @@ class _PublicDrawerState extends State<PublicDrawer> {
                     child: tabDashboard('Welcome', AppAssets.home, () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomePage()),
+                          builder: (BuildContext context) =>
+                              department == 'IQCP' && designation == 'QC'
+                                  ? IqcpPage()
+                                  : WelcomePage()),
                       (Route<dynamic> route) => false);
                 })),
                 SizedBox(
@@ -267,7 +275,7 @@ class _PublicDrawerState extends State<PublicDrawer> {
       bottomNavigationBar: Container(
         height: 60,
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 235, 224, 163),
+          color: Color.fromARGB(255, 245, 203, 19),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -279,7 +287,10 @@ class _PublicDrawerState extends State<PublicDrawer> {
             InkWell(
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => WelcomePage()));
+                      builder: (BuildContext context) =>
+                          department == 'IQCP' && designation == 'QC'
+                              ? IqcpPage()
+                              : WelcomePage()));
                 },
                 child: Image.asset(
                     home
@@ -306,7 +317,9 @@ class _PublicDrawerState extends State<PublicDrawer> {
                   //     builder: (BuildContext context) => Attendance()));
                 },
                 child: Image.asset(
-                    face ? AppAssets.imgSelectedFace : AppAssets.imgFace,
+                    face
+                        ? AppAssets.icSearchSelected
+                        : AppAssets.icSearchUnSelected,
                     height: 25)),
             const SizedBox(
               width: 8,
