@@ -63,7 +63,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
       _hasBeenPressedorganization = '',
       organizationtype,
       _hasBeenPressed = '',
-      _hasBeenPressed1 = 'Active',
+      _hasBeenPressed1 = 'Pending',
       _hasBeenPressed2 = '',
       Expirydate,
       Paymentdate;
@@ -113,7 +113,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
 
     http.post(
       Uri.parse(url),
-      body: jsonEncode(<String, String>{"token": token!}),
+      body: jsonEncode(
+          <String, String>{"token": token!, "Status": _hasBeenPressed1!}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -594,22 +595,22 @@ class _IqcpTestListState extends State<IqcpTestList> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //#1 Active
+            //#1 Inprogress
             InkWell(
                 onTap: () {
                   setState(() {
-                    _hasBeenPressed1 = 'Active';
+                    _hasBeenPressed1 = 'Inprogress';
                     _hasBeenPressed2 = '';
                   });
                   userdata = getData();
                 },
-                child: Text('Active',
+                child: Text('Inprogress',
                     style: TextStyle(
                         fontFamily: appFontFamily,
-                        color: _hasBeenPressed1 == 'Active'
+                        color: _hasBeenPressed1 == 'Inprogress'
                             ? AppColors.blueColor
                             : AppColors.black,
-                        fontWeight: _hasBeenPressed1 == 'Active'
+                        fontWeight: _hasBeenPressed1 == 'Inprogress'
                             ? FontWeight.w700
                             : FontWeight.normal))),
 
@@ -621,90 +622,90 @@ class _IqcpTestListState extends State<IqcpTestList> {
                   fontWeight: FontWeight.w700),
             ),
 
-            //#2 Inactive
+            //#2 Approved
             InkWell(
               onTap: () {
                 setState(() {
-                  _hasBeenPressed1 = 'Inactive';
+                  _hasBeenPressed1 = 'Approved';
                 });
                 userdata = getData();
               },
               child: Text(
-                'Inactive',
+                'Approved',
                 style: TextStyle(
                     fontFamily: appFontFamily,
-                    color: _hasBeenPressed1 == 'Inactive'
+                    color: _hasBeenPressed1 == 'Approved'
                         ? AppColors.blueColor
                         : AppColors.black,
-                    fontWeight: _hasBeenPressed1 == 'Inactive'
+                    fontWeight: _hasBeenPressed1 == 'Approved'
                         ? FontWeight.w700
                         : FontWeight.normal),
               ),
             ),
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              const Text(
-                ' | ',
-                style: TextStyle(
-                    fontFamily: appFontFamily,
-                    color: AppColors.blueColor,
-                    fontWeight: FontWeight.w700),
-              ),
+            // if (organizationtype == 'RMB Chapter' ||
+            //     organizationtype == 'Me-connect Chapter')
+            const Text(
+              ' | ',
+              style: TextStyle(
+                  fontFamily: appFontFamily,
+                  color: AppColors.blueColor,
+                  fontWeight: FontWeight.w700),
+            ),
 
             //#3 Pending
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _hasBeenPressed1 = 'Pending';
-                  });
-                  userdata = getData();
-                },
-                child: Text(
-                  'Pending',
-                  style: TextStyle(
-                      fontFamily: appFontFamily,
-                      color: _hasBeenPressed1 == 'Pending'
-                          ? AppColors.blueColor
-                          : AppColors.black,
-                      fontWeight: _hasBeenPressed1 == 'Pending'
-                          ? FontWeight.w700
-                          : FontWeight.normal),
-                ),
-              ),
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              const Text(
-                ' | ',
+            // if (organizationtype == 'RMB Chapter' ||
+            //     organizationtype == 'Me-connect Chapter')
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _hasBeenPressed1 = 'Pending';
+                });
+                userdata = getData();
+              },
+              child: Text(
+                'Pending',
                 style: TextStyle(
                     fontFamily: appFontFamily,
-                    color: AppColors.blueColor,
-                    fontWeight: FontWeight.w700),
+                    color: _hasBeenPressed1 == 'Pending'
+                        ? AppColors.blueColor
+                        : AppColors.black,
+                    fontWeight: _hasBeenPressed1 == 'Pending'
+                        ? FontWeight.w700
+                        : FontWeight.normal),
               ),
+            ),
+            // if (organizationtype == 'RMB Chapter' ||
+            //     organizationtype == 'Me-connect Chapter')
+            const Text(
+              ' | ',
+              style: TextStyle(
+                  fontFamily: appFontFamily,
+                  color: AppColors.blueColor,
+                  fontWeight: FontWeight.w700),
+            ),
 
-            //#4 Decline
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _hasBeenPressed1 = 'Decline';
-                  });
-                  userdata = getData();
-                },
-                child: Text(
-                  'Declined',
-                  style: TextStyle(
-                      fontFamily: appFontFamily,
-                      color: _hasBeenPressed1 == 'Decline'
-                          ? AppColors.blueColor
-                          : AppColors.black,
-                      fontWeight: _hasBeenPressed1 == 'Decline'
-                          ? FontWeight.w700
-                          : FontWeight.normal),
-                ),
+            //#4 Rejected
+            // if (organizationtype == 'RMB Chapter' ||
+            //     organizationtype == 'Me-connect Chapter')
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _hasBeenPressed1 = 'Rejected';
+                });
+                userdata = getData();
+              },
+              child: Text(
+                'Rejected',
+                style: TextStyle(
+                    fontFamily: appFontFamily,
+                    color: _hasBeenPressed1 == 'Rejected'
+                        ? AppColors.blueColor
+                        : AppColors.black,
+                    fontWeight: _hasBeenPressed1 == 'Rejected'
+                        ? FontWeight.w700
+                        : FontWeight.normal),
               ),
+            ),
           ],
         ));
   }
@@ -756,7 +757,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: [if (isAllowedEdit) filter()],
+            children: [filter()],
           )),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
@@ -1236,7 +1237,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                       ],
                     )),
                   ),
-                  if (designation != 'QC')
+                  if (designation != 'QC' && _hasBeenPressed1 == 'Pending')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

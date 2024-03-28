@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Iqcp.dart';
+import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/constant/role_list_model.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:logging_appenders/logging_appenders.dart';
 
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,6 +41,7 @@ class _ScoreDetailsState extends State<SolarCell> {
       numberOfVerificationSampleFields = 0,
       numberOfElectricalSampleFields = 0,
       numberOfPerformanceSampleFields = 0;
+
   List<TextEditingController> packagingBarcodeControllers = [];
   List<TextEditingController> packagingRemarksControllers = [];
   List<TextEditingController> visualBarcodeControllers = [];
@@ -65,6 +66,8 @@ class _ScoreDetailsState extends State<SolarCell> {
   late GlobalKey<FormState> _formKey;
   String? invoiceDate,
       result = "Fail",
+      status,
+      approvalStatus = "Approved",
       receiptDate,
       dateOfQualityCheck,
       personid,
@@ -72,6 +75,7 @@ class _ScoreDetailsState extends State<SolarCell> {
       lastname,
       pic,
       designation,
+      token,
       department,
       ImagePath,
       organizationName,
@@ -106,6 +110,15 @@ class _ScoreDetailsState extends State<SolarCell> {
   CountryRoleModel? countrydata;
   // CityRoleModel Citydata;
   // StateRoleModel statename;
+  List data = [];
+
+  List Packaging = [],
+      Visual = [],
+      Physical = [],
+      FrontBus = [],
+      Verification = [],
+      Electrical = [],
+      Performance = [];
   // ..............Start..........................
   List packagingSampleData = [];
   List visualSampleData = [];
@@ -139,6 +152,8 @@ class _ScoreDetailsState extends State<SolarCell> {
   TextEditingController lotSizeController = new TextEditingController();
 // Packaging
   TextEditingController rejectionReasonController = new TextEditingController();
+  TextEditingController rejectionReasonStatusController =
+      new TextEditingController();
 
   TextEditingController packagingCharactersticsController =
       new TextEditingController();
@@ -265,7 +280,7 @@ class _ScoreDetailsState extends State<SolarCell> {
       packagingReferenceDocController.text = "PO/INVOICE";
       packagingAcceptanceCriteriaController.text =
           "No Physical Damage / No Mismatch against PO/Invoice";
-// Visual
+      // Visual
       visualCharactersticsController.text =
           "Color Variation, Cell Chip, Cell Crack, Grid Miss, Grid Line cut, Print Shift, Oxidation, Spot on cell";
       visualMeasuringMethodController.text = "Verner Calliper/Measuring Scale";
@@ -291,6 +306,7 @@ class _ScoreDetailsState extends State<SolarCell> {
       frontbusMeasuringMethodController.text =
           "Verner Calliper/Measuring Scale";
       frontbusSamplingController.text = "5 Pcs / Lot";
+      frontbusSampleSizeController.text = '5';
       // frontbusSampleSizeController.text = "100 %";
       frontbusReferenceDocController.text =
           "GSPL Technical Specification / Supplier COC";
@@ -309,6 +325,7 @@ class _ScoreDetailsState extends State<SolarCell> {
           "LID(Light Inducted Degradation)/Preconditioning";
       electricalMeasuringMethodController.text = "Sunsimulator";
       electricalSamplingController.text = "One Module per supplier(each month)";
+      electricalSampleSizeController.text = "1";
       // frontbusSampleSizeController.text = "100 %";
       electricalReferenceDocController.text = "GSPL Technical Specification";
       electricalAcceptanceCriteriaController.text = "COC";
@@ -317,11 +334,13 @@ class _ScoreDetailsState extends State<SolarCell> {
       performanceCharactersticsController.text = "Soidering Peel Test";
       performanceMeasuringMethodController.text = "Peel Tester";
       performanceSamplingController.text = "5 Cell/Lot";
+      performanceSampleSizeController.text = "5";
       // performanceSampleSizeController.text = "100 %";
       performanceReferenceDocController.text = "GSPL Technical Specification";
       performanceAcceptanceCriteriaController.text =
           "1 N to 2N-Cell Frontside 1N to 4N Cell Back side";
     });
+
     _isSearching = false;
 
     super.initState();
@@ -335,97 +354,156 @@ class _ScoreDetailsState extends State<SolarCell> {
       site = prefs.getString('site');
       designation = prefs.getString('designation');
       department = prefs.getString('department');
+      token = prefs.getString('token');
     });
+    _get();
+  }
+
+  Future _get() async {
+    print("Tokennnn");
+    print(token);
+
+    print("in api");
+    print(widget.id);
+
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      site = prefs.getString('site');
+    });
+    final AllSolarData = ((site!) + 'IQCSolarCell/GetSpecificTest');
+    final allSolarData = await http.post(
+      Uri.parse(AllSolarData),
+      body: jsonEncode(
+          <String, String>{"SolarDetailID": widget.id ?? '', "token": token!}),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    var resBody = json.decode(allSolarData.body);
+
+    if (mounted) {
+      setState(() {
+        data = resBody;
+        print("Data Dekhhhh");
+        print(data);
+        if (data != null && data.length > 0) {
+          final dataMap = data.asMap();
+
+          lotSizeController.text = dataMap[0]['LotSize'] ?? '';
+          supplierNameController.text = dataMap[0]['SupplierName'] ?? '';
+          invoiceNoController.text = dataMap[0]['InvoiceNo'] ?? '';
+          invoiceDateController.text = DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(dataMap[0]['InvoiceDate'].toString())) ??
+              '';
+          rawMaterialSpecsController.text =
+              dataMap[0]['RawMaterialSpecs'] ?? '';
+          dateOfQualityCheckController
+              .text = DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(dataMap[0]['QualityCheckDate'].toString())) ??
+              '';
+
+          rMBatchNoController.text = dataMap[0]['SupplierRMBatchNo'] ?? '';
+          receiptDateController.text = DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(dataMap[0]['ReceiptDate'].toString())) ??
+              '';
+
+          numberOfPackagingSampleFields =
+              (dataMap[0]['SampleSizePackaging'] ?? 0);
+          Packaging = dataMap[0]['Packaging'] ?? [];
+
+          visualSampleSizeController.text =
+              (dataMap[0]['SampleSizeVisual'] ?? "").toString();
+          Visual = dataMap[0]['Visual'] ?? [];
+
+          physicalSampleSizeController.text =
+              (dataMap[0]['SampleSizePhysical'] ?? "").toString();
+          Physical = dataMap[0]['Physical'] ?? [];
+
+          frontbusSampleSizeController.text =
+              (dataMap[0]['SampleSizeFrontBus'] ?? "").toString();
+          FrontBus = dataMap[0]['FrontBus'] ?? [];
+
+          verificationSampleSizeController.text =
+              (dataMap[0]['SampleSizeVerification'] ?? "").toString();
+          Verification = dataMap[0]['Verification'] ?? [];
+
+          electricalSampleSizeController.text =
+              (dataMap[0]['SampleSizeElectrical'] ?? "").toString();
+          Electrical = dataMap[0]['Electrical'] ?? [];
+
+          performanceSampleSizeController.text =
+              (dataMap[0]['SampleSizePerformance'] ?? "").toString();
+          Performance = dataMap[0]['Performance'] ?? [];
+
+          result = dataMap[0]['Result'] ?? 'Fail';
+          status = dataMap[0]['Status'] ?? '';
+
+          packagingRejection = dataMap[0]['RejectPackaging'] ?? 'false';
+          visualRejection = dataMap[0]['RejectVisual'] ?? 'false';
+          physicalRejection = dataMap[0]['RejectPhysical'] ?? 'false';
+          frontbusRejection = dataMap[0]['RejectFrontBus'] ?? 'false';
+          verificationRejection = dataMap[0]['RejectVerification'] ?? 'false';
+          electricalRejection = dataMap[0]['RejectElectrical'] ?? 'false';
+          performanceRejection = dataMap[0]['RejectPerformance'] ?? 'false';
+          rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
+        }
+        print(status);
+
+        print("Bikkiiii");
+      });
+    }
+  }
+
+  Future setApprovalStatus() async {
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+
+    final url = (site! + "IQCSolarCell/UpdateStatus");
+
+    var params = {
+      "token": token,
+      "CurrentUser": personid,
+      "ApprovalStatus": approvalStatus,
+      "RejectionReasonStatus": rejectionReasonStatusController.text,
+      "TestId": widget.id ?? ""
+    };
+    print(params);
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(params),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print("Resssssssss");
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
+      var objData = json.decode(response.body);
+      if (objData['success'] == false) {
+        Toast.show("Please Try Again.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        Toast.show("Solar Cell Test $approvalStatus .",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IqcpTestList()));
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
+    }
   }
 
   Future createData() async {
-    print('sampleeeeeeeeeeeeeeeeeeeeeeeee');
-    print(packagingSampleData);
-    var SolarCellDetails = {
-      "LotNo": lotSizeController.text,
-      "SupplierName": supplierNameController.text,
-      "InvoiceNo": invoiceNoController.text,
-      "InvoiceDate": invoiceDate,
-      "RawMaterialSpecs": rawMaterialSpecsController.text,
-      "DateOfQualityCheck": dateOfQualityCheck,
-      "SupplierRMBatchNo": rMBatchNoController.text,
-      "RecieptDate": receiptDate,
-      "DocumentNo": "GSPL/SC(IQC)/001",
-      "RevNo": "Ver2.0/13-03-2024"
-    };
-
-    var SolarCell = {
-      "Packaging": {
-        "Characterstics": packagingCharactersticsController.text,
-        "MeasuringMethod": packagingMeasuringMethodController.text,
-        "Sampling": packagingSamplingController.text,
-        "SmapleSize": packagingSampleSizeController.text,
-        "Reference": packagingReferenceDocController.text,
-        "AcceptanceCriteria": packagingAcceptanceCriteriaController.text,
-        "Samples": packagingSampleData
-      },
-      "Visual": {
-        "Characterstics": visualCharactersticsController.text,
-        "MeasuringMethod": visualMeasuringMethodController.text,
-        "Sampling": visualSamplingController.text,
-        "Reference": visualReferenceDocController.text,
-        "AcceptanceCriteria": visualAcceptanceCriteriaController.text,
-        "Samples": visualSampleData
-      },
-      "Physical": {
-        "Characterstics": physicalCharactersticsController.text,
-        "MeasuringMethod": physicalMeasuringMethodController.text,
-        "Sampling": physicalSamplingController.text,
-        "Reference": physicalReferenceDocController.text,
-        "AcceptanceCriteria": physicalAcceptanceCriteriaController.text,
-        "Samples": physicalSampleData
-      },
-      "FrontBus": {
-        "Characterstics": frontbusCharactersticsController.text,
-        "MeasuringMethod": frontbusMeasuringMethodController.text,
-        "Sampling": frontbusSamplingController.text,
-        "Reference": frontbusReferenceDocController.text,
-        "AcceptanceCriteria": frontbusAcceptanceCriteriaController.text,
-        "Samples": frontbusSampleData
-      },
-      "Verification": {
-        "Characterstics": verificationCharactersticsController.text,
-        "MeasuringMethod": verificationMeasuringMethodController.text,
-        "Sampling": verificationSamplingController.text,
-        "Reference": verificationReferenceDocController.text,
-        "AcceptanceCriteria": verificationAcceptanceCriteriaController.text,
-        "Samples": verificationSampleData
-      },
-      "Electrical": {
-        "Characterstics": electricalCharactersticsController.text,
-        "MeasuringMethod": electricalMeasuringMethodController.text,
-        "Sampling": electricalSamplingController.text,
-        "Reference": electricalReferenceDocController.text,
-        "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
-        "Samples": electricalSampleData
-      },
-      "Performance": {
-        "Characterstics": performanceCharactersticsController.text,
-        "MeasuringMethod": performanceMeasuringMethodController.text,
-        "Sampling": performanceSamplingController.text,
-        "Reference": performanceReferenceDocController.text,
-        "AcceptanceCriteria": performanceAcceptanceCriteriaController.text,
-        "Samples": performanceSampleData
-      }
-    };
-
-    var Rejected = {
-      "CheckTypes": [
-        {"Packaging": packagingRejection},
-        {"Visual": visualRejection},
-        {"Physical": physicalRejection},
-        {"FrontBus": frontbusRejection},
-        {"Verification": verificationRejection},
-        {"Electrical": electricalRejection},
-        {"Performance": performanceRejection},
-      ],
-      "Reason": rejectionReasonController
-    };
     setState(() {
       _isLoading = true;
     });
@@ -452,7 +530,7 @@ class _ScoreDetailsState extends State<SolarCell> {
           "Characterstics": packagingCharactersticsController.text,
           "MeasuringMethod": packagingMeasuringMethodController.text,
           "Sampling": packagingSamplingController.text,
-          "SmapleSize": packagingSampleSizeController.text,
+          "SmapleSize": numberOfPackagingSampleFields,
           "Reference": packagingReferenceDocController.text,
           "AcceptanceCriteria": packagingAcceptanceCriteriaController.text,
           "Samples": packagingSampleData
@@ -544,8 +622,8 @@ class _ScoreDetailsState extends State<SolarCell> {
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) => IqcpPage()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IqcpTestList()));
       }
     } else {
       Toast.show("Error In Server",
@@ -752,6 +830,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                         hintText: "Please Enter Lot Size",
                                         counterText: ''),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly: status == 'Pending' ? true : false,
                                 validator: MultiValidator([
                                   RequiredValidator(
                                       errorText: "Please Enter Lot Size")
@@ -775,6 +854,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                       hintText: "Please Enter Supplier Name",
                                       counterText: ''),
                               style: AppStyles.textInputTextStyle,
+                              readOnly: status == 'Pending' ? true : false,
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "Please Enter Supplier Name";
@@ -803,6 +883,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                   hintText: "Please Enter Invoice No.",
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly: status == 'Pending' ? true : false,
                                 validator: MultiValidator([
                                   RequiredValidator(
                                       errorText: "Please Enter Invoice No.")
@@ -819,6 +900,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                             ),
                             TextFormField(
                                 controller: invoiceDateController,
+                                readOnly: status == 'Pending' ? true : false,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -831,22 +913,24 @@ class _ScoreDetailsState extends State<SolarCell> {
                                         )),
                                 style: AppStyles.textInputTextStyle,
                                 onTap: () async {
-                                  DateTime date = DateTime(2021);
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
-                                  date = (await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2024),
-                                      lastDate: DateTime.now()))!;
-                                  invoiceDateController.text =
-                                      DateFormat("EEE MMM dd, yyyy").format(
-                                          DateTime.parse(date.toString()));
-                                  setState(() {
-                                    invoiceDate = DateFormat("yyyy-MM-dd")
-                                        .format(
+                                  if (status != 'Pending') {
+                                    DateTime date = DateTime(2021);
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
+                                    date = (await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2024),
+                                        lastDate: DateTime.now()))!;
+                                    invoiceDateController.text =
+                                        DateFormat("EEE MMM dd, yyyy").format(
                                             DateTime.parse(date.toString()));
-                                  });
+                                    setState(() {
+                                      invoiceDate = DateFormat("yyyy-MM-dd")
+                                          .format(
+                                              DateTime.parse(date.toString()));
+                                    });
+                                  }
                                 },
                                 validator: MultiValidator([
                                   RequiredValidator(
@@ -872,6 +956,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                           "Please Enter Raw Material Specs",
                                       counterText: ''),
                               style: AppStyles.textInputTextStyle,
+                              readOnly: status == 'Pending' ? true : false,
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "Please Enter Raw Material Specs";
@@ -892,6 +977,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                             ),
                             TextFormField(
                                 controller: dateOfQualityCheckController,
+                                readOnly: status == 'Pending' ? true : false,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration: AppStyles.textFieldInputDecoration
@@ -905,22 +991,24 @@ class _ScoreDetailsState extends State<SolarCell> {
                                         )),
                                 style: AppStyles.textInputTextStyle,
                                 onTap: () async {
-                                  DateTime date = DateTime(2021);
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
-                                  date = (await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime.now()))!;
-                                  dateOfQualityCheckController.text =
-                                      DateFormat("EEE MMM dd, yyyy").format(
-                                          DateTime.parse(date.toString()));
-                                  setState(() {
-                                    dateOfQualityCheck =
-                                        DateFormat("yyyy-MM-dd").format(
+                                  if (status != 'Pending') {
+                                    DateTime date = DateTime(2021);
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
+                                    date = (await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime.now()))!;
+                                    dateOfQualityCheckController.text =
+                                        DateFormat("EEE MMM dd, yyyy").format(
                                             DateTime.parse(date.toString()));
-                                  });
+                                    setState(() {
+                                      dateOfQualityCheck =
+                                          DateFormat("yyyy-MM-dd").format(
+                                              DateTime.parse(date.toString()));
+                                    });
+                                  }
                                 },
                                 validator: MultiValidator([
                                   RequiredValidator(
@@ -947,6 +1035,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                       "Please Enter Supplier's RM Batch No.",
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly: status == 'Pending' ? true : false,
                                 validator: MultiValidator([
                                   RequiredValidator(
                                       errorText:
@@ -964,6 +1053,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                             ),
                             TextFormField(
                                 controller: receiptDateController,
+                                readOnly: status == 'Pending' ? true : false,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -976,22 +1066,24 @@ class _ScoreDetailsState extends State<SolarCell> {
                                         )),
                                 style: AppStyles.textInputTextStyle,
                                 onTap: () async {
-                                  DateTime date = DateTime(2021);
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
-                                  date = (await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2024),
-                                      lastDate: DateTime.now()))!;
-                                  receiptDateController.text =
-                                      DateFormat("EEE MMM dd, yyyy").format(
-                                          DateTime.parse(date.toString()));
-                                  setState(() {
-                                    receiptDate = DateFormat("yyyy-MM-dd")
-                                        .format(
+                                  if (status != 'Pending') {
+                                    DateTime date = DateTime(2021);
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
+                                    date = (await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2024),
+                                        lastDate: DateTime.now()))!;
+                                    receiptDateController.text =
+                                        DateFormat("EEE MMM dd, yyyy").format(
                                             DateTime.parse(date.toString()));
-                                  });
+                                    setState(() {
+                                      receiptDate = DateFormat("yyyy-MM-dd")
+                                          .format(
+                                              DateTime.parse(date.toString()));
+                                    });
+                                  }
                                 },
                                 validator: MultiValidator([
                                   RequiredValidator(
@@ -1011,15 +1103,15 @@ class _ScoreDetailsState extends State<SolarCell> {
                                     onTap: () {
                                       AppHelper.hideKeyboard(context);
                                       _registerFormKey.currentState!.save;
-                                      // if (_registerFormKey.currentState!
-                                      //     .validate()) {
-                                      //   setState(() {
-                                      //     setPage = 'packaging';
-                                      //   });
-                                      // }
-                                      setState(() {
-                                        setPage = 'packaging';
-                                      });
+                                      if (_registerFormKey.currentState!
+                                          .validate()) {
+                                        setState(() {
+                                          setPage = 'packaging';
+                                        });
+                                      }
+                                      // setState(() {
+                                      //   setPage = 'packaging';
+                                      // });
                                     },
                                     label: "Next",
                                     organization: '',
@@ -1315,6 +1407,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                             fontSize: 16),
                                         onTap: () {
                                           AppHelper.hideKeyboard(context);
+
                                           // packagingFormkey.currentState!.save;
                                           // if (packagingFormkey.currentState!
                                           //     .validate()) {
@@ -1324,10 +1417,13 @@ class _ScoreDetailsState extends State<SolarCell> {
 
                                           setState(() {
                                             setPage = 'checkpackaging';
-                                            numberOfPackagingSampleFields = 1;
                                           });
 
                                           // Dynamic Start......
+                                          selectedPackagingTestValues =
+                                              List<bool>.generate(
+                                                  numberOfPackagingSampleFields,
+                                                  (index) => false);
                                           for (int i = 0;
                                               i < numberOfPackagingSampleFields;
                                               i++) {
@@ -1335,16 +1431,31 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                 .add(TextEditingController());
                                             packagingRemarksControllers
                                                 .add(TextEditingController());
+
+                                            // Update Time.......
+                                            if (widget.id != "" &&
+                                                widget.id != null) {
+                                              packagingRemarksControllers[i]
+                                                  .text = Packaging[
+                                                      i][
+                                                  'PackageSampleRemarks${i + 1}'];
+
+                                              selectedPackagingTestValues[
+                                                  i] = Packaging[
+                                                      i]
+                                                  ['PackageSampleTest${i + 1}'];
+
+                                              packagingBarcodeControllers[i]
+                                                  .text = Packaging[
+                                                      i][
+                                                  'PackageSampleBarcode${i + 1}'];
+                                            }
                                           }
-                                          selectedPackagingTestValues = List<
-                                                  bool>.generate(
-                                              numberOfPackagingSampleFields,
-                                              (index) =>
-                                                  false); // Initialize all radio button values to false
-                                          // selectedPackagingTestValues[0] = true; // Initially select the first option
+
                                           _formKey = GlobalKey<FormState>();
 
                                           // Dynamic  End......
+                                          // }
                                         },
                                         label: "Check",
                                         organization: '',
@@ -1437,28 +1548,32 @@ class _ScoreDetailsState extends State<SolarCell> {
                                             contentPadding: EdgeInsets.all(10),
                                             suffixIcon: IconButton(
                                               onPressed: () async {
-                                                barcodeScanRes =
-                                                    await FlutterBarcodeScanner
-                                                        .scanBarcode(
-                                                  '#FF6666',
-                                                  'Cancel',
-                                                  true,
-                                                  ScanMode.DEFAULT,
-                                                );
+                                                if (status != 'Pending') {
+                                                  barcodeScanRes =
+                                                      await FlutterBarcodeScanner
+                                                          .scanBarcode(
+                                                    '#FF6666',
+                                                    'Cancel',
+                                                    true,
+                                                    ScanMode.DEFAULT,
+                                                  );
 
-                                                setState(() {
-                                                  packagingBarcodeControllers[
-                                                              index]
-                                                          .text =
-                                                      (barcodeScanRes != "-1"
-                                                          ? barcodeScanRes
-                                                          : '')!;
-                                                });
+                                                  setState(() {
+                                                    packagingBarcodeControllers[
+                                                                index]
+                                                            .text =
+                                                        (barcodeScanRes != "-1"
+                                                            ? barcodeScanRes
+                                                            : '')!;
+                                                  });
+                                                }
                                               },
                                               icon: const Icon(Icons.qr_code),
                                             ),
                                           ),
-                                          readOnly: true,
+                                          readOnly: status == 'Pending'
+                                              ? true
+                                              : false,
                                           style: AppStyles.textInputTextStyle,
                                           validator: (value) {
                                             if (value == null ||
@@ -1480,13 +1595,15 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                   selectedPackagingTestValues[
                                                       index],
                                               onChanged: (bool? value) {
-                                                setState(() {
-                                                  selectedPackagingTestValues[
-                                                      index] = value!;
-                                                  packagingRemarksControllers[
-                                                          index]
-                                                      .text = '';
-                                                });
+                                                if (status != 'Pending') {
+                                                  setState(() {
+                                                    selectedPackagingTestValues[
+                                                        index] = value!;
+                                                    packagingRemarksControllers[
+                                                            index]
+                                                        .text = '';
+                                                  });
+                                                }
                                               },
                                             ),
                                             Text(
@@ -1501,10 +1618,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                   selectedPackagingTestValues[
                                                       index],
                                               onChanged: (bool? value) {
-                                                setState(() {
-                                                  selectedPackagingTestValues[
-                                                      index] = value!;
-                                                });
+                                                if (status != 'Pending') {
+                                                  setState(() {
+                                                    selectedPackagingTestValues[
+                                                        index] = value!;
+                                                  });
+                                                }
                                               },
                                             ),
                                             Text(
@@ -1534,6 +1653,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                   EdgeInsets.all(10),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending'
+                                                ? true
+                                                : false,
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
@@ -1556,19 +1678,21 @@ class _ScoreDetailsState extends State<SolarCell> {
                                 },
                               ),
                             ),
-                            floatingActionButton: FloatingActionButton(
-                              onPressed: () {
-                                setState(() {
-                                  numberOfPackagingSampleFields++; // Increment the number of fields
-                                  packagingBarcodeControllers
-                                      .add(TextEditingController());
-                                  packagingRemarksControllers
-                                      .add(TextEditingController());
-                                  selectedPackagingTestValues.add(false);
-                                });
-                              },
-                              child: Icon(Icons.add),
-                            ),
+                            floatingActionButton: status != 'Pending'
+                                ? FloatingActionButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        numberOfPackagingSampleFields++; // Increment the number of fields
+                                        packagingBarcodeControllers
+                                            .add(TextEditingController());
+                                        packagingRemarksControllers
+                                            .add(TextEditingController());
+                                        selectedPackagingTestValues.add(false);
+                                      });
+                                    },
+                                    child: Icon(Icons.add),
+                                  )
+                                : Container(),
                             bottomNavigationBar: Padding(
                               padding: const EdgeInsets.all(14.0),
                               child: Row(
@@ -1593,26 +1717,37 @@ class _ScoreDetailsState extends State<SolarCell> {
                                   ElevatedButton(
                                     onPressed: () {
                                       // Validate the form
-                                      // if (_formKey.currentState!.validate()) {
-                                      //   // Perform action on submit button press
-                                      //   print('Text Field Values:');
-                                      for (int i = 0;
-                                          i < numberOfPackagingSampleFields;
-                                          i++) {
-                                        // packagingSampleData.add(
-                                        //     '{PackageSampleBarcode${i + 1}: ${packagingBarcodeControllers[i].text}, PackageSampleTest${i + 1}: ${selectedPackagingTestValues[i]}, {PackageSampleRemarks${i + 1}: ${packagingRemarksControllers[i].text}}');
+                                      if (_formKey.currentState!.validate()) {
+                                        //   // Perform action on submit button press
+                                        //   print('Text Field Values:');
+                                        for (int i = 0;
+                                            i < numberOfPackagingSampleFields;
+                                            i++) {
+                                          // packagingSampleData.add(
+                                          //     '{"PackageSampleBarcode${i + 1}":${packagingBarcodeControllers[i].text},"PackageSampleTest${i + 1}":${selectedPackagingTestValues[i]},"PackageSampleRemarks${i + 1}":${packagingRemarksControllers[i].text}}');
+                                          // packagingSampleData.add(
+                                          //     '{PackageSampleBarcode${i + 1}: ${packagingBarcodeControllers[i].text}, PackageSampleTest${i + 1}: ${selectedPackagingTestValues[i]}, {PackageSampleRemarks${i + 1}: ${packagingRemarksControllers[i].text}}');
 
-                                        packagingSampleData.add(
-                                            '{"PackageSampleBarcode${i + 1}":${packagingBarcodeControllers[i].text},"PackageSampleTest${i + 1}":${selectedPackagingTestValues[i]},"PackageSampleRemarks${i + 1}":${packagingRemarksControllers[i].text}}');
+                                          packagingSampleData.add({
+                                            "PackageSampleBarcode${i + 1}":
+                                                packagingBarcodeControllers[i]
+                                                    .text,
+                                            "PackageSampleTest${i + 1}":
+                                                selectedPackagingTestValues[i],
+                                            "PackageSampleRemarks${i + 1}":
+                                                packagingRemarksControllers[i]
+                                                    .text
+                                          });
+                                        }
+                                        print("PpAPPP");
+                                        print(packagingSampleData);
+                                        setState(() {
+                                          setPage = "visual";
+                                        });
                                       }
-                                      //   print(packagingSampleData);
-                                      //   setState(() {
-                                      //     setPage = "visual";
-                                      //   });
-                                      // }
-                                      setState(() {
-                                        setPage = "visual";
-                                      });
+                                      // setState(() {
+                                      //   setPage = "visual";
+                                      // });
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color.fromARGB(255,
@@ -1832,7 +1967,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                   "Please Enter Sample Size",
                                             ),
                                             style: AppStyles.textInputTextStyle,
-                                            readOnly: false,
+                                            readOnly: status == 'Pending'
+                                                ? true
+                                                : false,
                                             validator: MultiValidator([
                                               RequiredValidator(
                                                   errorText:
@@ -1932,6 +2069,10 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                           .text);
 
                                                   // Dynamic Start......
+                                                  selectedVisualTestValues = List<
+                                                          bool>.generate(
+                                                      numberOfVisualSampleFields,
+                                                      (index) => false);
                                                   for (int i = 0;
                                                       i < numberOfVisualSampleFields;
                                                       i++) {
@@ -1939,13 +2080,27 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                         TextEditingController());
                                                     visualRemarksControllers.add(
                                                         TextEditingController());
+                                                    // Update Time.......
+                                                    if (widget.id != "" &&
+                                                        widget.id != null) {
+                                                      visualRemarksControllers[
+                                                              i]
+                                                          .text = Visual[
+                                                              i][
+                                                          'VisualSampleRemarks${i + 1}'];
+
+                                                      selectedVisualTestValues[
+                                                          i] = Visual[
+                                                              i][
+                                                          'VisualSampleTest${i + 1}'];
+
+                                                      visualBarcodeControllers[
+                                                              i]
+                                                          .text = Visual[
+                                                              i][
+                                                          'VisualSampleBarcode${i + 1}'];
+                                                    }
                                                   }
-                                                  selectedVisualTestValues = List<
-                                                          bool>.generate(
-                                                      numberOfVisualSampleFields,
-                                                      (index) =>
-                                                          false); // Initialize all radio button values to false
-                                                  // selectedVisualTestValues[0] = true; // Initially select the first option
 
                                                   _visualFormKey =
                                                       GlobalKey<FormState>();
@@ -2048,30 +2203,35 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                         EdgeInsets.all(10),
                                                     suffixIcon: IconButton(
                                                       onPressed: () async {
-                                                        barcodeScanRes =
-                                                            await FlutterBarcodeScanner
-                                                                .scanBarcode(
-                                                          '#FF6666',
-                                                          'Cancel',
-                                                          true,
-                                                          ScanMode.DEFAULT,
-                                                        );
+                                                        if (status !=
+                                                            'Pending') {
+                                                          barcodeScanRes =
+                                                              await FlutterBarcodeScanner
+                                                                  .scanBarcode(
+                                                            '#FF6666',
+                                                            'Cancel',
+                                                            true,
+                                                            ScanMode.DEFAULT,
+                                                          );
 
-                                                        setState(() {
-                                                          visualBarcodeControllers[
-                                                                      index]
-                                                                  .text =
-                                                              (barcodeScanRes !=
-                                                                      "-1"
-                                                                  ? barcodeScanRes
-                                                                  : '')!;
-                                                        });
+                                                          setState(() {
+                                                            visualBarcodeControllers[
+                                                                        index]
+                                                                    .text =
+                                                                (barcodeScanRes !=
+                                                                        "-1"
+                                                                    ? barcodeScanRes
+                                                                    : '')!;
+                                                          });
+                                                        }
                                                       },
                                                       icon: const Icon(
                                                           Icons.qr_code),
                                                     ),
                                                   ),
-                                                  readOnly: true,
+                                                  readOnly: status == 'Pending'
+                                                      ? true
+                                                      : false,
                                                   style: AppStyles
                                                       .textInputTextStyle,
                                                   validator: (value) {
@@ -2094,13 +2254,16 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                           selectedVisualTestValues[
                                                               index],
                                                       onChanged: (bool? value) {
-                                                        setState(() {
-                                                          selectedVisualTestValues[
-                                                              index] = value!;
-                                                          visualRemarksControllers[
-                                                                  index]
-                                                              .text = '';
-                                                        });
+                                                        if (status !=
+                                                            'Pending') {
+                                                          setState(() {
+                                                            selectedVisualTestValues[
+                                                                index] = value!;
+                                                            visualRemarksControllers[
+                                                                    index]
+                                                                .text = '';
+                                                          });
+                                                        }
                                                       },
                                                     ),
                                                     Text(
@@ -2115,10 +2278,13 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                           selectedVisualTestValues[
                                                               index],
                                                       onChanged: (bool? value) {
-                                                        setState(() {
-                                                          selectedVisualTestValues[
-                                                              index] = value!;
-                                                        });
+                                                        if (status !=
+                                                            'Pending') {
+                                                          setState(() {
+                                                            selectedVisualTestValues[
+                                                                index] = value!;
+                                                          });
+                                                        }
                                                       },
                                                     ),
                                                     Text(
@@ -2150,6 +2316,10 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
+                                                    readOnly:
+                                                        status == 'Pending'
+                                                            ? true
+                                                            : false,
                                                     validator: (value) {
                                                       if (value == null ||
                                                           value.isEmpty) {
@@ -2200,25 +2370,36 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                   .currentState!.save;
 
                                               // Validate the form
-                                              // if (_visualsampleformKey
-                                              //     .currentState!
-                                              //     .validate()) {
-                                              //   // Perform action on submit button press
-                                              //   print('Text Field Values:');
-                                              for (int i = 0;
-                                                  i < numberOfVisualSampleFields;
-                                                  i++) {
-                                                visualSampleData.add(
-                                                    '{VisualSampleBarcode${i + 1}: "${visualBarcodeControllers[i].text}", VisualSampleTest${i + 1}: ${selectedVisualTestValues[i]}, VisualSampleRemarks${i + 1}: "${visualRemarksControllers[i].text}"}');
+                                              if (_visualsampleformKey
+                                                  .currentState!
+                                                  .validate()) {
+                                                //   // Perform action on submit button press
+                                                //   print('Text Field Values:');
+                                                for (int i = 0;
+                                                    i < numberOfVisualSampleFields;
+                                                    i++) {
+                                                  visualSampleData.add({
+                                                    "VisualSampleBarcode${i + 1}":
+                                                        visualBarcodeControllers[
+                                                                i]
+                                                            .text,
+                                                    "VisualSampleTest${i + 1}":
+                                                        selectedVisualTestValues[
+                                                            i],
+                                                    "VisualSampleRemarks${i + 1}":
+                                                        visualRemarksControllers[
+                                                                i]
+                                                            .text
+                                                  });
+                                                }
+                                                print(visualSampleData);
+                                                setState(() {
+                                                  setPage = "physical";
+                                                });
                                               }
-                                              //   print(visualSampleData);
-                                              //   setState(() {
-                                              //     setPage = "physical";
-                                              //   });
-                                              // }
-                                              setState(() {
-                                                setPage = "physical";
-                                              });
+                                              // setState(() {
+                                              //   setPage = "physical";
+                                              // });
                                               _visualsampleformKey =
                                                   GlobalKey<FormState>();
                                             },
@@ -2467,7 +2648,10 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
-                                                    readOnly: false,
+                                                    readOnly:
+                                                        status == 'Pending'
+                                                            ? true
+                                                            : false,
                                                     validator: MultiValidator([
                                                       RequiredValidator(
                                                           errorText:
@@ -2577,6 +2761,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                           }
 
                                                           // Dynamic Start......
+                                                          selectedPhysicalTestValues =
+                                                              List<bool>.generate(
+                                                                  numberOfPhysicalSampleFields,
+                                                                  (index) =>
+                                                                      false);
                                                           for (int i = 0;
                                                               i < numberOfPhysicalSampleFields;
                                                               i++) {
@@ -2586,13 +2775,30 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                             physicalRemarksControllers
                                                                 .add(
                                                                     TextEditingController());
+
+                                                            // Update Time.......
+                                                            if (widget.id !=
+                                                                    "" &&
+                                                                widget.id !=
+                                                                    null) {
+                                                              physicalRemarksControllers[
+                                                                      i]
+                                                                  .text = Physical[
+                                                                      i][
+                                                                  'PhysicalSampleRemarks${i + 1}'];
+
+                                                              selectedPhysicalTestValues[
+                                                                  i] = Physical[
+                                                                      i][
+                                                                  'PhysicalSampleTest${i + 1}'];
+
+                                                              physicalBarcodeControllers[
+                                                                      i]
+                                                                  .text = Physical[
+                                                                      i][
+                                                                  'PhysicalSampleBarcode${i + 1}'];
+                                                            }
                                                           }
-                                                          selectedPhysicalTestValues = List<
-                                                                  bool>.generate(
-                                                              numberOfPhysicalSampleFields,
-                                                              (index) =>
-                                                                  false); // Initialize all radio button values to false
-                                                          // selectedPhysicalTestValues[0] = true; // Initially select the first option
 
                                                           _physicalFormKey =
                                                               GlobalKey<
@@ -2714,31 +2920,37 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                 IconButton(
                                                               onPressed:
                                                                   () async {
-                                                                barcodeScanRes =
-                                                                    await FlutterBarcodeScanner
-                                                                        .scanBarcode(
-                                                                  '#FF6666',
-                                                                  'Cancel',
-                                                                  true,
-                                                                  ScanMode
-                                                                      .DEFAULT,
-                                                                );
+                                                                if (status !=
+                                                                    'Pending') {
+                                                                  barcodeScanRes =
+                                                                      await FlutterBarcodeScanner
+                                                                          .scanBarcode(
+                                                                    '#FF6666',
+                                                                    'Cancel',
+                                                                    true,
+                                                                    ScanMode
+                                                                        .DEFAULT,
+                                                                  );
 
-                                                                setState(() {
-                                                                  physicalBarcodeControllers[
-                                                                          index]
-                                                                      .text = (barcodeScanRes !=
-                                                                          "-1"
-                                                                      ? barcodeScanRes
-                                                                      : '')!;
-                                                                });
+                                                                  setState(() {
+                                                                    physicalBarcodeControllers[
+                                                                            index]
+                                                                        .text = (barcodeScanRes !=
+                                                                            "-1"
+                                                                        ? barcodeScanRes
+                                                                        : '')!;
+                                                                  });
+                                                                }
                                                               },
                                                               icon: const Icon(
                                                                   Icons
                                                                       .qr_code),
                                                             ),
                                                           ),
-                                                          readOnly: true,
+                                                          readOnly: status ==
+                                                                  'Pending'
+                                                              ? true
+                                                              : false,
                                                           style: AppStyles
                                                               .textInputTextStyle,
                                                           validator: (value) {
@@ -2762,14 +2974,17 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                       index],
                                                               onChanged: (bool?
                                                                   value) {
-                                                                setState(() {
-                                                                  selectedPhysicalTestValues[
-                                                                          index] =
-                                                                      value!;
-                                                                  physicalRemarksControllers[
-                                                                          index]
-                                                                      .text = '';
-                                                                });
+                                                                if (status !=
+                                                                    'Pending') {
+                                                                  setState(() {
+                                                                    selectedPhysicalTestValues[
+                                                                            index] =
+                                                                        value!;
+                                                                    physicalRemarksControllers[
+                                                                            index]
+                                                                        .text = '';
+                                                                  });
+                                                                }
                                                               },
                                                             ),
                                                             Text(
@@ -2786,11 +3001,14 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                       index],
                                                               onChanged: (bool?
                                                                   value) {
-                                                                setState(() {
-                                                                  selectedPhysicalTestValues[
-                                                                          index] =
-                                                                      value!;
-                                                                });
+                                                                if (status !=
+                                                                    'Pending') {
+                                                                  setState(() {
+                                                                    selectedPhysicalTestValues[
+                                                                            index] =
+                                                                        value!;
+                                                                  });
+                                                                }
                                                               },
                                                             ),
                                                             Text(
@@ -2825,6 +3043,10 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                    'Pending'
+                                                                ? true
+                                                                : false,
                                                             validator: (value) {
                                                               if (value ==
                                                                       null ||
@@ -2885,28 +3107,39 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                           .currentState!.save;
 
                                                       // Validate the form
-                                                      // if (_physicalsampleformKey
-                                                      //     .currentState!
-                                                      //     .validate()) {
-                                                      //   // Perform action on submit button press
-                                                      //   print(
-                                                      //       'Text Field Values:');
-                                                      for (int i = 0;
-                                                          i < numberOfPhysicalSampleFields;
-                                                          i++) {
-                                                        physicalSampleData.add(
-                                                            '{PhysicalSampleBarcode${i + 1}: "${physicalBarcodeControllers[i].text}", PhysicalSampleTest${i + 1}: ${selectedPhysicalTestValues[i]}, PhysicalSampleRemarks${i + 1}: "${physicalRemarksControllers[i].text}"}');
+                                                      if (_physicalsampleformKey
+                                                          .currentState!
+                                                          .validate()) {
+                                                        //   // Perform action on submit button press
+                                                        //   print(
+                                                        //       'Text Field Values:');
+                                                        for (int i = 0;
+                                                            i < numberOfPhysicalSampleFields;
+                                                            i++) {
+                                                          physicalSampleData
+                                                              .add({
+                                                            "PhysicalSampleBarcode${i + 1}":
+                                                                physicalBarcodeControllers[
+                                                                        i]
+                                                                    .text,
+                                                            "PhysicalSampleTest${i + 1}":
+                                                                selectedPhysicalTestValues[
+                                                                    i],
+                                                            "PhysicalSampleRemarks${i + 1}":
+                                                                physicalRemarksControllers[
+                                                                        i]
+                                                                    .text
+                                                          });
+                                                        }
+                                                        print(
+                                                            physicalSampleData);
+                                                        setState(() {
+                                                          setPage = "frontbus";
+                                                        });
                                                       }
-                                                      //   print(
-                                                      //       physicalSampleData);
-                                                      //   setState(() {
-                                                      //     setPage =
-                                                      //         "frontbus";
-                                                      //   });
-                                                      // }
-                                                      setState(() {
-                                                        setPage = "frontbus";
-                                                      });
+                                                      // setState(() {
+                                                      //   setPage = "frontbus";
+                                                      // });
                                                       _physicalsampleformKey =
                                                           GlobalKey<
                                                               FormState>();
@@ -3175,7 +3408,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
-                                                            readOnly: false,
+                                                            readOnly: true,
                                                             validator:
                                                                 MultiValidator([
                                                               RequiredValidator(
@@ -3291,6 +3524,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                   }
 
                                                                   // Dynamic Start......
+                                                                  selectedFrontbusTestValues = List<
+                                                                          bool>.generate(
+                                                                      numberOfFrontbusSampleFields,
+                                                                      (index) =>
+                                                                          false);
                                                                   for (int i =
                                                                           0;
                                                                       i < numberOfFrontbusSampleFields;
@@ -3301,13 +3539,33 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                     frontbusRemarksControllers
                                                                         .add(
                                                                             TextEditingController());
+
+                                                                    // Update Time.......
+                                                                    if (widget.id !=
+                                                                            "" &&
+                                                                        widget.id !=
+                                                                            null) {
+                                                                      frontbusRemarksControllers[
+                                                                              i]
+                                                                          .text = FrontBus[
+                                                                              i]
+                                                                          [
+                                                                          'FrontbusSampleRemarks${i + 1}'];
+
+                                                                      selectedFrontbusTestValues[
+                                                                          i] = FrontBus[
+                                                                              i]
+                                                                          [
+                                                                          'FrontbusSampleTest${i + 1}'];
+
+                                                                      frontbusBarcodeControllers[
+                                                                              i]
+                                                                          .text = FrontBus[
+                                                                              i]
+                                                                          [
+                                                                          'FrontbusSampleBarcode${i + 1}'];
+                                                                    }
                                                                   }
-                                                                  selectedFrontbusTestValues = List<
-                                                                          bool>.generate(
-                                                                      numberOfFrontbusSampleFields,
-                                                                      (index) =>
-                                                                          false); // Initialize all radio button values to false
-                                                                  // selectedPhysicalTestValues[0] = true; // Initially select the first option
 
                                                                   _frontbusFormKey =
                                                                       GlobalKey<
@@ -3437,31 +3695,33 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                         IconButton(
                                                                       onPressed:
                                                                           () async {
-                                                                        barcodeScanRes =
-                                                                            await FlutterBarcodeScanner.scanBarcode(
-                                                                          '#FF6666',
-                                                                          'Cancel',
-                                                                          true,
-                                                                          ScanMode
-                                                                              .DEFAULT,
-                                                                        );
+                                                                        if (status !=
+                                                                            'Pending') {
+                                                                          barcodeScanRes =
+                                                                              await FlutterBarcodeScanner.scanBarcode(
+                                                                            '#FF6666',
+                                                                            'Cancel',
+                                                                            true,
+                                                                            ScanMode.DEFAULT,
+                                                                          );
 
-                                                                        setState(
-                                                                            () {
-                                                                          frontbusBarcodeControllers[index]
-                                                                              .text = (barcodeScanRes !=
-                                                                                  "-1"
-                                                                              ? barcodeScanRes
-                                                                              : '')!;
-                                                                        });
+                                                                          setState(
+                                                                              () {
+                                                                            frontbusBarcodeControllers[index].text = (barcodeScanRes != "-1"
+                                                                                ? barcodeScanRes
+                                                                                : '')!;
+                                                                          });
+                                                                        }
                                                                       },
                                                                       icon: const Icon(
                                                                           Icons
                                                                               .qr_code),
                                                                     ),
                                                                   ),
-                                                                  readOnly:
-                                                                      true,
+                                                                  readOnly: status ==
+                                                                          'Pending'
+                                                                      ? true
+                                                                      : false,
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
                                                                   validator:
@@ -3490,13 +3750,16 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                       onChanged:
                                                                           (bool?
                                                                               value) {
-                                                                        setState(
-                                                                            () {
-                                                                          selectedFrontbusTestValues[index] =
-                                                                              value!;
-                                                                          frontbusRemarksControllers[index].text =
-                                                                              '';
-                                                                        });
+                                                                        if (status !=
+                                                                            'Pending') {
+                                                                          setState(
+                                                                              () {
+                                                                            selectedFrontbusTestValues[index] =
+                                                                                value!;
+                                                                            frontbusRemarksControllers[index].text =
+                                                                                '';
+                                                                          });
+                                                                        }
                                                                       },
                                                                     ),
                                                                     Text(
@@ -3516,11 +3779,14 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                       onChanged:
                                                                           (bool?
                                                                               value) {
-                                                                        setState(
-                                                                            () {
-                                                                          selectedFrontbusTestValues[index] =
-                                                                              value!;
-                                                                        });
+                                                                        if (status !=
+                                                                            'Pending') {
+                                                                          setState(
+                                                                              () {
+                                                                            selectedFrontbusTestValues[index] =
+                                                                                value!;
+                                                                          });
+                                                                        }
                                                                       },
                                                                     ),
                                                                     Text(
@@ -3556,6 +3822,10 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                            'Pending'
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         (value) {
                                                                       if (value ==
@@ -3621,31 +3891,39 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                   .save;
 
                                                               // Validate the form
-                                                              // if (_frontbussampleformKey
-                                                              //     .currentState!
-                                                              //     .validate()) {
-                                                              //   // Perform action on submit button press
-                                                              //   print(
-                                                              //       'Text Field Values:');
-                                                              for (int i = 0;
-                                                                  i < numberOfFrontbusSampleFields;
-                                                                  i++) {
-                                                                frontbusSampleData
-                                                                    .add(
-                                                                        '{FrontbusSampleBarcode${i + 1}: "${frontbusBarcodeControllers[i].text}", FrontbusSampleTest${i + 1}: ${selectedFrontbusTestValues[i]}, FrontbusSampleRemarks${i + 1}: "${frontbusRemarksControllers[i].text}"}');
+                                                              if (_frontbussampleformKey
+                                                                  .currentState!
+                                                                  .validate()) {
+                                                                //   // Perform action on submit button press
+                                                                //   print(
+                                                                //       'Text Field Values:');
+                                                                for (int i = 0;
+                                                                    i < numberOfFrontbusSampleFields;
+                                                                    i++) {
+                                                                  frontbusSampleData
+                                                                      .add({
+                                                                    "FrontbusSampleBarcode${i + 1}":
+                                                                        frontbusBarcodeControllers[i]
+                                                                            .text,
+                                                                    "FrontbusSampleTest${i + 1}":
+                                                                        selectedFrontbusTestValues[
+                                                                            i],
+                                                                    "FrontbusSampleRemarks${i + 1}":
+                                                                        frontbusRemarksControllers[i]
+                                                                            .text
+                                                                  });
+                                                                }
+
+                                                                setState(() {
+                                                                  setPage =
+                                                                      "verification";
+                                                                });
                                                               }
 
-                                                              //   setState(
-                                                              //       () {
-                                                              //     setPage =
-                                                              //         "verification";
-                                                              //   });
-                                                              // }
-
-                                                              setState(() {
-                                                                setPage =
-                                                                    "verification";
-                                                              });
+                                                              // setState(() {
+                                                              //   setPage =
+                                                              //       "verification";
+                                                              // });
                                                               _frontbussampleformKey =
                                                                   GlobalKey<
                                                                       FormState>();
@@ -3920,8 +4198,10 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
-                                                                    readOnly:
-                                                                        false,
+                                                                    readOnly: status ==
+                                                                            'Pending'
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator([
                                                                       RequiredValidator(
@@ -4033,16 +4313,25 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                           }
 
                                                                           // Dynamic Start......
+                                                                          selectedVerificationTestValues = List<bool>.generate(
+                                                                              numberOfVerificationSampleFields,
+                                                                              (index) => false);
                                                                           for (int i = 0;
                                                                               i < numberOfVerificationSampleFields;
                                                                               i++) {
                                                                             verificationBarcodeControllers.add(TextEditingController());
                                                                             verificationRemarksControllers.add(TextEditingController());
+
+                                                                            // Update Time.......
+                                                                            if (widget.id != "" &&
+                                                                                widget.id != null) {
+                                                                              verificationRemarksControllers[i].text = Verification[i]['VerificationSampleRemarks${i + 1}'];
+
+                                                                              selectedVerificationTestValues[i] = Verification[i]['VerificationSampleTest${i + 1}'];
+
+                                                                              verificationBarcodeControllers[i].text = Verification[i]['VerificationSampleBarcode${i + 1}'];
+                                                                            }
                                                                           }
-                                                                          selectedVerificationTestValues = List<bool>.generate(
-                                                                              numberOfVerificationSampleFields,
-                                                                              (index) => false); // Initialize all radio button values to false
-                                                                          // selectedPhysicalTestValues[0] = true; // Initially select the first option
 
                                                                           _verificationFormKey =
                                                                               GlobalKey<FormState>();
@@ -4177,22 +4466,25 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             suffixIcon:
                                                                                 IconButton(
                                                                               onPressed: () async {
-                                                                                barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                                                                                  '#FF6666',
-                                                                                  'Cancel',
-                                                                                  true,
-                                                                                  ScanMode.DEFAULT,
-                                                                                );
+                                                                                if (status != 'Pending') {
+                                                                                  barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+                                                                                    '#FF6666',
+                                                                                    'Cancel',
+                                                                                    true,
+                                                                                    ScanMode.DEFAULT,
+                                                                                  );
 
-                                                                                setState(() {
-                                                                                  verificationBarcodeControllers[index].text = (barcodeScanRes != "-1" ? barcodeScanRes : '')!;
-                                                                                });
+                                                                                  setState(() {
+                                                                                    verificationBarcodeControllers[index].text = (barcodeScanRes != "-1" ? barcodeScanRes : '')!;
+                                                                                  });
+                                                                                }
                                                                               },
                                                                               icon: const Icon(Icons.qr_code),
                                                                             ),
                                                                           ),
-                                                                          readOnly:
-                                                                              true,
+                                                                          readOnly: status == 'Pending'
+                                                                              ? true
+                                                                              : false,
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
                                                                           validator:
@@ -4214,10 +4506,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                               value: true,
                                                                               groupValue: selectedVerificationTestValues[index],
                                                                               onChanged: (bool? value) {
-                                                                                setState(() {
-                                                                                  selectedVerificationTestValues[index] = value!;
-                                                                                  verificationRemarksControllers[index].text = '';
-                                                                                });
+                                                                                if (status != 'Pending') {
+                                                                                  setState(() {
+                                                                                    selectedVerificationTestValues[index] = value!;
+                                                                                    verificationRemarksControllers[index].text = '';
+                                                                                  });
+                                                                                }
                                                                               },
                                                                             ),
                                                                             Text(
@@ -4229,9 +4523,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                               value: false,
                                                                               groupValue: selectedVerificationTestValues[index],
                                                                               onChanged: (bool? value) {
-                                                                                setState(() {
-                                                                                  selectedVerificationTestValues[index] = value!;
-                                                                                });
+                                                                                if (status != 'Pending') {
+                                                                                  setState(() {
+                                                                                    selectedVerificationTestValues[index] = value!;
+                                                                                  });
+                                                                                }
                                                                               },
                                                                             ),
                                                                             Text(
@@ -4257,6 +4553,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending'
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 (value) {
                                                                               if (value == null || value.isEmpty) {
@@ -4324,28 +4623,37 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                           .save;
 
                                                                       // Validate the form
-                                                                      // if (_verificationsampleformKey
-                                                                      //     .currentState!
-                                                                      //     .validate()) {
-                                                                      //   // Perform action on submit button press
-                                                                      //   print('Text Field Values:');
-                                                                      for (int i =
-                                                                              0;
-                                                                          i < numberOfVerificationSampleFields;
-                                                                          i++) {
-                                                                        verificationSampleData
-                                                                            .add('{VerificationSampleBarcode${i + 1}: "${verificationBarcodeControllers[i].text}", VerificationSampleTest${i + 1}: ${selectedVerificationTestValues[i]}, VerificationSampleRemarks${i + 1}: "${verificationRemarksControllers[i].text}"}');
-                                                                      }
+                                                                      if (_verificationsampleformKey
+                                                                          .currentState!
+                                                                          .validate()) {
+                                                                        //   // Perform action on submit button press
+                                                                        //   print('Text Field Values:');
+                                                                        for (int i =
+                                                                                0;
+                                                                            i < numberOfVerificationSampleFields;
+                                                                            i++) {
+                                                                          verificationSampleData
+                                                                              .add({
+                                                                            "VerificationSampleBarcode${i + 1}":
+                                                                                verificationBarcodeControllers[i].text,
+                                                                            "VerificationSampleTest${i + 1}":
+                                                                                selectedVerificationTestValues[i],
+                                                                            "VerificationSampleRemarks${i + 1}":
+                                                                                verificationRemarksControllers[i].text
+                                                                          });
+                                                                        }
 
-                                                                      //   setState(() {
-                                                                      //     setPage = "electrical";
-                                                                      //   });
-                                                                      // }
-                                                                      setState(
-                                                                          () {
-                                                                        setPage =
-                                                                            "electrical";
-                                                                      });
+                                                                        setState(
+                                                                            () {
+                                                                          setPage =
+                                                                              "electrical";
+                                                                        });
+                                                                      }
+                                                                      // setState(
+                                                                      //     () {
+                                                                      //   setPage =
+                                                                      //       "electrical";
+                                                                      // });
                                                                       _verificationsampleformKey =
                                                                           GlobalKey<
                                                                               FormState>();
@@ -4582,7 +4890,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             style: AppStyles
                                                                                 .textInputTextStyle,
                                                                             readOnly:
-                                                                                false,
+                                                                                true,
                                                                             validator:
                                                                                 MultiValidator([
                                                                               RequiredValidator(errorText: "Please Enter Sample Size.")
@@ -4676,14 +4984,21 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                   }
 
                                                                                   // Dynamic Start......
+                                                                                  selectedElectricalTestValues = List<bool>.generate(numberOfElectricalSampleFields, (index) => false);
+                                                                                  _electricalFormKey = GlobalKey<FormState>();
                                                                                   for (int i = 0; i < numberOfElectricalSampleFields; i++) {
                                                                                     electricalBarcodeControllers.add(TextEditingController());
                                                                                     electricalRemarksControllers.add(TextEditingController());
-                                                                                  }
-                                                                                  selectedElectricalTestValues = List<bool>.generate(numberOfElectricalSampleFields, (index) => false); // Initialize all radio button values to false
-                                                                                  // selectedPhysicalTestValues[0] = true; // Initially select the first option
 
-                                                                                  _electricalFormKey = GlobalKey<FormState>();
+                                                                                    // Update Time.......
+                                                                                    if (widget.id != "" && widget.id != null) {
+                                                                                      electricalBarcodeControllers[i].text = Electrical[i]['ElectricalSampleBarcode${i + 1}'];
+
+                                                                                      selectedElectricalTestValues[i] = Electrical[i]['ElectricalSampleTest${i + 1}'];
+
+                                                                                      electricalRemarksControllers[i].text = Electrical[i]['ElectricalSampleRemarks${i + 1}'];
+                                                                                    }
+                                                                                  }
 
                                                                                   // Dynamic  End......
                                                                                 },
@@ -4778,21 +5093,23 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                     contentPadding: EdgeInsets.all(10),
                                                                                     suffixIcon: IconButton(
                                                                                       onPressed: () async {
-                                                                                        barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                                                                                          '#FF6666',
-                                                                                          'Cancel',
-                                                                                          true,
-                                                                                          ScanMode.DEFAULT,
-                                                                                        );
+                                                                                        if (status != 'Pending') {
+                                                                                          barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+                                                                                            '#FF6666',
+                                                                                            'Cancel',
+                                                                                            true,
+                                                                                            ScanMode.DEFAULT,
+                                                                                          );
 
-                                                                                        setState(() {
-                                                                                          electricalBarcodeControllers[index].text = (barcodeScanRes != "-1" ? barcodeScanRes : '')!;
-                                                                                        });
+                                                                                          setState(() {
+                                                                                            electricalBarcodeControllers[index].text = (barcodeScanRes != "-1" ? barcodeScanRes : '')!;
+                                                                                          });
+                                                                                        }
                                                                                       },
                                                                                       icon: const Icon(Icons.qr_code),
                                                                                     ),
                                                                                   ),
-                                                                                  readOnly: true,
+                                                                                  readOnly: status == 'Pending' ? true : false,
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   validator: (value) {
                                                                                     if (value == null || value.isEmpty) {
@@ -4809,10 +5126,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                       value: true,
                                                                                       groupValue: selectedElectricalTestValues[index],
                                                                                       onChanged: (bool? value) {
-                                                                                        setState(() {
-                                                                                          selectedElectricalTestValues[index] = value!;
-                                                                                          electricalRemarksControllers[index].text = '';
-                                                                                        });
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            selectedElectricalTestValues[index] = value!;
+                                                                                            electricalRemarksControllers[index].text = '';
+                                                                                          });
+                                                                                        }
                                                                                       },
                                                                                     ),
                                                                                     Text(
@@ -4824,9 +5143,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                       value: false,
                                                                                       groupValue: selectedElectricalTestValues[index],
                                                                                       onChanged: (bool? value) {
-                                                                                        setState(() {
-                                                                                          selectedElectricalTestValues[index] = value!;
-                                                                                        });
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            selectedElectricalTestValues[index] = value!;
+                                                                                          });
+                                                                                        }
                                                                                       },
                                                                                     ),
                                                                                     Text(
@@ -4845,6 +5166,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                       contentPadding: EdgeInsets.all(10),
                                                                                     ),
                                                                                     style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' ? true : false,
                                                                                     validator: (value) {
                                                                                       if (value == null || value.isEmpty) {
                                                                                         return 'Please Enter Remarks.';
@@ -4893,20 +5215,24 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                               _electricalsampleformKey.currentState!.save;
 
                                                                               // Validate the form
-                                                                              // if (_electricalsampleformKey.currentState!.validate()) {
-                                                                              //   // Perform action on submit button press
-                                                                              //   print('Text Field Values:');
-                                                                              for (int i = 0; i < numberOfElectricalSampleFields; i++) {
-                                                                                electricalSampleData.add('{ElectricalSampleBarcode${i + 1}: "${electricalBarcodeControllers[i].text}", ElectricalSampleTest${i + 1}: ${selectedElectricalTestValues[i]}, ElectricalSampleRemarks${i + 1}: "${electricalRemarksControllers[i].text}"}');
-                                                                              }
+                                                                              if (_electricalsampleformKey.currentState!.validate()) {
+                                                                                //   // Perform action on submit button press
+                                                                                //   print('Text Field Values:');
+                                                                                for (int i = 0; i < numberOfElectricalSampleFields; i++) {
+                                                                                  electricalSampleData.add({
+                                                                                    "ElectricalSampleBarcode${i + 1}": electricalBarcodeControllers[i].text,
+                                                                                    "ElectricalSampleTest${i + 1}": selectedElectricalTestValues[i],
+                                                                                    "ElectricalSampleRemarks${i + 1}": electricalRemarksControllers[i].text
+                                                                                  });
+                                                                                }
 
-                                                                              //   setState(() {
-                                                                              //     setPage = "performance";
-                                                                              //   });
-                                                                              // }
-                                                                              setState(() {
-                                                                                setPage = "performance";
-                                                                              });
+                                                                                setState(() {
+                                                                                  setPage = "performance";
+                                                                                });
+                                                                              }
+                                                                              // setState(() {
+                                                                              //   setPage = "performance";
+                                                                              // });
                                                                               _electricalsampleformKey = GlobalKey<FormState>();
                                                                             },
                                                                             style:
@@ -5086,7 +5412,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                     style: AppStyles
                                                                                         .textInputTextStyle,
                                                                                     readOnly:
-                                                                                        false,
+                                                                                        true,
                                                                                     validator: MultiValidator([
                                                                                       RequiredValidator(errorText: "Please Enter Sample Size.")
                                                                                     ])
@@ -5156,14 +5482,21 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                           }
 
                                                                                           // Dynamic Start......
+                                                                                          selectedPerformanceTestValues = List<bool>.generate(numberOfPerformanceSampleFields, (index) => false);
+                                                                                          _performanceFormKey = GlobalKey<FormState>();
                                                                                           for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
                                                                                             performanceBarcodeControllers.add(TextEditingController());
                                                                                             performanceRemarksControllers.add(TextEditingController());
-                                                                                          }
-                                                                                          selectedPerformanceTestValues = List<bool>.generate(numberOfPerformanceSampleFields, (index) => false); // Initialize all radio button values to false
-                                                                                          // selectedPhysicalTestValues[0] = true; // Initially select the first option
 
-                                                                                          _performanceFormKey = GlobalKey<FormState>();
+                                                                                            // Update Time.......
+                                                                                            if (widget.id != "" && widget.id != null) {
+                                                                                              performanceRemarksControllers[i].text = Performance[i]['PerformanceSampleRemarks${i + 1}'];
+
+                                                                                              selectedPerformanceTestValues[i] = Performance[i]['PerformanceSampleTest${i + 1}'];
+
+                                                                                              performanceBarcodeControllers[i].text = Performance[i]['PerformanceSampleBarcode${i + 1}'];
+                                                                                            }
+                                                                                          }
 
                                                                                           // Dynamic  End......
                                                                                         },
@@ -5243,21 +5576,23 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                             contentPadding: EdgeInsets.all(10),
                                                                                             suffixIcon: IconButton(
                                                                                               onPressed: () async {
-                                                                                                barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                                                                                                  '#FF6666',
-                                                                                                  'Cancel',
-                                                                                                  true,
-                                                                                                  ScanMode.DEFAULT,
-                                                                                                );
+                                                                                                if (status != 'Pending') {
+                                                                                                  barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+                                                                                                    '#FF6666',
+                                                                                                    'Cancel',
+                                                                                                    true,
+                                                                                                    ScanMode.DEFAULT,
+                                                                                                  );
 
-                                                                                                setState(() {
-                                                                                                  performanceBarcodeControllers[index].text = (barcodeScanRes != "-1" ? barcodeScanRes : '')!;
-                                                                                                });
+                                                                                                  setState(() {
+                                                                                                    performanceBarcodeControllers[index].text = (barcodeScanRes != "-1" ? barcodeScanRes : '')!;
+                                                                                                  });
+                                                                                                }
                                                                                               },
                                                                                               icon: const Icon(Icons.qr_code),
                                                                                             ),
                                                                                           ),
-                                                                                          readOnly: true,
+                                                                                          readOnly: status == 'Pending' ? true : false,
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           validator: (value) {
                                                                                             if (value == null || value.isEmpty) {
@@ -5274,10 +5609,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               value: true,
                                                                                               groupValue: selectedPerformanceTestValues[index],
                                                                                               onChanged: (bool? value) {
-                                                                                                setState(() {
-                                                                                                  selectedPerformanceTestValues[index] = value!;
-                                                                                                  performanceRemarksControllers[index].text = '';
-                                                                                                });
+                                                                                                if (status != 'Pending') {
+                                                                                                  setState(() {
+                                                                                                    selectedPerformanceTestValues[index] = value!;
+                                                                                                    performanceRemarksControllers[index].text = '';
+                                                                                                  });
+                                                                                                }
                                                                                               },
                                                                                             ),
                                                                                             Text(
@@ -5289,9 +5626,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               value: false,
                                                                                               groupValue: selectedPerformanceTestValues[index],
                                                                                               onChanged: (bool? value) {
-                                                                                                setState(() {
-                                                                                                  selectedPerformanceTestValues[index] = value!;
-                                                                                                });
+                                                                                                if (status != 'Pending') {
+                                                                                                  setState(() {
+                                                                                                    selectedPerformanceTestValues[index] = value!;
+                                                                                                  });
+                                                                                                }
                                                                                               },
                                                                                             ),
                                                                                             Text(
@@ -5310,6 +5649,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               contentPadding: EdgeInsets.all(10),
                                                                                             ),
                                                                                             style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' ? true : false,
                                                                                             validator: (value) {
                                                                                               if (value == null || value.isEmpty) {
                                                                                                 return 'Please Enter Remarks.';
@@ -5351,20 +5691,22 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                       _performancesampleformKey.currentState!.save;
 
                                                                                       // Validate the form
-                                                                                      // if (_performancesampleformKey.currentState!.validate()) {
-                                                                                      //   // Perform action on submit button press
-                                                                                      //   print('Text Field Values:');
-                                                                                      for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
-                                                                                        performanceSampleData.add('{PerformanceSampleBarcode${i + 1}: "${performanceBarcodeControllers[i].text}", PerformanceSampleTest${i + 1}: ${selectedPerformanceTestValues[i]}, PerformanceSampleRemarks${i + 1}: "${performanceRemarksControllers[i].text}"}');
-                                                                                      }
+                                                                                      if (_performancesampleformKey.currentState!.validate()) {
+                                                                                        for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
+                                                                                          performanceSampleData.add({
+                                                                                            "PerformanceSampleBarcode${i + 1}": performanceBarcodeControllers[i].text,
+                                                                                            "PerformanceSampleTest${i + 1}": selectedPerformanceTestValues[i],
+                                                                                            "PerformanceSampleRemarks${i + 1}": performanceRemarksControllers[i].text
+                                                                                          });
+                                                                                        }
 
-                                                                                      //   // setState(() {
-                                                                                      //   //   setPage = "visual";
-                                                                                      //   // });
-                                                                                      // }
-                                                                                      setState(() {
-                                                                                        setPage = "result";
-                                                                                      });
+                                                                                        setState(() {
+                                                                                          setPage = "result";
+                                                                                        });
+                                                                                      }
+                                                                                      // setState(() {
+                                                                                      //   setPage = "result";
+                                                                                      // });
                                                                                       _performancesampleformKey = GlobalKey<FormState>();
                                                                                     },
                                                                                     style: ElevatedButton.styleFrom(
@@ -5458,16 +5800,18 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               value: "Pass",
                                                                                               groupValue: result,
                                                                                               onChanged: (val) {
-                                                                                                setState(() {
-                                                                                                  result = val;
-                                                                                                  rejectionReasonController.text = '';
-                                                                                                  packagingRejection = false;
-                                                                                                  visualRejection = false;
-                                                                                                  physicalRejection = false;
-                                                                                                  frontbusRejection = false;
-                                                                                                  electricalRejection = false;
-                                                                                                  performanceRejection = false;
-                                                                                                });
+                                                                                                if (status != 'Pending') {
+                                                                                                  setState(() {
+                                                                                                    result = val;
+                                                                                                    rejectionReasonController.text = '';
+                                                                                                    packagingRejection = false;
+                                                                                                    visualRejection = false;
+                                                                                                    physicalRejection = false;
+                                                                                                    frontbusRejection = false;
+                                                                                                    electricalRejection = false;
+                                                                                                    performanceRejection = false;
+                                                                                                  });
+                                                                                                }
                                                                                               },
                                                                                             ),
                                                                                             Text(
@@ -5481,9 +5825,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               value: "Fail",
                                                                                               groupValue: result,
                                                                                               onChanged: (val) {
-                                                                                                setState(() {
-                                                                                                  result = val;
-                                                                                                });
+                                                                                                if (status != 'Pending') {
+                                                                                                  setState(() {
+                                                                                                    result = val;
+                                                                                                  });
+                                                                                                }
                                                                                               },
                                                                                             ),
                                                                                             Text(
@@ -5504,9 +5850,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               Checkbox(
                                                                                                 value: packagingRejection,
                                                                                                 onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    packagingRejection = value!;
-                                                                                                  });
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      packagingRejection = value!;
+                                                                                                    });
+                                                                                                  }
                                                                                                 },
                                                                                               ),
                                                                                               Text(
@@ -5516,9 +5864,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               Checkbox(
                                                                                                 value: visualRejection,
                                                                                                 onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    visualRejection = value!;
-                                                                                                  });
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      visualRejection = value!;
+                                                                                                    });
+                                                                                                  }
                                                                                                 },
                                                                                               ),
                                                                                               Text(
@@ -5528,9 +5878,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               Checkbox(
                                                                                                 value: physicalRejection,
                                                                                                 onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    physicalRejection = value!;
-                                                                                                  });
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      physicalRejection = value!;
+                                                                                                    });
+                                                                                                  }
                                                                                                 },
                                                                                               ),
                                                                                               Text(
@@ -5550,9 +5902,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               Checkbox(
                                                                                                 value: frontbusRejection,
                                                                                                 onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    frontbusRejection = value!;
-                                                                                                  });
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      frontbusRejection = value!;
+                                                                                                    });
+                                                                                                  }
                                                                                                 },
                                                                                               ),
                                                                                               Text(
@@ -5562,9 +5916,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               Checkbox(
                                                                                                 value: verificationRejection,
                                                                                                 onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    verificationRejection = value!;
-                                                                                                  });
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      verificationRejection = value!;
+                                                                                                    });
+                                                                                                  }
                                                                                                 },
                                                                                               ),
                                                                                               Text(
@@ -5574,9 +5930,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               Checkbox(
                                                                                                 value: electricalRejection,
                                                                                                 onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    electricalRejection = value!;
-                                                                                                  });
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      electricalRejection = value!;
+                                                                                                    });
+                                                                                                  }
                                                                                                 },
                                                                                               ),
                                                                                               Text(
@@ -5596,9 +5954,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               Checkbox(
                                                                                                 value: performanceRejection,
                                                                                                 onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    performanceRejection = value!;
-                                                                                                  });
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      performanceRejection = value!;
+                                                                                                    });
+                                                                                                  }
                                                                                                 },
                                                                                               ),
                                                                                               Text(
@@ -5628,6 +5988,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                             decoration: AppStyles.textFieldInputDecoration.copyWith(hintText: "Please Enter Rejection Reason", counterText: ''),
                                                                                             style: AppStyles.textInputTextStyle,
                                                                                             maxLines: 3,
+                                                                                            readOnly: status == 'Pending' ? true : false,
                                                                                             validator: (value) {
                                                                                               if (value!.isEmpty) {
                                                                                                 return "Please Enter Rejection Reason";
@@ -5642,25 +6003,122 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                         const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                                                                                         _isLoading
                                                                                             ? const Center(child: CircularProgressIndicator())
-                                                                                            : AppButton(
-                                                                                                textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
-                                                                                                onTap: () {
-                                                                                                  AppHelper.hideKeyboard(context);
-                                                                                                  _resultFormKey.currentState!.save;
-                                                                                                  if (_resultFormKey.currentState!.validate()) {
-                                                                                                    print("GGG");
-                                                                                                    createData();
-                                                                                                  }
-                                                                                                  // setState(() {
-                                                                                                  //   setPage = 'visual';
-                                                                                                  // });
-                                                                                                },
-                                                                                                label: "Save",
-                                                                                                organization: '',
-                                                                                              ),
-                                                                                        const SizedBox(
-                                                                                          height: 10,
-                                                                                        ),
+                                                                                            : (widget.id == "" || widget.id == null) || (status == 'Inprogress' && widget.id != null)
+                                                                                                ? AppButton(
+                                                                                                    textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                                    onTap: () {
+                                                                                                      AppHelper.hideKeyboard(context);
+                                                                                                      _resultFormKey.currentState!.save;
+                                                                                                      if (_resultFormKey.currentState!.validate()) {
+                                                                                                        print("GGG");
+                                                                                                        createData();
+                                                                                                      }
+                                                                                                      // setState(() {
+                                                                                                      //   setPage = 'visual';
+                                                                                                      // });
+                                                                                                    },
+                                                                                                    label: "Save",
+                                                                                                    organization: '',
+                                                                                                  )
+                                                                                                : Container(),
+                                                                                        if (widget.id != "" && widget.id != null && status == 'Pending')
+                                                                                          Container(
+                                                                                            color: Color.fromARGB(255, 191, 226, 187), // Change the background color to your desired color
+                                                                                            child: Column(
+                                                                                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                                              children: [
+                                                                                                Divider(),
+                                                                                                const Center(child: Text("Approve/Reject Block", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 217, 3, 245), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                                Row(
+                                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                  children: <Widget>[
+                                                                                                    Radio(
+                                                                                                      value: "Approved",
+                                                                                                      groupValue: approvalStatus,
+                                                                                                      onChanged: (val) {
+                                                                                                        setState(() {
+                                                                                                          approvalStatus = val;
+                                                                                                          rejectionReasonStatusController.text = '';
+                                                                                                        });
+                                                                                                      },
+                                                                                                    ),
+                                                                                                    Text(
+                                                                                                      'Approved',
+                                                                                                      style: AppStyles.textfieldCaptionTextStyle,
+                                                                                                    ),
+                                                                                                    const SizedBox(
+                                                                                                      width: 10,
+                                                                                                    ),
+                                                                                                    Radio(
+                                                                                                      value: "Rejected",
+                                                                                                      groupValue: approvalStatus,
+                                                                                                      onChanged: (val) {
+                                                                                                        setState(() {
+                                                                                                          approvalStatus = val;
+                                                                                                        });
+                                                                                                      },
+                                                                                                    ),
+                                                                                                    Text(
+                                                                                                      'Rejected',
+                                                                                                      style: AppStyles.textfieldCaptionTextStyle,
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                                const SizedBox(
+                                                                                                  height: 15,
+                                                                                                ),
+                                                                                                if (approvalStatus == "Approved")
+                                                                                                  AppButton(
+                                                                                                    textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                                    onTap: () {
+                                                                                                      AppHelper.hideKeyboard(context);
+                                                                                                      _resultFormKey.currentState!.save;
+                                                                                                      if (_resultFormKey.currentState!.validate()) {
+                                                                                                        setApprovalStatus();
+                                                                                                      }
+                                                                                                    },
+                                                                                                    label: "Approved",
+                                                                                                    organization: '',
+                                                                                                  ),
+                                                                                                if (approvalStatus == "Rejected")
+                                                                                                  TextFormField(
+                                                                                                    controller: rejectionReasonStatusController,
+                                                                                                    keyboardType: TextInputType.text,
+                                                                                                    textInputAction: TextInputAction.next,
+                                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(hintText: "Please Enter Rejection Reason", counterText: ''),
+                                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                                    maxLines: 3,
+                                                                                                    validator: (value) {
+                                                                                                      if (value!.isEmpty) {
+                                                                                                        return "Please Enter Rejection Reason";
+                                                                                                      } else {
+                                                                                                        return null;
+                                                                                                      }
+                                                                                                    },
+                                                                                                  ),
+                                                                                                SizedBox(
+                                                                                                  height: 15,
+                                                                                                ),
+                                                                                                if (approvalStatus == "Rejected")
+                                                                                                  AppButton(
+                                                                                                    textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                                    onTap: () {
+                                                                                                      AppHelper.hideKeyboard(context);
+                                                                                                      _resultFormKey.currentState!.save;
+                                                                                                      if (_resultFormKey.currentState!.validate()) {
+                                                                                                        setApprovalStatus();
+                                                                                                      }
+                                                                                                    },
+                                                                                                    label: "Rejected",
+                                                                                                    organization: '',
+                                                                                                  ),
+                                                                                                const SizedBox(
+                                                                                                  height: 10,
+                                                                                                ),
+                                                                                                Divider(),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ),
                                                                                         Center(
                                                                                           child: Padding(
                                                                                             padding: const EdgeInsets.all(8.0),

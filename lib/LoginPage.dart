@@ -35,7 +35,10 @@ class _LoginPageState extends State<LoginPage> {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   // String path = "http://192.168.0.110:5000/"; //local
-  String path = "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic
+  String path =
+      "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic Dev
+  // String path =
+  //     "https://sore-rose-kingfisher-tutu.cyclic.app/"; // QCM App Cyclic Prod
 
   @override
   void initState() {
@@ -72,15 +75,16 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = false;
       });
       var objData = json.decode(response.body);
-
-      if (objData['data'] == "Wrong Password Entered") {
+      print("Passsssss");
+      print(objData);
+      if (objData['msg'] == "Wrong Password") {
         Toast.show("Password is not valid.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: Colors.red);
       }
 
-      if (objData['data'] == "Employee Does not exists") {
+      if (objData['msg'] == "Wrong EmployeeId") {
         Toast.show("Employee id is not valid.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
@@ -154,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Form(
                         key: _loginFormKey,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              const Text("Powered By Galo Energy Pvt Ltd.",
+                              const Text("Powered By Gautam Solar Pvt Ltd.",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: appFontFamily,

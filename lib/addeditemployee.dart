@@ -1120,10 +1120,34 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     });
   }
 
+  // DropdownButtonFormField textLocation() {
+  //   return DropdownButtonFormField<String>(
+  //     decoration: InputDecoration(
+  //       hintText: 'Please Select Work Location', // Add hint text here
+  //       border: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //     ),
+  //     borderRadius: BorderRadius.circular(20),
+  //     items: locationList
+  //         .map((label) => DropdownMenuItem(
+  //               child: Text(label['Location'],
+  //                   style: AppStyles.textInputTextStyle),
+  //               value: label['LocationID'].toString(),
+  //             ))
+  //         .toList(),
+  //     onChanged: (val) {
+  //       setState(() {
+  //         locationController = val!;
+  //       });
+  //     },
+  //     value: locationController != '' ? locationController : null,
+  //   );
+  // }
   DropdownButtonFormField textLocation() {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
-        hintText: 'Please Select Work Location', // Add hint text here
+        hintText: 'Please Select Work Location',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -1142,6 +1166,12 @@ class _ScoreDetailsState extends State<AddEditProfile> {
         });
       },
       value: locationController != '' ? locationController : null,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please select a work location';
+        }
+        return null; // Return null if the validation is successful
+      },
     );
   }
 
@@ -1167,6 +1197,12 @@ class _ScoreDetailsState extends State<AddEditProfile> {
         });
       },
       value: departmentController != '' ? departmentController : null,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please select a department';
+        }
+        return null; // Return null if the validation is successful
+      },
     );
   }
 
@@ -1194,6 +1230,12 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       value: designationController != '' && designationController != null
           ? designationController
           : null,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please select a designation';
+        }
+        return null; // Return null if the validation is successful
+      },
     );
   }
 
@@ -1547,7 +1589,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
             ),
 
             Text(
-              "Department",
+              "Department*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(
@@ -1558,7 +1600,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
               height: 15,
             ),
             Text(
-              "Designation",
+              "Designation*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(
