@@ -378,7 +378,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
 
   Future<bool> redirectto() async {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                department == 'IQCP' && designation == 'QC'
+                    ? IqcpPage()
+                    : WelcomePage()),
         (Route<dynamic> route) => false);
     return true;
   }

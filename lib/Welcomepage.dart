@@ -2,6 +2,7 @@ import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
+import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/attendance.dart';
@@ -133,7 +134,10 @@ class _WelcomePageState extends State<WelcomePage> {
                       child: tabDashboard('IQCP', AppAssets.IQCP, () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                            builder: (BuildContext context) => IqcpPage()),
+                            builder: (BuildContext context) =>
+                                department == 'IQCP' && designation == 'QC'
+                                    ? IqcpPage()
+                                    : IqcpTestList()),
                         (Route<dynamic> route) => false);
                   })),
                   const SizedBox(

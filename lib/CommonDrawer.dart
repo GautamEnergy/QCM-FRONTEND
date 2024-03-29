@@ -161,26 +161,25 @@ class _PublicDrawerState extends State<PublicDrawer> {
 
             //5th
 
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Expanded(
-            //         child: tabDashboard(
-            //             'Face Attendance', AppAssets.imgSelectedFace, () {
-            //       Navigator.of(context).pushAndRemoveUntil(
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) => Attendance()),
-            //           (Route<dynamic> route) => false);
-            //     })),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: tabDashboard('IQCP', AppAssets.IQCP, () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => IqcpPage()),
+                      (Route<dynamic> route) => false);
+                })),
+                SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
 
             SizedBox(
               height: 10,

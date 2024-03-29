@@ -1,4 +1,7 @@
+// ignore: file_names
 import 'dart:convert';
+// import 'dart:html';
+import 'dart:io';
 
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Iqcp.dart';
@@ -7,10 +10,14 @@ import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/constant/role_list_model.dart';
 import 'package:QCM/dialogs/countrty_model.dart';
-
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:dio/src/response.dart' as Response;
 import 'package:flutter/material.dart';
 
 import 'package:form_field_validator/form_field_validator.dart';
+// import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
@@ -18,7 +25,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
 import '../constant/app_color.dart';
@@ -63,10 +70,18 @@ class _ScoreDetailsState extends State<SolarCell> {
       selectedVerificationTestValues,
       selectedElectricalTestValues,
       selectedPerformanceTestValues; // Radio button values
-  late GlobalKey<FormState> _formKey;
+  // late GlobalKey<FormState> packagingFormkey;
+
+  List<int>? invoicePdfFileBytes, cocPdfFileBytes;
+
+  final _dio = Dio();
+  // Response? _response;
+  Response.Response? _response;
   String? invoiceDate,
       result = "Fail",
       status,
+      _selectedFileName,
+      SolarDetailId,
       approvalStatus = "Approved",
       receiptDate,
       dateOfQualityCheck,
@@ -151,6 +166,9 @@ class _ScoreDetailsState extends State<SolarCell> {
   TextEditingController invoiceNoController = new TextEditingController();
   TextEditingController lotSizeController = new TextEditingController();
 // Packaging
+  TextEditingController cocPdfController = new TextEditingController();
+  TextEditingController invoicePdfController = new TextEditingController();
+
   TextEditingController rejectionReasonController = new TextEditingController();
   TextEditingController rejectionReasonStatusController =
       new TextEditingController();
@@ -359,6 +377,44 @@ class _ScoreDetailsState extends State<SolarCell> {
     _get();
   }
 
+  Future<void> _pickInvoicePDF() async {
+    print("Helloooo");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        invoicePdfFileBytes = pdffile.readAsBytesSync();
+        invoicePdfController.text = result.files.single.name;
+      });
+      print(invoicePdfFileBytes);
+    } else {
+      // User canceled the file picker
+    }
+  }
+
+  Future<void> _pickcocPDF() async {
+    print("Helloooo");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        cocPdfFileBytes = pdffile.readAsBytesSync();
+        cocPdfController.text = result.files.single.name;
+      });
+      print(cocPdfFileBytes);
+    } else {
+      // User canceled the file picker
+    }
+  }
+
   Future _get() async {
     print("Tokennnn");
     print(token);
@@ -447,6 +503,9 @@ class _ScoreDetailsState extends State<SolarCell> {
           electricalRejection = dataMap[0]['RejectElectrical'] ?? 'false';
           performanceRejection = dataMap[0]['RejectPerformance'] ?? 'false';
           rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
+
+          invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
+          cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
         }
         print(status);
 
@@ -503,7 +562,64 @@ class _ScoreDetailsState extends State<SolarCell> {
     }
   }
 
+  uploadPDF(List<int> invoiceBytes, List<int> cocBytes) async {
+    print(SolarDetailId);
+    print("HOIiiiii");
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site');
+
+    var currentdate = DateTime.now().microsecondsSinceEpoch;
+    var formData = FormData.fromMap({
+      "SolarDetailId": SolarDetailId,
+      "InvoicePdf": MultipartFile.fromBytes(
+        invoiceBytes,
+        filename:
+            (invoicePdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+      "COCPdf": MultipartFile.fromBytes(
+        cocBytes,
+        filename: (cocPdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+    });
+
+    _response = await _dio.post((site! + 'IQCSolarCell//UploadPdf'), // Prod
+
+        options: Options(
+          contentType: 'multipart/form-data',
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+        data: formData);
+    print("LLLLLKKK");
+    print(_response?.statusCode);
+    try {
+      if (_response?.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+        Toast.show("Solar Cell Test Completed.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IqcpTestList()));
+      } else {
+        Toast.show("Error In Server",
+            duration: Toast.lengthLong, gravity: Toast.center);
+      }
+    } catch (err) {
+      print("Error");
+    }
+  }
+
   Future createData() async {
+    print("Createdata......");
+    print(performanceSampleData);
     setState(() {
       _isLoading = true;
     });
@@ -608,22 +724,25 @@ class _ScoreDetailsState extends State<SolarCell> {
     );
     print("Resssssssss");
     if (response.statusCode == 200) {
+      var objData = json.decode(response.body);
       setState(() {
+        SolarDetailId = objData['SolarDetailID'];
         _isLoading = false;
       });
-      var objData = json.decode(response.body);
+
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Solar Cell Test Completed.",
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.blueColor);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => IqcpTestList()));
+        uploadPDF((invoicePdfFileBytes ?? []), (cocPdfFileBytes ?? []));
+        // Toast.show("Solar Cell Test Completed.",
+        //     duration: Toast.lengthLong,
+        //     gravity: Toast.center,
+        //     backgroundColor: AppColors.blueColor);
+        // Navigator.of(context).pushReplacement(MaterialPageRoute(
+        //     builder: (BuildContext context) => IqcpTestList()));
       }
     } else {
       Toast.show("Error In Server",
@@ -1407,7 +1526,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                             fontSize: 16),
                                         onTap: () {
                                           AppHelper.hideKeyboard(context);
-
+                                          print("Nanu");
+                                          print(numberOfPackagingSampleFields);
                                           // packagingFormkey.currentState!.save;
                                           // if (packagingFormkey.currentState!
                                           //     .validate()) {
@@ -1452,7 +1572,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                             }
                                           }
 
-                                          _formKey = GlobalKey<FormState>();
+                                          //  packagingFormkey = GlobalKey<FormState>();
 
                                           // Dynamic  End......
                                           // }
@@ -1518,7 +1638,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                     : setPage == "checkpackaging"
                         ? Scaffold(
                             body: Form(
-                              key: _formKey,
+                              key: packagingFormkey,
                               child: ListView.builder(
                                 itemCount: numberOfPackagingSampleFields,
                                 itemBuilder: (context, index) {
@@ -1717,7 +1837,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                   ElevatedButton(
                                     onPressed: () {
                                       // Validate the form
-                                      if (_formKey.currentState!.validate()) {
+                                      packagingFormkey.currentState!.save;
+                                      if (packagingFormkey.currentState!
+                                          .validate()) {
                                         //   // Perform action on submit button press
                                         //   print('Text Field Values:');
                                         for (int i = 0;
@@ -1739,12 +1861,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                     .text
                                           });
                                         }
-                                        print("PpAPPP");
-                                        print(packagingSampleData);
+
                                         setState(() {
                                           setPage = "visual";
                                         });
                                       }
+                                      packagingFormkey = GlobalKey<FormState>();
                                       // setState(() {
                                       //   setPage = "visual";
                                       // });
@@ -3106,7 +3228,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                       _physicalsampleformKey
                                                           .currentState!.save;
 
-                                                      // Validate the form
+                                                      // // Validate the form
                                                       if (_physicalsampleformKey
                                                           .currentState!
                                                           .validate()) {
@@ -3130,12 +3252,14 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                         i]
                                                                     .text
                                                           });
+
+                                                          print(
+                                                              physicalSampleData);
+                                                          setState(() {
+                                                            setPage =
+                                                                "frontbus";
+                                                          });
                                                         }
-                                                        print(
-                                                            physicalSampleData);
-                                                        setState(() {
-                                                          setPage = "frontbus";
-                                                        });
                                                       }
                                                       // setState(() {
                                                       //   setPage = "frontbus";
@@ -5478,6 +5602,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                                 setPage = 'checkperformance';
                                                                                                 numberOfPerformanceSampleFields = num;
                                                                                               });
+                                                                                              print("numberOfPerformanceSampleFields.......");
+                                                                                              print(numberOfPerformanceSampleFields);
                                                                                             }
                                                                                           }
 
@@ -5699,6 +5825,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                             "PerformanceSampleRemarks${i + 1}": performanceRemarksControllers[i].text
                                                                                           });
                                                                                         }
+                                                                                        print("performanceSampleData.....");
+
+                                                                                        print(performanceSampleData);
 
                                                                                         setState(() {
                                                                                           setPage = "result";
@@ -5998,6 +6127,84 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                             },
                                                                                           ),
                                                                                         const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+                                                                                        Text(
+                                                                                          "Upload Invoice Pdf*",
+                                                                                          style: AppStyles.textfieldCaptionTextStyle,
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          height: 5,
+                                                                                        ),
+                                                                                        TextFormField(
+                                                                                          controller: invoicePdfController,
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Select Invoice Pdf",
+                                                                                              suffixIcon: IconButton(
+                                                                                                onPressed: () async {
+                                                                                                  print("object");
+                                                                                                  if (widget.id != null && widget.id != '' && invoicePdfController.text != '') {
+                                                                                                    UrlLauncher.launch(invoicePdfController.text);
+                                                                                                  } else if (status != 'Pending') {
+                                                                                                    _pickInvoicePDF();
+                                                                                                  }
+                                                                                                },
+                                                                                                icon: widget.id != null && widget.id != '' && invoicePdfController.text != '' ? const Icon(Icons.open_in_browser) : const Icon(Icons.upload_file),
+                                                                                              ),
+                                                                                              counterText: ''),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          maxLines: 1,
+                                                                                          readOnly: true,
+                                                                                          validator: (value) {
+                                                                                            if (value!.isEmpty) {
+                                                                                              return "Please Select Invoice Pdf";
+                                                                                            } else {
+                                                                                              return null;
+                                                                                            }
+                                                                                          },
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+                                                                                        Text(
+                                                                                          "Upload Coc Pdf*",
+                                                                                          style: AppStyles.textfieldCaptionTextStyle,
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          height: 5,
+                                                                                        ),
+                                                                                        TextFormField(
+                                                                                          controller: cocPdfController,
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Select Coc Pdf",
+                                                                                              suffixIcon: IconButton(
+                                                                                                onPressed: () async {
+                                                                                                  print("object");
+                                                                                                  if (widget.id != null && widget.id != '' && cocPdfController.text != '') {
+                                                                                                    UrlLauncher.launch(cocPdfController.text);
+                                                                                                  } else if (status != 'Pending') {
+                                                                                                    _pickcocPDF();
+                                                                                                  }
+                                                                                                },
+                                                                                                icon: widget.id != null && widget.id != '' && cocPdfController.text != '' ? const Icon(Icons.open_in_browser) : const Icon(Icons.upload_file),
+                                                                                              ),
+                                                                                              counterText: ''),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          maxLines: 1,
+                                                                                          readOnly: true,
+                                                                                          validator: (value) {
+                                                                                            if (value!.isEmpty) {
+                                                                                              return "Please Select Coc Pdf";
+                                                                                            } else {
+                                                                                              return null;
+                                                                                            }
+                                                                                          },
+                                                                                        ),
+                                                                                        SizedBox(
                                                                                           height: 15,
                                                                                         ),
                                                                                         const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
