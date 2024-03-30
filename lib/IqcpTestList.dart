@@ -961,6 +961,24 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   fontFamily: appFontFamily)),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ClipRRect(
+                            child: Image.asset(
+                              AppAssets.icCard,
+                              width: 30,
+                              height: 30,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(invoiceno,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  fontFamily: appFontFamily)),
                         ]),
                         SizedBox(
                           height: 5,
@@ -1253,19 +1271,32 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                     builder: (BuildContext context) =>
                                         SolarCell(id: id)),
                                 (Route<dynamic> route) => false);
-                            // setState(() {
-                            //   print(id);
-                            //   if (detail == id) {
-                            //     detail = 'hide';
-                            //   } else {
-                            //     detail = id;
-                            //   }
-                            // });
                           },
                           child: Image.asset(
                             AppAssets.icApproved,
                             height: 50,
                             width: 50,
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (_hasBeenPressed1 == 'Inprogress')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SolarCell(id: id)),
+                                (Route<dynamic> route) => false);
+                          },
+                          child: Image.asset(
+                            AppAssets.icMemberEdit,
+                            height: 40,
+                            width: 40,
                           ),
                         ),
                       ],

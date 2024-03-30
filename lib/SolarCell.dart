@@ -79,6 +79,7 @@ class _ScoreDetailsState extends State<SolarCell> {
   Response.Response? _response;
   String? invoiceDate,
       result = "Fail",
+      sendStatus,
       status,
       _selectedFileName,
       SolarDetailId,
@@ -452,6 +453,7 @@ class _ScoreDetailsState extends State<SolarCell> {
           invoiceDateController.text = DateFormat("EEE MMM dd, yyyy").format(
                   DateTime.parse(dataMap[0]['InvoiceDate'].toString())) ??
               '';
+          invoiceDate = dataMap[0]['InvoiceDate'] ?? '';
           rawMaterialSpecsController.text =
               dataMap[0]['RawMaterialSpecs'] ?? '';
           dateOfQualityCheckController
@@ -459,37 +461,60 @@ class _ScoreDetailsState extends State<SolarCell> {
                   DateTime.parse(dataMap[0]['QualityCheckDate'].toString())) ??
               '';
 
+          dateOfQualityCheck = dataMap[0]['QualityCheckDate'] ?? '';
+
           rMBatchNoController.text = dataMap[0]['SupplierRMBatchNo'] ?? '';
           receiptDateController.text = DateFormat("EEE MMM dd, yyyy").format(
                   DateTime.parse(dataMap[0]['ReceiptDate'].toString())) ??
               '';
 
+          receiptDate = dataMap[0]['ReceiptDate'] ?? '';
+
           numberOfPackagingSampleFields =
-              (dataMap[0]['SampleSizePackaging'] ?? 0);
+              (dataMap[0]['SampleSizePackaging'] != 0
+                  ? dataMap[0]['SampleSizePackaging']
+                  : 1);
           Packaging = dataMap[0]['Packaging'] ?? [];
 
-          visualSampleSizeController.text =
-              (dataMap[0]['SampleSizeVisual'] ?? "").toString();
+          visualSampleSizeController.text = (dataMap[0]['SampleSizeVisual'] != 0
+                  ? dataMap[0]['SampleSizeVisual']
+                  : "")
+              .toString();
           Visual = dataMap[0]['Visual'] ?? [];
 
           physicalSampleSizeController.text =
-              (dataMap[0]['SampleSizePhysical'] ?? "").toString();
+              (dataMap[0]['SampleSizePhysical'] != 0
+                      ? dataMap[0]['SampleSizePhysical']
+                      : "")
+                  .toString();
           Physical = dataMap[0]['Physical'] ?? [];
 
           frontbusSampleSizeController.text =
-              (dataMap[0]['SampleSizeFrontBus'] ?? "").toString();
+              (dataMap[0]['SampleSizeFrontBus'] != 0
+                      ? dataMap[0]['SampleSizeFrontBus']
+                      : "")
+                  .toString();
           FrontBus = dataMap[0]['FrontBus'] ?? [];
 
           verificationSampleSizeController.text =
-              (dataMap[0]['SampleSizeVerification'] ?? "").toString();
+              (dataMap[0]['SampleSizeVerification'] != 0
+                      ? dataMap[0]['SampleSizeVerification']
+                      : "")
+                  .toString();
           Verification = dataMap[0]['Verification'] ?? [];
 
           electricalSampleSizeController.text =
-              (dataMap[0]['SampleSizeElectrical'] ?? "").toString();
+              (dataMap[0]['SampleSizeElectrical'] != 0
+                      ? dataMap[0]['SampleSizeElectrical']
+                      : "")
+                  .toString();
           Electrical = dataMap[0]['Electrical'] ?? [];
 
           performanceSampleSizeController.text =
-              (dataMap[0]['SampleSizePerformance'] ?? "").toString();
+              (dataMap[0]['SampleSizePerformance'] != 0
+                      ? dataMap[0]['SampleSizePerformance']
+                      : "")
+                  .toString();
           Performance = dataMap[0]['Performance'] ?? [];
 
           result = dataMap[0]['Result'] ?? 'Fail';
@@ -602,6 +627,7 @@ class _ScoreDetailsState extends State<SolarCell> {
         setState(() {
           _isLoading = false;
         });
+
         Toast.show("Solar Cell Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
@@ -618,6 +644,8 @@ class _ScoreDetailsState extends State<SolarCell> {
   }
 
   Future createData() async {
+    print(SolarDetailId);
+    print(widget.id);
     print("Createdata......");
     print(performanceSampleData);
     setState(() {
@@ -628,6 +656,12 @@ class _ScoreDetailsState extends State<SolarCell> {
     final url = (site! + "IQCSolarCell/AddIQCSolarCell");
 
     var params = {
+      "SolarDetailId": SolarDetailId != '' && SolarDetailId != null
+          ? SolarDetailId
+          : widget.id != '' && widget.id != null
+              ? widget.id
+              : '',
+      "Status": sendStatus,
       "CurrentUser": personid,
       "SolarCellDetails": {
         "LotNo": lotSizeController.text,
@@ -714,7 +748,9 @@ class _ScoreDetailsState extends State<SolarCell> {
         "Reason": rejectionReasonController.text
       }
     };
+    print("IDDD....");
     print(params);
+    print(SolarDetailId);
     var response = await http.post(
       Uri.parse(url),
       body: json.encode(params),
@@ -729,6 +765,8 @@ class _ScoreDetailsState extends State<SolarCell> {
         SolarDetailId = objData['SolarDetailID'];
         _isLoading = false;
       });
+      print("Kya aa raha h");
+      print(objData['SolarDetailID']);
 
       if (objData['success'] == false) {
         Toast.show(objData['message'],
@@ -736,11 +774,15 @@ class _ScoreDetailsState extends State<SolarCell> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        uploadPDF((invoicePdfFileBytes ?? []), (cocPdfFileBytes ?? []));
-        // Toast.show("Solar Cell Test Completed.",
-        //     duration: Toast.lengthLong,
-        //     gravity: Toast.center,
-        //     backgroundColor: AppColors.blueColor);
+        if (sendStatus == 'Pending') {
+          uploadPDF((invoicePdfFileBytes ?? []), (cocPdfFileBytes ?? []));
+        } else {
+          Toast.show("Data has been saved.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+        }
+
         // Navigator.of(context).pushReplacement(MaterialPageRoute(
         //     builder: (BuildContext context) => IqcpTestList()));
       }
@@ -1227,6 +1269,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                         setState(() {
                                           setPage = 'packaging';
                                         });
+                                        if (status != 'Pending') {
+                                          setState(() {
+                                            sendStatus = 'Inprogress';
+                                          });
+                                          createData();
+                                        }
                                       }
                                       // setState(() {
                                       //   setPage = 'packaging';
@@ -1554,7 +1602,8 @@ class _ScoreDetailsState extends State<SolarCell> {
 
                                             // Update Time.......
                                             if (widget.id != "" &&
-                                                widget.id != null) {
+                                                widget.id != null &&
+                                                Packaging.length > 0) {
                                               packagingRemarksControllers[i]
                                                   .text = Packaging[
                                                       i][
@@ -1576,6 +1625,12 @@ class _ScoreDetailsState extends State<SolarCell> {
 
                                           // Dynamic  End......
                                           // }
+                                          if (status != 'Pending') {
+                                            setState(() {
+                                              sendStatus = 'Inprogress';
+                                            });
+                                            createData();
+                                          }
                                         },
                                         label: "Check",
                                         organization: '',
@@ -1836,10 +1891,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
+                                      AppHelper.hideKeyboard(context);
                                       // Validate the form
                                       packagingFormkey.currentState!.save;
                                       if (packagingFormkey.currentState!
                                           .validate()) {
+                                        packagingSampleData = [];
                                         //   // Perform action on submit button press
                                         //   print('Text Field Values:');
                                         for (int i = 0;
@@ -1861,12 +1918,17 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                     .text
                                           });
                                         }
-
+                                        if (status != 'Pending') {
+                                          setState(() {
+                                            sendStatus = 'Inprogress';
+                                          });
+                                          createData();
+                                        }
                                         setState(() {
                                           setPage = "visual";
                                         });
                                       }
-                                      packagingFormkey = GlobalKey<FormState>();
+                                      //  packagingFormkey = GlobalKey<FormState>();
                                       // setState(() {
                                       //   setPage = "visual";
                                       // });
@@ -2184,6 +2246,13 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                             num;
                                                       });
                                                     }
+                                                    if (status != 'Pending') {
+                                                      setState(() {
+                                                        sendStatus =
+                                                            'Inprogress';
+                                                      });
+                                                      createData();
+                                                    }
                                                   }
                                                   print("Bhanuuuuuuuuuu");
                                                   print(
@@ -2204,7 +2273,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                         TextEditingController());
                                                     // Update Time.......
                                                     if (widget.id != "" &&
-                                                        widget.id != null) {
+                                                        widget.id != null &&
+                                                        Visual.length > 0) {
                                                       visualRemarksControllers[
                                                               i]
                                                           .text = Visual[
@@ -2224,8 +2294,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                     }
                                                   }
 
-                                                  _visualFormKey =
-                                                      GlobalKey<FormState>();
+                                                  // _visualFormKey =
+                                                  //     GlobalKey<FormState>();
 
                                                   // Dynamic  End......
                                                 },
@@ -2488,6 +2558,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                           ),
                                           ElevatedButton(
                                             onPressed: () {
+                                              AppHelper.hideKeyboard(context);
                                               _visualsampleformKey
                                                   .currentState!.save;
 
@@ -2495,6 +2566,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                               if (_visualsampleformKey
                                                   .currentState!
                                                   .validate()) {
+                                                visualSampleData = [];
                                                 //   // Perform action on submit button press
                                                 //   print('Text Field Values:');
                                                 for (int i = 0;
@@ -2518,12 +2590,18 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                 setState(() {
                                                   setPage = "physical";
                                                 });
+                                                if (status != 'Pending') {
+                                                  setState(() {
+                                                    sendStatus = 'Inprogress';
+                                                  });
+                                                  createData();
+                                                }
                                               }
                                               // setState(() {
                                               //   setPage = "physical";
                                               // });
-                                              _visualsampleformKey =
-                                                  GlobalKey<FormState>();
+                                              // _visualsampleformKey =
+                                              //     GlobalKey<FormState>();
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: const Color
@@ -2880,6 +2958,14 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                     num;
                                                               });
                                                             }
+                                                            if (status !=
+                                                                'Pending') {
+                                                              setState(() {
+                                                                sendStatus =
+                                                                    'Inprogress';
+                                                              });
+                                                              createData();
+                                                            }
                                                           }
 
                                                           // Dynamic Start......
@@ -2902,7 +2988,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                             if (widget.id !=
                                                                     "" &&
                                                                 widget.id !=
-                                                                    null) {
+                                                                    null &&
+                                                                Physical.length >
+                                                                    0) {
                                                               physicalRemarksControllers[
                                                                       i]
                                                                   .text = Physical[
@@ -2922,9 +3010,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                             }
                                                           }
 
-                                                          _physicalFormKey =
-                                                              GlobalKey<
-                                                                  FormState>();
+                                                          // _physicalFormKey =
+                                                          //     GlobalKey<
+                                                          //         FormState>();
 
                                                           // Dynamic  End......
                                                         },
@@ -3225,6 +3313,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                   ),
                                                   ElevatedButton(
                                                     onPressed: () {
+                                                      AppHelper.hideKeyboard(
+                                                          context);
                                                       _physicalsampleformKey
                                                           .currentState!.save;
 
@@ -3232,6 +3322,7 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                       if (_physicalsampleformKey
                                                           .currentState!
                                                           .validate()) {
+                                                        physicalSampleData = [];
                                                         //   // Perform action on submit button press
                                                         //   print(
                                                         //       'Text Field Values:');
@@ -3260,13 +3351,21 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                 "frontbus";
                                                           });
                                                         }
+                                                        if (status !=
+                                                            'Pending') {
+                                                          setState(() {
+                                                            sendStatus =
+                                                                'Inprogress';
+                                                          });
+                                                          createData();
+                                                        }
                                                       }
                                                       // setState(() {
                                                       //   setPage = "frontbus";
                                                       // });
-                                                      _physicalsampleformKey =
-                                                          GlobalKey<
-                                                              FormState>();
+                                                      // _physicalsampleformKey =
+                                                      //     GlobalKey<
+                                                      //         FormState>();
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -3645,6 +3744,15 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             num;
                                                                       });
                                                                     }
+                                                                    if (status !=
+                                                                        'Pending') {
+                                                                      setState(
+                                                                          () {
+                                                                        sendStatus =
+                                                                            'Inprogress';
+                                                                      });
+                                                                      createData();
+                                                                    }
                                                                   }
 
                                                                   // Dynamic Start......
@@ -3665,10 +3773,11 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             TextEditingController());
 
                                                                     // Update Time.......
-                                                                    if (widget.id !=
-                                                                            "" &&
+                                                                    if (widget.id != "" &&
                                                                         widget.id !=
-                                                                            null) {
+                                                                            null &&
+                                                                        FrontBus.length >
+                                                                            0) {
                                                                       frontbusRemarksControllers[
                                                                               i]
                                                                           .text = FrontBus[
@@ -3691,9 +3800,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                     }
                                                                   }
 
-                                                                  _frontbusFormKey =
-                                                                      GlobalKey<
-                                                                          FormState>();
+                                                                  // _frontbusFormKey =
+                                                                  //     GlobalKey<
+                                                                  //         FormState>();
 
                                                                   // Dynamic  End......
                                                                 },
@@ -4010,6 +4119,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                           ),
                                                           ElevatedButton(
                                                             onPressed: () {
+                                                              AppHelper
+                                                                  .hideKeyboard(
+                                                                      context);
                                                               _frontbussampleformKey
                                                                   .currentState!
                                                                   .save;
@@ -4018,6 +4130,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                               if (_frontbussampleformKey
                                                                   .currentState!
                                                                   .validate()) {
+                                                                frontbusSampleData =
+                                                                    [];
                                                                 //   // Perform action on submit button press
                                                                 //   print(
                                                                 //       'Text Field Values:');
@@ -4042,15 +4156,23 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                   setPage =
                                                                       "verification";
                                                                 });
+                                                                if (status !=
+                                                                    'Pending') {
+                                                                  setState(() {
+                                                                    sendStatus =
+                                                                        'Inprogress';
+                                                                  });
+                                                                  createData();
+                                                                }
                                                               }
 
                                                               // setState(() {
                                                               //   setPage =
                                                               //       "verification";
                                                               // });
-                                                              _frontbussampleformKey =
-                                                                  GlobalKey<
-                                                                      FormState>();
+                                                              // _frontbussampleformKey =
+                                                              //     GlobalKey<
+                                                              //         FormState>();
                                                             },
                                                             style:
                                                                 ElevatedButton
@@ -4434,6 +4556,13 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                 numberOfVerificationSampleFields = num;
                                                                               });
                                                                             }
+                                                                            if (status !=
+                                                                                'Pending') {
+                                                                              setState(() {
+                                                                                sendStatus = 'Inprogress';
+                                                                              });
+                                                                              createData();
+                                                                            }
                                                                           }
 
                                                                           // Dynamic Start......
@@ -4448,7 +4577,8 @@ class _ScoreDetailsState extends State<SolarCell> {
 
                                                                             // Update Time.......
                                                                             if (widget.id != "" &&
-                                                                                widget.id != null) {
+                                                                                widget.id != null &&
+                                                                                Verification.length > 0) {
                                                                               verificationRemarksControllers[i].text = Verification[i]['VerificationSampleRemarks${i + 1}'];
 
                                                                               selectedVerificationTestValues[i] = Verification[i]['VerificationSampleTest${i + 1}'];
@@ -4457,8 +4587,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             }
                                                                           }
 
-                                                                          _verificationFormKey =
-                                                                              GlobalKey<FormState>();
+                                                                          // _verificationFormKey =
+                                                                          //     GlobalKey<FormState>();
 
                                                                           // Dynamic  End......
                                                                         },
@@ -4742,6 +4872,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                   ElevatedButton(
                                                                     onPressed:
                                                                         () {
+                                                                      AppHelper
+                                                                          .hideKeyboard(
+                                                                              context);
                                                                       _verificationsampleformKey
                                                                           .currentState!
                                                                           .save;
@@ -4750,6 +4883,8 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                       if (_verificationsampleformKey
                                                                           .currentState!
                                                                           .validate()) {
+                                                                        verificationSampleData =
+                                                                            [];
                                                                         //   // Perform action on submit button press
                                                                         //   print('Text Field Values:');
                                                                         for (int i =
@@ -4772,15 +4907,24 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                           setPage =
                                                                               "electrical";
                                                                         });
+                                                                        if (status !=
+                                                                            'Pending') {
+                                                                          setState(
+                                                                              () {
+                                                                            sendStatus =
+                                                                                'Inprogress';
+                                                                          });
+                                                                          createData();
+                                                                        }
                                                                       }
                                                                       // setState(
                                                                       //     () {
                                                                       //   setPage =
                                                                       //       "electrical";
                                                                       // });
-                                                                      _verificationsampleformKey =
-                                                                          GlobalKey<
-                                                                              FormState>();
+                                                                      // _verificationsampleformKey =
+                                                                      //     GlobalKey<
+                                                                      //         FormState>();
                                                                     },
                                                                     style: ElevatedButton
                                                                         .styleFrom(
@@ -5013,8 +5157,9 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                             ),
                                                                             style: AppStyles
                                                                                 .textInputTextStyle,
-                                                                            readOnly:
-                                                                                true,
+                                                                            readOnly: status == 'Pending'
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator([
                                                                               RequiredValidator(errorText: "Please Enter Sample Size.")
@@ -5105,20 +5250,30 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                         numberOfElectricalSampleFields = num;
                                                                                       });
                                                                                     }
+                                                                                    if (status != 'Pending') {
+                                                                                      setState(() {
+                                                                                        sendStatus = 'Inprogress';
+                                                                                      });
+                                                                                      createData();
+                                                                                    }
                                                                                   }
 
                                                                                   // Dynamic Start......
                                                                                   selectedElectricalTestValues = List<bool>.generate(numberOfElectricalSampleFields, (index) => false);
-                                                                                  _electricalFormKey = GlobalKey<FormState>();
+                                                                                  // _electricalFormKey = GlobalKey<FormState>();
+                                                                                  print(numberOfElectricalSampleFields);
+                                                                                  print(Electrical.length);
                                                                                   for (int i = 0; i < numberOfElectricalSampleFields; i++) {
                                                                                     electricalBarcodeControllers.add(TextEditingController());
                                                                                     electricalRemarksControllers.add(TextEditingController());
-
+                                                                                    print("AAAAAAA....");
+                                                                                    print(Electrical);
+                                                                                    print("BBBBBBBB....");
                                                                                     // Update Time.......
-                                                                                    if (widget.id != "" && widget.id != null) {
+                                                                                    if (widget.id != "" && widget.id != null && Electrical.length > 0) {
                                                                                       electricalBarcodeControllers[i].text = Electrical[i]['ElectricalSampleBarcode${i + 1}'];
 
-                                                                                      selectedElectricalTestValues[i] = Electrical[i]['ElectricalSampleTest${i + 1}'];
+                                                                                      selectedElectricalTestValues[i] = Electrical[i]['ElectricalSampleTest${i + 1}'] ?? false;
 
                                                                                       electricalRemarksControllers[i].text = Electrical[i]['ElectricalSampleRemarks${i + 1}'];
                                                                                     }
@@ -5336,10 +5491,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                           ElevatedButton(
                                                                             onPressed:
                                                                                 () {
+                                                                              AppHelper.hideKeyboard(context);
                                                                               _electricalsampleformKey.currentState!.save;
 
                                                                               // Validate the form
                                                                               if (_electricalsampleformKey.currentState!.validate()) {
+                                                                                electricalSampleData = [];
                                                                                 //   // Perform action on submit button press
                                                                                 //   print('Text Field Values:');
                                                                                 for (int i = 0; i < numberOfElectricalSampleFields; i++) {
@@ -5353,11 +5510,17 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                 setState(() {
                                                                                   setPage = "performance";
                                                                                 });
+                                                                                if (status != 'Pending') {
+                                                                                  setState(() {
+                                                                                    sendStatus = 'Inprogress';
+                                                                                  });
+                                                                                  createData();
+                                                                                }
                                                                               }
                                                                               // setState(() {
                                                                               //   setPage = "performance";
                                                                               // });
-                                                                              _electricalsampleformKey = GlobalKey<FormState>();
+                                                                              // _electricalsampleformKey = GlobalKey<FormState>();
                                                                             },
                                                                             style:
                                                                                 ElevatedButton.styleFrom(
@@ -5523,23 +5686,15 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                   height: 5,
                                                                                 ),
                                                                                 TextFormField(
-                                                                                    controller:
-                                                                                        performanceSampleSizeController,
-                                                                                    keyboardType: TextInputType
-                                                                                        .number,
-                                                                                    textInputAction: TextInputAction
-                                                                                        .next,
-                                                                                    decoration: AppStyles.textFieldInputDecoration
-                                                                                        .copyWith(
+                                                                                    controller: performanceSampleSizeController,
+                                                                                    keyboardType: TextInputType.number,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                       hintText: "Please Enter Sample Size",
                                                                                     ),
-                                                                                    style: AppStyles
-                                                                                        .textInputTextStyle,
-                                                                                    readOnly:
-                                                                                        true,
-                                                                                    validator: MultiValidator([
-                                                                                      RequiredValidator(errorText: "Please Enter Sample Size.")
-                                                                                    ])
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' ? true : false,
+                                                                                    validator: MultiValidator([RequiredValidator(errorText: "Please Enter Sample Size.")])
                                                                                     // bikki
                                                                                     ),
                                                                                 const SizedBox(
@@ -5605,17 +5760,23 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                               print("numberOfPerformanceSampleFields.......");
                                                                                               print(numberOfPerformanceSampleFields);
                                                                                             }
+                                                                                            if (status != 'Pending') {
+                                                                                              setState(() {
+                                                                                                sendStatus = 'Inprogress';
+                                                                                              });
+                                                                                              createData();
+                                                                                            }
                                                                                           }
 
                                                                                           // Dynamic Start......
                                                                                           selectedPerformanceTestValues = List<bool>.generate(numberOfPerformanceSampleFields, (index) => false);
-                                                                                          _performanceFormKey = GlobalKey<FormState>();
+                                                                                          // _performanceFormKey = GlobalKey<FormState>();
                                                                                           for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
                                                                                             performanceBarcodeControllers.add(TextEditingController());
                                                                                             performanceRemarksControllers.add(TextEditingController());
 
                                                                                             // Update Time.......
-                                                                                            if (widget.id != "" && widget.id != null) {
+                                                                                            if (widget.id != "" && widget.id != null && Performance.length > 0) {
                                                                                               performanceRemarksControllers[i].text = Performance[i]['PerformanceSampleRemarks${i + 1}'];
 
                                                                                               selectedPerformanceTestValues[i] = Performance[i]['PerformanceSampleTest${i + 1}'];
@@ -5814,10 +5975,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                   ),
                                                                                   ElevatedButton(
                                                                                     onPressed: () {
+                                                                                      AppHelper.hideKeyboard(context);
                                                                                       _performancesampleformKey.currentState!.save;
 
                                                                                       // Validate the form
                                                                                       if (_performancesampleformKey.currentState!.validate()) {
+                                                                                        performanceSampleData = [];
                                                                                         for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
                                                                                           performanceSampleData.add({
                                                                                             "PerformanceSampleBarcode${i + 1}": performanceBarcodeControllers[i].text,
@@ -5832,11 +5995,17 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                         setState(() {
                                                                                           setPage = "result";
                                                                                         });
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            sendStatus = 'Inprogress';
+                                                                                          });
+                                                                                          createData();
+                                                                                        }
                                                                                       }
                                                                                       // setState(() {
                                                                                       //   setPage = "result";
                                                                                       // });
-                                                                                      _performancesampleformKey = GlobalKey<FormState>();
+                                                                                      // _performancesampleformKey = GlobalKey<FormState>();
                                                                                     },
                                                                                     style: ElevatedButton.styleFrom(
                                                                                       backgroundColor: const Color.fromARGB(255, 134, 8, 4), // Set button color to red
@@ -6218,7 +6387,12 @@ class _ScoreDetailsState extends State<SolarCell> {
                                                                                                       _resultFormKey.currentState!.save;
                                                                                                       if (_resultFormKey.currentState!.validate()) {
                                                                                                         print("GGG");
-                                                                                                        createData();
+                                                                                                        if (status != 'Pending') {
+                                                                                                          setState(() {
+                                                                                                            sendStatus = 'Pending';
+                                                                                                          });
+                                                                                                          createData();
+                                                                                                        }
                                                                                                       }
                                                                                                       // setState(() {
                                                                                                       //   setPage = 'visual';
