@@ -2,20 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Iqcp.dart';
-import 'package:QCM/LoginPage.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
-import 'package:QCM/attendance.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_assets.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
-import 'package:QCM/constant/app_strings.dart';
 import 'package:QCM/constant/app_styles.dart';
-import 'package:QCM/directory.dart';
-import 'package:QCM/main.dart';
 import 'package:QCM/Iqcp_list_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -32,18 +27,12 @@ class IqcpTestList extends StatefulWidget {
 }
 
 class _IqcpTestListState extends State<IqcpTestList> {
-  final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
   TextEditingController SearchController = TextEditingController();
   // TextEditingController _paymentModeController = new TextEditingController();
-  TextEditingController ExpiryDateController = new TextEditingController();
-  TextEditingController PaymentDateController = new TextEditingController();
 
-  TextEditingController NoteController = new TextEditingController();
-  GlobalKey<FormState> _renewalFormkey = GlobalKey<FormState>();
-
-  bool _isLoading = false, IN = false, OUT = false;
+  bool _isLoading = false;
   bool menu = false, user = false, face = false, home = false;
-  String? _paymentModeController;
+
   List paymentModeData = [];
   String? personid,
       token,
@@ -55,23 +44,16 @@ class _IqcpTestListState extends State<IqcpTestList> {
       site,
       designation,
       department,
-      ImagePath,
       detail,
       businessname,
       organizationName,
       otherChapterName = '',
-      _hasBeenPressedorganization = '',
       organizationtype,
-      _hasBeenPressed = '',
-      _hasBeenPressed1 = 'Pending',
-      _hasBeenPressed2 = '',
-      Expirydate,
-      Paymentdate;
-  // RoleModel? paymentModeData;
-  TextEditingController AmountController = new TextEditingController();
+      _hasBeenPressed1 = 'Pending';
+
   bool status = false, isAllowedEdit = false;
   var decodedResult;
-  var rmbDropDown;
+
   Future? userdata;
   late UserModel aUserModel;
   List dropdownList = [];
@@ -186,196 +168,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
     }
   }
 
-  // attendanceBox(context, String employeeId) {
-  //   return SingleChildScrollView(
-  //     child: Form(
-  //       child: Column(
-  //         children: [
-  //           Container(
-  //             padding: const EdgeInsets.only(
-  //                 left: 20, top: 20, right: 20, bottom: 20),
-  //             decoration: BoxDecoration(
-  //               shape: BoxShape.rectangle,
-  //               color: Colors.white,
-  //               borderRadius: BorderRadius.circular(20),
-  //             ),
-  //             child: SingleChildScrollView(
-  //               physics: const BouncingScrollPhysics(),
-  //               child: Column(
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   const Text(
-  //                     // 'Disable Member',
-  //                     'Employee Attendance',
-  //                     style: TextStyle(
-  //                       color: Colors.black,
-  //                       fontSize: 20,
-  //                       fontFamily: 'HKGrotesk',
-  //                       fontWeight: FontWeight.w500,
-  //                     ),
-  //                     textAlign: TextAlign.center,
-  //                   ),
-  //                   Column(
-  //                     mainAxisAlignment: MainAxisAlignment.start,
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       const SizedBox(height: 15),
-  //                       const Text(
-  //                         'Are you sure to take attendance.?',
-  //                         style: TextStyle(
-  //                             fontSize: 15, fontWeight: FontWeight.bold),
-  //                       ),
-  //                       const SizedBox(height: 15),
-  //                       InkWell(
-  //                         onTap: () {
-  //                           Navigator.of(context).pop();
-  //                           takeAttendance(employeeId);
-  //                         },
-  //                         child: Container(
-  //                           decoration: BoxDecoration(
-  //                             color: AppColors.primaryColor,
-  //                             borderRadius: BorderRadius.circular(20),
-  //                           ),
-  //                           child: const Padding(
-  //                             padding: EdgeInsets.only(top: 10, bottom: 10),
-  //                             child: Center(
-  //                               child: Text(
-  //                                 'Yes',
-  //                                 style: TextStyle(
-  //                                     color: Colors.white,
-  //                                     fontFamily: 'HKGrotesk',
-  //                                     fontSize: 16.0,
-  //                                     fontWeight: FontWeight.w700),
-  //                               ),
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                       const SizedBox(height: 10.0),
-  //                       InkWell(
-  //                           onTap: () {
-  //                             Navigator.of(context).pop();
-  //                           },
-  //                           child: const Center(
-  //                             child: Text(
-  //                               'NO',
-  //                               style: TextStyle(
-  //                                   fontFamily: appFontFamily,
-  //                                   fontSize: 16,
-  //                                   fontWeight: FontWeight.w500,
-  //                                   color: AppColors.redColor),
-  //                             ),
-  //                           )),
-  //                       const SizedBox(height: 10.0),
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // contentBox(context, String personId) {
-  //   return SingleChildScrollView(
-  //     child: Form(
-  //       child: Column(
-  //         children: [
-  //           Container(
-  //             padding: const EdgeInsets.only(
-  //                 left: 20, top: 20, right: 20, bottom: 20),
-  //             decoration: BoxDecoration(
-  //               shape: BoxShape.rectangle,
-  //               color: Colors.white,
-  //               borderRadius: BorderRadius.circular(20),
-  //             ),
-  //             child: SingleChildScrollView(
-  //               physics: const BouncingScrollPhysics(),
-  //               child: Column(
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   const Text(
-  //                     // 'Disable Member',
-  //                     "Remove Employee",
-  //                     style: TextStyle(
-  //                       color: Colors.black,
-  //                       fontSize: 20,
-  //                       fontFamily: 'HKGrotesk',
-  //                       fontWeight: FontWeight.w500,
-  //                     ),
-  //                     textAlign: TextAlign.center,
-  //                   ),
-  //                   Column(
-  //                     mainAxisAlignment: MainAxisAlignment.start,
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       const SizedBox(height: 15),
-  //                       const Text(
-  //                         // 'Are you sure you want to disable this member?',
-  //                         "Are you sure you want to remove this employee?",
-  //                         style: TextStyle(
-  //                             fontSize: 15, fontWeight: FontWeight.bold),
-  //                       ),
-  //                       const SizedBox(height: 15),
-  //                       InkWell(
-  //                         onTap: () {
-  //                           Navigator.of(context).pop();
-
-  //                           setMemberStatus(personId);
-  //                         },
-  //                         child: Container(
-  //                           decoration: BoxDecoration(
-  //                             color: AppColors.primaryColor,
-  //                             borderRadius: BorderRadius.circular(20),
-  //                           ),
-  //                           child: const Padding(
-  //                             padding: EdgeInsets.only(top: 10, bottom: 10),
-  //                             child: Center(
-  //                               child: Text(
-  //                                 'Yes',
-  //                                 style: TextStyle(
-  //                                     color: Colors.white,
-  //                                     fontFamily: 'HKGrotesk',
-  //                                     fontSize: 16.0,
-  //                                     fontWeight: FontWeight.w700),
-  //                               ),
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                       const SizedBox(height: 10.0),
-  //                       InkWell(
-  //                           onTap: () {
-  //                             Navigator.of(context).pop();
-  //                           },
-  //                           child: const Center(
-  //                             child: Text(
-  //                               'NO',
-  //                               style: TextStyle(
-  //                                   fontFamily: appFontFamily,
-  //                                   fontSize: 16,
-  //                                   fontWeight: FontWeight.w500,
-  //                                   color: AppColors.redColor),
-  //                             ),
-  //                           )),
-  //                       const SizedBox(height: 10.0),
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Future<bool> redirectto() async {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
@@ -442,9 +234,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
                           child: Center(child: _userData()),
                         ),
                       ),
-                // floatingActionButton: designation != 'Reporting Manager'
-                //     ? _getFAB()
-                //     : Container(),
                 bottomNavigationBar: Container(
                   height: 60,
                   decoration: const BoxDecoration(
@@ -524,61 +313,16 @@ class _IqcpTestListState extends State<IqcpTestList> {
             )));
   }
 
-  Widget _getFAB() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 70),
-      child: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => AddEditProfile()),
-              (Route<dynamic> route) => false);
-        },
-        child: ClipOval(
-          child: Image.asset(
-            AppAssets.icPlusBlue,
-            height: 60,
-            width: 60,
-          ),
-        ),
-      ),
-    );
-  }
-
 // <List<UserData>> List<UserData>
   _userData() {
     return FutureBuilder(
       future: userdata,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print("PPPPPPP....................???????");
         if (snapshot.connectionState == ConnectionState.done) {
           aUserModel = UserModel.fromJson(decodedResult);
-          print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKK....................???????");
-          print(aUserModel);
+
           List<UserData> data = aUserModel.data!;
-          if (_hasBeenPressed == 'name') {
-            data.sort((a, b) {
-              return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
-            });
-          } else if (_hasBeenPressed == 'company') {
-            data.sort((a, b) {
-              return a.materialName!
-                  .toLowerCase()
-                  .compareTo(b.materialName!.toLowerCase());
-            });
-          } else if (_hasBeenPressed == 'occupation') {
-            data.sort((a, b) {
-              return a.location!
-                  .toLowerCase()
-                  .compareTo(b.location!.toLowerCase());
-            });
-          } else if (_hasBeenPressed == 'location') {
-            data.sort((a, b) {
-              return a.invoiceNo!
-                  .toLowerCase()
-                  .compareTo(b.invoiceNo ?? ''.toLowerCase());
-            });
-          }
+
           return _user(aUserModel);
         } else if (snapshot.hasError) {
           return const AppLoader();
@@ -604,7 +348,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
                 onTap: () {
                   setState(() {
                     _hasBeenPressed1 = 'Inprogress';
-                    _hasBeenPressed2 = '';
                   });
                   userdata = getData();
                 },
@@ -646,8 +389,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         : FontWeight.normal),
               ),
             ),
-            // if (organizationtype == 'RMB Chapter' ||
-            //     organizationtype == 'Me-connect Chapter')
+
             const Text(
               ' | ',
               style: TextStyle(
@@ -656,9 +398,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
                   fontWeight: FontWeight.w700),
             ),
 
-            //#3 Pending
-            // if (organizationtype == 'RMB Chapter' ||
-            //     organizationtype == 'Me-connect Chapter')
             InkWell(
               onTap: () {
                 setState(() {
@@ -678,8 +417,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         : FontWeight.normal),
               ),
             ),
-            // if (organizationtype == 'RMB Chapter' ||
-            //     organizationtype == 'Me-connect Chapter')
+
             const Text(
               ' | ',
               style: TextStyle(
@@ -688,9 +426,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
                   fontWeight: FontWeight.w700),
             ),
 
-            //#4 Rejected
-            // if (organizationtype == 'RMB Chapter' ||
-            //     organizationtype == 'Me-connect Chapter')
             InkWell(
               onTap: () {
                 setState(() {
@@ -878,14 +613,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
   Widget _tile(String id, String materialname, String profilepic, String name,
       String location, String invoiceno, String employeeid) {
     return InkWell(
-      onTap: () {
-        // Navigator.of(context).pushAndRemoveUntil(
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => DirectoryDetails(
-        //               personId: id,
-        //             )),
-        //     (Route<dynamic> route) => false);
-      },
+      onTap: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
         child: Column(
@@ -903,13 +631,13 @@ class _IqcpTestListState extends State<IqcpTestList> {
                       clipBehavior: Clip.hardEdge,
                       color: Colors.transparent,
                       child: CachedNetworkImage(
-                        imageUrl: profilepic,
+                        imageUrl: "profilepic",
                         height: 60,
                         width: 60,
                         placeholder: (context, url) {
                           return ClipOval(
                             child: Image.asset(
-                              AppAssets.profilePlaceholder,
+                              AppAssets.solarcell,
                               height: 60,
                               width: 60,
                             ),
@@ -918,7 +646,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         errorWidget: (context, url, error) {
                           return ClipOval(
                             child: Image.asset(
-                              AppAssets.profilePlaceholder,
+                              AppAssets.solarcell,
                               height: 60,
                               width: 60,
                             ),
@@ -953,7 +681,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                               height: 30,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Text(location,
@@ -961,7 +689,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   fontFamily: appFontFamily)),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           ClipRRect(
@@ -971,7 +699,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                               height: 30,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Text(invoiceno,
@@ -980,7 +708,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                   fontSize: 12,
                                   fontFamily: appFontFamily)),
                         ]),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         //Occupication
@@ -989,14 +717,14 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(
+                              color: const Color.fromARGB(
                                   255, 95, 245, 8), // Background color
                               borderRadius: BorderRadius.circular(
                                   10), // Optional: Add border radius for rounded corners
                             ),
                             child: Text(
                               employeeid,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
                                 color: Color.fromARGB(
@@ -1011,14 +739,14 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(
+                              color: const Color.fromARGB(
                                   255, 104, 3, 236), // Background color
                               borderRadius: BorderRadius.circular(
                                   10), // Optional: Add border radius for rounded corners
                             ),
                             child: Text(
                               "By: $name",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
                                 color: Color.fromARGB(255, 255, 255,
@@ -1031,231 +759,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         const SizedBox(
                           height: 2,
                         ),
-
-                        // detail == id
-                        //     ? SizedBox(
-                        //         child: Padding(
-                        //         padding: const EdgeInsets.only(top: 10),
-                        //         child: Column(
-                        //           mainAxisAlignment: MainAxisAlignment.start,
-                        //           crossAxisAlignment: CrossAxisAlignment.start,
-                        //           children: [
-                        //             //Row 1
-                        //             Row(
-                        //                 mainAxisAlignment:
-                        //                     MainAxisAlignment.start,
-                        //                 crossAxisAlignment:
-                        //                     CrossAxisAlignment.start,
-                        //                 children: <Widget>[
-                        //                   InkWell(
-                        //                     onTap: () {
-                        //                       UrlLauncher.launch(
-                        //                           'tel:+${'+91' + officialcontactno}');
-                        //                     },
-                        //                     child: Image.asset(
-                        //                       AppAssets.icRoundCallBlue,
-                        //                       height: 40,
-                        //                       width: 40,
-                        //                     ),
-                        //                   ),
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   InkWell(
-                        //                     onTap: () {
-                        //                       UrlLauncher.launch(
-                        //                           'whatsapp://send?text=Hello&phone=${'+91' + officialcontactno}');
-                        //                     },
-                        //                     child: Image.asset(
-                        //                       AppAssets.icRoundWhtspGreen,
-                        //                       height: 40,
-                        //                       width: 40,
-                        //                     ),
-                        //                   ),
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   InkWell(
-                        //                     onTap: () {
-                        //                       UrlLauncher.launch(
-                        //                           'mailto:${officialemail}');
-                        //                     },
-                        //                     child: Image.asset(
-                        //                       AppAssets.icRoundEmailYellow,
-                        //                       height: 40,
-                        //                       width: 40,
-                        //                     ),
-                        //                   ),
-                        //                   //  if (isAllowedEdit)
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   // if (isAllowedEdit)
-                        //                   InkWell(
-                        //                       child: Image.asset(
-                        //                         AppAssets.icMemberEdit,
-                        //                         height: 40,
-                        //                         width: 40,
-                        //                       ),
-                        //                       onTap: () {
-                        //                         Navigator.of(context)
-                        //                             .pushAndRemoveUntil(
-                        //                                 MaterialPageRoute(
-                        //                                     builder: (BuildContext
-                        //                                             context) =>
-                        //                                         AddEditProfile(
-                        //                                             id: id)),
-                        //                                 (Route<dynamic>
-                        //                                         route) =>
-                        //                                     false);
-                        //                       }),
-                        //                   //  if (isAllowedEdit)
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   //  if (isAllowedEdit)
-                        //                   // InkWell(
-                        //                   //     child: Image.asset(
-                        //                   //       AppAssets.icMemberDelete,
-                        //                   //       height: 40,
-                        //                   //       width: 40,
-                        //                   //     ),
-                        //                   //     onTap: () {
-                        //                   //       showDialog(
-                        //                   //         context: context,
-                        //                   //         builder:
-                        //                   //             (BuildContext context) {
-                        //                   //           return Dialog(
-                        //                   //             shape:
-                        //                   //                 RoundedRectangleBorder(
-                        //                   //               borderRadius:
-                        //                   //                   BorderRadius
-                        //                   //                       .circular(21),
-                        //                   //             ),
-                        //                   //             elevation: 0,
-                        //                   //             backgroundColor:
-                        //                   //                 Colors.transparent,
-                        //                   //             child: contentBox(
-                        //                   //                 context, id),
-                        //                   //           );
-                        //                   //         },
-                        //                   //       );
-                        //                   //     })
-                        //                 ]),
-
-                        //             // Row 2
-                        //             const SizedBox(
-                        //               height: 7,
-                        //             ),
-                        //             // if (employeementtype == 'External')
-                        //             //   Row(
-                        //             //     mainAxisAlignment:
-                        //             //         MainAxisAlignment.start,
-                        //             //     crossAxisAlignment:
-                        //             //         CrossAxisAlignment.center,
-                        //             //     children: [
-                        //             //       GestureDetector(
-                        //             //         onTap: () {
-                        //             //           print(id);
-
-                        //             //           showDialog(
-                        //             //             context: context,
-                        //             //             builder:
-                        //             //                 (BuildContext context) {
-                        //             //               return Dialog(
-                        //             //                 shape:
-                        //             //                     RoundedRectangleBorder(
-                        //             //                   borderRadius:
-                        //             //                       BorderRadius.circular(
-                        //             //                           21),
-                        //             //                 ),
-                        //             //                 elevation: 0,
-                        //             //                 backgroundColor:
-                        //             //                     Colors.transparent,
-                        //             //                 child: attendanceBox(
-                        //             //                     context, employeeid),
-                        //             //               );
-                        //             //             },
-                        //             //           );
-                        //             //         },
-                        //             //         child: Container(
-                        //             //           padding: EdgeInsets.symmetric(
-                        //             //               horizontal: 10, vertical: 5),
-                        //             //           decoration: BoxDecoration(
-                        //             //             color: Colors
-                        //             //                 .blue, // Background color
-                        //             //             borderRadius: BorderRadius.circular(
-                        //             //                 10), // Optional: Add border radius for rounded corners
-                        //             //           ),
-                        //             //           child: const Text(
-                        //             //             'IN',
-                        //             //             style: TextStyle(
-                        //             //               fontWeight: FontWeight.bold,
-                        //             //               fontSize: 16,
-                        //             //               color: Colors
-                        //             //                   .white, // Optional: Set text color
-                        //             //             ),
-                        //             //           ),
-                        //             //         ),
-                        //             //       ),
-                        //             //       const SizedBox(
-                        //             //         width: 5,
-                        //             //       ),
-                        //             //       const SizedBox(
-                        //             //         width: 5,
-                        //             //       ),
-                        //             //       GestureDetector(
-                        //             //         onTap: () {
-                        //             //           print(id);
-                        //             //           showDialog(
-                        //             //             context: context,
-                        //             //             builder:
-                        //             //                 (BuildContext context) {
-                        //             //               return Dialog(
-                        //             //                 shape:
-                        //             //                     RoundedRectangleBorder(
-                        //             //                   borderRadius:
-                        //             //                       BorderRadius.circular(
-                        //             //                           21),
-                        //             //                 ),
-                        //             //                 elevation: 0,
-                        //             //                 backgroundColor:
-                        //             //                     Colors.transparent,
-                        //             //                 child: attendanceBox(
-                        //             //                     context, employeeid),
-                        //             //               );
-                        //             //             },
-                        //             //           );
-                        //             //         },
-                        //             //         child: Container(
-                        //             //           padding: EdgeInsets.symmetric(
-                        //             //               horizontal: 10, vertical: 5),
-                        //             //           decoration: BoxDecoration(
-                        //             //             color: Colors
-                        //             //                 .blue, // Background color
-                        //             //             borderRadius: BorderRadius.circular(
-                        //             //                 10), // Optional: Add border radius for rounded corners
-                        //             //           ),
-                        //             //           child: const Text(
-                        //             //             'OUT',
-                        //             //             style: TextStyle(
-                        //             //               fontWeight: FontWeight.bold,
-                        //             //               fontSize: 16,
-                        //             //               color: Colors
-                        //             //                   .white, // Optional: Set text color
-                        //             //             ),
-                        //             //           ),
-                        //             //         ),
-                        //             //       ),
-                        //             //       const SizedBox(
-                        //             //         width: 5,
-                        //             //       ),
-                        //             //     ],
-                        //             //   )
-                        //           ],
-                        //         ),
-                        //       ))
-                        // : const Row(),
                       ],
                     )),
                   ),

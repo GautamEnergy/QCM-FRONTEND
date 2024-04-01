@@ -35,13 +35,13 @@ import '../constant/app_helper.dart';
 
 import '../constant/app_styles.dart';
 
-class SolarCell extends StatefulWidget {
+class SolarGlass extends StatefulWidget {
   final String? id;
-  SolarCell({this.id});
-  _SolarCellState createState() => _SolarCellState();
+  SolarGlass({this.id});
+  _SolarGlassState createState() => _SolarGlassState();
 }
 
-class _SolarCellState extends State<SolarCell> {
+class _SolarGlassState extends State<SolarGlass> {
   int numberOfPackagingSampleFields = 1,
       numberOfVisualSampleFields = 0,
       numberOfPhysicalSampleFields = 0,
@@ -356,7 +356,6 @@ class _SolarCellState extends State<SolarCell> {
       department = prefs.getString('department');
       token = prefs.getString('token');
     });
-
     _get();
   }
 
@@ -546,7 +545,7 @@ class _SolarCellState extends State<SolarCell> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Solar Cell Test $approvalStatus .",
+        Toast.show("Solar Glass Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -597,7 +596,7 @@ class _SolarCellState extends State<SolarCell> {
           _isLoading = false;
         });
 
-        Toast.show("Solar Cell Test Completed.",
+        Toast.show("Solar Glass Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -640,7 +639,7 @@ class _SolarCellState extends State<SolarCell> {
         "DocumentNo": "GSPL/SC(IQC)/001",
         "RevNo": "Ver2.0/13-03-2024"
       },
-      "SolarCell": {
+      "SolarGlass": {
         "Packaging": {
           "Characterstics": packagingCharactersticsController.text,
           "MeasuringMethod": packagingMeasuringMethodController.text,
@@ -824,7 +823,7 @@ class _SolarCellState extends State<SolarCell> {
                                                   fontWeight:
                                                       FontWeight.w700)))),
                                   const Center(
-                                      child: Text("(Solar Cell)",
+                                      child: Text("(Solar Glass)",
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: AppColors.black,
@@ -1287,7 +1286,7 @@ class _SolarCellState extends State<SolarCell> {
                                                       fontWeight:
                                                           FontWeight.w700)))),
                                       const Center(
-                                          child: Text("(Solar Cell)",
+                                          child: Text("(Solar Glass)",
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   color: AppColors.black,
@@ -1922,7 +1921,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                   FontWeight
                                                                       .w700)))),
                                               const Center(
-                                                  child: Text("(Solar Cell)",
+                                                  child: Text("(Solar Glass)",
                                                       style: TextStyle(
                                                           fontSize: 20,
                                                           color:
@@ -2655,7 +2654,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                               .w700)))),
                                                       const Center(
                                                           child: Text(
-                                                              "(Solar Cell)",
+                                                              "(Solar Glass)",
                                                               style: TextStyle(
                                                                   fontSize: 20,
                                                                   color:
@@ -3447,7 +3446,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                               fontWeight: FontWeight.w700)))),
                                                               const Center(
                                                                   child: Text(
-                                                                      "(Solar Cell)",
+                                                                      "(Solar Glass)",
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20,
@@ -4212,7 +4211,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                               child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
                                                                       const Center(
                                                                           child: Text(
-                                                                              "(Solar Cell)",
+                                                                              "(Solar Glass)",
                                                                               style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                       const SizedBox(
                                                                         height:
@@ -4829,7 +4828,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                 ),
                                                                               ),
                                                                               const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
-                                                                              const Center(child: Text("(Solar Cell)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              const Center(child: Text("(Solar Glass)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                               const SizedBox(
                                                                                 height: 35,
                                                                               ),
@@ -5316,7 +5315,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                         ),
                                                                                       ),
                                                                                       const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
-                                                                                      const Center(child: Text("(Solar Cell)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                      const Center(child: Text("(Solar Glass)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                                       const SizedBox(
                                                                                         height: 35,
                                                                                       ),
@@ -5784,7 +5783,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                                 ),
                                                                                               ),
                                                                                               const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
-                                                                                              const Center(child: Text("(Solar Cell)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                              const Center(child: Text("(Solar Glass)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                                               const SizedBox(
                                                                                                 height: 35,
                                                                                               ),

@@ -1,6 +1,7 @@
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/SolarCell.dart';
+import 'package:QCM/SolarGlass.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/attendance.dart';
@@ -78,7 +79,7 @@ class _WelcomePageState extends State<IqcpPage> {
   }
 
   adminbuttons() {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -89,9 +90,9 @@ class _WelcomePageState extends State<IqcpPage> {
   }
 
   Future<bool> redirectto() async {
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
-    //     (Route<dynamic> route) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
+        (Route<dynamic> route) => false);
     return true;
   }
 
@@ -119,14 +120,14 @@ class _WelcomePageState extends State<IqcpPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -136,13 +137,13 @@ class _WelcomePageState extends State<IqcpPage> {
                           builder: (BuildContext context) => SolarCell(id: "")),
                       (Route<dynamic> route) => false);
                 })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
               ],
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             //1st row
@@ -150,17 +151,18 @@ class _WelcomePageState extends State<IqcpPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                     child: tabDashboard('Solar Glass', AppAssets.planet, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => DynamicField()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              SolarGlass(id: "")),
+                      (Route<dynamic> route) => false);
                 })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -170,13 +172,13 @@ class _WelcomePageState extends State<IqcpPage> {
                   //         builder: (BuildContext context) => EmployeeList()),
                   //     (Route<dynamic> route) => false);
                 })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
               ],
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
 
@@ -184,7 +186,7 @@ class _WelcomePageState extends State<IqcpPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -195,7 +197,7 @@ class _WelcomePageState extends State<IqcpPage> {
                   //         builder: (BuildContext context) => InOut()),
                   //     (Route<dynamic> route) => false);
                 })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -206,19 +208,19 @@ class _WelcomePageState extends State<IqcpPage> {
                   //         builder: (BuildContext context) => SalaryReport()),
                   //     (Route<dynamic> route) => false);
                 })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -229,12 +231,12 @@ class _WelcomePageState extends State<IqcpPage> {
                   //         builder: (BuildContext context) => InOut()),
                   //     (Route<dynamic> route) => false);
                 })),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
