@@ -1,5 +1,6 @@
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
+import 'package:QCM/Skeleton.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/SolarGlass.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -156,11 +157,11 @@ class _WelcomePageState extends State<IqcpPage> {
                 ),
                 Expanded(
                     child: tabDashboard('Solar Glass', AppAssets.planet, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              SolarGlass(id: "")),
-                      (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) =>
+                  //             SolarGlass(id: "")),
+                  //     (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,
@@ -169,7 +170,7 @@ class _WelcomePageState extends State<IqcpPage> {
                     child: tabDashboard('Ribbon', AppAssets.icDirectory, () {
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => EmployeeList()),
+                  //         builder: (BuildContext context) => SkeletonApp()),
                   //     (Route<dynamic> route) => false);
                 })),
                 const SizedBox(

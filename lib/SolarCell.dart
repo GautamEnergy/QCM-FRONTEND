@@ -621,6 +621,7 @@ class _SolarCellState extends State<SolarCell> {
     final url = (site! + "IQCSolarCell/AddIQCSolarCell");
 
     var params = {
+      "MaterialName": "Solar Cell",
       "SolarDetailId": SolarDetailId != '' && SolarDetailId != null
           ? SolarDetailId
           : widget.id != '' && widget.id != null
@@ -654,6 +655,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": visualCharactersticsController.text,
           "MeasuringMethod": visualMeasuringMethodController.text,
           "Sampling": visualSamplingController.text,
+          "SmapleSize": numberOfPackagingSampleFields,
           "Reference": visualReferenceDocController.text,
           "AcceptanceCriteria": visualAcceptanceCriteriaController.text,
           "Samples": visualSampleData
@@ -662,6 +664,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": physicalCharactersticsController.text,
           "MeasuringMethod": physicalMeasuringMethodController.text,
           "Sampling": physicalSamplingController.text,
+          "SmapleSize": numberOfPackagingSampleFields,
           "Reference": physicalReferenceDocController.text,
           "AcceptanceCriteria": physicalAcceptanceCriteriaController.text,
           "Samples": physicalSampleData
@@ -670,6 +673,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": frontbusCharactersticsController.text,
           "MeasuringMethod": frontbusMeasuringMethodController.text,
           "Sampling": frontbusSamplingController.text,
+          "SmapleSize": numberOfPackagingSampleFields,
           "Reference": frontbusReferenceDocController.text,
           "AcceptanceCriteria": frontbusAcceptanceCriteriaController.text,
           "Samples": frontbusSampleData
@@ -678,6 +682,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": verificationCharactersticsController.text,
           "MeasuringMethod": verificationMeasuringMethodController.text,
           "Sampling": verificationSamplingController.text,
+          "SmapleSize": numberOfPackagingSampleFields,
           "Reference": verificationReferenceDocController.text,
           "AcceptanceCriteria": verificationAcceptanceCriteriaController.text,
           "Samples": verificationSampleData
@@ -686,6 +691,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": electricalCharactersticsController.text,
           "MeasuringMethod": electricalMeasuringMethodController.text,
           "Sampling": electricalSamplingController.text,
+          "SmapleSize": numberOfPackagingSampleFields,
           "Reference": electricalReferenceDocController.text,
           "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
           "Samples": electricalSampleData
@@ -694,6 +700,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": performanceCharactersticsController.text,
           "MeasuringMethod": performanceMeasuringMethodController.text,
           "Sampling": performanceSamplingController.text,
+          "SmapleSize": numberOfPackagingSampleFields,
           "Reference": performanceReferenceDocController.text,
           "AcceptanceCriteria": performanceAcceptanceCriteriaController.text,
           "Samples": performanceSampleData

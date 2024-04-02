@@ -4,7 +4,6 @@ import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
-import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_assets.dart';
@@ -12,6 +11,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/Iqcp_list_model.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +32,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
 
   bool _isLoading = false;
   bool menu = false, user = false, face = false, home = false;
-
+  bool _enabled = false;
   List paymentModeData = [];
   String? personid,
       token,
@@ -77,9 +77,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
       department = prefs.getString('department');
       token = prefs.getString('token');
     });
-    print(designation);
-    print(department);
-    print("Hi...?");
 
     userdata = getData();
   }
@@ -89,6 +86,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
     site = prefs.getString('site');
     setState(() {
       _isLoading = true;
+      // _enabled = true;
     });
 
     final url = (site! + 'IQCSolarCell/GetIQCTests');
@@ -104,6 +102,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
       if (mounted) {
         setState(() {
           _isLoading = false;
+          // _enabled = false;
           decodedResult = jsonDecode(response.body);
         });
         //  prefs.setString(DBConst.directory, response.body);
@@ -132,36 +131,6 @@ class _IqcpTestListState extends State<IqcpTestList> {
 
       getData();
 
-      return;
-    } else {
-      throw Exception('Failed To Fetch Data');
-    }
-  }
-
-  void takeAttendance(empid) async {
-    final prefs = await SharedPreferences.getInstance();
-    site = prefs.getString('site');
-    final url = (site ?? '') + 'externalAttendance';
-    var response = await http.post(
-      Uri.parse(url),
-      body: jsonEncode(<String, String>{
-        "empid": empid,
-      }),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    print("Kya hai Response bhai...?");
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print(response.body);
-      Toast.show(response.body,
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: AppColors.primaryColor);
-      setState(() {
-        getData();
-      });
       return;
     } else {
       throw Exception('Failed To Fetch Data');
