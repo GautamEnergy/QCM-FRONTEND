@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/SolarCell.dart';
+import 'package:QCM/SolarGlass.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
@@ -603,10 +604,13 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         imageUrl: "profilepic",
                         height: 60,
                         width: 60,
+                        // planet
                         placeholder: (context, url) {
                           return ClipOval(
                             child: Image.asset(
-                              AppAssets.solarcell,
+                              materialname == "Solar Cell"
+                                  ? AppAssets.solarcell
+                                  : AppAssets.planet,
                               height: 60,
                               width: 60,
                             ),
@@ -615,7 +619,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         errorWidget: (context, url, error) {
                           return ClipOval(
                             child: Image.asset(
-                              AppAssets.solarcell,
+                              materialname == "Solar Cell"
+                                  ? AppAssets.solarcell
+                                  : AppAssets.planet,
                               height: 60,
                               width: 60,
                             ),
@@ -741,7 +747,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        SolarCell(id: id)),
+                                        materialname == "Solar Cell"
+                                            ? SolarCell(id: id)
+                                            : SolarGlass(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -752,7 +760,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         ),
                       ],
                     ),
-                  if (_hasBeenPressed1 == 'Inprogress')
+                  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -762,7 +770,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        SolarCell(id: id)),
+                                        materialname == "Solar Cell"
+                                            ? SolarCell(id: id)
+                                            : SolarGlass(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

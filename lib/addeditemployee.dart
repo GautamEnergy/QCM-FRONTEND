@@ -82,6 +82,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       announcementId,
       endDate,
       announcementStatus;
+  bool _isLoading = false;
 
   List bloodGroupList = [
     {"label": 'A+', "value": 'A+'},
@@ -157,13 +158,12 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
   @override
   void initState() {
-    _get();
     store();
     getLocationData();
     getReportingManagerData();
     getDepartmentData();
     getDsignationData();
-    getState();
+
     super.initState();
   }
 
@@ -180,181 +180,9 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
   Future<bool> redirectto() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EmployeeList();
+      return WelcomePage();
     }));
     return true;
-  }
-
-  Future _get() async {
-    print("in api");
-    print(widget.id);
-
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      site = prefs.getString('site');
-    });
-    final Allmember = ((site!) + 'getEmployeeListById');
-    final allmember = await http.post(
-      Uri.parse(Allmember),
-      body: jsonEncode(<String, String>{"personid": widget.id ?? ''}),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-
-    var resBody = json.decode(allmember.body);
-
-    if (mounted) {
-      setState(() {
-        data = resBody['data'];
-        if (data != null && data.length > 0) {
-          final dataMap = data.asMap();
-          print(dataMap[0][0]);
-          print("Bhanu");
-          print(dataMap[0][0]['issameaspresentaddress']);
-          print(dataMap[0][0]['personid'] ?? '');
-          profilepicture = dataMap[0][0]['profilepic'] ?? '';
-          employeeIdController.text = dataMap[0][0]['employeeid'] ?? '';
-          _employeementType = dataMap[0][0]['employeementtype'] ?? '';
-          joblocationController.text = dataMap[0][0]['joblocation'] ?? '';
-          //   SurnameController.text = dataMap[0]['surname'] ?? '';
-          reportingManagerController = dataMap[0][0]['reportingmanager'] ?? '';
-          fullnameController.text = dataMap[0][0]['fullname'] ?? '';
-          fathernameController.text = dataMap[0][0]['fathername'] ?? '';
-          dobController.text = DateFormat("EEE MMM dd, yyyy")
-                  .format(DateTime.parse(dataMap[0][0]['dob'].toString())) ??
-              '';
-          qualificationController.text = dataMap[0][0]['qualification'] ?? '';
-          _genderType = dataMap[0][0]['gender'] ?? '';
-          _maritalstatus = dataMap[0][0]['maritalstatus'] ?? '';
-          officialMobileController.text =
-              dataMap[0][0]['officialcontactno'] ?? '';
-          bloodGroupController = dataMap[0][0]['bloodgroup'] ?? '';
-          officialEmailController.text = dataMap[0][0]['officialemail'] ?? '';
-          personalMobileController.text =
-              dataMap[0][0]['personalcontactno'] ?? '';
-          personalEmailController.text = dataMap[0][0]['personalemail'] ?? '';
-          presentFulladdressController.text =
-              dataMap[0][0]['presentfulladdress'] ?? '';
-          PresentStateController = dataMap[0][0]['presentstate'] ?? '';
-          PresentCityController = dataMap[0][0]['presentcity'] ?? '';
-          _PresentCitycontroller.text = dataMap[0][0]['presentcity'] ?? '';
-          PresentPinCodeController.text = dataMap[0][0]['presentpincode'] ?? '';
-          sameAsPresentAddress =
-              dataMap[0][0]['issameaspresentaddress'] == 'true' ? true : false;
-          permanentFulladdressController.text =
-              dataMap[0][0]['permanentfulladdress'] ?? '';
-          PermanentStateController = dataMap[0][0]['permanentstate'] ?? null;
-          PermanentCityController = dataMap[0][0]['permanentcity'] ?? null;
-          _PermanentCitycontroller.text = dataMap[0][0]['permanentcity'] ?? '';
-          PermanentPinCodeController.text =
-              dataMap[0][0]['permanentpincode:'] ?? '';
-
-          doiController.text = DateFormat("EEE MMM dd, yyyy")
-                  .format(DateTime.parse(dataMap[0][0]['doi'].toString())) ??
-              '';
-          dojController.text = DateFormat("EEE MMM dd, yyyy")
-                  .format(DateTime.parse(dataMap[0][0]['doj'].toString())) ??
-              '';
-          departmentController = dataMap[0][0]['department'] ?? null;
-          designationController = dataMap[0][0]['designation'] ?? null;
-          banknameController.text = dataMap[0][0]['bankname'] ?? '';
-          accountNumberController.text = dataMap[0][0]['accountnumber'] ?? '';
-          ifsccodeController.text = dataMap[0][0]['ifsccode'] ?? '';
-          pannumberController.text = dataMap[0][0]['pannumber'] ?? '';
-          branchaddressController.text = dataMap[0][0]['branchaddress'] ?? '';
-          familynameController.text = dataMap[0][0]['familyname'] ?? '';
-          familyrelationController.text = dataMap[0][0]['familyrelation'] ?? '';
-          familyaddressController.text = dataMap[0][0]['familyaddress'] ?? '';
-          familycontactnumberController.text =
-              dataMap[0][0]['familycontactnumber'] ?? '';
-          _selectedFileName = dataMap[0][0]['joiningforms'] ?? "";
-        }
-      });
-      print("Bhaiiiii");
-      print(departmentController);
-      getDsignationData();
-      getState();
-      getCity();
-    }
-  }
-
-  Future getState() async {
-    final AllState = 'https://api.countrystatecity.in/v1/countries/IN/states';
-    final allstate = await http.get(
-      Uri.parse(AllState),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-CSCAPI-KEY':
-            'ajJrR1hBR1d5UHJkOHFTSkRoSTN2QWc0eUcyN2F5SGJUZWxqZXFMYw=='
-      },
-    );
-    statedata1 = json.decode(allstate.body);
-    if (mounted) {
-      setState(() {
-        //statedata1 = resBody;
-        statedata1.map((state) => StateRoleModel.fromJson(state)).toList();
-        statedata1.sort((a, b) {
-          return a['name'].toLowerCase().compareTo(b['name'].toLowerCase());
-        });
-      });
-      for (int i = 0; i < statedata1.length; i++) {
-        if (PresentStateController == statedata1[i]['iso2']) {
-          setState(() {
-            _PresentStatecontroller.text = statedata1[i]['name'];
-            PresentStateController = statedata1[i]['iso2'];
-          });
-        }
-      }
-    }
-  }
-
-  Future getCity() async {
-    final AllCity =
-        'https://api.countrystatecity.in/v1/countries/IN/states/$PresentStateController/cities';
-
-    final allcity = await http.get(
-      Uri.parse(AllCity),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-CSCAPI-KEY':
-            'ajJrR1hBR1d5UHJkOHFTSkRoSTN2QWc0eUcyN2F5SGJUZWxqZXFMYw=='
-      },
-    );
-    citydata1 = json.decode(allcity.body);
-    if (mounted) {
-      setState(() {
-        //citydata1 = resBody;
-        citydata1.map((city) => CityRoleModel.fromJson(city)).toList();
-        citydata1.sort((a, b) {
-          return a['name'].toLowerCase().compareTo(b['name'].toLowerCase());
-        });
-      });
-    }
-  }
-
-  Future getPermanentCity() async {
-    final AllCity =
-        'https://api.countrystatecity.in/v1/countries/IN/states/$PermanentStateController/cities';
-
-    final allcity = await http.get(
-      Uri.parse(AllCity),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-CSCAPI-KEY':
-            'ajJrR1hBR1d5UHJkOHFTSkRoSTN2QWc0eUcyN2F5SGJUZWxqZXFMYw=='
-      },
-    );
-    citydata1 = json.decode(allcity.body);
-    if (mounted) {
-      setState(() {
-        //citydata1 = resBody;
-        citydata1.map((city) => CityRoleModel.fromJson(city)).toList();
-        citydata1.sort((a, b) {
-          return a['name'].toLowerCase().compareTo(b['name'].toLowerCase());
-        });
-      });
-    }
   }
 
   @override
@@ -389,7 +217,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
               ),
               body: Padding(
                 padding: EdgeInsets.only(left: 10.0, right: 10, top: 15),
-                child: _user(),
+                child: _isLoading ? AppLoader() : _user(),
               ),
             )));
   }
@@ -530,529 +358,6 @@ class _ScoreDetailsState extends State<AddEditProfile> {
         }
         return null;
       },
-    );
-  }
-
-  TextFormField textFatherName() {
-    return TextFormField(
-        controller: fathernameController,
-        minLines: 1,
-        maxLines: null,
-        keyboardType: TextInputType.multiline,
-        textInputAction: TextInputAction.next,
-        decoration: AppStyles.textFieldInputDecoration.copyWith(
-            hintText: "Please Enter Father's Name",
-            counterText: '',
-            contentPadding: EdgeInsets.all(10)),
-        style: AppStyles.textInputTextStyle,
-        validator: MultiValidator(
-            [RequiredValidator(errorText: "Please enter father's name")]));
-  }
-
-  TextFormField textDob() {
-    return TextFormField(
-        controller: dobController,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.next,
-        decoration: AppStyles.textFieldInputDecoration.copyWith(
-            hintText: "Please Enter Date Of Birth",
-            counterText: '',
-            suffixIcon: Image.asset(
-              AppAssets.icCalenderBlue,
-              color: AppColors.primaryColor,
-            )),
-        style: AppStyles.textInputTextStyle,
-        onTap: () async {
-          DateTime date = DateTime(2021);
-          FocusScope.of(context).requestFocus(new FocusNode());
-          date = (await showDatePicker(
-              context: context,
-              initialDate: DateTime(2006),
-              firstDate: DateTime(1900),
-              lastDate: DateTime(2006)))!;
-          dobController.text = DateFormat("EEE MMM dd, yyyy")
-              .format(DateTime.parse(date.toString()));
-          setState(() {
-            dobdate = DateFormat("yyyy-MM-dd")
-                .format(DateTime.parse(date.toString()));
-          });
-        },
-        validator:
-            MultiValidator([RequiredValidator(errorText: "Please enter dob")]));
-  }
-
-  TextFormField textQualification() {
-    return TextFormField(
-      controller: qualificationController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Qualification",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter qualification';
-        }
-        return null;
-      },
-    );
-  }
-
-  gender() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Flexible(
-          child: RadioListTile(
-            title: Text(AppStrings.MALE),
-            activeColor: AppColors.primaryColor,
-            value: "Male",
-            groupValue: _genderType,
-            onChanged: (value) {
-              setState(() {
-                _genderType = value.toString();
-              });
-            },
-          ),
-        ),
-        Flexible(
-            child: RadioListTile(
-          title: Text(AppStrings.FEMALE),
-          activeColor: AppColors.primaryColor,
-          value: "Female",
-          groupValue: _genderType,
-          onChanged: (value) {
-            setState(() {
-              _genderType = value.toString();
-            });
-          },
-        ))
-      ],
-    );
-  }
-
-  maritalstatus() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Flexible(
-          child: RadioListTile(
-            title: Text("Married"),
-            activeColor: AppColors.primaryColor,
-            value: "Married",
-            groupValue: _maritalstatus,
-            onChanged: (value) {
-              setState(() {
-                _maritalstatus = value.toString();
-              });
-            },
-          ),
-        ),
-        Flexible(
-            child: RadioListTile(
-          title: Text("Unmarried"),
-          activeColor: AppColors.primaryColor,
-          value: "Unmarried",
-          groupValue: _maritalstatus,
-          onChanged: (value) {
-            setState(() {
-              _maritalstatus = value.toString();
-            });
-          },
-        ))
-      ],
-    );
-  }
-
-  DropdownButtonFormField textBloodGroup() {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        hintText: 'Please Select Blood Group', // Add hint text here
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      borderRadius: BorderRadius.circular(20),
-      items: bloodGroupList
-          .map((label) => DropdownMenuItem(
-                child:
-                    Text(label['label'], style: AppStyles.textInputTextStyle),
-                value: label['value'].toString(),
-              ))
-          .toList(),
-      onChanged: (val) {
-        setState(() {
-          bloodGroupController = val!;
-        });
-      },
-      value: bloodGroupController != '' ? bloodGroupController : null,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please select a blood group';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textOfficialMobile() {
-    return TextFormField(
-      controller: officialMobileController,
-      maxLength: 10,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      // enabled: false,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Official Mobile Number", counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "Please enter official mobile number";
-        } else if (value.length < 10) {
-          return "Please enter valid official mobile number";
-        } else {
-          return null;
-        }
-      },
-    );
-  }
-
-  TextFormField textOfficialEmail() {
-    return TextFormField(
-      controller: officialEmailController,
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration
-          .copyWith(hintText: "Please Enter Official Email", counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return "Please enter official email";
-        } else if (!email_validator.EmailValidator.validate(val)) {
-          return "Please enter valid official email";
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textpersonalMobile() {
-    return TextFormField(
-      controller: personalMobileController,
-      maxLength: 10,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      // enabled: false,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Personal Mobile Number", counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "Please enter official mobile number";
-        } else if (value.length < 10) {
-          return "Please enter valid personal mobile number";
-        } else {
-          return null;
-        }
-      },
-    );
-  }
-
-  TextFormField textpersonalEmail() {
-    return TextFormField(
-      controller: personalEmailController,
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Personal Email Id", counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return "Please enter personal email id";
-        } else if (!email_validator.EmailValidator.validate(val)) {
-          return "Please enter valid personal email id";
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textPresentFullAddress() {
-    return TextFormField(
-        controller: presentFulladdressController,
-        minLines: 2,
-        maxLines: null,
-        keyboardType: TextInputType.multiline,
-        textInputAction: TextInputAction.next,
-        decoration: AppStyles.textFieldInputDecoration.copyWith(
-            hintText: "Please Enter Full Address",
-            counterText: '',
-            contentPadding: const EdgeInsets.all(10)),
-        style: AppStyles.textInputTextStyle,
-        validator: MultiValidator(
-            [RequiredValidator(errorText: "Please enter full address")]));
-  }
-
-  TextFormField textPresentStateDropdown() {
-    return TextFormField(
-      controller: _PresentStatecontroller,
-      textInputAction: TextInputAction.next,
-      // enabled: isAllowedEdit,
-      keyboardType: TextInputType.text,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: AppStrings.HINT_SELECT_STATE,
-          counterText: '',
-          suffixIcon: Image.asset(AppAssets.icArrowDown)),
-      style: AppStyles.textInputTextStyle,
-      readOnly: true,
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return DialogRoleAllState(
-              data: statedata1,
-            );
-          },
-        ).then((value) => setState(() {
-              _PresentStatecontroller.text = value["StateName"];
-              PresentStateController = value['iso'];
-              _PresentCitycontroller.text = '';
-              getCity();
-            }));
-      },
-      validator: (value) {
-        if (value == null || value == '') {
-          return 'Please select a state';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textpresentcityDropdown() {
-    return TextFormField(
-      controller: _PresentCitycontroller,
-      textInputAction: TextInputAction.next,
-      // enabled: isAllowedEdit,
-      keyboardType: TextInputType.text,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: AppStrings.HINT_SELECT_CITY,
-          counterText: '',
-          suffixIcon: Image.asset(AppAssets.icArrowDown)),
-      style: AppStyles.textInputTextStyle,
-      readOnly: true,
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return DialogRoleAllcity(
-              data: citydata1,
-            );
-          },
-        ).then((value) => setState(() {
-              _PresentCitycontroller.text = value["Cityname"];
-              PresentCityController = value['Cityname'];
-            }));
-      },
-      validator: (value) {
-        if (value == null || value == '') {
-          return 'Please select a city';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textPresentPinCode() {
-    return TextFormField(
-      controller: PresentPinCodeController,
-      maxLength: 6,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: AppStrings.HINT_ENTER_POSTAL_CODE, counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-    );
-  }
-
-  TextFormField textPermanentFullAddress() {
-    return TextFormField(
-        controller: permanentFulladdressController,
-        minLines: 2,
-        maxLines: null,
-        keyboardType: TextInputType.multiline,
-        textInputAction: TextInputAction.next,
-        decoration: AppStyles.textFieldInputDecoration.copyWith(
-            hintText: "Please Enter Full Address",
-            counterText: '',
-            contentPadding: const EdgeInsets.all(10)),
-        style: AppStyles.textInputTextStyle,
-        validator: MultiValidator(
-            [RequiredValidator(errorText: "Please enter full address")]));
-  }
-
-  TextFormField textPermanentStateDropdown() {
-    return TextFormField(
-      controller: _PermanentStatecontroller,
-      textInputAction: TextInputAction.next,
-      // enabled: isAllowedEdit,
-      keyboardType: TextInputType.text,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: AppStrings.HINT_SELECT_STATE,
-          counterText: '',
-          suffixIcon: Image.asset(AppAssets.icArrowDown)),
-      style: AppStyles.textInputTextStyle,
-      readOnly: true,
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return DialogRoleAllState(
-              data: statedata1,
-            );
-          },
-        ).then((value) => setState(() {
-              _PermanentStatecontroller.text = value["StateName"];
-              PermanentStateController = value['iso'];
-              _PermanentCitycontroller.text = '';
-              getPermanentCity();
-            }));
-      },
-      validator: (value) {
-        if (value == null || value == '') {
-          return 'Please select a state';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textpermanentcityDropdown() {
-    return TextFormField(
-      controller: _PermanentCitycontroller,
-      textInputAction: TextInputAction.next,
-      // enabled: isAllowedEdit,
-      keyboardType: TextInputType.text,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: AppStrings.HINT_SELECT_CITY,
-          counterText: '',
-          suffixIcon: Image.asset(AppAssets.icArrowDown)),
-      style: AppStyles.textInputTextStyle,
-      readOnly: true,
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return DialogRoleAllcity(
-              data: citydata1,
-            );
-          },
-        ).then((value) => setState(() {
-              _PermanentCitycontroller.text = value["Cityname"];
-              PermanentCityController = value['Cityname'];
-            }));
-      },
-      validator: (value) {
-        if (value == null || value == '') {
-          return 'Please select a city';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textPermanentPinCode() {
-    return TextFormField(
-      controller: PermanentPinCodeController,
-      maxLength: 6,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: AppStrings.HINT_ENTER_POSTAL_CODE, counterText: ''),
-      style: AppStyles.textInputTextStyle,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-    );
-  }
-
-  TextFormField textDoi() {
-    return TextFormField(
-        controller: doiController,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.next,
-        decoration: AppStyles.textFieldInputDecoration.copyWith(
-            hintText: "Please Enter Date Of Interview",
-            counterText: '',
-            suffixIcon: Image.asset(
-              AppAssets.icCalenderBlue,
-              color: AppColors.primaryColor,
-            )),
-        style: AppStyles.textInputTextStyle,
-        onTap: () async {
-          DateTime date = DateTime(2021);
-          FocusScope.of(context).requestFocus(new FocusNode());
-          date = (await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2024),
-              lastDate: DateTime.now()))!;
-          doiController.text = DateFormat("EEE MMM dd, yyyy")
-              .format(DateTime.parse(date.toString()));
-          setState(() {
-            doidate = DateFormat("yyyy-MM-dd")
-                .format(DateTime.parse(date.toString()));
-          });
-        },
-        validator: MultiValidator(
-            [RequiredValidator(errorText: "Please enter date of interview")]));
-  }
-
-  TextFormField textDoj() {
-    return TextFormField(
-      controller: dojController,
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Date Of Joining",
-          counterText: '',
-          suffixIcon: Image.asset(
-            AppAssets.icCalenderBlue,
-            color: AppColors.primaryColor,
-          )),
-      style: AppStyles.textInputTextStyle,
-      onTap: () async {
-        DateTime date = DateTime(2021);
-        FocusScope.of(context).requestFocus(new FocusNode());
-        date = (await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2024),
-            lastDate: DateTime.now()))!;
-        dojController.text = DateFormat("EEE MMM dd, yyyy")
-            .format(DateTime.parse(date.toString()));
-        setState(() {
-          dojdate =
-              DateFormat("yyyy-MM-dd").format(DateTime.parse(date.toString()));
-        });
-      },
-      // validator: MultiValidator(
-      //     [RequiredValidator(errorText: "Please enter date of joining")])
     );
   }
 
@@ -1247,6 +552,9 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     String department,
     String designation,
   ) async {
+    setState(() {
+      _isLoading = true;
+    });
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
 
@@ -1280,14 +588,6 @@ class _ScoreDetailsState extends State<AddEditProfile> {
         upload((personlogoBytes ?? []), (personLogoname ?? ''));
         // pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
       }
-
-      Toast.show("Employee registered successfully.",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: AppColors.primaryColor);
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => EmployeeList()),
-          (Route<dynamic> route) => false);
     } else {
       Toast.show("Error on Server",
           duration: Toast.lengthLong,
@@ -1321,50 +621,21 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
     try {
       if (_response!.data != null) {
-        // Toast.show("Profile photo updated.",
-        //     duration: Toast.lengthLong,
-        //     gravity: Toast.center,
-        //     backgroundColor: Colors.indigoAccent);
+        setState(() {
+          _isLoading = false;
+        });
+        Toast.show("Employee registered successfully.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.primaryColor);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
+            (Route<dynamic> route) => false);
       }
     } catch (err) {
       print("Error");
     }
   }
-
-  // pdfFileUpload(List<int> bytes, String name) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   site = prefs.getString('site');
-
-  //   var currentdate = DateTime.now().microsecondsSinceEpoch;
-  //   var formData = FormData.fromMap({
-  //     'personid': setpersonid,
-  //     "File": MultipartFile.fromBytes(
-  //       bytes,
-  //       filename: (name + (currentdate.toString()) + '.pdf'),
-  //       contentType: MediaType("application", 'pdf'),
-  //     ),
-  //   });
-
-  //   _response = await _dio.post((site! + 'UploadJoiningForms'), // Prod
-
-  //       options: Options(
-  //         contentType: 'multipart/form-data',
-  //         followRedirects: false,
-  //         validateStatus: (status) => true,
-  //       ),
-  //       data: formData);
-
-  //   try {
-  //     if (_response!.data != null) {
-  //       // Toast.show("Profile photo updated.",
-  //       //     duration: Toast.lengthLong,
-  //       //     gravity: Toast.center,
-  //       //     backgroundColor: Colors.indigoAccent);
-  //     }
-  //   } catch (err) {
-  //     print("Error");
-  //   }
-  // }
 
   Widget _user() {
     return Form(

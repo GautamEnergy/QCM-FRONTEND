@@ -395,6 +395,8 @@ class _SolarCellState extends State<SolarCell> {
   }
 
   Future _get() async {
+    print("Id.....Cell");
+    print(widget.id);
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       if (widget.id != '' && widget.id != null) {
@@ -495,13 +497,13 @@ class _SolarCellState extends State<SolarCell> {
           result = dataMap[0]['Result'] ?? 'Fail';
           status = dataMap[0]['Status'] ?? '';
 
-          packagingRejection = dataMap[0]['RejectPackaging'] ?? 'false';
-          visualRejection = dataMap[0]['RejectVisual'] ?? 'false';
-          physicalRejection = dataMap[0]['RejectPhysical'] ?? 'false';
-          frontbusRejection = dataMap[0]['RejectFrontBus'] ?? 'false';
-          verificationRejection = dataMap[0]['RejectVerification'] ?? 'false';
-          electricalRejection = dataMap[0]['RejectElectrical'] ?? 'false';
-          performanceRejection = dataMap[0]['RejectPerformance'] ?? 'false';
+          packagingRejection = dataMap[0]['RejectPackaging'] ?? false;
+          visualRejection = dataMap[0]['RejectVisual'] ?? false;
+          physicalRejection = dataMap[0]['RejectPhysical'] ?? false;
+          frontbusRejection = dataMap[0]['RejectFrontBus'] ?? false;
+          verificationRejection = dataMap[0]['RejectVerification'] ?? false;
+          electricalRejection = dataMap[0]['RejectElectrical'] ?? false;
+          performanceRejection = dataMap[0]['RejectPerformance'] ?? false;
           rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
 
           invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
@@ -646,7 +648,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": packagingCharactersticsController.text,
           "MeasuringMethod": packagingMeasuringMethodController.text,
           "Sampling": packagingSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": numberOfPackagingSampleFields,
           "Reference": packagingReferenceDocController.text,
           "AcceptanceCriteria": packagingAcceptanceCriteriaController.text,
           "Samples": packagingSampleData
@@ -655,7 +657,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": visualCharactersticsController.text,
           "MeasuringMethod": visualMeasuringMethodController.text,
           "Sampling": visualSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": visualSampleSizeController.text,
           "Reference": visualReferenceDocController.text,
           "AcceptanceCriteria": visualAcceptanceCriteriaController.text,
           "Samples": visualSampleData
@@ -664,7 +666,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": physicalCharactersticsController.text,
           "MeasuringMethod": physicalMeasuringMethodController.text,
           "Sampling": physicalSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": physicalSampleSizeController.text,
           "Reference": physicalReferenceDocController.text,
           "AcceptanceCriteria": physicalAcceptanceCriteriaController.text,
           "Samples": physicalSampleData
@@ -673,7 +675,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": frontbusCharactersticsController.text,
           "MeasuringMethod": frontbusMeasuringMethodController.text,
           "Sampling": frontbusSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": frontbusSampleSizeController.text,
           "Reference": frontbusReferenceDocController.text,
           "AcceptanceCriteria": frontbusAcceptanceCriteriaController.text,
           "Samples": frontbusSampleData
@@ -682,7 +684,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": verificationCharactersticsController.text,
           "MeasuringMethod": verificationMeasuringMethodController.text,
           "Sampling": verificationSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": verificationSampleSizeController.text,
           "Reference": verificationReferenceDocController.text,
           "AcceptanceCriteria": verificationAcceptanceCriteriaController.text,
           "Samples": verificationSampleData
@@ -691,7 +693,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": electricalCharactersticsController.text,
           "MeasuringMethod": electricalMeasuringMethodController.text,
           "Sampling": electricalSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": electricalSampleSizeController.text,
           "Reference": electricalReferenceDocController.text,
           "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
           "Samples": electricalSampleData
@@ -700,7 +702,7 @@ class _SolarCellState extends State<SolarCell> {
           "Characterstics": performanceCharactersticsController.text,
           "MeasuringMethod": performanceMeasuringMethodController.text,
           "Sampling": performanceSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": performanceSampleSizeController.text,
           "Reference": performanceReferenceDocController.text,
           "AcceptanceCriteria": performanceAcceptanceCriteriaController.text,
           "Samples": performanceSampleData
@@ -6060,7 +6062,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                                           _pickInvoicePDF();
                                                                                                         }
                                                                                                       },
-                                                                                                      icon: widget.id != null && widget.id != '' && invoicePdfController.text != '' ? const Icon(Icons.open_in_browser) : const Icon(Icons.upload_file),
+                                                                                                      icon: widget.id != null && widget.id != '' && invoicePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
                                                                                                     ),
                                                                                                     counterText: ''),
                                                                                                 style: AppStyles.textInputTextStyle,
@@ -6098,7 +6100,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                                           _pickcocPDF();
                                                                                                         }
                                                                                                       },
-                                                                                                      icon: widget.id != null && widget.id != '' && cocPdfController.text != '' ? const Icon(Icons.open_in_browser) : const Icon(Icons.upload_file),
+                                                                                                      icon: widget.id != null && widget.id != '' && cocPdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
                                                                                                     ),
                                                                                                     counterText: ''),
                                                                                                 style: AppStyles.textInputTextStyle,

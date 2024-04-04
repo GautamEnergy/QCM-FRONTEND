@@ -388,6 +388,8 @@ class _SolarGlassState extends State<SolarGlass> {
   }
 
   Future _get() async {
+    print("Id.....");
+    print(widget.id);
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       if (widget.id != '' && widget.id != null) {
@@ -410,10 +412,13 @@ class _SolarGlassState extends State<SolarGlass> {
     if (mounted) {
       setState(() {
         data = resBody;
+        print(data);
 
         if (data != null && data.length > 0) {
           _isLoading = false;
           final dataMap = data.asMap();
+          print("Datata........??");
+          print(dataMap[0]);
 
           lotSizeController.text = dataMap[0]['LotSize'] ?? '';
           supplierNameController.text = dataMap[0]['SupplierName'] ?? '';
@@ -478,23 +483,23 @@ class _SolarGlassState extends State<SolarGlass> {
                   .toString();
           Electrical = dataMap[0]['Electrical'] ?? [];
 
-          performanceSampleSizeController.text =
-              (dataMap[0]['SampleSizePerformance'] != 0
-                      ? dataMap[0]['SampleSizePerformance']
-                      : "")
-                  .toString();
-          Performance = dataMap[0]['Performance'] ?? [];
+          // performanceSampleSizeController.text =
+          //     (dataMap[0]['SampleSizePerformance'] != 0
+          //             ? dataMap[0]['SampleSizePerformance']
+          //             : "")
+          //         .toString();
+          // Performance = dataMap[0]['Performance'] ?? [];
 
           result = dataMap[0]['Result'] ?? 'Fail';
           status = dataMap[0]['Status'] ?? '';
 
-          packagingRejection = dataMap[0]['RejectPackaging'] ?? 'false';
-          visualRejection = dataMap[0]['RejectVisual'] ?? 'false';
-          physicalRejection = dataMap[0]['RejectPhysical'] ?? 'false';
-          frontbusRejection = dataMap[0]['RejectFrontBus'] ?? 'false';
-          verificationRejection = dataMap[0]['RejectVerification'] ?? 'false';
-          electricalRejection = dataMap[0]['RejectElectrical'] ?? 'false';
-          performanceRejection = dataMap[0]['RejectPerformance'] ?? 'false';
+          packagingRejection = dataMap[0]['RejectPackaging'] ?? false;
+          visualRejection = dataMap[0]['RejectVisual'] ?? false;
+          physicalRejection = dataMap[0]['RejectPhysical'] ?? false;
+          frontbusRejection = dataMap[0]['RejectFrontBus'] ?? false;
+          verificationRejection = dataMap[0]['RejectVerification'] ?? false;
+          electricalRejection = dataMap[0]['RejectElectrical'] ?? false;
+          performanceRejection = dataMap[0]['RejectPerformance'] ?? false;
           rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
 
           invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
@@ -639,7 +644,7 @@ class _SolarGlassState extends State<SolarGlass> {
           "Characterstics": packagingCharactersticsController.text,
           "MeasuringMethod": packagingMeasuringMethodController.text,
           "Sampling": packagingSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": numberOfPackagingSampleFields,
           "Reference": packagingReferenceDocController.text,
           "AcceptanceCriteria": packagingAcceptanceCriteriaController.text,
           "Samples": packagingSampleData
@@ -648,7 +653,7 @@ class _SolarGlassState extends State<SolarGlass> {
           "Characterstics": visualCharactersticsController.text,
           "MeasuringMethod": visualMeasuringMethodController.text,
           "Sampling": visualSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": numberOfVisualSampleFields,
           "Reference": visualReferenceDocController.text,
           "AcceptanceCriteria": visualAcceptanceCriteriaController.text,
           "Samples": visualSampleData
@@ -657,7 +662,7 @@ class _SolarGlassState extends State<SolarGlass> {
           "Characterstics": physicalCharactersticsController.text,
           "MeasuringMethod": physicalMeasuringMethodController.text,
           "Sampling": physicalSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": numberOfPhysicalSampleFields,
           "Reference": physicalReferenceDocController.text,
           "AcceptanceCriteria": physicalAcceptanceCriteriaController.text,
           "Samples": physicalSampleData
@@ -666,7 +671,7 @@ class _SolarGlassState extends State<SolarGlass> {
           "Characterstics": frontbusCharactersticsController.text,
           "MeasuringMethod": frontbusMeasuringMethodController.text,
           "Sampling": frontbusSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": numberOfFrontbusSampleFields,
           "Reference": frontbusReferenceDocController.text,
           "AcceptanceCriteria": frontbusAcceptanceCriteriaController.text,
           "Samples": frontbusSampleData
@@ -675,7 +680,7 @@ class _SolarGlassState extends State<SolarGlass> {
           "Characterstics": verificationCharactersticsController.text,
           "MeasuringMethod": verificationMeasuringMethodController.text,
           "Sampling": verificationSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": numberOfVerificationSampleFields,
           "Reference": verificationReferenceDocController.text,
           "AcceptanceCriteria": verificationAcceptanceCriteriaController.text,
           "Samples": verificationSampleData
@@ -684,7 +689,7 @@ class _SolarGlassState extends State<SolarGlass> {
           "Characterstics": electricalCharactersticsController.text,
           "MeasuringMethod": electricalMeasuringMethodController.text,
           "Sampling": electricalSamplingController.text,
-          "SmapleSize": numberOfPackagingSampleFields,
+          "SampleSize": numberOfElectricalSampleFields,
           "Reference": electricalReferenceDocController.text,
           "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
           "Samples": electricalSampleData
@@ -693,7 +698,7 @@ class _SolarGlassState extends State<SolarGlass> {
         //   "Characterstics": performanceCharactersticsController.text,
         //   "MeasuringMethod": performanceMeasuringMethodController.text,
         //   "Sampling": performanceSamplingController.text,
-        //   "SmapleSize": numberOfPackagingSampleFields,
+        //   "SampleSize": numberOfPerformanceSampleFields,
         //   "Reference": performanceReferenceDocController.text,
         //   "AcceptanceCriteria": performanceAcceptanceCriteriaController.text,
         //   "Samples": performanceSampleData
@@ -3631,8 +3636,10 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
-                                                                  readOnly:
-                                                                      true,
+                                                                  readOnly: status ==
+                                                                          'Pending'
+                                                                      ? true
+                                                                      : false,
                                                                   validator:
                                                                       MultiValidator([
                                                                     RequiredValidator(
@@ -5258,7 +5265,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                                       }
 
                                                                                       setState(() {
-                                                                                        setPage = "performance";
+                                                                                        setPage = "result";
                                                                                       });
                                                                                       if (status != 'Pending') {
                                                                                         setState(() {
@@ -5584,7 +5591,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                                                   _pickInvoicePDF();
                                                                                                 }
                                                                                               },
-                                                                                              icon: widget.id != null && widget.id != '' && invoicePdfController.text != '' ? const Icon(Icons.open_in_browser) : const Icon(Icons.upload_file),
+                                                                                              icon: widget.id != null && widget.id != '' && invoicePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
                                                                                             ),
                                                                                             counterText: ''),
                                                                                         style: AppStyles.textInputTextStyle,
@@ -5622,7 +5629,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                                                   _pickcocPDF();
                                                                                                 }
                                                                                               },
-                                                                                              icon: widget.id != null && widget.id != '' && cocPdfController.text != '' ? const Icon(Icons.open_in_browser) : const Icon(Icons.upload_file),
+                                                                                              icon: widget.id != null && widget.id != '' && cocPdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
                                                                                             ),
                                                                                             counterText: ''),
                                                                                         style: AppStyles.textInputTextStyle,
@@ -5766,7 +5773,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 _isLoading = false;
-                                                                                                setPage = "checkperformance";
+                                                                                                setPage = "checkelectrical";
                                                                                               });
                                                                                               // Navigator.of(context).pushReplacement(
                                                                                               //     MaterialPageRoute(
