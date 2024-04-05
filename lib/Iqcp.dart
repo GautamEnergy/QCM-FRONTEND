@@ -1,7 +1,7 @@
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Skeleton.dart';
+
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/SolarGlass.dart';
 import 'package:QCM/Welcomepage.dart';

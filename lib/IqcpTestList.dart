@@ -13,7 +13,7 @@ import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/Iqcp_list_model.dart';
 import 'package:intl/intl.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
