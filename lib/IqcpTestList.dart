@@ -782,10 +782,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                   10), // Optional: Add border radius for rounded corners
                             ),
                             child: Text(
-                              'Test Date: ' +
-                                  DateFormat("dd MMM yyyy").format(
-                                      DateTime.parse(
-                                          qualityCheckDate.toString())),
+                              DateFormat("dd MMM yyyy").format(
+                                  DateTime.parse(qualityCheckDate.toString())),
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
@@ -823,77 +821,83 @@ class _IqcpTestListState extends State<IqcpTestList> {
                           ),
                         if (_hasBeenPressed1 == 'Approved')
                           Row(children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(
-                                    255, 4, 68, 243), // Background color
-                                borderRadius: BorderRadius.circular(
-                                    10), // Optional: Add border radius for rounded corners
-                              ),
-                              child: const Text(
-                                "Invoice :",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 11,
-                                  color: Color.fromARGB(255, 255, 255,
-                                      255), // Optional: Set text color
+                            if (invoicePdf != null && invoicePdf != '')
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(
+                                      255, 4, 68, 243), // Background color
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Optional: Add border radius for rounded corners
+                                ),
+                                child: const Text(
+                                  "Invoice :",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Color.fromARGB(255, 255, 255,
+                                        255), // Optional: Set text color
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                UrlLauncher.launch(invoicePdf);
-                              },
-                              child: ClipRRect(
-                                child: Image.asset(
-                                  AppAssets.icPdf,
-                                  width: 30,
-                                  height: 30,
+                            if (invoicePdf != null && invoicePdf != '')
+                              const SizedBox(
+                                width: 5,
+                              ),
+                            if (invoicePdf != null && invoicePdf != '')
+                              GestureDetector(
+                                onTap: () {
+                                  UrlLauncher.launch(invoicePdf);
+                                },
+                                child: ClipRRect(
+                                  child: Image.asset(
+                                    AppAssets.icPdf,
+                                    width: 30,
+                                    height: 30,
+                                  ),
                                 ),
                               ),
-                            ),
                             const SizedBox(
                               width: 20,
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(
-                                    255, 100, 243, 4), // Background color
-                                borderRadius: BorderRadius.circular(
-                                    10), // Optional: Add border radius for rounded corners
-                              ),
-                              child: const Text(
-                                "COC :",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 11,
+                            if (cOCPdf != null && cOCPdf != '')
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
                                   color: Color.fromARGB(
-                                      255, 0, 0, 0), // Optional: Set text color
+                                      255, 100, 243, 4), // Background color
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Optional: Add border radius for rounded corners
+                                ),
+                                child: const Text(
+                                  "COC :",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Color.fromARGB(255, 0, 0,
+                                        0), // Optional: Set text color
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                UrlLauncher.launch(cOCPdf);
-                              },
-                              child: ClipRRect(
-                                child: Image.asset(
-                                  AppAssets.icPdf,
-                                  width: 30,
-                                  height: 30,
+                            if (cOCPdf != null && cOCPdf != '')
+                              const SizedBox(
+                                width: 5,
+                              ),
+                            if (cOCPdf != null && cOCPdf != '')
+                              GestureDetector(
+                                onTap: () {
+                                  UrlLauncher.launch(cOCPdf);
+                                },
+                                child: ClipRRect(
+                                  child: Image.asset(
+                                    AppAssets.icPdf,
+                                    width: 30,
+                                    height: 30,
+                                  ),
                                 ),
                               ),
-                            ),
                           ]),
 
                         const SizedBox(

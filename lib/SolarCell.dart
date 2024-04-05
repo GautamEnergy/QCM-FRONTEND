@@ -1095,7 +1095,7 @@ class _SolarCellState extends State<SolarCell> {
                                           date = (await showDatePicker(
                                               context: context,
                                               initialDate: DateTime.now(),
-                                              firstDate: DateTime.now(),
+                                              firstDate: DateTime(2024),
                                               lastDate: DateTime.now()))!;
                                           dateOfQualityCheckController.text =
                                               DateFormat("EEE MMM dd, yyyy")
