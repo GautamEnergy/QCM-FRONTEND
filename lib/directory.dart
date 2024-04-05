@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/LoginPage.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -450,10 +451,18 @@ class _DirectoryState extends State<EmployeeList> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        department == 'IQCP' &&
-                                                designation == 'QC'
+                                        (department == 'IQCP' &&
+                                                designation != 'Super Admin')
                                             ? IqcpPage()
-                                            : WelcomePage()));
+                                            : (department == 'IPQP' &&
+                                                    designation !=
+                                                        'Super Admin')
+                                                ? IpqcPage()
+                                                : (department == 'FQCP' &&
+                                                        designation !=
+                                                            'Super Admin')
+                                                    ? IqcpPage()
+                                                    : WelcomePage()));
                           },
                           child: Image.asset(
                               home

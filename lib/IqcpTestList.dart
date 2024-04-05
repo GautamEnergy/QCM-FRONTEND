@@ -142,7 +142,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (BuildContext context) =>
-                department == 'IQCP' && designation == 'QC'
+                department == 'IQCP' && designation != 'Super Admin'
                     ? IqcpPage()
                     : WelcomePage()),
         (Route<dynamic> route) => false);
@@ -178,7 +178,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return department == 'IQCP' && designation == 'QC'
+                      return department == 'IQCP' &&
+                              designation != 'Super Admin'
                           ? IqcpPage()
                           : WelcomePage();
                     }));
@@ -222,7 +223,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         department == 'IQCP' &&
-                                                designation == 'QC'
+                                                designation != 'Super Admin'
                                             ? IqcpPage()
                                             : WelcomePage()));
                           },
@@ -760,7 +761,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         ),
                       ],
                     ),
-                  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                  // if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                  if (_hasBeenPressed1 == 'Inprogress')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

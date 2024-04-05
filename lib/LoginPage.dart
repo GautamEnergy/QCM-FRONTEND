@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
@@ -34,11 +35,13 @@ class _LoginPageState extends State<LoginPage> {
   String? uid, deviceType, designation, department;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-  // String path = "http://192.168.0.110:5000/"; //local
-  String path =
-      "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic Dev
+  String path = "http://192.168.0.100:8080/"; //local
+  // String path =
+  //     "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic Dev
   // String path =
   //     "https://sore-rose-kingfisher-tutu.cyclic.app/"; // QCM App Cyclic Prod
+
+  // String path = "https://xvvmywehv3.ap-south-1.awsapprunner.com/"; // AWS Prod
 
   @override
   void initState() {
@@ -85,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       if (objData['msg'] == "Wrong EmployeeId") {
-        Toast.show("Employee id is not valid.",
+        Toast.show("Login id is not valid.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: Colors.red);
@@ -119,10 +122,14 @@ class _LoginPageState extends State<LoginPage> {
             designation = prefs.getString('designation')!;
             department = prefs.getString('department')!;
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    department == 'IQCP' && designation == 'QC'
-                        ? IqcpPage()
-                        : WelcomePage()));
+                builder: (BuildContext context) => (department == 'IQCP' &&
+                        designation != 'Super Admin')
+                    ? IqcpPage()
+                    : (department == 'IPQP' && designation != 'Super Admin')
+                        ? IpqcPage()
+                        : (department == 'FQCP' && designation != 'Super Admin')
+                            ? IqcpPage()
+                            : WelcomePage()));
           });
           print(prefs.getString('site'));
         }
@@ -188,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                               textInputAction: TextInputAction.next,
                               decoration: AppStyles.textFieldInputDecoration
                                   .copyWith(
-                                      hintText: "Please Enter Employee Id",
+                                      hintText: "Please Enter Login Id",
                                       counterText: '',
                                       contentPadding: EdgeInsets.all(10)),
                               style: AppStyles.textInputTextStyle,

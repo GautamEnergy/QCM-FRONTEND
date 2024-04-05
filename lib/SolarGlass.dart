@@ -5827,7 +5827,8 @@ class _SolarGlassState extends State<SolarGlass> {
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              department == 'IQCP' && designation == 'QC'
+                              department == 'IQCP' &&
+                                      designation != 'Super Admin'
                                   ? IqcpPage()
                                   : WelcomePage()));
                     },

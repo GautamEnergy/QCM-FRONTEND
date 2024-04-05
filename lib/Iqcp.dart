@@ -1,5 +1,6 @@
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Skeleton.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/SolarGlass.dart';
@@ -104,7 +105,7 @@ class _WelcomePageState extends State<IqcpPage> {
       appBar: GautamAppBar(
         organization: "organizationtype",
         isBackRequired:
-            department == 'IQCP' && designation == 'QC' ? false : true,
+            department == 'IQCP' && designation != 'Super Admin' ? false : true,
         memberId: "personid",
         imgPath: "ImagePath",
         memberPic: pic,
@@ -259,9 +260,15 @@ class _WelcomePageState extends State<IqcpPage> {
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          department == 'IQCP' && designation == 'QC'
+                          (department == 'IQCP' && designation != 'Super Admin')
                               ? IqcpPage()
-                              : WelcomePage()));
+                              : (department == 'IPQP' &&
+                                      designation != 'Super Admin')
+                                  ? IpqcPage()
+                                  : (department == 'FQCP' &&
+                                          designation != 'Super Admin')
+                                      ? IqcpPage()
+                                      : WelcomePage()));
                 },
                 child: Image.asset(
                     home
@@ -273,7 +280,7 @@ class _WelcomePageState extends State<IqcpPage> {
             ),
             InkWell(
                 onTap: () {
-                  if (designation != 'QC') {
+                  if (designation == 'Super Admin') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (BuildContext context) => AddEditProfile()));
                   }

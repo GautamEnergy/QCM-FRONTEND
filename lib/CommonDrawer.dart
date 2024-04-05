@@ -1,4 +1,5 @@
 import 'package:QCM/InOutList.dart';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -133,9 +134,16 @@ class _PublicDrawerState extends State<PublicDrawer> {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              department == 'IQCP' && designation == 'QC'
+                              (department == 'IQCP' &&
+                                      designation != 'Super Admin')
                                   ? IqcpPage()
-                                  : WelcomePage()),
+                                  : (department == 'IPQP' &&
+                                          designation != 'Super Admin')
+                                      ? IpqcPage()
+                                      : (department == 'FQCP' &&
+                                              designation != 'Super Admin')
+                                          ? IqcpPage()
+                                          : WelcomePage()),
                       (Route<dynamic> route) => false);
                 })),
                 SizedBox(
@@ -287,9 +295,15 @@ class _PublicDrawerState extends State<PublicDrawer> {
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          department == 'IQCP' && designation == 'QC'
+                          (department == 'IQCP' && designation != 'Super Admin')
                               ? IqcpPage()
-                              : WelcomePage()));
+                              : (department == 'IPQP' &&
+                                      designation != 'Super Admin')
+                                  ? IpqcPage()
+                                  : (department == 'FQCP' &&
+                                          designation != 'Super Admin')
+                                      ? IqcpPage()
+                                      : WelcomePage()));
                 },
                 child: Image.asset(
                     home

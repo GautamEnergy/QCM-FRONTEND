@@ -423,6 +423,11 @@ class _SolarCellState extends State<SolarCell> {
         if (data != null && data.length > 0) {
           _isLoading = false;
           final dataMap = data.asMap();
+          print("Pageee..............???");
+          print(dataMap[0]['SampleSizeVisual']);
+          print(dataMap[0]['Page']);
+          numberOfVisualSampleFields = (dataMap[0]['SampleSizeVisual'] ??
+              dataMap[0]['SampleSizeVisual']);
 
           lotSizeController.text = dataMap[0]['LotSize'] ?? '';
           supplierNameController.text = dataMap[0]['SupplierName'] ?? '';
@@ -453,6 +458,8 @@ class _SolarCellState extends State<SolarCell> {
                   : 1);
           Packaging = dataMap[0]['Packaging'] ?? [];
 
+          // numberOfVisualSampleFields = (dataMap[0]['SampleSizeVisual'] ??
+          //     dataMap[0]['SampleSizeVisual']);
           visualSampleSizeController.text = (dataMap[0]['SampleSizeVisual'] != 0
                   ? dataMap[0]['SampleSizeVisual']
                   : "")
@@ -508,6 +515,10 @@ class _SolarCellState extends State<SolarCell> {
 
           invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
           cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
+
+          if (status == 'Inprogress') {
+            setPage = dataMap[0]['Page'] ?? 'heading';
+          }
         }
       });
     }
@@ -629,6 +640,7 @@ class _SolarCellState extends State<SolarCell> {
           : widget.id != '' && widget.id != null
               ? widget.id
               : '',
+      "Page": setPage,
       "Status": sendStatus,
       "CurrentUser": personid,
       "SolarCellDetails": {
@@ -6298,7 +6310,8 @@ class _SolarCellState extends State<SolarCell> {
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              department == 'IQCP' && designation == 'QC'
+                              department == 'IQCP' &&
+                                      designation != 'Super Admin'
                                   ? IqcpPage()
                                   : WelcomePage()));
                     },

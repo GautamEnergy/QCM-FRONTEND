@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
@@ -209,9 +210,15 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 logo: "logo",
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return department == 'IQCP' && designation == 'QC'
+                    return (department == 'IQCP' &&
+                            designation != 'Super Admin')
                         ? IqcpPage()
-                        : WelcomePage();
+                        : (department == 'IPQP' && designation != 'Super Admin')
+                            ? IpqcPage()
+                            : (department == 'FQCP' &&
+                                    designation != 'Super Admin')
+                                ? IqcpPage()
+                                : WelcomePage();
                   }));
                 },
               ),

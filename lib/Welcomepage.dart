@@ -135,7 +135,8 @@ class _WelcomePageState extends State<WelcomePage> {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                department == 'IQCP' && designation == 'QC'
+                                department == 'IQCP' &&
+                                        designation != 'Super Admin'
                                     ? IqcpPage()
                                     : IqcpTestList()),
                         (Route<dynamic> route) => false);
@@ -209,7 +210,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          department == 'IQCP' && designation == 'QC'
+                          department == 'IQCP' && designation != 'Super Admin'
                               ? IqcpPage()
                               : WelcomePage()));
                 },
@@ -223,7 +224,7 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
             InkWell(
                 onTap: () {
-                  if (designation != 'QC') {
+                  if (designation == 'Super Admin') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (BuildContext context) => AddEditProfile()));
                   }

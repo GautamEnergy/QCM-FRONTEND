@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/LoginPage.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -67,10 +68,14 @@ class _SplashScreenState extends State<SplashScreen> {
         Timer(
             Duration(seconds: 2),
             () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    department == 'IQCP' && designation == 'QC'
-                        ? IqcpPage()
-                        : WelcomePage())));
+                builder: (BuildContext context) => (department == 'IQCP' &&
+                        designation != 'Super Admin')
+                    ? IqcpPage()
+                    : (department == 'IPQP' && designation != 'Super Admin')
+                        ? IpqcPage()
+                        : (department == 'FQCP' && designation != 'Super Admin')
+                            ? IqcpPage()
+                            : WelcomePage())));
       } else {
         Timer(
             Duration(seconds: 3),
