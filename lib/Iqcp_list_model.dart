@@ -34,6 +34,10 @@ class UserData {
   String? name;
   String? profileImg;
   String? location;
+  String? supplierName;
+  DateTime? qualityCheckDate;
+  String? cOCPdf;
+  String? invoicePdf;
   String? solarDetailID;
   String? invoiceNo;
   String? materialName;
@@ -43,6 +47,10 @@ class UserData {
       this.name,
       this.profileImg,
       this.location,
+      this.supplierName,
+      this.qualityCheckDate,
+      this.cOCPdf,
+      this.invoicePdf,
       this.solarDetailID,
       this.invoiceNo,
       this.materialName});
@@ -52,6 +60,10 @@ class UserData {
     name = json['Name'];
     profileImg = json['ProfileImg'];
     location = json['Location'];
+    supplierName = json['SupplierName'];
+    qualityCheckDate = DateTime.parse(json['QualityCheckDate']);
+    cOCPdf = json['COCPdf'];
+    invoicePdf = json['InvoicePdf'];
     solarDetailID = json['SolarDetailID'];
     invoiceNo = json['InvoiceNo'];
     materialName = json['MaterialName'];
@@ -63,6 +75,10 @@ class UserData {
     data['Name'] = this.name;
     data['ProfileImg'] = this.profileImg;
     data['Location'] = this.location;
+    data['SupplierName'] = this.supplierName;
+    data['QualityCheckDate'] = this.qualityCheckDate;
+    data['COCPdf'] = this.cOCPdf;
+    data['InvoicePdf'] = this.invoicePdf;
     data['SolarDetailID'] = this.solarDetailID;
     data['InvoiceNo'] = this.invoiceNo;
     data['MaterialName'] = this.materialName;

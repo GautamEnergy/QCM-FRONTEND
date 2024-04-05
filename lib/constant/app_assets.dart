@@ -74,6 +74,7 @@ class AppAssets {
   static String icRoundCallBlue = 'assets/icons/ic_round_call_blue.png';
   static String icclose = 'assets/icons/location.png';
   static String icLocate = 'assets/icons/ic_location_square_Bp.png';
+  static String icPdf = 'assets/icons/pdf.png';
   static String icRoundDownArrow = 'assets/icons/ic_round_down_arrow.png';
   static String icCard = 'assets/icons/ic_card.png';
   static String icRoundWeb = 'assets/icons/location.png';

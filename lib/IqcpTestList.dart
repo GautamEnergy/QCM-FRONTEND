@@ -12,6 +12,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/Iqcp_list_model.dart';
+import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -501,7 +502,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].invoiceNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].supplierName ?? '',
+                            data.data![index].qualityCheckDate.toString() ?? '',
+                            data.data![index].cOCPdf ?? '',
+                            data.data![index].invoicePdf ?? ''));
                   } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
@@ -517,7 +522,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].invoiceNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].supplierName ?? '',
+                            data.data![index].qualityCheckDate.toString() ?? '',
+                            data.data![index].cOCPdf ?? '',
+                            data.data![index].invoicePdf ?? ''));
                   } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -530,8 +539,12 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].invoiceNo ?? '',
-                            data.data![index].employeeID ?? ''));
-                  } else if (data.data![index].invoiceNo!
+                            data.data![index].employeeID ?? '',
+                            data.data![index].supplierName ?? '',
+                            data.data![index].qualityCheckDate.toString() ?? '',
+                            data.data![index].cOCPdf ?? '',
+                            data.data![index].invoicePdf ?? ''));
+                  } else if (data.data![index].supplierName!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
@@ -543,7 +556,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].invoiceNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].supplierName ?? '',
+                            data.data![index].qualityCheckDate.toString() ?? '',
+                            data.data![index].cOCPdf ?? '',
+                            data.data![index].invoicePdf ?? ''));
                   } else if ((data.data![index].employeeID!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -556,7 +573,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].invoiceNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].supplierName ?? '',
+                            data.data![index].qualityCheckDate.toString() ?? '',
+                            data.data![index].cOCPdf ?? '',
+                            data.data![index].invoicePdf ?? ''));
                   } else if (data.data![index].solarDetailID!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -569,7 +590,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].invoiceNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].supplierName ?? '',
+                            data.data![index].qualityCheckDate.toString() ?? '',
+                            data.data![index].cOCPdf ?? '',
+                            data.data![index].invoicePdf ?? ''));
                   } else {
                     return Container();
                   }
@@ -581,8 +606,18 @@ class _IqcpTestListState extends State<IqcpTestList> {
     ]);
   }
 
-  Widget _tile(String id, String materialname, String profilepic, String name,
-      String location, String invoiceno, String employeeid) {
+  Widget _tile(
+      String id,
+      String materialname,
+      String profilepic,
+      String name,
+      String location,
+      String invoiceno,
+      String employeeid,
+      String supplierName,
+      String qualityCheckDate,
+      String cOCPdf,
+      String invoicePdf) {
     return InkWell(
       onTap: () {},
       child: Padding(
@@ -709,7 +744,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             ),
                           ),
                           const SizedBox(
-                            width: 20,
+                            width: 10,
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -731,6 +766,135 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             ),
                           ),
                         ]),
+
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        //Occupication
+                        Row(children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 0, 0, 0), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              'Test Date: ' +
+                                  DateFormat("dd MMM yyyy").format(
+                                      DateTime.parse(
+                                          qualityCheckDate.toString())),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 4, 68, 243), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              supplierName,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                        ]),
+                        if (_hasBeenPressed1 == 'Approved')
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        if (_hasBeenPressed1 == 'Approved')
+                          Row(children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(
+                                    255, 4, 68, 243), // Background color
+                                borderRadius: BorderRadius.circular(
+                                    10), // Optional: Add border radius for rounded corners
+                              ),
+                              child: const Text(
+                                "Invoice :",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Color.fromARGB(255, 255, 255,
+                                      255), // Optional: Set text color
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                UrlLauncher.launch(invoicePdf);
+                              },
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  AppAssets.icPdf,
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(
+                                    255, 100, 243, 4), // Background color
+                                borderRadius: BorderRadius.circular(
+                                    10), // Optional: Add border radius for rounded corners
+                              ),
+                              child: const Text(
+                                "COC :",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Color.fromARGB(
+                                      255, 0, 0, 0), // Optional: Set text color
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                UrlLauncher.launch(cOCPdf);
+                              },
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  AppAssets.icPdf,
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                            ),
+                          ]),
 
                         const SizedBox(
                           height: 2,
@@ -761,8 +925,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         ),
                       ],
                     ),
-                  // if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
-                  if (_hasBeenPressed1 == 'Inprogress')
+                  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
