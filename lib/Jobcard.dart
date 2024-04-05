@@ -1,18 +1,28 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
+import 'package:QCM/dialogs/all_member_list_model.dart';
+import 'package:QCM/ipqcTestList.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:intl/intl.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/src/response.dart' as Response;
 
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
@@ -23,12 +33,14 @@ import '../constant/app_helper.dart';
 import '../constant/app_styles.dart';
 
 class Jobcard extends StatefulWidget {
+  final String? id;
+  Jobcard({this.id});
   @override
   _JobcardState createState() => _JobcardState();
 }
 
 class _JobcardState extends State<Jobcard> {
-  final _registerFormKey = GlobalKey<FormState>();
+  final _jobcardFormKey = GlobalKey<FormState>();
   TextEditingController lotSizeController = TextEditingController();
   TextEditingController dateOfQualityCheckController = TextEditingController();
   TextEditingController lotNoController = TextEditingController();
@@ -69,78 +81,377 @@ class _JobcardState extends State<Jobcard> {
   TextEditingController framingCommentController = TextEditingController();
   TextEditingController jbCommentController = TextEditingController();
   TextEditingController sunCommentController = TextEditingController();
+  TextEditingController referencePdfController = new TextEditingController();
+  TextEditingController jobCardRejectionStatusController =
+      new TextEditingController();
   bool menu = false, user = false, face = false, home = false;
   bool _isLoading = false;
-  String setPage = '', pic = '';
+  String setPage = '', pic = '', site = '', personid = '';
   String invoiceDate = '';
-  String date = '';
+  String jobCardDate = '';
   bool? isCycleTimeTrue;
+  List<int>? referencePdfFileBytes;
   bool? isBacksheetCuttingTrue;
+  late String sendStatus;
+  String status = '',
+      jobCarId = '',
+      approvalStatus = "Approved",
+      designation = '',
+      token = '',
+      department = '';
+  final _dio = Dio();
+  List data = [];
+
+  Response.Response? _response;
 
   @override
   void initState() {
     super.initState();
+    store();
   }
 
-  void sendDataToBackend() async {
-    print(lotNoController.text);
-    var data = {
-      'date': dateController.text,
-      'moduleType': moduleTypeController.text,
-      'matrixSize': matrixSizeController.text,
-      'moduleNo': moduleNoController.text,
-      'lotSize': lotSizeController.text,
-      'lotNo': lotNoController.text,
-      'evaLotNo': evaLotNoController.text,
-      'evaSize': evaSizeController.text,
-      'backsheetLot': backsheetLotController.text,
-      'backsheetSize': backsheetSizeController.text,
-      'cellLotNo': cellLotNoController.text,
-      'cellType': cellTypeController.text,
-      'cellSize': cellSyzeController.text,
-      'cellEff': cellEffController.text,
-      'interconnectRibbonSize': interconnectRibbonSizeController.text,
-      'busbarSize': busbarSizeController.text,
-      'flux': fluxController.text,
-      'cellToCellGap': cellToCellGapController.text,
-      'stringToStringGap': stringToStringGapController.text,
-      'solderingTemp': solderingTempController.text,
-      'temperature': tempreatureController.text,
-      'cycleTime': cycleTimeController.text,
+  void store() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pic = prefs.getString('pic')!;
+      personid = prefs.getString('personid')!;
+      site = prefs.getString('site')!;
+      designation = prefs.getString('designation')!;
+      department = prefs.getString('department')!;
+      token = prefs.getString('token')!;
+    });
+    _get();
+  }
 
-      'frameType': frameTypeController.text,
-      'frameSize': frameSizeController.text,
-      'siliconGlueLot': sliconGlueLotController.text,
-      'jBLotNo': jBLotNoController.text,
-      'jBType': jBTypeController.text,
-      'siliconGlueLotNo': siliconGlueLotNoController.text,
-      'pmax': pmaxController.text,
+  Future _get() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
+    print(widget.id);
+    setState(() {
+      if (widget.id != '' && widget.id != null) {
+        _isLoading = true;
+      }
+      site = prefs.getString('site')!;
+    });
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificeJobCard');
+    final allSolarData = await http.post(
+      Uri.parse(AllSolarData),
+      body: jsonEncode(<String, String>{
+        "JobCardDetailId": widget.id ?? '',
+        "token": token!
+      }),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
-      'glassComment': glassCommentController.text,
-      'foilComment': foilCommentController.text,
-      'tabbingComment': tabbingCommentController.text,
-      'bussingComment': bussingCommentController.text,
-      'visualComment': visualCommentController.text,
-      'edgeComment': edgeCommentController.text,
-      'framingComment': framingCommentController.text,
-      'jbComment': jbCommentController.text,
-      'sunComment': sunCommentController.text,
-      // Add more fields as needed
+    setState(() {
+      _isLoading = false;
+    });
+    print("hhhhhhhhhhhhhhhh");
+    var resBody = json.decode(allSolarData.body);
+
+    if (mounted) {
+      setState(() {
+        if (resBody != '') {
+          print(resBody['response']);
+          print(resBody['response']['Date']);
+          // print(resBody['response']['Visual Inspection & Laminator Description']
+          //     ["Cycle_Time"]);
+
+          print("saiffffffffffffffffffffffffffffffffffffffffff");
+          print("kulllllllllllllllllllllllllllllllllllllllllll");
+          // dateController.text = resBody['response']['Date'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          jobCardDate = resBody['response']['Date'] ?? '';
+          dateController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
+
+          // invoiceDateController.text = DateFormat("EEE MMM dd, yyyy").format(
+          //         DateTime.parse(dataMap[0]['InvoiceDate'].toString())) ??
+          //     '';
+          matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
+          moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
+          lotNoController.text =
+              resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
+          lotSizeController.text =
+              resBody['response']['Glass Washing Description']["size"] ?? '';
+          glassCommentController.text =
+              resBody['response']['Glass Washing Comments'] ?? '';
+          evaLotNoController.text = resBody['response']
+                  ['Foil cutterr Description']["EVA_Lot_No"] ??
+              '';
+          evaSizeController.text =
+              resBody['response']['Foil cutterr Description']["EVA_Size"] ?? '';
+          backsheetLotController.text = resBody['response']
+                  ['Foil cutterr Description']["Backsheet_Lot"] ??
+              '';
+
+          backsheetSizeController.text = resBody['response']
+                  ['Foil cutterr Description']["Backsheet_size"] ??
+              '';
+          foilCommentController.text =
+              resBody['response']['Foil cutterr Comments'] ?? '';
+          cellLotNoController.text = resBody['response']
+                  ['Tabbing & Stringing Description']["Cell_Lot_No"] ??
+              '';
+          cellTypeController.text = resBody['response']
+                  ['Tabbing & Stringing Description']["Cell_Type"] ??
+              '';
+          cellSyzeController.text = resBody['response']
+                  ['Tabbing & Stringing Description']["Cell_Size"] ??
+              '';
+          cellEffController.text = resBody['response']
+                  ['Tabbing & Stringing Description']["Cell_Eff"] ??
+              '';
+          interconnectRibbonSizeController.text = resBody['response']
+                      ['Tabbing & Stringing Description']
+                  ["Interconnect_Ribbon_Size"] ??
+              '';
+          busbarSizeController.text = resBody['response']
+                  ['Tabbing & Stringing Description']["Busbar_Size"] ??
+              '';
+          fluxController.text = resBody['response']
+                  ['Tabbing & Stringing Description']["Flux"] ??
+              '';
+          tabbingCommentController.text =
+              resBody['response']['Tabbing & Stringing Comments'] ?? '';
+          cellToCellGapController.text = resBody['response']
+                  ['Bussing/InterConnection Description']["Cell_To_Cell_Gap"] ??
+              '';
+          stringToStringGapController.text = resBody['response']
+                      ['Bussing/InterConnection Description']
+                  ["String_To_String_Gap"] ??
+              '';
+          solderingTempController.text = resBody['response']
+                  ['Bussing/InterConnection Description']["Soldering_Temp"] ??
+              '';
+          bussingCommentController.text =
+              resBody['response']['Bussing/InterConnection Comments'] ?? '';
+          tempreatureController.text = resBody['response']
+                      ['Visual Inspection & Laminator Description']
+                  ["Temperature"] ??
+              '';
+          cycleTimeController.text = resBody['response']
+                  ['Visual Inspection & Laminator Description']["Cycle_Time"] ??
+              '';
+          isCycleTimeTrue = resBody['response']
+                      ['Visual Inspection & Laminator Description']
+                  ["Laminate_Quality"] ??
+              '';
+          visualCommentController.text = resBody['response']
+                  ['Visual Inspection & Laminator Comments'] ??
+              '';
+          isBacksheetCuttingTrue = resBody['response']
+                  ['Edge Triming Description']["BackSheet_Cutting"] ??
+              '';
+
+          edgeCommentController.text =
+              resBody['response']['Edge Triming Comments'] ?? '';
+          frameTypeController.text =
+              resBody['response']['Framing Description']["Frame_Type"] ?? '';
+          frameSizeController.text =
+              resBody['response']['Framing Description']["Frame_Size"] ?? '';
+          sliconGlueLotController.text = resBody['response']
+                  ['Framing Description']["Silicon_Glue_Lot_No"] ??
+              '';
+
+          framingCommentController.text =
+              resBody['response']['Framing Comments'] ?? '';
+          jBLotNoController.text = resBody['response']
+                  ['J/B Assembly Description']["JB_Lot_No"] ??
+              '';
+          jBTypeController.text =
+              resBody['response']['J/B Assembly Description']["JB_Type"] ?? '';
+          siliconGlueLotNoController.text = resBody['response']
+                  ['J/B Assembly Description']["Silicon_Glue_Lot_No"] ??
+              '';
+
+          jbCommentController.text =
+              resBody['response']['J/B Assembly Comments'] ?? '';
+          pmaxController.text =
+              resBody['response']['Sun Simulator Description']["Pmax"] ?? '';
+
+          sunCommentController.text =
+              resBody['response']['Sun Simulator Comments'] ?? '';
+          referencePdfController.text =
+              resBody['response']['ReferencePdf'] ?? '';
+          // invoiceDate = dataMap[0]['InvoiceDate'] ?? '';
+          // rawMaterialSpecsController.text =
+          //     dataMap[0]['RawMaterialSpecs'] ?? '';
+          // dateOfQualityCheckController
+          //     .text = DateFormat("EEE MMM dd, yyyy").format(
+          //         DateTime.parse(dataMap[0]['QualityCheckDate'].toString())) ??
+          //     '';
+
+          // dateOfQualityCheck = dataMap[0]['QualityCheckDate'] ?? '';
+
+          // rMBatchNoController.text = dataMap[0]['SupplierRMBatchNo'] ?? '';
+          // receiptDateController.text = DateFormat("EEE MMM dd, yyyy").format(
+          //         DateTime.parse(dataMap[0]['ReceiptDate'].toString())) ??
+          //     '';
+
+          // receiptDate = dataMap[0]['ReceiptDate'] ?? '';
+
+          // numberOfPackagingSampleFields =
+          //     (dataMap[0]['SampleSizePackaging'] != 0
+          //         ? dataMap[0]['SampleSizePackaging']
+          //         : 1);
+          // Packaging = dataMap[0]['Packaging'] ?? [];
+
+          // visualSampleSizeController.text = (dataMap[0]['SampleSizeVisual'] != 0
+          //         ? dataMap[0]['SampleSizeVisual']
+          //         : "")
+          //     .toString();
+          // Visual = dataMap[0]['Visual'] ?? [];
+
+          // physicalSampleSizeController.text =
+          //     (dataMap[0]['SampleSizePhysical'] != 0
+          //             ? dataMap[0]['SampleSizePhysical']
+          //             : "")
+          //         .toString();
+          // Physical = dataMap[0]['Physical'] ?? [];
+
+          // frontbusSampleSizeController.text =
+          //     (dataMap[0]['SampleSizeFrontBus'] != 0
+          //             ? dataMap[0]['SampleSizeFrontBus']
+          //             : "")
+          //         .toString();
+          // FrontBus = dataMap[0]['FrontBus'] ?? [];
+
+          // verificationSampleSizeController.text =
+          //     (dataMap[0]['SampleSizeVerification'] != 0
+          //             ? dataMap[0]['SampleSizeVerification']
+          //             : "")
+          //         .toString();
+          // Verification = dataMap[0]['Verification'] ?? [];
+
+          // electricalSampleSizeController.text =
+          //     (dataMap[0]['SampleSizeElectrical'] != 0
+          //             ? dataMap[0]['SampleSizeElectrical']
+          //             : "")
+          //         .toString();
+          // Electrical = dataMap[0]['Electrical'] ?? [];
+
+          // performanceSampleSizeController.text =
+          //     (dataMap[0]['SampleSizePerformance'] != 0
+          //             ? dataMap[0]['SampleSizePerformance']
+          //             : "")
+          //         .toString();
+          // Performance = dataMap[0]['Performance'] ?? [];
+
+          // result = dataMap[0]['Result'] ?? 'Fail';
+          // status = dataMap[0]['Status'] ?? '';
+
+          // packagingRejection = dataMap[0]['RejectPackaging'] ?? 'false';
+          // visualRejection = dataMap[0]['RejectVisual'] ?? 'false';
+          // physicalRejection = dataMap[0]['RejectPhysical'] ?? 'false';
+          // frontbusRejection = dataMap[0]['RejectFrontBus'] ?? 'false';
+          // verificationRejection = dataMap[0]['RejectVerification'] ?? 'false';
+          // electricalRejection = dataMap[0]['RejectElectrical'] ?? 'false';
+          // performanceRejection = dataMap[0]['RejectPerformance'] ?? 'false';
+          // rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
+
+          // invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
+          //         // cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
+        }
+      });
+    }
+  }
+
+  Future setApprovalStatus() async {
+    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    print(approvalStatus);
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
+
+    final url = (site! + "IPQC/UpdateJobCardStatus");
+
+    var params = {
+      "token": token,
+      "CurrentUser": personid,
+      "ApprovalStatus": approvalStatus,
+      "JobCardDetailId": widget.id ?? ""
     };
-    var d = [
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(params),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
+      var objData = json.decode(response.body);
+      if (objData['success'] == false) {
+        Toast.show("Please Try Again.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        Toast.show("Job Card Test $approvalStatus .",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
+    }
+  }
+
+  Future<void> _pickReferencePDF() async {
+    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        referencePdfFileBytes = pdffile.readAsBytesSync();
+        referencePdfController.text = result.files.single.name;
+      });
+    } else {
+      // User canceled the file picker
+    }
+  }
+
+  Future createData() async {
+    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
+    print(jobCardDate);
+    var data = [
       {
         "JobCardDetails": {
-          "date": dateController.text,
+          "date": jobCardDate,
           "moduleType": moduleTypeController.text,
           "matrixSize": matrixSizeController.text,
-          "moduleNo": moduleNoController.text
+          "moduleNo": moduleNoController.text,
+          "DocNo": "GSPL/IPQC/BM/024",
+          "RevisionNo": "1.0",
+          "RevisionDate": "12.08.2023",
+          "Status": sendStatus,
+          "CreatedBy": personid
         }
       },
       {
         "JobCard": [
           {
             "Process": 'Glass Washing',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {
               "Lot_No": lotNoController.text,
               "size": lotSizeController.text
@@ -149,7 +460,7 @@ class _JobcardState extends State<Jobcard> {
           },
           {
             "Process": 'Foil cutterr',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {
               "EVA_Lot_No": evaLotNoController.text,
               "EVA_Size": evaSizeController.text,
@@ -160,7 +471,7 @@ class _JobcardState extends State<Jobcard> {
           },
           {
             "Process": 'Tabbing & Stringing',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {
               "Cell_Lot_No": cellLotNoController.text,
               "Cell_Type": cellTypeController.text,
@@ -174,7 +485,7 @@ class _JobcardState extends State<Jobcard> {
           },
           {
             "Process": 'Bussing/InterConnection',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {
               "Cell_To_Cell_Gap": cellToCellGapController.text,
               "String_To_String_Gap": stringToStringGapController.text,
@@ -184,7 +495,7 @@ class _JobcardState extends State<Jobcard> {
           },
           {
             "Process": 'Visual Inspection & Laminator',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {
               "Temperature": tempreatureController.text,
               "Cycle_Time": cycleTimeController.text,
@@ -194,13 +505,13 @@ class _JobcardState extends State<Jobcard> {
           },
           {
             "Process": 'Edge Triming',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {"BackSheet_Cutting": isBacksheetCuttingTrue},
             "Comment": edgeCommentController.text
           },
           {
             "Process": 'Framing',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {
               "Frame_Type": frameTypeController.text,
               "Frame_Size": frameSizeController.text,
@@ -210,7 +521,7 @@ class _JobcardState extends State<Jobcard> {
           },
           {
             "Process": 'J/B Assembly',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {
               "JB_Lot_No": jBLotNoController.text,
               "JB_Type": jBTypeController.text,
@@ -220,7 +531,7 @@ class _JobcardState extends State<Jobcard> {
           },
           {
             "Process": 'Sun Simulator',
-            "EmployeeID": '',
+            "EmployeeID": personid,
             "Description": {"Pmax": pmaxController.text},
             "Comment": sunCommentController.text
           }
@@ -228,49 +539,52 @@ class _JobcardState extends State<Jobcard> {
       }
     ];
     print('Sending data to backend: $data');
-  }
 
-  Future getdata(String phone, BuildContext context) async {
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    if (lotSizeController.text.isEmpty || phone.isEmpty) {
-      Toast.show("Please enter required details !",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: AppColors.redColor);
-      return;
-    }
-    final url = "AppStrings.path" + 'login/RegistersendOTP';
+
+    final url = (site! + "IPQC/AddJobCard");
+
     final prefs = await SharedPreferences.getInstance();
-    var params = {"Mobile": phone};
+
     var response = await http.post(
       Uri.parse(url),
-      body: json.encode(params),
+      body: json.encode(data),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+    print("Bhanuu bhai");
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
+      var objData = json.decode(response.body);
       setState(() {
+        jobCarId = objData['UUID'];
+
         _isLoading = false;
       });
-      var objData = json.decode(response.body);
+
+      print(
+          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show(objData['data']['message'],
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.blueColor);
-        setState(() {
-          setPage = 'second';
-          //  otp = objData['data']['sentotp']['otp'].toString();
-        });
+        uploadPDF((referencePdfFileBytes ?? []));
+        if (sendStatus == 'Pending') {
+          uploadPDF((referencePdfFileBytes ?? []));
+        } else {
+          Toast.show("Data has been saved.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+        }
       }
     } else {
       Toast.show("Error In Server",
@@ -278,73 +592,51 @@ class _JobcardState extends State<Jobcard> {
     }
   }
 
-  Future register(List Data) async {
-    print("Bhhhhhhhhhhhhh");
-    print(Data);
-    final url = "AppStrings.path" + 'login/Registermember';
-    var response = await http.post(
-      Uri.parse(url),
-      body: jsonEncode(<String, String>{
-        // "personid": personid != null ? (personid ?? '') : '',
-        // "Firstname": fname,
-        // "Lastname": lname,
-        // "Phonenum": phone,
-        // "Organization": organization,
-        // "AppType": widget.appName,
-        // "Country": country == null ? '' : country,
-        // "State": state == null ? '' : state,
-        // "City": city == null ? '' : city,
-        // "Gender": gender == null ? '' : gender,
-        // "Referred": referral == null ? '' : referral,
-        // "Occupation": occupation == null ? '' : occupation,
-        // "businesscategory": businessscategory == null ? '' : businessscategory,
-        // "businessname": companyname == null ? '' : companyname,
-        // "designation": desigation == null ? '' : desigation,
-        // "Otp": (otp ?? ''),
-      }),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
+  uploadPDF(List<int> referenceBytes) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _isLoading = false;
-      });
-      var responseData = json.decode(response.body);
+    var currentdate = DateTime.now().microsecondsSinceEpoch;
+    var formData = FormData.fromMap({
+      "JobCardDetailId": jobCarId,
+      "Reference": MultipartFile.fromBytes(
+        referenceBytes,
+        filename:
+            (referencePdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+    });
 
-      if (responseData['success'] == true) {
-        Toast.show('Provide Some More Information',
+    _response = await _dio.post((site! + 'IPQC/UploadPdf'), // Prod
+
+        options: Options(
+          contentType: 'multipart/form-data',
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+        data: formData);
+
+    try {
+      if (_response?.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Toast.show("Job Card Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
-
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-            // personid = responseData['data']['data'][0]['personid'];
-
-            if (responseData['data']['data'][0]['Response'] ==
-                'Registration successfull') {
-              Toast.show(responseData['data']['data'][0]['Response'],
-                  duration: Toast.lengthLong,
-                  gravity: Toast.center,
-                  backgroundColor: AppColors.blueColor);
-              setPage = "fourth";
-            } else {
-              setPage = "third";
-            }
-          });
-        }
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
       } else {
-        Toast.show("OTP is Invalid",
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.redColor);
+        Toast.show("Error In Server",
+            duration: Toast.lengthLong, gravity: Toast.center);
       }
-    } else {
-      Toast.show("Error In Server",
-          duration: Toast.lengthLong, gravity: Toast.center);
+    } catch (err) {
+      print("Error");
     }
   }
 
@@ -384,7 +676,7 @@ class _JobcardState extends State<Jobcard> {
               children: [
                 SingleChildScrollView(
                   child: Form(
-                    key: _registerFormKey,
+                    key: _jobcardFormKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -413,20 +705,55 @@ class _JobcardState extends State<Jobcard> {
                             ],
                           ),
                         ),
-                        const Center(
+                        Center(
                           child: Padding(
                             padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              "JOB CARD",
-                              style: TextStyle(
-                                fontSize: 27,
-                                color: AppColors.black,
-                                fontFamily: appFontFamily,
-                                fontWeight: FontWeight.w700,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      AppHelper.hideKeyboard(context);
+                                      setState(() {
+                                        sendStatus = "Inprogress";
+                                      });
+                                      createData();
+                                      // sendDataToBackend();
+
+                                      // _jobcardFormKey.currentState!.save;
+                                      // if (_jobcardFormKey.currentState!
+                                      //     .validate()) {
+
+                                      // }
+                                    },
+                                    child: Icon(
+                                      Icons
+                                          .save_rounded, // Replace 'your_icon' with the icon you want to use
+                                      size: 40,
+                                      color: Color.fromARGB(255, 57, 54,
+                                          185), // Customize the color as needed
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                    width:
+                                        10), // Adjust the spacing between icon and text as needed
+                                Text(
+                                  "JOB CARD",
+                                  style: TextStyle(
+                                    fontSize: 27,
+                                    color: AppColors.black,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
+
                         // const Center(
                         //   child: Text(
                         //     "(Solar Cell)",
@@ -498,6 +825,9 @@ class _JobcardState extends State<Jobcard> {
                                       color: AppColors.primaryColor,
                                     )),
                             style: AppStyles.textInputTextStyle,
+                            readOnly: status == 'Pending' && designation != "QC"
+                                ? true
+                                : false,
                             onTap: () async {
                               DateTime date = DateTime(2021);
                               FocusScope.of(context)
@@ -511,9 +841,8 @@ class _JobcardState extends State<Jobcard> {
                                   DateFormat("EEE MMM dd, yyyy")
                                       .format(DateTime.parse(date.toString()));
                               setState(() {
-                                date = DateFormat("yyyy-MM-dd")
-                                        .format(DateTime.parse(date.toString()))
-                                    as DateTime;
+                                jobCardDate = DateFormat("yyyy-MM-dd")
+                                    .format(DateTime.parse(date.toString()));
                               });
                             },
                             validator: MultiValidator([
@@ -539,6 +868,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Please Enter Module Type";
@@ -568,6 +900,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -595,6 +930,9 @@ class _JobcardState extends State<Jobcard> {
                             hintText: "Please Enter Module No.",
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -638,6 +976,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -666,6 +1007,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -694,6 +1038,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -739,6 +1086,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -767,6 +1117,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -795,6 +1148,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -824,6 +1180,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -853,6 +1212,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -898,6 +1260,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -926,6 +1291,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -954,6 +1322,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -982,6 +1353,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1010,6 +1384,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1039,6 +1416,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1067,6 +1447,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1095,6 +1478,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -1139,6 +1525,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1167,6 +1556,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1195,6 +1587,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1223,6 +1618,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -1267,6 +1665,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1295,6 +1696,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1319,10 +1723,12 @@ class _JobcardState extends State<Jobcard> {
                               value: true,
                               groupValue:
                                   isCycleTimeTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (value) {
-                                setState(() {
-                                  isCycleTimeTrue = value;
-                                });
+                              onChanged: (bool? value) {
+                                if (status != "Pending") {
+                                  setState(() {
+                                    isCycleTimeTrue = value;
+                                  });
+                                }
                               },
                             ),
                             Text(
@@ -1334,10 +1740,12 @@ class _JobcardState extends State<Jobcard> {
                               value: false,
                               groupValue:
                                   isCycleTimeTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (value) {
-                                setState(() {
-                                  isCycleTimeTrue = value;
-                                });
+                              onChanged: (bool? value) {
+                                if (status != "Pending") {
+                                  setState(() {
+                                    isCycleTimeTrue = value;
+                                  });
+                                }
                               },
                             ),
                             Text(
@@ -1363,6 +1771,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -1403,10 +1814,12 @@ class _JobcardState extends State<Jobcard> {
                               value: true,
                               groupValue:
                                   isBacksheetCuttingTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (value) {
-                                setState(() {
-                                  isBacksheetCuttingTrue = value;
-                                });
+                              onChanged: (bool? value) {
+                                if (status != "Pending") {
+                                  setState(() {
+                                    isBacksheetCuttingTrue = value;
+                                  });
+                                }
                               },
                             ),
                             Text(
@@ -1418,10 +1831,12 @@ class _JobcardState extends State<Jobcard> {
                               value: false,
                               groupValue:
                                   isBacksheetCuttingTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (value) {
-                                setState(() {
-                                  isBacksheetCuttingTrue = value;
-                                });
+                              onChanged: (bool? value) {
+                                if (status != "Pending") {
+                                  setState(() {
+                                    isBacksheetCuttingTrue = value;
+                                  });
+                                }
                               },
                             ),
                             Text(
@@ -1447,6 +1862,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -1492,6 +1910,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1521,6 +1942,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1549,6 +1973,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1578,6 +2005,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -1622,6 +2052,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1650,6 +2083,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1678,6 +2114,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1706,6 +2145,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -1750,6 +2192,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1778,6 +2223,9 @@ class _JobcardState extends State<Jobcard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           maxLines: 3,
                           validator: MultiValidator(
                             [
@@ -1790,11 +2238,86 @@ class _JobcardState extends State<Jobcard> {
                         const SizedBox(
                           height: 15,
                         ),
+                        Text(
+                          "Reference PDF Document ",
+                          style: AppStyles.textfieldCaptionTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        TextFormField(
+                          controller: referencePdfController,
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.next,
+                          decoration:
+                              AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Select Reference Pdf",
+                                  suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      if (widget.id != null &&
+                                          widget.id != '' &&
+                                          referencePdfController.text != '') {
+                                        UrlLauncher.launch(
+                                            referencePdfController.text);
+                                      } else if (status != 'Pending') {
+                                        _pickReferencePDF();
+                                      }
+                                    },
+                                    icon: widget.id != null &&
+                                            widget.id != '' &&
+                                            referencePdfController.text != ''
+                                        ? const Icon(Icons.download)
+                                        : const Icon(Icons.upload_file),
+                                  ),
+                                  counterText: ''),
+                          style: AppStyles.textInputTextStyle,
+                          maxLines: 1,
+                          readOnly: true,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please Select Reference Pdf";
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
 
                         Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())
-                            : AppButton(
+                            : (designation == "Super Admin")
+                                ? AppButton(
+                                    textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white,
+                                      fontSize: 16,
+                                    ),
+                                    onTap: () {
+                                      AppHelper.hideKeyboard(context);
+                                      setState(() {
+                                        sendStatus = "Inprogress";
+                                      });
+                                      createData();
+                                      // sendDataToBackend();
+
+                                      // _jobcardFormKey.currentState!.save;
+                                      // if (_jobcardFormKey.currentState!
+                                      //     .validate()) {
+
+                                      // }
+                                    },
+                                    label: "Save",
+                                    organization: '',
+                                  )
+                                : Container(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        (designation == "Super Admin")
+                            ? AppButton(
                                 textStyle: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.white,
@@ -1802,20 +2325,62 @@ class _JobcardState extends State<Jobcard> {
                                 ),
                                 onTap: () {
                                   AppHelper.hideKeyboard(context);
-                                  // sendDataToBackend();
 
-                                  _registerFormKey.currentState!.save;
-                                  if (_registerFormKey.currentState!
+                                  _jobcardFormKey.currentState!.save;
+                                  if (_jobcardFormKey.currentState!
                                       .validate()) {
-                                    sendDataToBackend();
+                                    setState(() {
+                                      sendStatus = "Pending";
+                                    });
+                                    createData();
                                   }
                                 },
-                                label: "Save",
+                                label: "Submit",
                                 organization: '',
-                              ),
+                              )
+                            : Container(),
                         const SizedBox(
                           height: 10,
                         ),
+                        if (widget.id != "" &&
+                            widget.id != null &&
+                            status == 'Pending')
+                          Container(
+                            color: Color.fromARGB(255, 191, 226,
+                                187), // Change the background color to your desired color
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Divider(),
+                                const Center(
+                                    child: Text("Approve",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Color.fromARGB(
+                                                255, 217, 3, 245),
+                                            fontFamily: appFontFamily,
+                                            fontWeight: FontWeight.w700))),
+                                SizedBox(height: 15),
+                                AppButton(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white,
+                                      fontSize: 16),
+                                  onTap: () {
+                                    AppHelper.hideKeyboard(context);
+                                    setApprovalStatus();
+                                  },
+                                  label: "Approve",
+                                  organization: '',
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Divider(),
+                              ],
+                            ),
+                          ),
+
                         // Center(
                         //   child: Padding(
                         //     padding: const EdgeInsets.all(8.0),
