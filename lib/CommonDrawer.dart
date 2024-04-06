@@ -9,6 +9,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
+import 'package:QCM/ipqcTestList.dart';
 import 'package:QCM/salaryreports.dart';
 import 'package:flutter/material.dart';
 
@@ -173,6 +174,17 @@ class _PublicDrawerState extends State<PublicDrawer> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: tabDashboard('IPQC Test List', AppAssets.icApproved,
+                        () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => IpqcTestList()),
+                      (Route<dynamic> route) => false);
+                })),
                 SizedBox(
                   width: 10,
                 ),

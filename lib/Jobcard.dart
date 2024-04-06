@@ -89,9 +89,9 @@ class _JobcardState extends State<Jobcard> {
   String setPage = '', pic = '', site = '', personid = '';
   String invoiceDate = '';
   String jobCardDate = '';
-  bool? isCycleTimeTrue;
+  bool? isCycleTimeTrue = false;
   List<int>? referencePdfFileBytes;
-  bool? isBacksheetCuttingTrue;
+  bool? isBacksheetCuttingTrue = false;
   late String sendStatus;
   String status = '',
       jobCarId = '',
@@ -436,6 +436,8 @@ class _JobcardState extends State<Jobcard> {
     var data = [
       {
         "JobCardDetails": {
+          "JobCardDetailId":
+              widget.id != '' && widget.id != null ? widget.id : '',
           "date": jobCardDate,
           "moduleType": moduleTypeController.text,
           "matrixSize": matrixSizeController.text,
@@ -576,7 +578,6 @@ class _JobcardState extends State<Jobcard> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        uploadPDF((referencePdfFileBytes ?? []));
         if (sendStatus == 'Pending') {
           uploadPDF((referencePdfFileBytes ?? []));
         } else {
@@ -711,32 +712,33 @@ class _JobcardState extends State<Jobcard> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      AppHelper.hideKeyboard(context);
-                                      setState(() {
-                                        sendStatus = "Inprogress";
-                                      });
-                                      createData();
-                                      // sendDataToBackend();
+                                if (designation == "QC")
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        AppHelper.hideKeyboard(context);
+                                        setState(() {
+                                          sendStatus = "Inprogress";
+                                        });
+                                        createData();
+                                        // sendDataToBackend();
 
-                                      // _jobcardFormKey.currentState!.save;
-                                      // if (_jobcardFormKey.currentState!
-                                      //     .validate()) {
+                                        // _jobcardFormKey.currentState!.save;
+                                        // if (_jobcardFormKey.currentState!
+                                        //     .validate()) {
 
-                                      // }
-                                    },
-                                    child: Icon(
-                                      Icons
-                                          .save_rounded, // Replace 'your_icon' with the icon you want to use
-                                      size: 40,
-                                      color: Color.fromARGB(255, 57, 54,
-                                          185), // Customize the color as needed
+                                        // }
+                                      },
+                                      child: Icon(
+                                        Icons
+                                            .save_rounded, // Replace 'your_icon' with the icon you want to use
+                                        size: 40,
+                                        color: Color.fromARGB(255, 57, 54,
+                                            185), // Customize the color as needed
+                                      ),
                                     ),
                                   ),
-                                ),
                                 SizedBox(
                                     width:
                                         10), // Adjust the spacing between icon and text as needed
@@ -829,21 +831,23 @@ class _JobcardState extends State<Jobcard> {
                                 ? true
                                 : false,
                             onTap: () async {
-                              DateTime date = DateTime(2021);
-                              FocusScope.of(context)
-                                  .requestFocus(new FocusNode());
-                              date = (await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime.now()))!;
-                              dateController.text =
-                                  DateFormat("EEE MMM dd, yyyy")
+                              if (status != 'Pending') {
+                                DateTime date = DateTime(2021);
+                                FocusScope.of(context)
+                                    .requestFocus(new FocusNode());
+                                date = (await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.now()))!;
+                                dateController.text =
+                                    DateFormat("EEE MMM dd, yyyy").format(
+                                        DateTime.parse(date.toString()));
+                                setState(() {
+                                  jobCardDate = DateFormat("yyyy-MM-dd")
                                       .format(DateTime.parse(date.toString()));
-                              setState(() {
-                                jobCardDate = DateFormat("yyyy-MM-dd")
-                                    .format(DateTime.parse(date.toString()));
-                              });
+                                });
+                              }
                             },
                             validator: MultiValidator([
                               RequiredValidator(errorText: "Please Enter Date")
@@ -2288,7 +2292,7 @@ class _JobcardState extends State<Jobcard> {
                         Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())
-                            : (designation == "Super Admin")
+                            : (designation == "QC")
                                 ? AppButton(
                                     textStyle: const TextStyle(
                                       fontWeight: FontWeight.w700,
@@ -2316,7 +2320,7 @@ class _JobcardState extends State<Jobcard> {
                         const SizedBox(
                           height: 10,
                         ),
-                        (designation == "Super Admin")
+                        (designation == "QC")
                             ? AppButton(
                                 textStyle: const TextStyle(
                                   fontWeight: FontWeight.w700,
@@ -2352,14 +2356,6 @@ class _JobcardState extends State<Jobcard> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Divider(),
-                                const Center(
-                                    child: Text("Approve",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Color.fromARGB(
-                                                255, 217, 3, 245),
-                                            fontFamily: appFontFamily,
-                                            fontWeight: FontWeight.w700))),
                                 SizedBox(height: 15),
                                 AppButton(
                                   textStyle: const TextStyle(
