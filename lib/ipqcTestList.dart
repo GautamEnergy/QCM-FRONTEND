@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Jobcard.dart';
 import 'package:QCM/SolarCell.dart';
@@ -177,9 +178,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (BuildContext context) =>
-                department == 'IQCP' && designation == 'QC'
-                    ? IqcpPage()
-                    : WelcomePage()),
+                designation != 'Super Admin' ? IpqcPage() : WelcomePage()),
         (Route<dynamic> route) => false);
     return true;
   }
@@ -213,8 +212,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return department == 'IQCP' && designation == 'QC'
-                          ? IqcpPage()
+                      return designation != 'Super Admin'
+                          ? IpqcPage()
                           : WelcomePage();
                     }));
                   },
@@ -788,7 +787,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                         ),
                       ],
                     ),
-                  if (_hasBeenPressed1 == 'Inprogress')
+                  if (_hasBeenPressed1 == 'Inprogress' && designation == 'QC')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

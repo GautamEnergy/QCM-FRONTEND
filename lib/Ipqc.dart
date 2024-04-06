@@ -93,9 +93,9 @@ class _WelcomePageState extends State<IpqcPage> {
   }
 
   Future<bool> redirectto() async {
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
-    //     (Route<dynamic> route) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
+        (Route<dynamic> route) => false);
     return true;
   }
 
@@ -105,7 +105,7 @@ class _WelcomePageState extends State<IpqcPage> {
       backgroundColor: AppColors.lightBlack,
       appBar: GautamAppBar(
         organization: "organizationtype",
-        isBackRequired: true,
+        isBackRequired: designation != 'Super Admin' ? false : true,
         memberId: "personid",
         imgPath: "ImagePath",
         memberPic: pic,
@@ -145,10 +145,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'BOM Verification Checksheet', AppAssets.postlam, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => BomCard()),
-                      (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => BomCard()),
+                  //     (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
@@ -170,10 +170,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'Pre-Lam IPQC Check Sheet', AppAssets.prelam, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => BomCard()),
-                      (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => BomCard()),
+                  //     (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
@@ -181,10 +181,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'Post-Lam IPQC Check Sheet', AppAssets.postlam, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Postlam()),
-                      (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => Postlam()),
+                  //     (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
@@ -283,9 +283,15 @@ class _WelcomePageState extends State<IpqcPage> {
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          department == 'IQCP' && designation == 'QC'
+                          (department == 'IQCP' && designation != 'Super Admin')
                               ? IqcpPage()
-                              : WelcomePage()));
+                              : (department == 'IPQC' &&
+                                      designation != 'Super Admin')
+                                  ? IpqcPage()
+                                  : (department == 'FQC' &&
+                                          designation != 'Super Admin')
+                                      ? IqcpPage()
+                                      : WelcomePage()));
                 },
                 child: Image.asset(
                     home
@@ -297,7 +303,7 @@ class _WelcomePageState extends State<IpqcPage> {
             ),
             InkWell(
                 onTap: () {
-                  if (designation != 'QC') {
+                  if (designation == 'Super Admin') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (BuildContext context) => AddEditProfile()));
                   }
@@ -322,10 +328,10 @@ class _WelcomePageState extends State<IpqcPage> {
               width: 8,
             ),
             InkWell(
-                // onTap: () {
-                //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //       builder: (BuildContext context) => PublicDrawer()));
-                // },
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext context) => PublicDrawer()));
+                },
                 child: Image.asset(
                     menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                     height: 25)),

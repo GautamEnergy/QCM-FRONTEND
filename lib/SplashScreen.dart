@@ -71,9 +71,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 builder: (BuildContext context) => (department == 'IQCP' &&
                         designation != 'Super Admin')
                     ? IqcpPage()
-                    : (department == 'IPQP' && designation != 'Super Admin')
+                    : (department == 'IPQC' && designation != 'Super Admin')
                         ? IpqcPage()
-                        : (department == 'FQCP' && designation != 'Super Admin')
+                        : (department == 'FQC' && designation != 'Super Admin')
                             ? IqcpPage()
                             : WelcomePage())));
       } else {

@@ -2292,7 +2292,9 @@ class _JobcardState extends State<Jobcard> {
                         Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                         _isLoading
                             ? Center(child: CircularProgressIndicator())
-                            : (designation == "QC")
+                            : (widget.id == "" || widget.id == null) ||
+                                    (status == 'Inprogress' &&
+                                        widget.id != null)
                                 ? AppButton(
                                     textStyle: const TextStyle(
                                       fontWeight: FontWeight.w700,
@@ -2320,7 +2322,8 @@ class _JobcardState extends State<Jobcard> {
                         const SizedBox(
                           height: 10,
                         ),
-                        (designation == "QC")
+                        (widget.id == "" || widget.id == null) ||
+                                (status == 'Inprogress' && widget.id != null)
                             ? AppButton(
                                 textStyle: const TextStyle(
                                   fontWeight: FontWeight.w700,

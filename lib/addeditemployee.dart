@@ -213,9 +213,9 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                     return (department == 'IQCP' &&
                             designation != 'Super Admin')
                         ? IqcpPage()
-                        : (department == 'IPQP' && designation != 'Super Admin')
+                        : (department == 'IPQC' && designation != 'Super Admin')
                             ? IpqcPage()
-                            : (department == 'FQCP' &&
+                            : (department == 'FQC' &&
                                     designation != 'Super Admin')
                                 ? IqcpPage()
                                 : WelcomePage();

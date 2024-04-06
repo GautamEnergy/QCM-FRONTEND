@@ -454,11 +454,11 @@ class _DirectoryState extends State<EmployeeList> {
                                         (department == 'IQCP' &&
                                                 designation != 'Super Admin')
                                             ? IqcpPage()
-                                            : (department == 'IPQP' &&
+                                            : (department == 'IPQC' &&
                                                     designation !=
                                                         'Super Admin')
                                                 ? IpqcPage()
-                                                : (department == 'FQCP' &&
+                                                : (department == 'FQC' &&
                                                         designation !=
                                                             'Super Admin')
                                                     ? IqcpPage()

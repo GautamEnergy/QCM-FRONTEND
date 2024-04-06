@@ -12,6 +12,7 @@ import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
 import 'package:QCM/dynamicfield.dart';
+import 'package:QCM/ipqcTestList.dart';
 import 'package:QCM/salaryreports.dart';
 import 'package:flutter/material.dart';
 
@@ -131,12 +132,15 @@ class _WelcomePageState extends State<WelcomePage> {
                     width: 10,
                   ),
                   Expanded(
-                      child: tabDashboard('IQCP', AppAssets.IQCP, () {
+                      child: tabDashboard(
+                          'IQCP',
+                          designation != 'Super Admin'
+                              ? AppAssets.IQCP
+                              : AppAssets.icApproved, () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                department == 'IQCP' &&
-                                        designation != 'Super Admin'
+                                designation != 'Super Admin'
                                     ? IqcpPage()
                                     : IqcpTestList()),
                         (Route<dynamic> route) => false);
@@ -157,10 +161,17 @@ class _WelcomePageState extends State<WelcomePage> {
                     width: 10,
                   ),
                   Expanded(
-                      child: tabDashboard('IPQC', AppAssets.ipqc, () {
+                      child: tabDashboard(
+                          'IPQC',
+                          designation != 'Super Admin'
+                              ? AppAssets.ipqc
+                              : AppAssets.ipqc, () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                            builder: (BuildContext context) => IpqcPage()),
+                            builder: (BuildContext context) =>
+                                designation != 'Super Admin'
+                                    ? IpqcPage()
+                                    : IpqcTestList()),
                         (Route<dynamic> route) => false);
                   })),
                   const SizedBox(

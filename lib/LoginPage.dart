@@ -35,9 +35,9 @@ class _LoginPageState extends State<LoginPage> {
   String? uid, deviceType, designation, department;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-  String path = "http://192.168.0.100:8080/"; //local
-  // String path =
-  //     "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic Dev
+  // String path = "http://192.168.0.100:8080/"; //local
+  String path =
+      "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic Dev
   // String path =
   //     "https://sore-rose-kingfisher-tutu.cyclic.app/"; // QCM App Cyclic Prod
 
@@ -125,9 +125,9 @@ class _LoginPageState extends State<LoginPage> {
                 builder: (BuildContext context) => (department == 'IQCP' &&
                         designation != 'Super Admin')
                     ? IqcpPage()
-                    : (department == 'IPQP' && designation != 'Super Admin')
+                    : (department == 'IPQC' && designation != 'Super Admin')
                         ? IpqcPage()
-                        : (department == 'FQCP' && designation != 'Super Admin')
+                        : (department == 'FQC' && designation != 'Super Admin')
                             ? IqcpPage()
                             : WelcomePage()));
           });

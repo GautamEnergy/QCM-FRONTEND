@@ -90,7 +90,15 @@ class _PublicDrawerState extends State<PublicDrawer> {
 
   Future<bool> redirectto() async {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                (department == 'IQCP' && designation != 'Super Admin')
+                    ? IqcpPage()
+                    : (department == 'IPQC' && designation != 'Super Admin')
+                        ? IpqcPage()
+                        : (department == 'FQC' && designation != 'Super Admin')
+                            ? IqcpPage()
+                            : WelcomePage()),
         (Route<dynamic> route) => false);
     return true;
   }
@@ -108,7 +116,13 @@ class _PublicDrawerState extends State<PublicDrawer> {
         logo: "logo",
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return EmployeeList();
+            return (department == 'IQCP' && designation != 'Super Admin')
+                ? IqcpPage()
+                : (department == 'IPQC' && designation != 'Super Admin')
+                    ? IpqcPage()
+                    : (department == 'FQC' && designation != 'Super Admin')
+                        ? IqcpPage()
+                        : WelcomePage();
           }));
         },
       ),
@@ -138,10 +152,10 @@ class _PublicDrawerState extends State<PublicDrawer> {
                               (department == 'IQCP' &&
                                       designation != 'Super Admin')
                                   ? IqcpPage()
-                                  : (department == 'IPQP' &&
+                                  : (department == 'IPQC' &&
                                           designation != 'Super Admin')
                                       ? IpqcPage()
-                                      : (department == 'FQCP' &&
+                                      : (department == 'FQC' &&
                                               designation != 'Super Admin')
                                           ? IqcpPage()
                                           : WelcomePage()),
@@ -150,100 +164,89 @@ class _PublicDrawerState extends State<PublicDrawer> {
                 SizedBox(
                   width: 10,
                 ),
-                Expanded(
-                    child: tabDashboard('IQCP Test List', AppAssets.icApproved,
-                        () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => IqcpTestList()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
               ],
             ),
+            if ((designation != 'Super Admin' && department == 'IQCP') ||
+                (designation == 'Super Admin'))
+              SizedBox(
+                height: 10,
+              ),
+            // IQCP
+            if ((designation != 'Super Admin' && department == 'IQCP') ||
+                (designation == 'Super Admin'))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard(
+                          'IQCP Test List', AppAssets.icApproved, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => IqcpTestList()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard('IQCP', AppAssets.IQCP, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => IqcpPage()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+            if ((designation != 'Super Admin' && department == 'IPQC') ||
+                (designation == 'Super Admin'))
+              SizedBox(
+                height: 10,
+              ),
+
+            //IPQC
+            if ((designation != 'Super Admin' && department == 'IPQC') ||
+                (designation == 'Super Admin'))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard('IPQC Test List', AppAssets.ipqc, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => IpqcTestList()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard('IPQC', AppAssets.ipqc, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => IpqcPage()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
 
             SizedBox(
               height: 10,
             ),
 
-            //5th
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('IPQC Test List', AppAssets.icApproved,
-                        () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => IpqcTestList()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('IQCP', AppAssets.IQCP, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => IqcpPage()),
-                      (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
-            SizedBox(
-              height: 10,
-            ),
-
-            //5th
-
-            //5th
-
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Expanded(
-            //         child: tabDashboard(
-            //             'Attendance Reports', AppAssets.imgAttendanceReport,
-            //             () {
-            //       Navigator.of(context).pushAndRemoveUntil(
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) => InOut()),
-            //           (Route<dynamic> route) => false);
-            //     })),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Expanded(
-            //         child: tabDashboard(
-            //             'Salary Reports', AppAssets.imgSalaryReport, () {
-            //       Navigator.of(context).pushAndRemoveUntil(
-            //           MaterialPageRoute(
-            //               builder: (BuildContext context) => SalaryReport()),
-            //           (Route<dynamic> route) => false);
-            //     })),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //   ],
-            // ),
-            SizedBox(
-              height: 10,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,10 +312,10 @@ class _PublicDrawerState extends State<PublicDrawer> {
                       builder: (BuildContext context) =>
                           (department == 'IQCP' && designation != 'Super Admin')
                               ? IqcpPage()
-                              : (department == 'IPQP' &&
+                              : (department == 'IPQC' &&
                                       designation != 'Super Admin')
                                   ? IpqcPage()
-                                  : (department == 'FQCP' &&
+                                  : (department == 'FQC' &&
                                           designation != 'Super Admin')
                                       ? IqcpPage()
                                       : WelcomePage()));

@@ -262,10 +262,10 @@ class _WelcomePageState extends State<IqcpPage> {
                       builder: (BuildContext context) =>
                           (department == 'IQCP' && designation != 'Super Admin')
                               ? IqcpPage()
-                              : (department == 'IPQP' &&
+                              : (department == 'IPQC' &&
                                       designation != 'Super Admin')
                                   ? IpqcPage()
-                                  : (department == 'FQCP' &&
+                                  : (department == 'FQC' &&
                                           designation != 'Super Admin')
                                       ? IqcpPage()
                                       : WelcomePage()));

@@ -179,8 +179,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return department == 'IQCP' &&
-                              designation != 'Super Admin'
+                      return designation != 'Super Admin'
                           ? IqcpPage()
                           : WelcomePage();
                     }));
@@ -223,8 +222,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        department == 'IQCP' &&
-                                                designation != 'Super Admin'
+                                        designation != 'Super Admin'
                                             ? IqcpPage()
                                             : WelcomePage()));
                           },
