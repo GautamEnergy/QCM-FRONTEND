@@ -105,11 +105,11 @@ class _DirectoryState extends State<EmployeeList> {
       _isLoading = true;
     });
 
-    final url = (site! + 'getEmployeeData');
+    final url = (site! + 'Employee/GetList');
 
-    http.post(
+    http.get(
       Uri.parse(url),
-      body: jsonEncode(<String, String>{"personid": personid!}),
+      // body: jsonEncode(<String, String>{"personid": personid!}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -119,6 +119,8 @@ class _DirectoryState extends State<EmployeeList> {
           _isLoading = false;
           decodedResult = jsonDecode(response.body);
         });
+        print("Decode......");
+        print(decodedResult);
         //  prefs.setString(DBConst.directory, response.body);
       }
     });
@@ -548,36 +550,13 @@ class _DirectoryState extends State<EmployeeList> {
       future: userdata,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         print("PPPPPPP....................???????");
+        print(UserModel.fromJson(decodedResult));
         if (snapshot.connectionState == ConnectionState.done) {
           aUserModel = UserModel.fromJson(decodedResult);
           print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKK....................???????");
           print(aUserModel);
           List<UserData> data = aUserModel.data!;
-          if (_hasBeenPressed == 'name') {
-            data.sort((a, b) {
-              return a.fullname!
-                  .toLowerCase()
-                  .compareTo(b.fullname!.toLowerCase());
-            });
-          } else if (_hasBeenPressed == 'company') {
-            data.sort((a, b) {
-              return a.department!
-                  .toLowerCase()
-                  .compareTo(b.department!.toLowerCase());
-            });
-          } else if (_hasBeenPressed == 'occupation') {
-            data.sort((a, b) {
-              return a.employeeid!
-                  .toLowerCase()
-                  .compareTo(b.employeeid!.toLowerCase());
-            });
-          } else if (_hasBeenPressed == 'location') {
-            data.sort((a, b) {
-              return a.officialcontactno!
-                  .toLowerCase()
-                  .compareTo(b.officialcontactno ?? ''.toLowerCase());
-            });
-          }
+
           return _user(aUserModel);
         } else if (snapshot.hasError) {
           return const AppLoader();
@@ -788,99 +767,87 @@ class _DirectoryState extends State<EmployeeList> {
                   if (SearchController.text.isEmpty) {
                     return Container(
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
+                            // data.data![index].personid ?? '',
+                            data.data![index].employeeID ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].designation ?? '',
                             data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if ((data.data![index].fullname ?? '')
+                            data.data![index].status ?? ''));
+                  } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
-                      data.data![index].personalcontactno!
+                      data.data![index].employeeID!
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
+                            // data.data![index].personid ?? '',
+                            data.data![index].employeeID ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].designation ?? '',
                             data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if (data.data![index].officialcontactno!
+                            data.data![index].status ?? ''));
+                  } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
+                            // data.data![index].personid ?? '',
+                            data.data![index].employeeID ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].designation ?? '',
                             data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
+                            data.data![index].status ?? ''));
                   } else if (data.data![index].department!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
+                            // data.data![index].personid ?? '',
+                            data.data![index].employeeID ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].designation ?? '',
                             data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if ((data.data![index].employeementtype!)
+                            data.data![index].status ?? ''));
+                  } else if ((data.data![index].designation!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
+                            // data.data![index].personid ?? '',
+                            data.data![index].employeeID ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].designation ?? '',
                             data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
-                  } else if (data.data![index].employeeid!
+                            data.data![index].status ?? ''));
+                  } else if (data.data![index].status!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personid ?? '',
-                            data.data![index].employeementtype ?? '',
-                            data.data![index].profilepic ?? '',
-                            data.data![index].fullname ?? '',
-                            data.data![index].officialcontactno ?? '',
-                            data.data![index].officialemail ?? '',
+                            // data.data![index].personid ?? '',
+                            data.data![index].employeeID ?? '',
+                            data.data![index].profileImg ?? '',
+                            data.data![index].name ?? '',
+                            data.data![index].location ?? '',
+                            data.data![index].designation ?? '',
                             data.data![index].department ?? '',
-                            data.data![index].employeeid ?? '',
-                            data.data![index].personalcontactno ?? '',
-                            data.data![index].personalemail ?? ''));
+                            data.data![index].status ?? ''));
                   } else {
                     return Container();
                   }
@@ -892,17 +859,8 @@ class _DirectoryState extends State<EmployeeList> {
     ]);
   }
 
-  Widget _tile(
-      String id,
-      String employeementtype,
-      String profilepic,
-      String name,
-      String officialcontactno,
-      String officialemail,
-      String department,
-      String employeeid,
-      String personalcontactno,
-      String personalemail) {
+  Widget _tile(String employeeid, String profilepic, String name,
+      String location, String designation, String department, String status) {
     return InkWell(
       onTap: () {
         // Navigator.of(context).pushAndRemoveUntil(
@@ -995,291 +953,288 @@ class _DirectoryState extends State<EmployeeList> {
                                   fontSize: 12,
                                 )),
                           ),
-                          if (employeementtype != '')
-                            SizedBox(
-                              width: 20,
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 0, 0, 0), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
                             ),
-                          if (employeementtype != '')
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(
-                                    255, 0, 0, 0), // Background color
-                                borderRadius: BorderRadius.circular(
-                                    10), // Optional: Add border radius for rounded corners
-                              ),
-                              child: Text(
-                                employeementtype,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 11,
-                                  color:
-                                      Colors.white, // Optional: Set text color
-                                ),
+                            child: Text(
+                              employeeid,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Colors.white, // Optional: Set text color
                               ),
                             ),
+                          ),
                         ]),
 
                         const SizedBox(
                           height: 2,
                         ),
 
-                        detail == id
-                            ? SizedBox(
-                                child: Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    //Row 1
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          InkWell(
-                                            onTap: () {
-                                              UrlLauncher.launch(
-                                                  'tel:+${'+91' + officialcontactno}');
-                                            },
-                                            child: Image.asset(
-                                              AppAssets.icRoundCallBlue,
-                                              height: 40,
-                                              width: 40,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              UrlLauncher.launch(
-                                                  'whatsapp://send?text=Hello&phone=${'+91' + officialcontactno}');
-                                            },
-                                            child: Image.asset(
-                                              AppAssets.icRoundWhtspGreen,
-                                              height: 40,
-                                              width: 40,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              UrlLauncher.launch(
-                                                  'mailto:${officialemail}');
-                                            },
-                                            child: Image.asset(
-                                              AppAssets.icRoundEmailYellow,
-                                              height: 40,
-                                              width: 40,
-                                            ),
-                                          ),
-                                          //  if (isAllowedEdit)
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          // if (isAllowedEdit)
-                                          InkWell(
-                                              child: Image.asset(
-                                                AppAssets.icMemberEdit,
-                                                height: 40,
-                                                width: 40,
-                                              ),
-                                              onTap: () {
-                                                Navigator.of(context)
-                                                    .pushAndRemoveUntil(
-                                                        MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                AddEditProfile(
-                                                                    id: id)),
-                                                        (Route<dynamic>
-                                                                route) =>
-                                                            false);
-                                              }),
-                                          //  if (isAllowedEdit)
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          //  if (isAllowedEdit)
-                                          InkWell(
-                                              child: Image.asset(
-                                                AppAssets.icMemberDelete,
-                                                height: 40,
-                                                width: 40,
-                                              ),
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return Dialog(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(21),
-                                                      ),
-                                                      elevation: 0,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      child: contentBox(
-                                                          context, id),
-                                                    );
-                                                  },
-                                                );
-                                              })
-                                        ]),
+                        // detail == id
+                        //     ? SizedBox(
+                        //         child: Padding(
+                        //         padding: const EdgeInsets.only(top: 10),
+                        //         child: Column(
+                        //           mainAxisAlignment: MainAxisAlignment.start,
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             //Row 1
+                        //             Row(
+                        //                 mainAxisAlignment:
+                        //                     MainAxisAlignment.start,
+                        //                 crossAxisAlignment:
+                        //                     CrossAxisAlignment.start,
+                        //                 children: <Widget>[
+                        //                   InkWell(
+                        //                     onTap: () {
+                        //                       UrlLauncher.launch(
+                        //                           'tel:+${'+91' + officialcontactno}');
+                        //                     },
+                        //                     child: Image.asset(
+                        //                       AppAssets.icRoundCallBlue,
+                        //                       height: 40,
+                        //                       width: 40,
+                        //                     ),
+                        //                   ),
+                        //                   const SizedBox(
+                        //                     width: 5,
+                        //                   ),
+                        //                   InkWell(
+                        //                     onTap: () {
+                        //                       UrlLauncher.launch(
+                        //                           'whatsapp://send?text=Hello&phone=${'+91' + officialcontactno}');
+                        //                     },
+                        //                     child: Image.asset(
+                        //                       AppAssets.icRoundWhtspGreen,
+                        //                       height: 40,
+                        //                       width: 40,
+                        //                     ),
+                        //                   ),
+                        //                   const SizedBox(
+                        //                     width: 5,
+                        //                   ),
+                        //                   InkWell(
+                        //                     onTap: () {
+                        //                       UrlLauncher.launch(
+                        //                           'mailto:${officialemail}');
+                        //                     },
+                        //                     child: Image.asset(
+                        //                       AppAssets.icRoundEmailYellow,
+                        //                       height: 40,
+                        //                       width: 40,
+                        //                     ),
+                        //                   ),
+                        //                   //  if (isAllowedEdit)
+                        //                   const SizedBox(
+                        //                     width: 5,
+                        //                   ),
+                        //                   // if (isAllowedEdit)
+                        //                   InkWell(
+                        //                       child: Image.asset(
+                        //                         AppAssets.icMemberEdit,
+                        //                         height: 40,
+                        //                         width: 40,
+                        //                       ),
+                        //                       onTap: () {
+                        //                         Navigator.of(context)
+                        //                             .pushAndRemoveUntil(
+                        //                                 MaterialPageRoute(
+                        //                                     builder: (BuildContext
+                        //                                             context) =>
+                        //                                         AddEditProfile(
+                        //                                             id: id)),
+                        //                                 (Route<dynamic>
+                        //                                         route) =>
+                        //                                     false);
+                        //                       }),
+                        //                   //  if (isAllowedEdit)
+                        //                   const SizedBox(
+                        //                     width: 5,
+                        //                   ),
+                        //                   //  if (isAllowedEdit)
+                        //                   InkWell(
+                        //                       child: Image.asset(
+                        //                         AppAssets.icMemberDelete,
+                        //                         height: 40,
+                        //                         width: 40,
+                        //                       ),
+                        //                       onTap: () {
+                        //                         showDialog(
+                        //                           context: context,
+                        //                           builder:
+                        //                               (BuildContext context) {
+                        //                             return Dialog(
+                        //                               shape:
+                        //                                   RoundedRectangleBorder(
+                        //                                 borderRadius:
+                        //                                     BorderRadius
+                        //                                         .circular(21),
+                        //                               ),
+                        //                               elevation: 0,
+                        //                               backgroundColor:
+                        //                                   Colors.transparent,
+                        //                               child: contentBox(
+                        //                                   context, id),
+                        //                             );
+                        //                           },
+                        //                         );
+                        //                       })
+                        //                 ]),
 
-                                    // Row 2
-                                    const SizedBox(
-                                      height: 7,
-                                    ),
-                                    if (employeementtype == 'External')
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              print(id);
+                        //             // Row 2
+                        //             const SizedBox(
+                        //               height: 7,
+                        //             ),
+                        //             if (employeementtype == 'External')
+                        //               Row(
+                        //                 mainAxisAlignment:
+                        //                     MainAxisAlignment.start,
+                        //                 crossAxisAlignment:
+                        //                     CrossAxisAlignment.center,
+                        //                 children: [
+                        //                   GestureDetector(
+                        //                     onTap: () {
+                        //                       print(id);
 
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Dialog(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              21),
-                                                    ),
-                                                    elevation: 0,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    child: attendanceBox(
-                                                        context, employeeid),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 5),
-                                              decoration: BoxDecoration(
-                                                color: Colors
-                                                    .blue, // Background color
-                                                borderRadius: BorderRadius.circular(
-                                                    10), // Optional: Add border radius for rounded corners
-                                              ),
-                                              child: const Text(
-                                                'IN',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                  color: Colors
-                                                      .white, // Optional: Set text color
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              print(id);
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Dialog(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              21),
-                                                    ),
-                                                    elevation: 0,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    child: attendanceBox(
-                                                        context, employeeid),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 5),
-                                              decoration: BoxDecoration(
-                                                color: Colors
-                                                    .blue, // Background color
-                                                borderRadius: BorderRadius.circular(
-                                                    10), // Optional: Add border radius for rounded corners
-                                              ),
-                                              child: const Text(
-                                                'OUT',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                  color: Colors
-                                                      .white, // Optional: Set text color
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                        ],
-                                      )
-                                  ],
-                                ),
-                              ))
-                            : const Row(),
+                        //                       showDialog(
+                        //                         context: context,
+                        //                         builder:
+                        //                             (BuildContext context) {
+                        //                           return Dialog(
+                        //                             shape:
+                        //                                 RoundedRectangleBorder(
+                        //                               borderRadius:
+                        //                                   BorderRadius.circular(
+                        //                                       21),
+                        //                             ),
+                        //                             elevation: 0,
+                        //                             backgroundColor:
+                        //                                 Colors.transparent,
+                        //                             child: attendanceBox(
+                        //                                 context, employeeid),
+                        //                           );
+                        //                         },
+                        //                       );
+                        //                     },
+                        //                     child: Container(
+                        //                       padding: EdgeInsets.symmetric(
+                        //                           horizontal: 10, vertical: 5),
+                        //                       decoration: BoxDecoration(
+                        //                         color: Colors
+                        //                             .blue, // Background color
+                        //                         borderRadius: BorderRadius.circular(
+                        //                             10), // Optional: Add border radius for rounded corners
+                        //                       ),
+                        //                       child: const Text(
+                        //                         'IN',
+                        //                         style: TextStyle(
+                        //                           fontWeight: FontWeight.bold,
+                        //                           fontSize: 16,
+                        //                           color: Colors
+                        //                               .white, // Optional: Set text color
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                   const SizedBox(
+                        //                     width: 5,
+                        //                   ),
+                        //                   const SizedBox(
+                        //                     width: 5,
+                        //                   ),
+                        //                   GestureDetector(
+                        //                     onTap: () {
+                        //                       print(id);
+                        //                       showDialog(
+                        //                         context: context,
+                        //                         builder:
+                        //                             (BuildContext context) {
+                        //                           return Dialog(
+                        //                             shape:
+                        //                                 RoundedRectangleBorder(
+                        //                               borderRadius:
+                        //                                   BorderRadius.circular(
+                        //                                       21),
+                        //                             ),
+                        //                             elevation: 0,
+                        //                             backgroundColor:
+                        //                                 Colors.transparent,
+                        //                             child: attendanceBox(
+                        //                                 context, employeeid),
+                        //                           );
+                        //                         },
+                        //                       );
+                        //                     },
+                        //                     child: Container(
+                        //                       padding: EdgeInsets.symmetric(
+                        //                           horizontal: 10, vertical: 5),
+                        //                       decoration: BoxDecoration(
+                        //                         color: Colors
+                        //                             .blue, // Background color
+                        //                         borderRadius: BorderRadius.circular(
+                        //                             10), // Optional: Add border radius for rounded corners
+                        //                       ),
+                        //                       child: const Text(
+                        //                         'OUT',
+                        //                         style: TextStyle(
+                        //                           fontWeight: FontWeight.bold,
+                        //                           fontSize: 16,
+                        //                           color: Colors
+                        //                               .white, // Optional: Set text color
+                        //                         ),
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                   const SizedBox(
+                        //                     width: 5,
+                        //                   ),
+                        //                 ],
+                        //               )
+                        //           ],
+                        //         ),
+                        //       ))
+                        //     : const Row(),
                       ],
                     )),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            if (detail == id) {
-                              detail = 'hide';
-                            } else {
-                              detail = id;
-                            }
-                          });
-                        },
-                        child: detail == id
-                            ? Image.asset(
-                                AppAssets.icCard,
-                                height: 50,
-                                width: 50,
-                              )
-                            : Image.asset(
-                                AppAssets.icRoundDownArrow,
-                                height: 50,
-                                width: 50,
-                              ),
-                      ),
-                    ],
-                  )
+                  // Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     InkWell(
+                  //       onTap: () {
+                  //         setState(() {
+                  //           if (detail == id) {
+                  //             detail = 'hide';
+                  //           } else {
+                  //             detail = id;
+                  //           }
+                  //         });
+                  //       },
+                  //       child: detail == id
+                  //           ? Image.asset(
+                  //               AppAssets.icCard,
+                  //               height: 50,
+                  //               width: 50,
+                  //             )
+                  //           : Image.asset(
+                  //               AppAssets.icRoundDownArrow,
+                  //               height: 50,
+                  //               width: 50,
+                  //             ),
+                  //     ),
+                  //   ],
+                  // )
                 ],
               ),
             ),

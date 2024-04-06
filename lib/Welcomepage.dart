@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
@@ -237,7 +239,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 onTap: () {
                   if (designation == 'Super Admin') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => AddEditProfile()));
+                        builder: (BuildContext context) => EmployeeList()));
                   }
                 },
                 child: Image.asset(
