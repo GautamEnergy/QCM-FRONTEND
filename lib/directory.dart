@@ -573,6 +573,8 @@ class _DirectoryState extends State<EmployeeList> {
                 itemCount: data.data!.length,
                 itemBuilder: (context, index) {
                   if (SearchController.text.isEmpty) {
+                    print("Image ka link..........");
+                    print(data.data![index].profileImg);
                     return Container(
                         child: _tile(
                             data.data![index].personID ?? '',
@@ -1021,6 +1023,9 @@ class _DirectoryState extends State<EmployeeList> {
                     children: [
                       InkWell(
                         onTap: () {
+                          print("piccc.......");
+                          print(id);
+                          print(profilepic);
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>

@@ -515,10 +515,6 @@ class _SolarCellState extends State<SolarCell> {
 
           invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
           cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
-
-          if (status == 'Inprogress') {
-            setPage = dataMap[0]['Page'] ?? 'heading';
-          }
         }
       });
     }

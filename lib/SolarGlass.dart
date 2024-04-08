@@ -276,7 +276,7 @@ class _SolarGlassState extends State<SolarGlass> {
     setState(() {
       // Packaging
       packagingCharactersticsController.text = "Packing (Make Type)";
-      packagingMeasuringMethodController.text = "";
+      packagingMeasuringMethodController.text = "N/A";
       packagingSamplingController.text = "Whole Lot";
       packagingSampleSizeController.text = "100 %";
       packagingReferenceDocController.text = "PO/INVOICE";

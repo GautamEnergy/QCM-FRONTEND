@@ -142,6 +142,17 @@ class _WelcomePageState extends State<IqcpPage> {
                 const SizedBox(
                   width: 10,
                 ),
+                Expanded(
+                    child: tabDashboard('Solar Glass', AppAssets.planet, () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              SolarGlass(id: "")),
+                      (Route<dynamic> route) => false);
+                })),
+                const SizedBox(
+                  width: 10,
+                ),
               ],
             ),
 
@@ -157,12 +168,12 @@ class _WelcomePageState extends State<IqcpPage> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard('Solar Glass', AppAssets.planet, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              SolarGlass(id: "")),
-                      (Route<dynamic> route) => false);
+                    child: tabDashboard('Encapsulant/EVA', AppAssets.eva, () {
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) =>
+                  //             SolarGlass(id: "")),
+                  //     (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,
@@ -215,6 +226,42 @@ class _WelcomePageState extends State<IqcpPage> {
                 ),
               ],
             ),
+
+            const SizedBox(
+              height: 10,
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: tabDashboard('Flux', AppAssets.flux, () {
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => InOut()),
+                  //     (Route<dynamic> route) => false);
+                })),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: tabDashboard(
+                        'Backsheet', AppAssets.imgAttendanceList, () {
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => SalaryReport()),
+                  //     (Route<dynamic> route) => false);
+                })),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
+
             const SizedBox(
               height: 10,
             ),
@@ -226,8 +273,8 @@ class _WelcomePageState extends State<IqcpPage> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard(
-                        'Backsheet', AppAssets.imgAttendanceList, () {
+                    child:
+                        tabDashboard('Sealant/Poating', AppAssets.Poating, () {
                   // Navigator.of(context).pushAndRemoveUntil(
                   //     MaterialPageRoute(
                   //         builder: (BuildContext context) => InOut()),

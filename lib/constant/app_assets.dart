@@ -56,6 +56,9 @@ class AppAssets {
   static String icgallery = 'assets/icons/gallery.png';
   static String icbooking = 'assets/icons/booking.png';
   static String planet = 'assets/icons/planet.png';
+  static String eva = 'assets/icons/eva.png';
+  static String flux = 'assets/icons/flux.png';
+  static String Poating = 'assets/icons/Poating.png';
   static String prelam = 'assets/icons/prelam.png';
   static String ipqc = 'assets/icons/ipqc.png';
   static String icservice = 'assets/icons/Service.png';

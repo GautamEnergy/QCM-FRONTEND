@@ -56,6 +56,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       bloodGroupController,
       PresentStateController,
       PresentCityController,
+      token,
       PermanentStateController,
       PermanentCityController,
       departmentController,
@@ -176,9 +177,52 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       pic = prefs.getString('pic');
       personid = prefs.getString('personid');
       site = prefs.getString('site');
+      token = prefs.getString('token');
     });
+    _get();
     print("Iddd...........");
     print(widget.id);
+  }
+
+  Future _get() async {
+    print("Id.....AddEditProfile");
+    print(widget.id);
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (widget.id != '' && widget.id != null) {
+        _isLoading = true;
+      }
+      site = prefs.getString('site');
+    });
+    final EmployeeData = ((site!) + 'Employee/GetSpecificEmployee');
+    final employeeData = await http.post(
+      Uri.parse(EmployeeData),
+      body: jsonEncode(<String, String>{"PersonID": widget.id ?? ''}),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    var resBody = json.decode(employeeData.body);
+
+    if (mounted) {
+      setState(() {
+        data = resBody['data'];
+
+        if (data != null && data.length > 0) {
+          _isLoading = false;
+          final dataMap = data.asMap();
+
+          employeeIdController.text = dataMap[0]['EmployeeID'] ?? '';
+          loginIdController.text = dataMap[0]['LoginID'] ?? '';
+          fullnameController.text = dataMap[0]['Name'] ?? '';
+          locationController = dataMap[0]['WorkLocation'] ?? '';
+          departmentController = dataMap[0]['Department'] ?? '';
+          designationController = dataMap[0]['Desgination'] ?? '';
+          profilepicture = dataMap[0]['ProfileImg'] ?? '';
+        }
+      });
+    }
   }
 
   Future<bool> redirectto() async {
@@ -235,13 +279,13 @@ class _ScoreDetailsState extends State<AddEditProfile> {
           counterText: '',
           contentPadding: EdgeInsets.all(10)),
       style: AppStyles.textInputTextStyle,
+      readOnly: widget.id != '' && widget.id != null ? true : false,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter employee id';
         }
         return null;
       },
-      enabled: widget.id != '' && widget.id != null ? false : true,
     );
   }
 
@@ -255,15 +299,15 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       decoration: AppStyles.textFieldInputDecoration.copyWith(
           hintText: "Please Enter Login Id",
           counterText: '',
-          contentPadding: EdgeInsets.all(10)),
+          contentPadding: const EdgeInsets.all(10)),
       style: AppStyles.textInputTextStyle,
+      readOnly: widget.id != '' && widget.id != null ? true : false,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter login id';
         }
         return null;
       },
-      enabled: widget.id != '' && widget.id != null ? false : true,
     );
   }
 
@@ -452,12 +496,10 @@ class _ScoreDetailsState extends State<AddEditProfile> {
   // }
   DropdownButtonFormField textLocation() {
     return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        hintText: 'Please Select Work Location',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
+      decoration: AppStyles.textFieldInputDecoration.copyWith(
+          hintText: "Please Select Work Location",
+          counterText: '',
+          contentPadding: EdgeInsets.all(10)),
       borderRadius: BorderRadius.circular(20),
       items: locationList
           .map((label) => DropdownMenuItem(
@@ -483,12 +525,10 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
   DropdownButtonFormField textDepartment() {
     return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        hintText: 'Please Select Department', // Add hint text here
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
+      decoration: AppStyles.textFieldInputDecoration.copyWith(
+          hintText: "Please Select Department",
+          counterText: '',
+          contentPadding: EdgeInsets.all(10)),
       borderRadius: BorderRadius.circular(20),
       items: departmentList
           .map((label) => DropdownMenuItem(
@@ -514,12 +554,10 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
   DropdownButtonFormField textDesignation() {
     return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        hintText: 'Please Select Designation', // Add hint text here
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
+      decoration: AppStyles.textFieldInputDecoration.copyWith(
+          hintText: "Please Select Designation",
+          counterText: '',
+          contentPadding: EdgeInsets.all(10)),
       borderRadius: BorderRadius.circular(20),
       items: designationList
           .map((label) => DropdownMenuItem(
@@ -533,9 +571,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
           designationController = val!;
         });
       },
-      value: designationController != '' && designationController != null
-          ? designationController
-          : null,
+      value: designationController != '' ? designationController : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please select a designation';
@@ -566,6 +602,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       body: jsonEncode(<String, String>{
         "personid":
             widget.id != '' && widget.id != null ? widget.id.toString() : '',
+        "currentuser": personid ?? '',
         "employeeid": employeeid,
         "loginid": loginid,
         "joblocation": joblocation,
@@ -579,15 +616,47 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     );
 
     if (response.statusCode == 200) {
-      //  pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
       var data = json.decode(response.body);
-
-      setState(() {
-        setpersonid = data['data'][0][0]['vPersonID'];
-      });
-      if (data['data'][0].length > 0) {
-        upload((personlogoBytes ?? []), (personLogoname ?? ''));
-        // pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
+      if (data['msg'] == 'Update Employee Detail') {
+        if (personlogoBytes != null && personlogoBytes != '') {
+          upload((personlogoBytes ?? []), (personLogoname ?? ''));
+        } else {
+          setState(() {
+            _isLoading = false;
+          });
+          Toast.show(
+              widget.id != '' && widget.id != null
+                  ? "Employee updated successfully."
+                  : "Employee registered successfully.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.primaryColor);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => EmployeeList()),
+              (Route<dynamic> route) => false);
+        }
+      } else {
+        setState(() {
+          setpersonid = data['data'][0][0]['vPersonID'];
+        });
+        if ((data['data'][0].length > 0) &&
+            (personlogoBytes != null && personlogoBytes != '')) {
+          upload((personlogoBytes ?? []), (personLogoname ?? ''));
+          // pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
+        } else {
+          Toast.show(
+              widget.id != '' && widget.id != null
+                  ? "Employee updated successfully."
+                  : "Employee registered successfully.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.primaryColor);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => EmployeeList()),
+              (Route<dynamic> route) => false);
+        }
       }
     } else {
       Toast.show("Error on Server",
@@ -603,7 +672,11 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
     var currentdate = DateTime.now().microsecondsSinceEpoch;
     var formData = FormData.fromMap({
-      'personid': setpersonid,
+      'personid': setpersonid != '' && setpersonid != null
+          ? setpersonid
+          : widget.id != '' && widget.id != null
+              ? widget.id.toString()
+              : '',
       "Profile": MultipartFile.fromBytes(
         bytes,
         filename: (name + (currentdate.toString()) + '.jpg'),
@@ -625,12 +698,17 @@ class _ScoreDetailsState extends State<AddEditProfile> {
         setState(() {
           _isLoading = false;
         });
-        Toast.show("Employee registered successfully.",
+
+        Toast.show(
+            widget.id != '' && widget.id != null
+                ? "Employee updated successfully."
+                : "Employee registered successfully.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.primaryColor);
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => EmployeeList()),
             (Route<dynamic> route) => false);
       }
     } catch (err) {
@@ -842,19 +920,18 @@ class _ScoreDetailsState extends State<AddEditProfile> {
             ),
 
             Text(
-              "Work Location*",
-              style: AppStyles.textfieldCaptionTextStyle,
-            ),
-            const SizedBox(height: 5),
-            textLocation(),
-            const SizedBox(height: 15),
-
-            Text(
               "Full Name*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(height: 5),
             textFullName(),
+            const SizedBox(height: 15),
+            Text(
+              "Work Location*",
+              style: AppStyles.textfieldCaptionTextStyle,
+            ),
+            const SizedBox(height: 5),
+            textLocation(),
 
             const SizedBox(
               height: 15,
@@ -895,7 +972,16 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
 
-                  if (personlogoBytes != null && personlogoBytes != '') {
+                  if ((widget.id == '' || widget.id == null) &&
+                      (personlogoBytes != null && personlogoBytes != '')) {
+                    createData(
+                        employeeIdController.text,
+                        loginIdController.text,
+                        locationController ?? "",
+                        fullnameController.text,
+                        departmentController ?? "",
+                        designationController ?? "");
+                  } else if ((widget.id != '' && widget.id != null)) {
                     createData(
                         employeeIdController.text,
                         loginIdController.text,
