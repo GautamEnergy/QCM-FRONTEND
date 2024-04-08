@@ -177,11 +177,13 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       personid = prefs.getString('personid');
       site = prefs.getString('site');
     });
+    print("Iddd...........");
+    print(widget.id);
   }
 
   Future<bool> redirectto() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return WelcomePage();
+      return EmployeeList();
     }));
     return true;
   }
@@ -210,15 +212,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 logo: "logo",
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return (department == 'IQCP' &&
-                            designation != 'Super Admin')
-                        ? IqcpPage()
-                        : (department == 'IPQC' && designation != 'Super Admin')
-                            ? IpqcPage()
-                            : (department == 'FQC' &&
-                                    designation != 'Super Admin')
-                                ? IqcpPage()
-                                : WelcomePage();
+                    return EmployeeList();
                   }));
                 },
               ),
@@ -927,7 +921,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                            builder: (BuildContext context) => WelcomePage()),
+                            builder: (BuildContext context) => EmployeeList()),
                         (Route<dynamic> route) => false);
                   },
                   child: const Text(

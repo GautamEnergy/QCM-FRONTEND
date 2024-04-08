@@ -282,7 +282,7 @@ class _WelcomePageState extends State<IqcpPage> {
                 onTap: () {
                   if (designation == 'Super Admin') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => AddEditProfile()));
+                        builder: (BuildContext context) => EmployeeList()));
                   }
                 },
                 child: Image.asset(

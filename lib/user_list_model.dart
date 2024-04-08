@@ -31,6 +31,7 @@ class UserModel {
 }
 
 class UserData {
+  String? personID;
   String? loginID;
   String? employeeID;
   String? name;
@@ -41,7 +42,8 @@ class UserData {
   String? status;
 
   UserData(
-      {this.loginID,
+      {this.personID,
+      this.loginID,
       this.employeeID,
       this.name,
       this.profileImg,
@@ -51,6 +53,7 @@ class UserData {
       this.status});
 
   UserData.fromJson(Map<String, dynamic> json) {
+    personID = json['PersonID'];
     loginID = json['LoginID'];
     employeeID = json['EmployeeID'];
     name = json['Name'];
@@ -63,6 +66,7 @@ class UserData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['PersonID'] = this.personID;
     data['LoginID'] = this.loginID;
     data['EmployeeID'] = this.employeeID;
     data['Name'] = this.name;

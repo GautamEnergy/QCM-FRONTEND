@@ -183,199 +183,9 @@ class _DirectoryState extends State<EmployeeList> {
     }
   }
 
-  attendanceBox(context, String employeeId) {
-    return SingleChildScrollView(
-      child: Form(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                  left: 20, top: 20, right: 20, bottom: 20),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      // 'Disable Member',
-                      'Employee Attendance',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'HKGrotesk',
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 15),
-                        const Text(
-                          'Are you sure to take attendance.?',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 15),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            takeAttendance(employeeId);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              child: Center(
-                                child: Text(
-                                  'Yes',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'HKGrotesk',
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
-                        InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Center(
-                              child: Text(
-                                'NO',
-                                style: TextStyle(
-                                    fontFamily: appFontFamily,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.redColor),
-                              ),
-                            )),
-                        const SizedBox(height: 10.0),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  contentBox(context, String personId) {
-    return SingleChildScrollView(
-      child: Form(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                  left: 20, top: 20, right: 20, bottom: 20),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      // 'Disable Member',
-                      "Remove Employee",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'HKGrotesk',
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 15),
-                        const Text(
-                          // 'Are you sure you want to disable this member?',
-                          "Are you sure you want to remove this employee?",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 15),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-
-                            setMemberStatus(personId);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              child: Center(
-                                child: Text(
-                                  'Yes',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'HKGrotesk',
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
-                        InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Center(
-                              child: Text(
-                                'NO',
-                                style: TextStyle(
-                                    fontFamily: appFontFamily,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.redColor),
-                              ),
-                            )),
-                        const SizedBox(height: 10.0),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Future<bool> redirectto() async {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+        MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
         (Route<dynamic> route) => false);
     return true;
   }
@@ -490,16 +300,14 @@ class _DirectoryState extends State<EmployeeList> {
                         width: 8,
                       ),
                       InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Attendance()));
-                          },
+                          // onTap: () {
+                          //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          //       builder: (BuildContext context) => Attendance()));
+                          // },
                           child: Image.asset(
                               face
-                                  ? AppAssets.imgSelectedFace
-                                  : AppAssets.imgFace,
+                                  ? AppAssets.icSearchSelected
+                                  : AppAssets.icSearchUnSelected,
                               height: 25)),
                       const SizedBox(
                         width: 8,
@@ -767,7 +575,7 @@ class _DirectoryState extends State<EmployeeList> {
                   if (SearchController.text.isEmpty) {
                     return Container(
                         child: _tile(
-                            // data.data![index].personid ?? '',
+                            data.data![index].personID ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].profileImg ?? '',
                             data.data![index].name ?? '',
@@ -784,7 +592,7 @@ class _DirectoryState extends State<EmployeeList> {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            // data.data![index].personid ?? '',
+                            data.data![index].personID ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].profileImg ?? '',
                             data.data![index].name ?? '',
@@ -798,7 +606,7 @@ class _DirectoryState extends State<EmployeeList> {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            // data.data![index].personid ?? '',
+                            data.data![index].personID ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].profileImg ?? '',
                             data.data![index].name ?? '',
@@ -812,7 +620,7 @@ class _DirectoryState extends State<EmployeeList> {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            // data.data![index].personid ?? '',
+                            data.data![index].personID ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].profileImg ?? '',
                             data.data![index].name ?? '',
@@ -826,7 +634,7 @@ class _DirectoryState extends State<EmployeeList> {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            // data.data![index].personid ?? '',
+                            data.data![index].personID ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].profileImg ?? '',
                             data.data![index].name ?? '',
@@ -840,7 +648,7 @@ class _DirectoryState extends State<EmployeeList> {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            // data.data![index].personid ?? '',
+                            data.data![index].personID ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].profileImg ?? '',
                             data.data![index].name ?? '',
@@ -859,7 +667,7 @@ class _DirectoryState extends State<EmployeeList> {
     ]);
   }
 
-  Widget _tile(String employeeid, String profilepic, String name,
+  Widget _tile(String id, String employeeid, String profilepic, String name,
       String location, String designation, String department, String status) {
     return InkWell(
       onTap: () {
@@ -953,21 +761,21 @@ class _DirectoryState extends State<EmployeeList> {
                                   fontSize: 12,
                                 )),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(
+                              color: const Color.fromARGB(
                                   255, 0, 0, 0), // Background color
                               borderRadius: BorderRadius.circular(
                                   10), // Optional: Add border radius for rounded corners
                             ),
                             child: Text(
-                              employeeid,
-                              style: TextStyle(
+                              designation,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
                                 color: Colors.white, // Optional: Set text color
@@ -1207,34 +1015,26 @@ class _DirectoryState extends State<EmployeeList> {
                       ],
                     )),
                   ),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: [
-                  //     InkWell(
-                  //       onTap: () {
-                  //         setState(() {
-                  //           if (detail == id) {
-                  //             detail = 'hide';
-                  //           } else {
-                  //             detail = id;
-                  //           }
-                  //         });
-                  //       },
-                  //       child: detail == id
-                  //           ? Image.asset(
-                  //               AppAssets.icCard,
-                  //               height: 50,
-                  //               width: 50,
-                  //             )
-                  //           : Image.asset(
-                  //               AppAssets.icRoundDownArrow,
-                  //               height: 50,
-                  //               width: 50,
-                  //             ),
-                  //     ),
-                  //   ],
-                  // )
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      AddEditProfile(id: id)),
+                              (Route<dynamic> route) => false);
+                        },
+                        child: Image.asset(
+                          AppAssets.icMemberEdit,
+                          height: 40,
+                          width: 40,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

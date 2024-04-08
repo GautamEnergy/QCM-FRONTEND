@@ -1,4 +1,4 @@
-package com.gautam.attendance
+package com.gautam.qcm
 
 import io.flutter.embedding.android.FlutterActivity
 

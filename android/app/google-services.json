@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "465912797331",
-    "project_id": "gautam-attendance",
-    "storage_bucket": "gautam-attendance.appspot.com"
+    "project_number": "325562469631",
+    "project_id": "qcmgautam",
+    "storage_bucket": "qcmgautam.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:465912797331:android:7523ddaf02d3e5d54cd566",
+        "mobilesdk_app_id": "1:325562469631:android:3e1bc1097a116fb3b610ca",
         "android_client_info": {
-          "package_name": "com.gautam.attendance"
+          "package_name": "com.gautam.qcm"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDz80s9ZPkmDcEiN7yt8BqOaIEL-uXFsi4"
+          "current_key": "AIzaSyCT9PcmIvzxzKaJv-POtWwk9sP-NASfE7Q"
         }
       ],
       "services": {
