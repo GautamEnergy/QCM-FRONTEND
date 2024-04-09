@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Encapsulant.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/SolarGlass.dart';
@@ -644,7 +645,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             child: Image.asset(
                               materialname == "Solar Cell"
                                   ? AppAssets.solarcell
-                                  : AppAssets.planet,
+                                  : materialname == "Solar Glass"
+                                      ? AppAssets.planet
+                                      : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -655,7 +658,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             child: Image.asset(
                               materialname == "Solar Cell"
                                   ? AppAssets.solarcell
-                                  : AppAssets.planet,
+                                  : materialname == "Solar Glass"
+                                      ? AppAssets.planet
+                                      : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -916,7 +921,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                     builder: (BuildContext context) =>
                                         materialname == "Solar Cell"
                                             ? SolarCell(id: id)
-                                            : SolarGlass(id: id)),
+                                            : materialname == "Solar Glass"
+                                                ? SolarGlass(id: id)
+                                                : Encapsulant(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -927,7 +934,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         ),
                       ],
                     ),
-                  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                  // if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                  if (_hasBeenPressed1 == 'Inprogress')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -939,7 +947,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                     builder: (BuildContext context) =>
                                         materialname == "Solar Cell"
                                             ? SolarCell(id: id)
-                                            : SolarGlass(id: id)),
+                                            : materialname == "Solar Glass"
+                                                ? SolarGlass(id: id)
+                                                : Encapsulant(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

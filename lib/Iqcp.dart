@@ -1,4 +1,5 @@
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Encapsulant.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 
@@ -169,11 +170,11 @@ class _WelcomePageState extends State<IqcpPage> {
                 ),
                 Expanded(
                     child: tabDashboard('Encapsulant/EVA', AppAssets.eva, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) =>
-                  //             SolarGlass(id: "")),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              Encapsulant(id: "")),
+                      (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,
