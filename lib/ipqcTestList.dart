@@ -7,6 +7,7 @@ import 'package:QCM/Jobcard.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
+import 'package:QCM/bomcard.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_assets.dart';
@@ -534,7 +535,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].moduleNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].type ?? '',
+                            data.data![index].referencePdf ?? ''));
                   } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
@@ -550,7 +553,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].moduleNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].type ?? '',
+                            data.data![index].referencePdf ?? ''));
                   } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -563,7 +568,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].moduleNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].type ?? '',
+                            data.data![index].referencePdf ?? ''));
                   } else if (data.data![index].moduleNo!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -576,7 +583,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].moduleNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].type ?? '',
+                            data.data![index].referencePdf ?? ''));
                   } else if ((data.data![index].employeeID!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -589,7 +598,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].moduleNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].type ?? '',
+                            data.data![index].referencePdf ?? ''));
                   } else if (data.data![index].jobCardDetailID!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -602,7 +613,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].moduleNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].type ?? '',
+                            data.data![index].referencePdf ?? ''));
                   } else {
                     return Container();
                   }
@@ -614,8 +627,16 @@ class _IpqcTestListState extends State<IpqcTestList> {
     ]);
   }
 
-  Widget _tile(String id, String materialname, String profilepic, String name,
-      String location, String invoiceno, String employeeid) {
+  Widget _tile(
+      String id,
+      String materialname,
+      String profilepic,
+      String name,
+      String location,
+      String invoiceno,
+      String employeeid,
+      String type,
+      String referencePdf) {
     return InkWell(
       onTap: () {},
       child: Padding(
@@ -650,7 +671,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                         errorWidget: (context, url, error) {
                           return ClipOval(
                             child: Image.asset(
-                              AppAssets.jobcard,
+                              type == 'BOM Verification'
+                                  ? AppAssets.postlam
+                                  : AppAssets.jobcard,
                               height: 60,
                               width: 60,
                             ),
@@ -668,7 +691,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                         //Name
                         Row(children: <Widget>[
                           Flexible(
-                            child: Text(materialname,
+                            child: Text(type,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontFamily: appFontFamily,
@@ -759,6 +782,48 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             ),
                           ),
                         ]),
+                        if (referencePdf != '' && referencePdf != null)
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        //Occupication
+                        if (referencePdf != '' && referencePdf != null)
+                          Row(children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(
+                                    255, 192, 148, 4), // Background color
+                                borderRadius: BorderRadius.circular(
+                                    10), // Optional: Add border radius for rounded corners
+                              ),
+                              child: const Text(
+                                "Reference :",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Color.fromARGB(
+                                      255, 0, 0, 0), // Optional: Set text color
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                UrlLauncher.launch(referencePdf);
+                              },
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  AppAssets.icPdf,
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                            ),
+                          ]),
 
                         const SizedBox(
                           height: 2,
@@ -776,7 +841,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        Jobcard(id: id)),
+                                        type == "Job Card"
+                                            ? Jobcard(id: id)
+                                            : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -797,7 +864,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        Jobcard(id: id)),
+                                        type == "Job Card"
+                                            ? Jobcard(id: id)
+                                            : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

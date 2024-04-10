@@ -8,8 +8,7 @@ import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/dialogs/all_member_list_model.dart';
 import 'package:QCM/ipqcTestList.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
+
 import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
@@ -279,84 +278,6 @@ class _JobcardState extends State<Jobcard> {
               resBody['response']['Sun Simulator Comments'] ?? '';
           referencePdfController.text =
               resBody['response']['ReferencePdf'] ?? '';
-          // invoiceDate = dataMap[0]['InvoiceDate'] ?? '';
-          // rawMaterialSpecsController.text =
-          //     dataMap[0]['RawMaterialSpecs'] ?? '';
-          // dateOfQualityCheckController
-          //     .text = DateFormat("EEE MMM dd, yyyy").format(
-          //         DateTime.parse(dataMap[0]['QualityCheckDate'].toString())) ??
-          //     '';
-
-          // dateOfQualityCheck = dataMap[0]['QualityCheckDate'] ?? '';
-
-          // rMBatchNoController.text = dataMap[0]['SupplierRMBatchNo'] ?? '';
-          // receiptDateController.text = DateFormat("EEE MMM dd, yyyy").format(
-          //         DateTime.parse(dataMap[0]['ReceiptDate'].toString())) ??
-          //     '';
-
-          // receiptDate = dataMap[0]['ReceiptDate'] ?? '';
-
-          // numberOfPackagingSampleFields =
-          //     (dataMap[0]['SampleSizePackaging'] != 0
-          //         ? dataMap[0]['SampleSizePackaging']
-          //         : 1);
-          // Packaging = dataMap[0]['Packaging'] ?? [];
-
-          // visualSampleSizeController.text = (dataMap[0]['SampleSizeVisual'] != 0
-          //         ? dataMap[0]['SampleSizeVisual']
-          //         : "")
-          //     .toString();
-          // Visual = dataMap[0]['Visual'] ?? [];
-
-          // physicalSampleSizeController.text =
-          //     (dataMap[0]['SampleSizePhysical'] != 0
-          //             ? dataMap[0]['SampleSizePhysical']
-          //             : "")
-          //         .toString();
-          // Physical = dataMap[0]['Physical'] ?? [];
-
-          // frontbusSampleSizeController.text =
-          //     (dataMap[0]['SampleSizeFrontBus'] != 0
-          //             ? dataMap[0]['SampleSizeFrontBus']
-          //             : "")
-          //         .toString();
-          // FrontBus = dataMap[0]['FrontBus'] ?? [];
-
-          // verificationSampleSizeController.text =
-          //     (dataMap[0]['SampleSizeVerification'] != 0
-          //             ? dataMap[0]['SampleSizeVerification']
-          //             : "")
-          //         .toString();
-          // Verification = dataMap[0]['Verification'] ?? [];
-
-          // electricalSampleSizeController.text =
-          //     (dataMap[0]['SampleSizeElectrical'] != 0
-          //             ? dataMap[0]['SampleSizeElectrical']
-          //             : "")
-          //         .toString();
-          // Electrical = dataMap[0]['Electrical'] ?? [];
-
-          // performanceSampleSizeController.text =
-          //     (dataMap[0]['SampleSizePerformance'] != 0
-          //             ? dataMap[0]['SampleSizePerformance']
-          //             : "")
-          //         .toString();
-          // Performance = dataMap[0]['Performance'] ?? [];
-
-          // result = dataMap[0]['Result'] ?? 'Fail';
-          // status = dataMap[0]['Status'] ?? '';
-
-          // packagingRejection = dataMap[0]['RejectPackaging'] ?? 'false';
-          // visualRejection = dataMap[0]['RejectVisual'] ?? 'false';
-          // physicalRejection = dataMap[0]['RejectPhysical'] ?? 'false';
-          // frontbusRejection = dataMap[0]['RejectFrontBus'] ?? 'false';
-          // verificationRejection = dataMap[0]['RejectVerification'] ?? 'false';
-          // electricalRejection = dataMap[0]['RejectElectrical'] ?? 'false';
-          // performanceRejection = dataMap[0]['RejectPerformance'] ?? 'false';
-          // rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
-
-          // invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
-          //         // cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
         }
       });
     }
@@ -436,6 +357,7 @@ class _JobcardState extends State<Jobcard> {
     var data = [
       {
         "JobCardDetails": {
+          "Type": "Job Card",
           "JobCardDetailId":
               widget.id != '' && widget.id != null ? widget.id : '',
           "date": jobCardDate,
@@ -730,7 +652,7 @@ class _JobcardState extends State<Jobcard> {
 
                                         // }
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons
                                             .save_rounded, // Replace 'your_icon' with the icon you want to use
                                         size: 40,

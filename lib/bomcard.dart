@@ -1,18 +1,31 @@
 import 'dart:convert';
+//import 'dart:html';
+import 'dart:io';
 
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
+import 'package:QCM/ipqcTestList.dart';
+
+//import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import 'package:flutter/material.dart';
 
 import 'package:form_field_validator/form_field_validator.dart';
+
 import 'package:intl/intl.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/src/response.dart' as Response;
 
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
@@ -23,14 +36,16 @@ import '../constant/app_helper.dart';
 import '../constant/app_styles.dart';
 
 class BomCard extends StatefulWidget {
-  const BomCard({super.key});
+  final String? id;
+  BomCard({this.id});
+  //const BomCard({super.key});
 
   @override
   _BomCardState createState() => _BomCardState();
 }
 
 class _BomCardState extends State<BomCard> {
-  final _registerFormKey = GlobalKey<FormState>();
+  final _bomCardFormKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
   TextEditingController LineController = TextEditingController();
@@ -115,127 +130,410 @@ class _BomCardState extends State<BomCard> {
   TextEditingController RfidSpecificationController = TextEditingController();
   TextEditingController RfidLotBatchController = TextEditingController();
   TextEditingController RfidremarkController = TextEditingController();
+  TextEditingController referencePdfController = new TextEditingController();
   bool menu = false, user = false, face = false, home = false;
   bool _isLoading = false;
-  String setPage = '', pic = '', site = '', designation = '', token = '';
+  String setPage = '',
+      pic = '',
+      site = '',
+      designation = '',
+      status = '',
+      BomId = '',
+      token = '',
+      personid = '',
+      bomCardDate = '',
+      approvalStatus = "Approved",
+      department = '';
   String invoiceDate = '';
   late String dateOfQualityCheck;
   String date = '';
+  List<int>? referencePdfFileBytes;
+  late String sendStatus;
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
+  Response.Response? _response;
+  final _dio = dio.Dio();
 
   @override
   void initState() {
     super.initState();
+    store();
   }
 
   void store() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       pic = prefs.getString('pic')!;
-      // personid = prefs.getString('personid')!;
+      print("Depppppppppppppppppppppppppppppppppppppppppppppppp");
+      print(prefs.getString('personid')!);
+      personid = prefs.getString('personid')!;
       site = prefs.getString('site')!;
       designation = prefs.getString('designation')!;
-      // department = prefs.getString('department')!;
+      department = prefs.getString('department')!;
       token = prefs.getString('token')!;
     });
-    // _get();
+    _get();
   }
 
-  void sendDataToBackend() async {
-    var data = {
-      'date': dateController.text,
-      'shift': shiftController.text,
-      'line': LineController.text,
-      'po': poController.text,
-      'solarCellSupplier': solarCellSupplierController.text,
-      'solarCellSpecification': solarCellSpecificationController.text,
-      'solarCellLotBatch': solarCellLotBatchController.text,
-      'solarCellRemark': solarCellremarkController.text,
-      'fluxLotBatch': fluxLotBatchController.text,
-      'fluxSpecification': fluxSpecificationController.text,
-      'fluxSupplier': fluxSupplierController.text,
-      'fluxRemark': fluxremarkController.text,
-      'ribbonSupplier': ribbonSupplierController.text,
-      'ribbonSpecification': ribbonSpecificationController.text,
-      'ribbonLotBatch': ribbonLotBatchController.text,
-      'ribbonRemark': ribbonremarkController.text,
-      'interconnectorSupplier': InterconnectorSupplierController.text,
-      'interconnectorLotBatch': InterconnectorLotBatchController.text,
-      'interconnectorSpecification': InterconnectorSpecificationController.text,
-      'interconnectorRemark': InterconnectorremarkController.text,
-      'glassSupplier': GlassSupplierController.text,
-      'glassSpecification': GlassSpecificationController.text,
-      'glassLotBatch': GlassLotBatchController.text,
-      'glassRemark': GlassremarkController.text,
-      'evaGlassSupplier': EvaGlassSupplierController.text,
-      'evaGlassSpecification': EvaGlassSpecificationController.text,
-      'evaGlassLotBatch': EvaGlassLotBatchController.text,
-      'evaGlassRemark': EvaGlassremarkController.text,
-      'evaGlassSideSupplier': EvaGlassSideSupplierController.text,
-      'evaGlassSideSpecification': EvaGlassSideSpecificationController.text,
-      'evaGlassSideLotBatch': EvaGlassSideLotBatchController.text,
-      'evaGlassSideRemark': EvaGlassSideremarkController.text,
-      'backSheetSupplier': BackSheetSupplierController.text,
-      'backSheetSpecification': BackSheetSpecificationController.text,
-      'backSheetLotBatch': BackSheetLotBatchController.text,
-      'backSheetRemark': BackSheetremarkController.text,
-      'frameSupplier': FrameSupplierController.text,
-      'frameSpecification': FrameSpecificationController.text,
-      'frameLotBatch': FrameLotBatchController.text,
-      'frameRemark': FrameremarkController.text,
-      'junctionBoxSupplier': JunctionBoxSupplierController.text,
-      'junctionBoxSpecification': JunctionBoxSpecificationController.text,
-      'junctionBoxLotBatch': JunctionBoxLotBatchController.text,
-      'junctionBoxRemark': JunctionBoxremarkController.text,
-      'pottingJBSupplier': pottingJBSupplierController.text,
-      'pottingJBSpecification': pottingJBSpecificationController.text,
-      'pottingJBLotBatch': pottingJBLotBatchController.text,
-      'pottingJBRemark': pottingJBremarkController.text,
-      'frameAdhesiveSupplier': FrameAdhesiveSupplierController.text,
-      'frameAdhesiveSpecification': FrameAdhesiveSpecificationController.text,
-      'frameAdhesiveLotBatch': FrameAdhesiveLotBatchController.text,
-      'frameAdhesiveRemark': FrameAdhesiveremarkController.text,
-      'rfidSupplier': RfidSupplierController.text,
-      'rfidSpecification': RfidSpecificationController.text,
-      'rfidLotBatch': RfidLotBatchController.text,
-      'rfidRemark': RfidremarkController.text,
-      // Add more fields as needed
+  Future _get() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
+    print(widget.id);
+    setState(() {
+      if (widget.id != '' && widget.id != null) {
+        _isLoading = true;
+      }
+      site = prefs.getString('site')!;
+    });
+    final AllSolarData = ((site!) + '/IPQC/GetSpecificBOMVerification');
+    final allSolarData = await http.post(
+      Uri.parse(AllSolarData),
+      body: jsonEncode(<String, String>{
+        "JobCardDetailId": widget.id ?? '',
+        "token": token!
+      }),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+    print("hhhhhhhhhhhhhhhh");
+    print(allSolarData.body);
+    var resBody = json.decode(allSolarData.body);
+
+    if (mounted) {
+      setState(() {
+        if (resBody != '') {
+          print(resBody);
+          print(resBody['data']['Date'] ?? '');
+          print(resBody['data']['SolarCell Supplier'] ?? '');
+          // print(resBody['response']['Visual Inspection & Laminator Description']
+          //     ["Cycle_Time"]);
+
+          print("saiffffffffffffffffffffffffffffffffffffffffff");
+          print("kulllllllllllllllllllllllllllllllllllllllllll");
+          // dateController.text = resBody['data'][0]['Date'] ?? '';
+          status = resBody['data']['Status'] ?? '';
+          bomCardDate = resBody['data']['Date'] ?? '';
+          dateController.text = DateFormat("EEE MMM dd, yyyy")
+                  .format(DateTime.parse(resBody['data']['Date'].toString())) ??
+              '';
+          shiftController.text = resBody['data']['Shift'] ?? '';
+          LineController.text = resBody['data']['Line'] ?? '';
+          poController.text = resBody['data']['PONo'] ?? '';
+          // Solar Cell
+          solarCellSupplierController.text =
+              resBody['data']['SolarCell Supplier'] ?? '';
+          solarCellSpecificationController.text =
+              resBody['data']['SolarCell ModelNo'] ?? '';
+          solarCellLotBatchController.text =
+              resBody['data']['SolarCell BatchNo'] ?? '';
+          solarCellremarkController.text =
+              resBody['data']['SolarCell Remarks'] ?? '';
+          // Flux
+          fluxSupplierController.text = resBody['data']['Flux Supplier'] ?? '';
+          fluxSpecificationController.text =
+              resBody['data']['Flux ModelNo'] ?? '';
+          fluxLotBatchController.text = resBody['data']['Flux BatchNo'] ?? '';
+          fluxremarkController.text = resBody['data']['Flux Remarks'] ?? '';
+          // Ribbon
+          ribbonSupplierController.text =
+              resBody['data']['Ribbon Supplier'] ?? '';
+          ribbonSpecificationController.text =
+              resBody['data']['Ribbon ModelNo'] ?? '';
+          ribbonLotBatchController.text =
+              resBody['data']['Ribbon BatchNo'] ?? '';
+          ribbonremarkController.text = resBody['data']['Ribbon Remarks'] ?? '';
+          // InterConnector Busbar
+          InterconnectorSupplierController.text =
+              resBody['data']['Interconnector/Bus-bar Supplier'] ?? '';
+          InterconnectorSpecificationController.text =
+              resBody['data']['Interconnector/Bus-bar ModelNo'] ?? '';
+          InterconnectorLotBatchController.text =
+              resBody['data']['Interconnector/Bus-bar BatchNo'] ?? '';
+          InterconnectorremarkController.text =
+              resBody['data']['Interconnector/Bus-bar Remarks'] ?? '';
+          // Glass
+          GlassSupplierController.text =
+              resBody['data']['Glass Supplier'] ?? '';
+          GlassSpecificationController.text =
+              resBody['data']['Glass ModelNo'] ?? '';
+          GlassLotBatchController.text = resBody['data']['Glass BatchNo'] ?? '';
+          GlassremarkController.text = resBody['data']['Glass Remarks'] ?? '';
+          // EvaGlass(Front)
+          EvaGlassSupplierController.text =
+              resBody['data']['Eva Glass side(frontEVA) Supplier'] ?? '';
+          EvaGlassSpecificationController.text =
+              resBody['data']['Eva Glass side(frontEVA) ModelNo'] ?? '';
+          EvaGlassLotBatchController.text =
+              resBody['data']['Eva Glass side(frontEVA) BatchNo'] ?? '';
+          EvaGlassremarkController.text =
+              resBody['data']['Eva Glass side(frontEVA) Remarks'] ?? '';
+          // EvaGlass(rear)
+          EvaGlassSideSupplierController.text =
+              resBody['data']['Eva Glass Side(rear EVA) Supplier'] ?? '';
+          EvaGlassSideSpecificationController.text =
+              resBody['data']['Eva Glass Side(rear EVA) ModelNo'] ?? '';
+          EvaGlassSideLotBatchController.text =
+              resBody['data']['Eva Glass Side(rear EVA) BatchNo'] ?? '';
+          EvaGlassSideremarkController.text =
+              resBody['data']['Eva Glass Side(rear EVA) Remarks'] ?? '';
+          // BackSheet
+          BackSheetSupplierController.text =
+              resBody['data']['Back Sheet Supplier'] ?? '';
+          BackSheetSpecificationController.text =
+              resBody['data']['Back Sheet ModelNo'] ?? '';
+          BackSheetLotBatchController.text =
+              resBody['data']['Back Sheet BatchNo'] ?? '';
+          BackSheetremarkController.text =
+              resBody['data']['Back Sheet Remarks'] ?? '';
+          // Frame
+          FrameSupplierController.text =
+              resBody['data']['Frame Supplier'] ?? '';
+          FrameSpecificationController.text =
+              resBody['data']['Frame ModelNo'] ?? '';
+          FrameLotBatchController.text = resBody['data']['Frame BatchNo'] ?? '';
+          FrameremarkController.text = resBody['data']['Frame Remarks'] ?? '';
+          // junction Box
+          JunctionBoxSupplierController.text =
+              resBody['data']['Junction Box Supplier'] ?? '';
+          JunctionBoxSpecificationController.text =
+              resBody['data']['Junction Box ModelNo'] ?? '';
+          JunctionBoxLotBatchController.text =
+              resBody['data']['Junction Box BatchNo'] ?? '';
+          JunctionBoxremarkController.text =
+              resBody['data']['Junction Box Remarks'] ?? '';
+          // Potting
+          pottingJBSupplierController.text =
+              resBody['data']['Potting JB Sealant(A:B) Supplier'] ?? '';
+          pottingJBSpecificationController.text =
+              resBody['data']['Potting JB Sealant(A:B) ModelNo'] ?? '';
+          pottingJBLotBatchController.text =
+              resBody['data']['Potting JB Sealant(A:B) BatchNo'] ?? '';
+          pottingJBremarkController.text =
+              resBody['data']['Potting JB Sealant(A:B) Remarks'] ?? '';
+          // Frame Adhesive
+          FrameAdhesiveSupplierController.text =
+              resBody['data']['Frame Adhesive sealant Supplier'] ?? '';
+          FrameAdhesiveSpecificationController.text =
+              resBody['data']['Frame Adhesive sealant ModelNo'] ?? '';
+          FrameAdhesiveLotBatchController.text =
+              resBody['data']['Frame Adhesive sealant BatchNo'] ?? '';
+          FrameAdhesiveremarkController.text =
+              resBody['data']['Frame Adhesive sealant Remarks'] ?? '';
+          // RFID
+          RfidSupplierController.text = resBody['data']['RFID Supplier'] ?? '';
+          RfidSpecificationController.text =
+              resBody['data']['RFID ModelNo'] ?? '';
+          RfidLotBatchController.text = resBody['data']['RFID BatchNo'] ?? '';
+          RfidremarkController.text = resBody['data']['RFID Remarks'] ?? '';
+          referencePdfController.text = resBody['data']['ReferencePdf'] ?? '';
+
+          // dateController.text = resBody['data']['Date']
+          ///   ? DateFormat("EEE MMM dd, yyyy")
+          //     .format(DateTime.parse(resBody['data']['Date'].toString())) ??
+          //  : '';
+          // moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
+
+          // matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
+          // moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
+          // lotNoController.text =
+          //     resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
+          // lotSizeController.text =
+          //     resBody['response']['Glass Washing Description']["size"] ?? '';
+          // glassCommentController.text =
+          //     resBody['response']['Glass Washing Comments'] ?? '';
+          // evaLotNoController.text = resBody['response']
+          //         ['Foil cutterr Description']["EVA_Lot_No"] ??
+          //     '';
+          // evaSizeController.text =
+          //     resBody['response']['Foil cutterr Description']["EVA_Size"] ?? '';
+          // backsheetLotController.text = resBody['response']
+          //         ['Foil cutterr Description']["Backsheet_Lot"] ??
+          //     '';
+
+          // backsheetSizeController.text = resBody['response']
+          //         ['Foil cutterr Description']["Backsheet_size"] ??
+          //     '';
+          // foilCommentController.text =
+          //     resBody['response']['Foil cutterr Comments'] ?? '';
+          // cellLotNoController.text = resBody['response']
+          //         ['Tabbing & Stringing Description']["Cell_Lot_No"] ??
+          //     '';
+          // cellTypeController.text = resBody['response']
+          //         ['Tabbing & Stringing Description']["Cell_Type"] ??
+          //     '';
+          // cellSyzeController.text = resBody['response']
+          //         ['Tabbing & Stringing Description']["Cell_Size"] ??
+          //     '';
+          // cellEffController.text = resBody['response']
+          //         ['Tabbing & Stringing Description']["Cell_Eff"] ??
+          //     '';
+          // interconnectRibbonSizeController.text = resBody['response']
+          //             ['Tabbing & Stringing Description']
+          //         ["Interconnect_Ribbon_Size"] ??
+          //     '';
+          // busbarSizeController.text = resBody['response']
+          //         ['Tabbing & Stringing Description']["Busbar_Size"] ??
+          //     '';
+          // fluxController.text = resBody['response']
+          //         ['Tabbing & Stringing Description']["Flux"] ??
+          //     '';
+          // tabbingCommentController.text =
+          //     resBody['response']['Tabbing & Stringing Comments'] ?? '';
+          // cellToCellGapController.text = resBody['response']
+          //         ['Bussing/InterConnection Description']["Cell_To_Cell_Gap"] ??
+          //     '';
+          // stringToStringGapController.text = resBody['response']
+          //             ['Bussing/InterConnection Description']
+          //         ["String_To_String_Gap"] ??
+          //     '';
+          // solderingTempController.text = resBody['response']
+          //         ['Bussing/InterConnection Description']["Soldering_Temp"] ??
+          //     '';
+          // bussingCommentController.text =
+          //     resBody['response']['Bussing/InterConnection Comments'] ?? '';
+          // tempreatureController.text = resBody['response']
+          //             ['Visual Inspection & Laminator Description']
+          //         ["Temperature"] ??
+          //     '';
+          // cycleTimeController.text = resBody['response']
+          //         ['Visual Inspection & Laminator Description']["Cycle_Time"] ??
+          //     '';
+          // isCycleTimeTrue = resBody['response']
+          //             ['Visual Inspection & Laminator Description']
+          //         ["Laminate_Quality"] ??
+          //     '';
+          // visualCommentController.text = resBody['response']
+          //         ['Visual Inspection & Laminator Comments'] ??
+          //     '';
+          // isBacksheetCuttingTrue = resBody['response']
+          //         ['Edge Triming Description']["BackSheet_Cutting"] ??
+          //     '';
+
+          // edgeCommentController.text =
+          //     resBody['response']['Edge Triming Comments'] ?? '';
+          // frameTypeController.text =
+          //     resBody['response']['Framing Description']["Frame_Type"] ?? '';
+          // frameSizeController.text =
+          //     resBody['response']['Framing Description']["Frame_Size"] ?? '';
+          // sliconGlueLotController.text = resBody['response']
+          //         ['Framing Description']["Silicon_Glue_Lot_No"] ??
+          //     '';
+
+          // framingCommentController.text =
+          //     resBody['response']['Framing Comments'] ?? '';
+          // jBLotNoController.text = resBody['response']
+          //         ['J/B Assembly Description']["JB_Lot_No"] ??
+          //     '';
+          // jBTypeController.text =
+          //     resBody['response']['J/B Assembly Description']["JB_Type"] ?? '';
+          // siliconGlueLotNoController.text = resBody['response']
+          //         ['J/B Assembly Description']["Silicon_Glue_Lot_No"] ??
+          //     '';
+
+          // jbCommentController.text =
+          //     resBody['response']['J/B Assembly Comments'] ?? '';
+          // pmaxController.text =
+          //     resBody['response']['Sun Simulator Description']["Pmax"] ?? '';
+
+          // sunCommentController.text =
+          //     resBody['response']['Sun Simulator Comments'] ?? '';
+          // referencePdfController.text =
+          //     resBody['response']['ReferencePdf'] ?? '';
+        }
+      });
+    }
+  }
+
+  Future setApprovalStatus() async {
+    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    print(approvalStatus);
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
+
+    final url = (site! + "IPQC/UpdateBOMStatus");
+
+    var params = {
+      "token": token,
+      "CurrentUser": personid,
+      "Status": approvalStatus,
+      "JobCardDetailId": widget.id ?? ""
     };
-    // let data = [
-    //   {
-    //     Process:'Glass Washing',
-    //     EmployeeID:'',
-    //     Description:{
-    //       LotNo:'xyx',
-    //       size:'yz'
-    //     },
-    //   Comment:'comment'
-    //   },
-    //   {
-    //     Process:'Foil cutterr',
-    //     EmployeeID:'',
-    //     Description:{
-    //      EVA_Lot_No:'',
-    //      EVA_Size:'',
-    //      Backsheet_Lot:'',
-    //      Backsheet_size:''
-    //     },
-    //   Comment:'comment'
-    //   },
 
-    // ]
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(params),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
-    print('Sending data to backend: $data');
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
+      var objData = json.decode(response.body);
+      if (objData['success'] == false) {
+        Toast.show("Please Try Again.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        Toast.show("Job Card Test $approvalStatus .",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
+    }
+  }
+
+  Future<void> _pickReferencePDF() async {
+    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        referencePdfFileBytes = pdffile.readAsBytesSync();
+        referencePdfController.text = result.files.single.name;
+      });
+      print("oyeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      print(referencePdfFileBytes);
+    } else {
+      // User canceled the file picker
+    }
   }
 
   Future findData() async {
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+    print("Gautammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+    print(widget.id);
     var Bom = [
       {
+        "Type": "BOM Verification",
+        "BOMDetailId": widget.id != '' && widget.id != null ? widget.id : '',
+        "CurrentUser": personid,
+        "Status": sendStatus,
         "DocNo": "GSPL/IPQC/BM/002",
         "RevNo": "1.0 & 12.08.2023",
         "PONo": poController.text,
-        "Date": dateController.text,
+        "Date": bomCardDate,
         "Shift": shiftController.text,
         "Line": LineController.text,
       },
@@ -249,9 +547,9 @@ class _BomCardState extends State<BomCard> {
         },
         {
           "BOMitem": "Flux",
-          "Supplier": fluxSupplierController.text,
-          "ModelNo": fluxSpecificationController.text,
           "BatchNo": fluxLotBatchController.text,
+          "ModelNo": fluxSpecificationController.text,
+          "Supplier": fluxSupplierController.text,
           "Remarks": fluxremarkController.text
         },
         {
@@ -333,13 +631,15 @@ class _BomCardState extends State<BomCard> {
         },
       ]
     ];
+    print('Sending data to backend: $Bom');
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
 
-    final url = (site! + "IPQC/AddBomVerification");
-    final prefs = await SharedPreferences.getInstance();
+    final url = (site! + "IPQC/AddBOMVerification");
+
+    print("chaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     var response = await http.post(
       Uri.parse(url),
@@ -348,29 +648,141 @@ class _BomCardState extends State<BomCard> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+    print("helllllllllllllllllllllllllllllllllllllooooooooo");
+    print(response.statusCode);
     if (response.statusCode == 200) {
+      var objData = json.decode(response.body);
+      print("hiiiiiiiiiiiiiiiiiiiiiiiiii");
+      print(objData);
       setState(() {
+        BomId = objData['UUID'];
+        print("kyoooooooooooooooooooooooooooooooooooooooo");
+        print(BomId);
+
         _isLoading = false;
       });
-      var objData = json.decode(response.body);
+      print(objData);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show(objData['data']['message'],
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.blueColor);
-        setState(() {
-          setPage = 'second';
-          //  otp = objData['data']['sentotp']['otp'].toString();
-        });
+        if (sendStatus == 'Pending') {
+          uploadPDF((referencePdfFileBytes ?? []));
+        } else {
+          Toast.show("Data has been saved.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+        }
       }
     } else {
       Toast.show("Error In Server",
           duration: Toast.lengthLong, gravity: Toast.center);
+    }
+  }
+
+  // uploadPDF(List<int> referenceBytes) async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   final prefs = await SharedPreferences.getInstance();
+  //   site = prefs.getString('site')!;
+
+  //   var currentdate = DateTime.now().microsecondsSinceEpoch;
+  //   var formData = FormData.fromMap({
+  //     "JobCardDetailId": BomId,
+  //     "ReferencePdf": MultipartFile.fromBytes(
+  //       referenceBytes,
+  //       filename:
+  //           (referencePdfController.text + (currentdate.toString()) + '.pdf'),
+  //       contentType: MediaType("application", 'pdf'),
+  //     ),
+  //   });
+
+  //   _response = await _dio.post((site! + 'IPQC/BOMUploadPdf'), // Prod
+
+  //       options: Options(
+  //         contentType: 'multipart/form-data',
+  //         followRedirects: false,
+  //         validateStatus: (status) => true,
+  //       ),
+  //       data: formData);
+
+  //   try {
+  //     if (_response?.statusCode == 200) {
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+
+  //       Toast.show("Job Card Test Completed.",
+  //           duration: Toast.lengthLong,
+  //           gravity: Toast.center,
+  //           backgroundColor: AppColors.blueColor);
+  //       Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //           builder: (BuildContext context) => IpqcTestList()));
+  //     } else {
+  //       Toast.show("Error In Server",
+  //           duration: Toast.lengthLong, gravity: Toast.center);
+  //     }
+  //   } catch (err) {
+  //     print("Error");
+  //   }
+  // }
+
+  uploadPDF(List<int> referenceBytes) async {
+    print("Hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+    print(BomId);
+    print(referenceBytes);
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+
+    var currentdate = DateTime.now().microsecondsSinceEpoch;
+    var formData = FormData.fromMap({
+      "JobCardDetailId": BomId,
+      "ReferencePdf": MultipartFile.fromBytes(
+        referenceBytes,
+        filename:
+            (referencePdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+    });
+    print("challlllllllllllllllllllllllllllllllllll");
+    print(formData.files);
+
+    _response = await _dio.post((site! + 'IPQC/BOMUploadPdf'), // Prod
+
+        options: Options(
+          contentType: 'multipart/form-data',
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+        data: formData);
+
+    try {
+      print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      print(_response?.statusCode);
+      if (_response?.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Toast.show("BOM Verification Test Completed.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      } else {
+        Toast.show("Error In Server",
+            duration: Toast.lengthLong, gravity: Toast.center);
+      }
+    } catch (err) {
+      print("Error");
     }
   }
 
@@ -410,7 +822,7 @@ class _BomCardState extends State<BomCard> {
               children: [
                 SingleChildScrollView(
                   child: Form(
-                    key: _registerFormKey,
+                    key: _bomCardFormKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -442,17 +854,52 @@ class _BomCardState extends State<BomCard> {
 
                         //  ***************************?
 
-                        const Center(
+                        Center(
                           child: Padding(
                             padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              "BOM Verification Checksheet",
-                              style: TextStyle(
-                                fontSize: 27,
-                                color: AppColors.black,
-                                fontFamily: appFontFamily,
-                                fontWeight: FontWeight.w700,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (designation == "QC")
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        AppHelper.hideKeyboard(context);
+                                        setState(() {
+                                          sendStatus = "Inprogress";
+                                        });
+                                        findData();
+                                        // sendDataToBackend();
+
+                                        // _jobcardFormKey.currentState!.save;
+                                        // if (_jobcardFormKey.currentState!
+                                        //     .validate()) {
+
+                                        // }
+                                      },
+                                      child: const Icon(
+                                        Icons
+                                            .save_rounded, // Replace 'your_icon' with the icon you want to use
+                                        size: 40,
+                                        color: Color.fromARGB(255, 57, 54,
+                                            185), // Customize the color as needed
+                                      ),
+                                    ),
+                                  ),
+                                SizedBox(
+                                    width:
+                                        10), // Adjust the spacing between icon and text as needed
+                                Text(
+                                  "BOM Verification Checksheet",
+                                  style: TextStyle(
+                                    fontSize: 27,
+                                    color: AppColors.black,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -518,25 +965,27 @@ class _BomCardState extends State<BomCard> {
                             suffixIcon: const Icon(Icons.calendar_month),
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC",
                           onTap: () async {
-                            DateTime date = DateTime(2021);
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            date = (await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime.now(),
-                            ))!;
-                            dateController.text =
-                                DateFormat("EEE MMM dd, yyyy").format(
-                              DateTime.parse(date.toString()),
-                            );
-                            setState(() {
-                              dateOfQualityCheck =
-                                  DateFormat("yyyy-MM-dd").format(
+                            if (status != 'Pending') {
+                              DateTime date = DateTime(2021);
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              date = (await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now(),
+                              ))!;
+                              dateController.text =
+                                  DateFormat("EEE MMM dd, yyyy").format(
                                 DateTime.parse(date.toString()),
                               );
-                            });
+                              setState(() {
+                                bomCardDate = DateFormat("yyyy-MM-dd").format(
+                                  DateTime.parse(date.toString()),
+                                );
+                              });
+                            }
                           },
                           validator: MultiValidator(
                             [
@@ -569,6 +1018,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Please Enter Shift";
@@ -599,6 +1051,9 @@ class _BomCardState extends State<BomCard> {
                             hintText: "Please Enter Line.",
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -631,6 +1086,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -679,6 +1137,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -710,6 +1171,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -742,6 +1206,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -773,6 +1240,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -821,6 +1291,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -853,6 +1326,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -885,6 +1361,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -916,6 +1395,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -964,6 +1446,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -996,6 +1481,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1028,6 +1516,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1060,6 +1551,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1108,6 +1602,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1141,6 +1638,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1174,6 +1674,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1206,6 +1709,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1254,6 +1760,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1286,6 +1795,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1318,6 +1830,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1350,6 +1865,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1398,6 +1916,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1430,6 +1951,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1462,6 +1986,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1494,6 +2021,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1542,6 +2072,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1574,6 +2107,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1607,6 +2143,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1639,6 +2178,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1687,6 +2229,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1719,6 +2264,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1751,6 +2299,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1783,6 +2334,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1831,6 +2385,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1863,6 +2420,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1895,6 +2455,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1927,6 +2490,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -1975,6 +2541,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2007,6 +2576,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2040,6 +2612,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2072,6 +2647,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2111,7 +2689,7 @@ class _BomCardState extends State<BomCard> {
                           height: 5,
                         ),
                         TextFormField(
-                          controller: JunctionBoxSupplierController,
+                          controller: pottingJBSupplierController,
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
                           decoration:
@@ -2120,6 +2698,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2152,6 +2733,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2184,6 +2768,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2194,7 +2781,7 @@ class _BomCardState extends State<BomCard> {
                           ),
                         ),
 
-// *************************** JunctionBox-Remark *********************
+// *************************** pottingJB-Remark *********************
 
                         const SizedBox(
                           height: 15,
@@ -2216,6 +2803,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2264,6 +2854,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2297,6 +2890,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2330,6 +2926,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2362,6 +2961,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2410,6 +3012,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2442,6 +3047,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2474,6 +3082,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2505,6 +3116,9 @@ class _BomCardState extends State<BomCard> {
                             counterText: '',
                           ),
                           style: AppStyles.textInputTextStyle,
+                          readOnly: status == 'Pending' && designation != "QC"
+                              ? true
+                              : false,
                           validator: MultiValidator(
                             [
                               RequiredValidator(
@@ -2521,12 +3135,89 @@ class _BomCardState extends State<BomCard> {
                         ),
 
 // ****************** ****** *********
+                        Text(
+                          "Reference PDF Document ",
+                          style: AppStyles.textfieldCaptionTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        TextFormField(
+                          controller: referencePdfController,
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.next,
+                          decoration:
+                              AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Select Reference Pdf",
+                                  suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      if (widget.id != null &&
+                                          widget.id != '' &&
+                                          referencePdfController.text != '') {
+                                        UrlLauncher.launch(
+                                            referencePdfController.text);
+                                      } else if (status != 'Pending') {
+                                        _pickReferencePDF();
+                                      }
+                                    },
+                                    icon: widget.id != null &&
+                                            widget.id != '' &&
+                                            referencePdfController.text != ''
+                                        ? const Icon(Icons.download)
+                                        : const Icon(Icons.upload_file),
+                                  ),
+                                  counterText: ''),
+                          style: AppStyles.textInputTextStyle,
+                          maxLines: 1,
+                          readOnly: true,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please Select Reference Pdf";
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
 
                         const Padding(
                             padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                         _isLoading
                             ? const Center(child: CircularProgressIndicator())
-                            : AppButton(
+                            : (widget.id == "" || widget.id == null) ||
+                                    (status == 'Inprogress' &&
+                                        widget.id != null)
+                                ? AppButton(
+                                    textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white,
+                                      fontSize: 16,
+                                    ),
+                                    onTap: () {
+                                      AppHelper.hideKeyboard(context);
+                                      setState(() {
+                                        sendStatus = "Inprogress";
+                                      });
+                                      findData();
+
+                                      // _bomCardFormKey.currentState!.save;
+                                      // if (_bomCardFormKey.currentState!
+                                      //     .validate()) {
+
+                                      // }
+                                    },
+                                    label: "Save",
+                                    organization: '',
+                                  )
+                                : Container(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        (widget.id == "" || widget.id == null) ||
+                                (status == 'Inprogress' && widget.id != null)
+                            ? AppButton(
                                 textStyle: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.white,
@@ -2534,41 +3225,55 @@ class _BomCardState extends State<BomCard> {
                                 ),
                                 onTap: () {
                                   AppHelper.hideKeyboard(context);
-                                  findData();
+                                  // sendDataToBackend();
 
-                                  // _registerFormKey.currentState!.save;
-                                  // if (_registerFormKey.currentState!
-                                  //     .validate()) {
-
-                                  // }
+                                  _bomCardFormKey.currentState!.save;
+                                  if (_bomCardFormKey.currentState!
+                                      .validate()) {
+                                    setState(() {
+                                      sendStatus = "Pending";
+                                    });
+                                    findData();
+                                  }
                                 },
-                                label: "Save",
+                                label: "Submit",
                                 organization: '',
-                              ),
+                              )
+                            : Container(),
                         const SizedBox(
                           height: 10,
                         ),
-                        AppButton(
-                          textStyle: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.white,
-                            fontSize: 16,
+                        if (widget.id != "" &&
+                            widget.id != null &&
+                            status == 'Pending')
+                          Container(
+                            color: Color.fromARGB(255, 191, 226,
+                                187), // Change the background color to your desired color
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Divider(),
+                                SizedBox(height: 15),
+                                AppButton(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white,
+                                      fontSize: 16),
+                                  onTap: () {
+                                    AppHelper.hideKeyboard(context);
+                                    setApprovalStatus();
+                                  },
+                                  label: "Approve",
+                                  organization: '',
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Divider(),
+                              ],
+                            ),
                           ),
-                          onTap: () {
-                            AppHelper.hideKeyboard(context);
-                            // sendDataToBackend();
 
-                            _registerFormKey.currentState!.save;
-                            if (_registerFormKey.currentState!.validate()) {
-                              findData();
-                            }
-                          },
-                          label: "Submit",
-                          organization: '',
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
                         // Center(
                         //   child: Padding(
                         //     padding: const EdgeInsets.all(8.0),

@@ -14,17 +14,16 @@ class UserModel {
   UserModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
 
-    data = json["JobCardList"] == null
+    data = json["data"] == null
         ? []
-        : List<UserData>.from(
-            json["JobCardList"].map((x) => UserData.fromJson(x)));
+        : List<UserData>.from(json["data"].map((x) => UserData.fromJson(x)));
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
     if (this.data != null) {
-      data['JobCardList'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -35,6 +34,8 @@ class UserData {
   String? name;
   String? profileImg;
   String? location;
+  String? type;
+  String? referencePdf;
   String? jobCardDetailID;
   String? moduleNo;
   String? materialName;
@@ -44,6 +45,8 @@ class UserData {
       this.name,
       this.profileImg,
       this.location,
+      this.type,
+      this.referencePdf,
       this.jobCardDetailID,
       this.moduleNo,
       this.materialName});
@@ -53,6 +56,8 @@ class UserData {
     name = json['Name'];
     profileImg = json['ProfileImg'];
     location = json['Location'];
+    type = json['Type'];
+    referencePdf = json['ReferencePdf'];
     jobCardDetailID = json['JobCardDetailID'];
     moduleNo = json['ModuleNo'];
     materialName = json['MaterialName'];
@@ -64,6 +69,8 @@ class UserData {
     data['Name'] = this.name;
     data['ProfileImg'] = this.profileImg;
     data['Location'] = this.location;
+    data['Type'] = this.type;
+    data['ReferencePdf'] = this.referencePdf;
     data['JobCardDetailID'] = this.jobCardDetailID;
     data['ModuleNo'] = this.moduleNo;
     data['MaterialName'] = this.materialName;

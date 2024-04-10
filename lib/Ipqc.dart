@@ -145,10 +145,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'BOM Verification Checksheet', AppAssets.postlam, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => BomCard()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => BomCard()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
@@ -305,7 +305,7 @@ class _WelcomePageState extends State<IpqcPage> {
                 onTap: () {
                   if (designation == 'Super Admin') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => AddEditProfile()));
+                        builder: (BuildContext context) => EmployeeList()));
                   }
                 },
                 child: Image.asset(
