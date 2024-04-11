@@ -185,7 +185,7 @@ class _BomCardState extends State<BomCard> {
       }
       site = prefs.getString('site')!;
     });
-    final AllSolarData = ((site!) + '/IPQC/GetSpecificBOMVerification');
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificBOMVerification');
     final allSolarData = await http.post(
       Uri.parse(AllSolarData),
       body: jsonEncode(<String, String>{
@@ -650,6 +650,7 @@ class _BomCardState extends State<BomCard> {
     );
     print("helllllllllllllllllllllllllllllllllllllooooooooo");
     print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       print("hiiiiiiiiiiiiiiiiiiiiiiiiii");

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Encapsulant.dart';
 import 'package:QCM/Iqcp.dart';
+import 'package:QCM/JunctionBox.dart';
 import 'package:QCM/Ribbon.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/SolarGlass.dart';
@@ -648,7 +649,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                   ? AppAssets.solarcell
                                   : materialname == "Solar Glass"
                                       ? AppAssets.planet
-                                      : AppAssets.eva,
+                                      : materialname == "PV Ribbon"
+                                          ? AppAssets.icDirectory
+                                          : materialname == "Junction Box"
+                                              ? AppAssets.imgAttendanceReport
+                                              : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -663,7 +668,9 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                       ? AppAssets.planet
                                       : materialname == "PV Ribbon"
                                           ? AppAssets.icDirectory
-                                          : AppAssets.eva,
+                                          : materialname == "Junction Box"
+                                              ? AppAssets.imgAttendanceReport
+                                              : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -928,7 +935,10 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                 ? SolarGlass(id: id)
                                                 : materialname == "PV Ribbon"
                                                     ? Ribbon(id: id)
-                                                    : Encapsulant(id: id)),
+                                                    : materialname ==
+                                                            "Junction Box"
+                                                        ? JunctionBox(id: id)
+                                                        : Encapsulant(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -939,8 +949,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         ),
                       ],
                     ),
-                  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
-                    //  if (_hasBeenPressed1 == 'Inprogress')
+                  //  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                  if (_hasBeenPressed1 == 'Inprogress')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -956,7 +966,10 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                 ? SolarGlass(id: id)
                                                 : materialname == "PV Ribbon"
                                                     ? Ribbon(id: id)
-                                                    : Encapsulant(id: id)),
+                                                    : materialname ==
+                                                            "Junction Box"
+                                                        ? JunctionBox(id: id)
+                                                        : Encapsulant(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
