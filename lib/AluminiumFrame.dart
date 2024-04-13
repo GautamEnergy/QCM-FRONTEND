@@ -35,13 +35,13 @@ import '../constant/app_helper.dart';
 
 import '../constant/app_styles.dart';
 
-class JunctionBox extends StatefulWidget {
+class AluminiumFrame extends StatefulWidget {
   final String? id;
-  JunctionBox({this.id});
-  _JunctionBoxState createState() => _JunctionBoxState();
+  AluminiumFrame({this.id});
+  _AluminiumFrameState createState() => _AluminiumFrameState();
 }
 
-class _JunctionBoxState extends State<JunctionBox> {
+class _AluminiumFrameState extends State<AluminiumFrame> {
   int numberOfPackagingSampleFields = 1,
       numberOfVisualSampleFields = 0,
       numberOfPhysicalSampleFields = 0,
@@ -274,56 +274,59 @@ class _JunctionBoxState extends State<JunctionBox> {
     super.initState();
     store();
     setState(() {
-      // Packaging  // Visual
-      packagingCharactersticsController.text = "Packing (Make Type, Model)";
+      // Packaging  // Visual-1
+      packagingCharactersticsController.text = "Packing (Make Type)";
       packagingMeasuringMethodController.text = "N/A";
       packagingSamplingController.text = "Whole Lot";
       packagingSampleSizeController.text = "100 %";
-      packagingReferenceDocController.text = "As Per PO/Invoice";
-      packagingAcceptanceCriteriaController.text =
-          "No Physical Damage / No Mismatch against PO/Invoice";
-      // Visual  // Physical
-      visualCharactersticsController.text = "L X W X H Cable Length";
-      visualMeasuringMethodController.text = "Verner Calliper/Measuring Scale";
-      visualSamplingController.text = "SIL S3 AQL 1.5";
+      packagingReferenceDocController.text =
+          "As Per PO/Invoice(Approved Drawing)";
+      packagingAcceptanceCriteriaController.text = "No Physical Damage";
+      // Visual  // Visual-2
+      visualCharactersticsController.text =
+          "Dent, Anodizing Marks, Scratches, Bend De Marks, Patches, Delemination Transpotation Damage";
+      visualMeasuringMethodController.text = "N/A";
+      visualSamplingController.text = "SIL S1 AQL 2.5";
       // visualSampleSizeController.text = "100 %";
-      visualReferenceDocController.text = "Supplier COC";
-      visualAcceptanceCriteriaController.text = "Supplier COC";
+      visualReferenceDocController.text = "As Per PO/Invoice(Approved Drawing)";
+      visualAcceptanceCriteriaController.text = "COC";
 
-      //  Physical  // Electrical
-      physicalCharactersticsController.text = "Diode Power";
-      physicalMeasuringMethodController.text = "Digital Multimeter";
-      physicalSamplingController.text = "SIL S3 AQL 1.5";
+      //  Physical  // Measurement-1
+      physicalCharactersticsController.text = "Weight Per Meter, Composition";
+      physicalMeasuringMethodController.text = "Measuring Tape, Weighing Scale";
+      physicalSamplingController.text = "SIL S1 AQL 2.5";
       // physicalSampleSizeController.text = "100 %";
-      physicalReferenceDocController.text = "Supplier COC";
-      physicalAcceptanceCriteriaController.text = "Supplier COC";
+      physicalReferenceDocController.text =
+          "As Per PO/Invoice(Approved Drawing)";
+      physicalAcceptanceCriteriaController.text = "COC";
 
-      //  Front Bus  // Measurement
+      //  Front Bus  // Measurement-2
       frontbusCharactersticsController.text =
-          "Connecter Size and Type Gland Tightness. No of Diodes, Diode Rating";
+          "Physical Dimensions L X W Mounting Hole x Pitch Mounting Hole Y Pitch";
       frontbusMeasuringMethodController.text =
           "Verner Calliper/Measuring Scale";
-      frontbusSamplingController.text = "SIL S3 AQL 1.5";
+      frontbusSamplingController.text = "SIL S1 AQL 2.5";
       // frontbusSampleSizeController.text = "100 %";
-      frontbusReferenceDocController.text = "Supplier COC";
-      frontbusAcceptanceCriteriaController.text = "Supplier COC";
+      frontbusReferenceDocController.text = "As Per Approved Drawing";
+      frontbusAcceptanceCriteriaController.text = "COC";
 
-      //  Verification  // Verification 1
-      verificationCharactersticsController.text = "Rated Voltage";
-      verificationMeasuringMethodController.text = "N/A";
-      verificationSamplingController.text = "N/A";
+      //  Verification  // Measurement-3
+      verificationCharactersticsController.text = "Anodizing Thickness";
+      verificationMeasuringMethodController.text = "Anodizing Meter";
+      verificationSamplingController.text = "SIL S1 AQL 2.5";
       // verificationSampleSizeController.text = "100 %";
-      verificationReferenceDocController.text = "Supplier COC";
-      verificationAcceptanceCriteriaController.text = ">/1500VDC";
+      verificationReferenceDocController.text = "Supplier Material Data Sheet";
+      verificationAcceptanceCriteriaController.text =
+          "Anodizing Thickness >/ 15 microns";
 
-      //  Electrical  // Verification 2
-      electricalCharactersticsController.text = "Rated Current";
+      //  Electrical  // Verification
+      electricalCharactersticsController.text = "Frame Material";
       electricalMeasuringMethodController.text = "N/A";
       electricalSamplingController.text = "N/A";
 
       // frontbusSampleSizeController.text = "100 %";
       electricalReferenceDocController.text = "Supplier COC";
-      electricalAcceptanceCriteriaController.text = ">/25 A For M10";
+      electricalAcceptanceCriteriaController.text = "GSPL Specification/COC";
 
       //  Performance
       // performanceCharactersticsController.text = "Soidering Peel Test";
@@ -543,7 +546,7 @@ class _JunctionBoxState extends State<JunctionBox> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Junction Box Test $approvalStatus .",
+        Toast.show("Aluminium Frame Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -594,7 +597,7 @@ class _JunctionBoxState extends State<JunctionBox> {
           _isLoading = false;
         });
 
-        Toast.show("Junction Box Test Completed.",
+        Toast.show("Aluminium Frame Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -618,7 +621,7 @@ class _JunctionBoxState extends State<JunctionBox> {
     final url = (site! + "IQCSolarCell/AddIQCSolarCell");
 
     var params = {
-      "MaterialName": "Junction Box",
+      "MaterialName": "Aluminium Frame",
       "SolarDetailId": SolarDetailId != '' && SolarDetailId != null
           ? SolarDetailId
           : widget.id != '' && widget.id != null
@@ -635,7 +638,7 @@ class _JunctionBoxState extends State<JunctionBox> {
         "DateOfQualityCheck": dateOfQualityCheck,
         "SupplierRMBatchNo": rMBatchNoController.text,
         "RecieptDate": receiptDate,
-        "DocumentNo": "GSPL/JB(IQC)/001",
+        "DocumentNo": "GSPL/AF(IQC)/001",
         "RevNo": "Ver2.0/13-03-2024"
       },
       "SolarCell": {
@@ -828,7 +831,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                   fontWeight:
                                                       FontWeight.w700)))),
                                   const Center(
-                                      child: Text("(Junction Box)",
+                                      child: Text("(Aluminium Frame)",
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: AppColors.black,
@@ -848,7 +851,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                         width: 8,
                                       ),
                                       Text(
-                                        'GSPL/JB(IQC)/001',
+                                        'GSPL/AF(IQC)/001',
                                         style:
                                             AppStyles.textfieldCaptionTextStyle,
                                       ),
@@ -1291,7 +1294,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                       fontWeight:
                                                           FontWeight.w700)))),
                                       const Center(
-                                          child: Text("(Junction Box)",
+                                          child: Text("(Aluminium Frame)",
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   color: AppColors.black,
@@ -1312,7 +1315,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                             width: 8,
                                           ),
                                           Text(
-                                            'GSPL/JB(IQC)/001',
+                                            'GSPL/AF(IQC)/001',
                                             style: AppStyles
                                                 .textfieldCaptionTextStyle,
                                           ),
@@ -1342,7 +1345,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                         height: 15,
                                       ),
                                       const Center(
-                                          child: Text("Visual",
+                                          child: Text("Visual-1",
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   color: Color.fromARGB(
@@ -1926,7 +1929,8 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                   FontWeight
                                                                       .w700)))),
                                               const Center(
-                                                  child: Text("(Junction Box)",
+                                                  child: Text(
+                                                      "(Aluminium Frame)",
                                                       style: TextStyle(
                                                           fontSize: 20,
                                                           color:
@@ -1949,7 +1953,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                     width: 8,
                                                   ),
                                                   Text(
-                                                    'GSPL/JB(IQC)/001',
+                                                    'GSPL/AF(IQC)/001',
                                                     style: AppStyles
                                                         .textfieldCaptionTextStyle,
                                                   ),
@@ -1979,7 +1983,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                 height: 15,
                                               ),
                                               const Center(
-                                                  child: Text("Physical",
+                                                  child: Text("Visual-2",
                                                       style: TextStyle(
                                                           fontSize: 20,
                                                           color: Color.fromARGB(
@@ -2659,11 +2663,12 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               .w700)))),
                                                       const Center(
                                                           child: Text(
-                                                              "(Junction Box)",
+                                                              "(Aluminium Frame)",
                                                               style: TextStyle(
                                                                   fontSize: 20,
-                                                                  color: AppColors
-                                                                      .black,
+                                                                  color:
+                                                                      AppColors
+                                                                          .black,
                                                                   fontFamily:
                                                                       appFontFamily,
                                                                   fontWeight:
@@ -2683,7 +2688,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                             width: 8,
                                                           ),
                                                           Text(
-                                                            'GSPL/JB(IQC)/001',
+                                                            'GSPL/AF(IQC)/001',
                                                             style: AppStyles
                                                                 .textfieldCaptionTextStyle,
                                                           ),
@@ -2714,7 +2719,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                       ),
                                                       const Center(
                                                           child: Text(
-                                                              "Electrical",
+                                                              "Measurement-1",
                                                               style: TextStyle(
                                                                   fontSize: 20,
                                                                   color: Color
@@ -3450,7 +3455,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               fontWeight: FontWeight.w700)))),
                                                               const Center(
                                                                   child: Text(
-                                                                      "(Junction Box)",
+                                                                      "(Aluminium Frame)",
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20,
@@ -3474,7 +3479,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                     width: 8,
                                                                   ),
                                                                   Text(
-                                                                    'GSPL/JB(IQC)/001',
+                                                                    'GSPL/AF(IQC)/001',
                                                                     style: AppStyles
                                                                         .textfieldCaptionTextStyle,
                                                                   ),
@@ -3505,7 +3510,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                               ),
                                                               const Center(
                                                                   child: Text(
-                                                                      "Measurement",
+                                                                      "Measurement-2",
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20,
@@ -4217,7 +4222,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
                                                                       const Center(
                                                                           child: Text(
-                                                                              "(Junction Box)",
+                                                                              "(Aluminium Frame)",
                                                                               style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                       const SizedBox(
                                                                         height:
@@ -4235,7 +4240,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                 8,
                                                                           ),
                                                                           Text(
-                                                                            'GSPL/JB(IQC)/001',
+                                                                            'GSPL/AF(IQC)/001',
                                                                             style:
                                                                                 AppStyles.textfieldCaptionTextStyle,
                                                                           ),
@@ -4269,7 +4274,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                       ),
                                                                       const Center(
                                                                           child: Text(
-                                                                              "Verification-1",
+                                                                              "Measurement-3",
                                                                               style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                       const SizedBox(
                                                                         height:
@@ -4834,7 +4839,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                 ),
                                                                               ),
                                                                               const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
-                                                                              const Center(child: Text("(Junction Box)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              const Center(child: Text("(Aluminium Frame)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                               const SizedBox(
                                                                                 height: 35,
                                                                               ),
@@ -4848,7 +4853,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                     width: 8,
                                                                                   ),
                                                                                   Text(
-                                                                                    'GSPL/JB(IQC)/001',
+                                                                                    'GSPL/AF(IQC)/001',
                                                                                     style: AppStyles.textfieldCaptionTextStyle,
                                                                                   ),
                                                                                 ],
@@ -4874,7 +4879,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               const SizedBox(
                                                                                 height: 15,
                                                                               ),
-                                                                              const Center(child: Text("Verification-2", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              const Center(child: Text("Verification", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                               const SizedBox(
                                                                                 height: 20,
                                                                               ),
@@ -5320,7 +5325,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                         ),
                                                                                       ),
                                                                                       const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
-                                                                                      const Center(child: Text("(Junction Box)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                      const Center(child: Text("(Aluminium Frame)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                                       const SizedBox(
                                                                                         height: 35,
                                                                                       ),
@@ -5334,7 +5339,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                             width: 8,
                                                                                           ),
                                                                                           Text(
-                                                                                            'GSPL/JB(IQC)/001',
+                                                                                            'GSPL/AF(IQC)/001',
                                                                                             style: AppStyles.textfieldCaptionTextStyle,
                                                                                           ),
                                                                                         ],
@@ -5426,7 +5431,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                               },
                                                                                             ),
                                                                                             Text(
-                                                                                              'Visual',
+                                                                                              'Visual-1',
                                                                                               style: AppStyles.textfieldCaptionTextStyle,
                                                                                             ),
                                                                                             Checkbox(
@@ -5440,7 +5445,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                               },
                                                                                             ),
                                                                                             Text(
-                                                                                              'Physical',
+                                                                                              'Visual-2',
                                                                                               style: AppStyles.textfieldCaptionTextStyle,
                                                                                             ),
                                                                                             Checkbox(
@@ -5454,7 +5459,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                               },
                                                                                             ),
                                                                                             Text(
-                                                                                              'Electrical',
+                                                                                              'Measurement-1',
                                                                                               style: AppStyles.textfieldCaptionTextStyle,
                                                                                             ),
                                                                                           ],
@@ -5478,7 +5483,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                               },
                                                                                             ),
                                                                                             Text(
-                                                                                              'Measurement',
+                                                                                              'Measurement-2',
                                                                                               style: AppStyles.textfieldCaptionTextStyle,
                                                                                             ),
                                                                                             Checkbox(
@@ -5492,7 +5497,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                               },
                                                                                             ),
                                                                                             Text(
-                                                                                              'Verification-1',
+                                                                                              'Measurement-3',
                                                                                               style: AppStyles.textfieldCaptionTextStyle,
                                                                                             ),
                                                                                           ],
@@ -5516,7 +5521,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                               },
                                                                                             ),
                                                                                             Text(
-                                                                                              'Verification-2',
+                                                                                              'Verification',
                                                                                               style: AppStyles.textfieldCaptionTextStyle,
                                                                                             ),
                                                                                           ],

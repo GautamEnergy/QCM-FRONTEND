@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:QCM/AluminiumFrame.dart';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Encapsulant.dart';
+import 'package:QCM/Flux.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/JunctionBox.dart';
 import 'package:QCM/Ribbon.dart';
@@ -653,7 +655,12 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                           ? AppAssets.icDirectory
                                           : materialname == "Junction Box"
                                               ? AppAssets.imgAttendanceReport
-                                              : AppAssets.eva,
+                                              : materialname ==
+                                                      "Aluminium Frame"
+                                                  ? AppAssets.imgSalaryReport
+                                                  : materialname == "Flux"
+                                                      ? AppAssets.flux
+                                                      : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -670,7 +677,12 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                           ? AppAssets.icDirectory
                                           : materialname == "Junction Box"
                                               ? AppAssets.imgAttendanceReport
-                                              : AppAssets.eva,
+                                              : materialname ==
+                                                      "Aluminium Frame"
+                                                  ? AppAssets.imgSalaryReport
+                                                  : materialname == "Flux"
+                                                      ? AppAssets.flux
+                                                      : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -938,7 +950,15 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                     : materialname ==
                                                             "Junction Box"
                                                         ? JunctionBox(id: id)
-                                                        : Encapsulant(id: id)),
+                                                        : materialname ==
+                                                                "Aluminium Frame"
+                                                            ? AluminiumFrame(
+                                                                id: id)
+                                                            : materialname ==
+                                                                    "Flux"
+                                                                ? Flux(id: id)
+                                                                : Encapsulant(
+                                                                    id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -949,7 +969,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         ),
                       ],
                     ),
-                  //  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                  // if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
                   if (_hasBeenPressed1 == 'Inprogress')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -969,7 +989,15 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                     : materialname ==
                                                             "Junction Box"
                                                         ? JunctionBox(id: id)
-                                                        : Encapsulant(id: id)),
+                                                        : materialname ==
+                                                                "Aluminium Frame"
+                                                            ? AluminiumFrame(
+                                                                id: id)
+                                                            : materialname ==
+                                                                    "Flux"
+                                                                ? Flux(id: id)
+                                                                : Encapsulant(
+                                                                    id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

@@ -128,18 +128,29 @@ class _DirectoryState extends State<EmployeeList> {
     return null;
   }
 
-  void setMemberStatus(id) async {
+  void setMemberStatus(status, id) async {
+    setState(() {
+      _isLoading = true;
+    });
+    print("Delete........");
+    print(id);
+    print(status);
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
-    final url = (site!) + 'removeEmployeeById';
+    final url = (site!) + 'Employee/DeleteEmployee';
     var response = await http.post(
       Uri.parse(url),
-      body: jsonEncode(<String, String>{"personid": id}),
+      body: jsonEncode(<String, String>{"PersonId": id, "Status": status}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+    print("Response.....");
+    print(response.statusCode);
     if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
       Toast.show("Employee Removed Successfully",
           duration: Toast.lengthLong,
           gravity: Toast.center,
@@ -153,34 +164,99 @@ class _DirectoryState extends State<EmployeeList> {
     }
   }
 
-  void takeAttendance(empid) async {
-    final prefs = await SharedPreferences.getInstance();
-    site = prefs.getString('site');
-    final url = (site ?? '') + 'externalAttendance';
-    var response = await http.post(
-      Uri.parse(url),
-      body: jsonEncode(<String, String>{
-        "empid": empid,
-      }),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+  contentBox(context, String personId) {
+    return SingleChildScrollView(
+      child: Form(
+        child: Column(
+          children: [
+            Container(
+              padding:
+                  EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 20),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      // 'Disable Member',
+                      "Disable Member",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'HKGrotesk',
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 15),
+                        const Text(
+                          // 'Are you sure you want to disable this member?',
+                          "Are you sure you want to disable this member?",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 15),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            setMemberStatus('Inactive', personId);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: Center(
+                                child: Text(
+                                  'Yes',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'HKGrotesk',
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Center(
+                              child: Text(
+                                'NO',
+                                style: TextStyle(
+                                    fontFamily: appFontFamily,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.redColor),
+                              ),
+                            )),
+                        const SizedBox(height: 10.0),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
-    print("Kya hai Response bhai...?");
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print(response.body);
-      Toast.show(response.body,
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: AppColors.primaryColor);
-      setState(() {
-        getData();
-      });
-      return;
-    } else {
-      throw Exception('Failed To Fetch Data');
-    }
   }
 
   Future<bool> redirectto() async {
@@ -1038,6 +1114,30 @@ class _DirectoryState extends State<EmployeeList> {
                           width: 40,
                         ),
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                          child: Image.asset(
+                            AppAssets.icMemberDelete,
+                            height: 40,
+                            width: 40,
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(21),
+                                  ),
+                                  elevation: 0,
+                                  backgroundColor: Colors.transparent,
+                                  child: contentBox(context, id),
+                                );
+                              },
+                            );
+                          })
                     ],
                   )
                 ],

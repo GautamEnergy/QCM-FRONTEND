@@ -614,7 +614,9 @@ class _ScoreDetailsState extends State<AddEditProfile> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
+    print("Resssssssss.....???");
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       if (data['msg'] == 'Update Employee Detail') {
@@ -658,7 +660,18 @@ class _ScoreDetailsState extends State<AddEditProfile> {
               (Route<dynamic> route) => false);
         }
       }
+    } else if (response.statusCode == 400) {
+      setState(() {
+        _isLoading = false;
+      });
+      Toast.show("This Login Id is Already Active.",
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.redAccent);
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       Toast.show("Error on Server",
           duration: Toast.lengthLong,
           gravity: Toast.center,

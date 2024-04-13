@@ -35,15 +35,15 @@ import '../constant/app_helper.dart';
 
 import '../constant/app_styles.dart';
 
-class JunctionBox extends StatefulWidget {
+class Flux extends StatefulWidget {
   final String? id;
-  JunctionBox({this.id});
-  _JunctionBoxState createState() => _JunctionBoxState();
+  Flux({this.id});
+  _FluxState createState() => _FluxState();
 }
 
-class _JunctionBoxState extends State<JunctionBox> {
+class _FluxState extends State<Flux> {
   int numberOfPackagingSampleFields = 1,
-      numberOfVisualSampleFields = 0,
+      numberOfVisualSampleFields = 1,
       numberOfPhysicalSampleFields = 0,
       numberOfFrontbusSampleFields = 0,
       numberOfVerificationSampleFields = 0,
@@ -274,56 +274,61 @@ class _JunctionBoxState extends State<JunctionBox> {
     super.initState();
     store();
     setState(() {
-      // Packaging  // Visual
-      packagingCharactersticsController.text = "Packing (Make Type, Model)";
+      // Packaging    // Visual/Verification
+      packagingCharactersticsController.text = "Packaging, Make, Model";
       packagingMeasuringMethodController.text = "N/A";
       packagingSamplingController.text = "Whole Lot";
       packagingSampleSizeController.text = "100 %";
-      packagingReferenceDocController.text = "As Per PO/Invoice";
+      packagingReferenceDocController.text = "Transport Condition/PO/Invoice";
       packagingAcceptanceCriteriaController.text =
-          "No Physical Damage / No Mismatch against PO/Invoice";
-      // Visual  // Physical
-      visualCharactersticsController.text = "L X W X H Cable Length";
-      visualMeasuringMethodController.text = "Verner Calliper/Measuring Scale";
-      visualSamplingController.text = "SIL S3 AQL 1.5";
-      // visualSampleSizeController.text = "100 %";
-      visualReferenceDocController.text = "Supplier COC";
-      visualAcceptanceCriteriaController.text = "Supplier COC";
+          "Physical damage should not be there/No Mismatch in invoice";
+      // Visual    // Visual
+      visualCharactersticsController.text = "Expiry Date";
+      visualMeasuringMethodController.text = "Visual";
+      visualSamplingController.text = "Whole Lot";
+      visualSampleSizeController.text = "100 %";
+      visualReferenceDocController.text = "Packing Box / COC";
+      visualAcceptanceCriteriaController.text =
+          "Date of Expiry should be 3 months at the of receiving";
 
-      //  Physical  // Electrical
-      physicalCharactersticsController.text = "Diode Power";
-      physicalMeasuringMethodController.text = "Digital Multimeter";
-      physicalSamplingController.text = "SIL S3 AQL 1.5";
-      // physicalSampleSizeController.text = "100 %";
-      physicalReferenceDocController.text = "Supplier COC";
-      physicalAcceptanceCriteriaController.text = "Supplier COC";
+      //  Physical    // Verification-1
+      physicalCharactersticsController.text = "Specific Gravity";
+      physicalMeasuringMethodController.text = "As per COC";
+      physicalSamplingController.text = "N/A";
+      // physicalSampleSizeController.text = '1';
+      physicalReferenceDocController.text =
+          "As per GSPL Technical Specification / COC";
+      physicalAcceptanceCriteriaController.text =
+          "As Per GSPL Technical Specification";
 
-      //  Front Bus  // Measurement
-      frontbusCharactersticsController.text =
-          "Connecter Size and Type Gland Tightness. No of Diodes, Diode Rating";
-      frontbusMeasuringMethodController.text =
-          "Verner Calliper/Measuring Scale";
-      frontbusSamplingController.text = "SIL S3 AQL 1.5";
-      // frontbusSampleSizeController.text = "100 %";
-      frontbusReferenceDocController.text = "Supplier COC";
-      frontbusAcceptanceCriteriaController.text = "Supplier COC";
+      //  Front Bus     // Verification-2
+      frontbusCharactersticsController.text = "Acid Number";
+      frontbusMeasuringMethodController.text = "As per COC";
+      frontbusSamplingController.text = "N/A";
+      //  frontbusSampleSizeController.text = '1';
+      frontbusReferenceDocController.text =
+          "As Per GSPL Technical Specification / COC";
+      frontbusAcceptanceCriteriaController.text =
+          "As per GSPL Technical Specification";
 
-      //  Verification  // Verification 1
-      verificationCharactersticsController.text = "Rated Voltage";
-      verificationMeasuringMethodController.text = "N/A";
+      //  Verification  // Verification-3
+      verificationCharactersticsController.text = "Solid Content";
+      verificationMeasuringMethodController.text = "As per COC";
       verificationSamplingController.text = "N/A";
       // verificationSampleSizeController.text = "100 %";
-      verificationReferenceDocController.text = "Supplier COC";
-      verificationAcceptanceCriteriaController.text = ">/1500VDC";
+      verificationReferenceDocController.text =
+          "As Per GSPL Technical Specification / COC";
+      verificationAcceptanceCriteriaController.text =
+          "As per GSPL Technical Specification";
 
-      //  Electrical  // Verification 2
-      electricalCharactersticsController.text = "Rated Current";
-      electricalMeasuringMethodController.text = "N/A";
-      electricalSamplingController.text = "N/A";
-
-      // frontbusSampleSizeController.text = "100 %";
-      electricalReferenceDocController.text = "Supplier COC";
-      electricalAcceptanceCriteriaController.text = ">/25 A For M10";
+      //  Electrical
+      // electricalCharactersticsController.text = "Impact Resistance Test";
+      // electricalMeasuringMethodController.text = "227 gram steel ball from 1";
+      // electricalSamplingController.text = "1 Glass per lot";
+      // // frontbusSampleSizeController.text = "100 %";
+      // electricalReferenceDocController.text = "As per COC";
+      // electricalAcceptanceCriteriaController.text =
+      //     "GSPL Technical Specification/CO";
 
       //  Performance
       // performanceCharactersticsController.text = "Soidering Peel Test";
@@ -417,7 +422,7 @@ class _JunctionBoxState extends State<JunctionBox> {
           _isLoading = false;
           final dataMap = data.asMap();
           print("Datata........??");
-          print(dataMap[0]);
+          print(dataMap[0]['SampleSizePhysical']);
 
           lotSizeController.text = dataMap[0]['LotSize'] ?? '';
           supplierNameController.text = dataMap[0]['SupplierName'] ?? '';
@@ -448,16 +453,16 @@ class _JunctionBoxState extends State<JunctionBox> {
                   : 1);
           Packaging = dataMap[0]['Packaging'] ?? [];
 
-          visualSampleSizeController.text = (dataMap[0]['SampleSizeVisual'] != 0
-                  ? dataMap[0]['SampleSizeVisual']
-                  : "")
-              .toString();
+          numberOfVisualSampleFields = (dataMap[0]['SampleSizeVisual'] != 0
+              ? dataMap[0]['SampleSizeVisual']
+              : 1);
+
           Visual = dataMap[0]['Visual'] ?? [];
 
           physicalSampleSizeController.text =
               (dataMap[0]['SampleSizePhysical'] != 0
                       ? dataMap[0]['SampleSizePhysical']
-                      : "")
+                      : '')
                   .toString();
           Physical = dataMap[0]['Physical'] ?? [];
 
@@ -475,12 +480,12 @@ class _JunctionBoxState extends State<JunctionBox> {
                   .toString();
           Verification = dataMap[0]['Verification'] ?? [];
 
-          electricalSampleSizeController.text =
-              (dataMap[0]['SampleSizeElectrical'] != 0
-                      ? dataMap[0]['SampleSizeElectrical']
-                      : "")
-                  .toString();
-          Electrical = dataMap[0]['Electrical'] ?? [];
+          // electricalSampleSizeController.text =
+          //     (dataMap[0]['SampleSizeElectrical'] != 0
+          //             ? dataMap[0]['SampleSizeElectrical']
+          //             : "")
+          //         .toString();
+          // Electrical = dataMap[0]['Electrical'] ?? [];
 
           // performanceSampleSizeController.text =
           //     (dataMap[0]['SampleSizePerformance'] != 0
@@ -543,7 +548,7 @@ class _JunctionBoxState extends State<JunctionBox> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Junction Box Test $approvalStatus .",
+        Toast.show("Flux Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -594,7 +599,7 @@ class _JunctionBoxState extends State<JunctionBox> {
           _isLoading = false;
         });
 
-        Toast.show("Junction Box Test Completed.",
+        Toast.show("Flux Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -618,7 +623,7 @@ class _JunctionBoxState extends State<JunctionBox> {
     final url = (site! + "IQCSolarCell/AddIQCSolarCell");
 
     var params = {
-      "MaterialName": "Junction Box",
+      "MaterialName": "Flux",
       "SolarDetailId": SolarDetailId != '' && SolarDetailId != null
           ? SolarDetailId
           : widget.id != '' && widget.id != null
@@ -635,7 +640,7 @@ class _JunctionBoxState extends State<JunctionBox> {
         "DateOfQualityCheck": dateOfQualityCheck,
         "SupplierRMBatchNo": rMBatchNoController.text,
         "RecieptDate": receiptDate,
-        "DocumentNo": "GSPL/JB(IQC)/001",
+        "DocumentNo": "GSPL/FX(IQC)/001",
         "RevNo": "Ver2.0/13-03-2024"
       },
       "SolarCell": {
@@ -684,15 +689,15 @@ class _JunctionBoxState extends State<JunctionBox> {
           "AcceptanceCriteria": verificationAcceptanceCriteriaController.text,
           "Samples": verificationSampleData
         },
-        "Electrical": {
-          "Characterstics": electricalCharactersticsController.text,
-          "MeasuringMethod": electricalMeasuringMethodController.text,
-          "Sampling": electricalSamplingController.text,
-          "SampleSize": numberOfElectricalSampleFields,
-          "Reference": electricalReferenceDocController.text,
-          "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
-          "Samples": electricalSampleData
-        },
+        // "Electrical": {
+        //   "Characterstics": electricalCharactersticsController.text,
+        //   "MeasuringMethod": electricalMeasuringMethodController.text,
+        //   "Sampling": electricalSamplingController.text,
+        //   "SampleSize": numberOfElectricalSampleFields,
+        //   "Reference": electricalReferenceDocController.text,
+        //   "AcceptanceCriteria": electricalAcceptanceCriteriaController.text,
+        //   "Samples": electricalSampleData
+        // },
         // "Performance": {
         //   "Characterstics": performanceCharactersticsController.text,
         //   "MeasuringMethod": performanceMeasuringMethodController.text,
@@ -711,7 +716,7 @@ class _JunctionBoxState extends State<JunctionBox> {
           {"Physical": physicalRejection},
           {"FrontBus": frontbusRejection},
           {"Verification": verificationRejection},
-          {"Electrical": electricalRejection},
+          // {"Electrical": electricalRejection},
           // {"Performance": performanceRejection},
         ],
         "Reason": rejectionReasonController.text
@@ -828,7 +833,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                   fontWeight:
                                                       FontWeight.w700)))),
                                   const Center(
-                                      child: Text("(Junction Box)",
+                                      child: Text("(Flux)",
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: AppColors.black,
@@ -848,7 +853,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                         width: 8,
                                       ),
                                       Text(
-                                        'GSPL/JB(IQC)/001',
+                                        'GSPL/FX(IQC)/001',
                                         style:
                                             AppStyles.textfieldCaptionTextStyle,
                                       ),
@@ -1291,7 +1296,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                       fontWeight:
                                                           FontWeight.w700)))),
                                       const Center(
-                                          child: Text("(Junction Box)",
+                                          child: Text("(Flux)",
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   color: AppColors.black,
@@ -1312,7 +1317,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                             width: 8,
                                           ),
                                           Text(
-                                            'GSPL/JB(IQC)/001',
+                                            'GSPL/FX(IQC)/001',
                                             style: AppStyles
                                                 .textfieldCaptionTextStyle,
                                           ),
@@ -1342,7 +1347,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                         height: 15,
                                       ),
                                       const Center(
-                                          child: Text("Visual",
+                                          child: Text("Visual/Verification",
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   color: Color.fromARGB(
@@ -1926,7 +1931,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                   FontWeight
                                                                       .w700)))),
                                               const Center(
-                                                  child: Text("(Junction Box)",
+                                                  child: Text("(Flux)",
                                                       style: TextStyle(
                                                           fontSize: 20,
                                                           color:
@@ -1949,7 +1954,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                     width: 8,
                                                   ),
                                                   Text(
-                                                    'GSPL/JB(IQC)/001',
+                                                    'GSPL/FX(IQC)/001',
                                                     style: AppStyles
                                                         .textfieldCaptionTextStyle,
                                                   ),
@@ -1979,7 +1984,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                 height: 15,
                                               ),
                                               const Center(
-                                                  child: Text("Physical",
+                                                  child: Text("Visual",
                                                       style: TextStyle(
                                                           fontSize: 20,
                                                           color: Color.fromARGB(
@@ -2096,9 +2101,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
-                                                  readOnly: status == 'Pending'
-                                                      ? true
-                                                      : false,
+                                                  readOnly: true,
                                                   validator: MultiValidator([
                                                     RequiredValidator(
                                                         errorText:
@@ -2189,19 +2192,12 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                             .currentState!
                                                             .validate()) {
                                                           // ignore: unnecessary_null_comparison
-                                                          if (visualSampleSizeController
-                                                                  .text !=
-                                                              "") {
-                                                            int num = int.parse(
-                                                                visualSampleSizeController
-                                                                    .text);
-                                                            setState(() {
-                                                              setPage =
-                                                                  'checkvisual';
-                                                              numberOfVisualSampleFields =
-                                                                  num;
-                                                            });
-                                                          }
+
+                                                          setState(() {
+                                                            setPage =
+                                                                'checkvisual';
+                                                          });
+
                                                           if (status !=
                                                               'Pending') {
                                                             setState(() {
@@ -2516,6 +2512,23 @@ class _JunctionBoxState extends State<JunctionBox> {
                                               },
                                             ),
                                           ),
+                                          floatingActionButton: status !=
+                                                  'Pending'
+                                              ? FloatingActionButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      numberOfVisualSampleFields++; // Increment the number of fields
+                                                      visualBarcodeControllers.add(
+                                                          TextEditingController());
+                                                      visualRemarksControllers.add(
+                                                          TextEditingController());
+                                                      selectedVisualTestValues
+                                                          .add(false);
+                                                    });
+                                                  },
+                                                  child: Icon(Icons.add),
+                                                )
+                                              : Container(),
                                           bottomNavigationBar: Padding(
                                             padding: const EdgeInsets.all(14.0),
                                             child: Row(
@@ -2658,12 +2671,12 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                           FontWeight
                                                                               .w700)))),
                                                       const Center(
-                                                          child: Text(
-                                                              "(Junction Box)",
+                                                          child: Text("(Flux)",
                                                               style: TextStyle(
                                                                   fontSize: 20,
-                                                                  color: AppColors
-                                                                      .black,
+                                                                  color:
+                                                                      AppColors
+                                                                          .black,
                                                                   fontFamily:
                                                                       appFontFamily,
                                                                   fontWeight:
@@ -2683,7 +2696,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                             width: 8,
                                                           ),
                                                           Text(
-                                                            'GSPL/JB(IQC)/001',
+                                                            'GSPL/FX(IQC)/001',
                                                             style: AppStyles
                                                                 .textfieldCaptionTextStyle,
                                                           ),
@@ -2714,7 +2727,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                       ),
                                                       const Center(
                                                           child: Text(
-                                                              "Electrical",
+                                                              "Verification-1",
                                                               style: TextStyle(
                                                                   fontSize: 20,
                                                                   color: Color
@@ -2841,10 +2854,10 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
-                                                          readOnly: status ==
+                                                          readOnly: status !=
                                                                   'Pending'
-                                                              ? true
-                                                              : false,
+                                                              ? false
+                                                              : true,
                                                           validator:
                                                               MultiValidator([
                                                             RequiredValidator(
@@ -3450,7 +3463,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               fontWeight: FontWeight.w700)))),
                                                               const Center(
                                                                   child: Text(
-                                                                      "(Junction Box)",
+                                                                      "(Flux)",
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20,
@@ -3474,7 +3487,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                     width: 8,
                                                                   ),
                                                                   Text(
-                                                                    'GSPL/JB(IQC)/001',
+                                                                    'GSPL/FX(IQC)/001',
                                                                     style: AppStyles
                                                                         .textfieldCaptionTextStyle,
                                                                   ),
@@ -3505,7 +3518,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                               ),
                                                               const Center(
                                                                   child: Text(
-                                                                      "Measurement",
+                                                                      "Verification-2",
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20,
@@ -3634,10 +3647,10 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
-                                                                  readOnly: status ==
+                                                                  readOnly: status !=
                                                                           'Pending'
-                                                                      ? true
-                                                                      : false,
+                                                                      ? false
+                                                                      : true,
                                                                   validator:
                                                                       MultiValidator([
                                                                     RequiredValidator(
@@ -4217,7 +4230,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
                                                                       const Center(
                                                                           child: Text(
-                                                                              "(Junction Box)",
+                                                                              "(Flux)",
                                                                               style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                       const SizedBox(
                                                                         height:
@@ -4235,7 +4248,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                 8,
                                                                           ),
                                                                           Text(
-                                                                            'GSPL/JB(IQC)/001',
+                                                                            'GSPL/FX(IQC)/001',
                                                                             style:
                                                                                 AppStyles.textfieldCaptionTextStyle,
                                                                           ),
@@ -4269,7 +4282,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                       ),
                                                                       const Center(
                                                                           child: Text(
-                                                                              "Verification-1",
+                                                                              "Verification-3",
                                                                               style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                       const SizedBox(
                                                                         height:
@@ -4756,7 +4769,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               }
 
                                                                               setState(() {
-                                                                                setPage = "electrical";
+                                                                                setPage = "result";
                                                                               });
                                                                               if (status != 'Pending') {
                                                                                 setState(() {
@@ -4796,8 +4809,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                   ),
                                                                 )
                                                               : setPage ==
-                                                                      "electrical"
-                                                                  // Start Electrical Block.....................................................................
+                                                                      "result"
                                                                   ? Stack(
                                                                       alignment:
                                                                           Alignment
@@ -4809,7 +4821,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                             child:
                                                                                 Form(
                                                                           key:
-                                                                              _electricalFormKey,
+                                                                              _resultFormKey,
                                                                           autovalidateMode:
                                                                               AutovalidateMode.onUserInteraction,
                                                                           child:
@@ -4834,7 +4846,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                 ),
                                                                               ),
                                                                               const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
-                                                                              const Center(child: Text("(Junction Box)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              const Center(child: Text("(Flux)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                               const SizedBox(
                                                                                 height: 35,
                                                                               ),
@@ -4848,7 +4860,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                     width: 8,
                                                                                   ),
                                                                                   Text(
-                                                                                    'GSPL/JB(IQC)/001',
+                                                                                    'GSPL/FX(IQC)/001',
                                                                                     style: AppStyles.textfieldCaptionTextStyle,
                                                                                   ),
                                                                                 ],
@@ -4874,199 +4886,418 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                               const SizedBox(
                                                                                 height: 15,
                                                                               ),
-                                                                              const Center(child: Text("Verification-2", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
-                                                                              const SizedBox(
-                                                                                height: 20,
-                                                                              ),
-                                                                              Text(
-                                                                                "Characterstics",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 5,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: electricalCharactersticsController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    // hintText: "Please Enter Day Lot No.",
-                                                                                    ),
-                                                                                maxLines: 2,
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: true,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              Text(
-                                                                                "Measuring Method",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 5,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: electricalMeasuringMethodController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    // hintText: "Please Enter Day Lot No.",
-                                                                                    ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: true,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              Text(
-                                                                                "Sampling",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 5,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: electricalSamplingController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    // hintText: "Please Enter Day Lot No.",
-                                                                                    ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: true,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              Text(
-                                                                                "Sample Size*",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 5,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                  controller:
-                                                                                      electricalSampleSizeController,
-                                                                                  keyboardType: TextInputType
-                                                                                      .number,
-                                                                                  textInputAction: TextInputAction
-                                                                                      .next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration
-                                                                                      .copyWith(
-                                                                                    hintText: "Please Enter Sample Size",
+                                                                              const Center(child: Text("Result", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 6, 2, 240), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: <Widget>[
+                                                                                  Radio(
+                                                                                    value: "Pass",
+                                                                                    groupValue: result,
+                                                                                    onChanged: (val) {
+                                                                                      if (status != 'Pending') {
+                                                                                        setState(() {
+                                                                                          result = val;
+                                                                                          rejectionReasonController.text = '';
+                                                                                          packagingRejection = false;
+                                                                                          visualRejection = false;
+                                                                                          physicalRejection = false;
+                                                                                          frontbusRejection = false;
+                                                                                          // electricalRejection = false;
+                                                                                          //  performanceRejection = false;
+                                                                                        });
+                                                                                      }
+                                                                                    },
                                                                                   ),
-                                                                                  style: AppStyles
-                                                                                      .textInputTextStyle,
-                                                                                  readOnly: status == 'Pending'
-                                                                                      ? true
-                                                                                      : false,
-                                                                                  validator: MultiValidator([
-                                                                                    RequiredValidator(errorText: "Please Enter Sample Size.")
-                                                                                  ])
-                                                                                  // bikki
+                                                                                  Text(
+                                                                                    'Pass',
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
                                                                                   ),
+                                                                                  const SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                                                  Radio(
+                                                                                    value: "Fail",
+                                                                                    groupValue: result,
+                                                                                    onChanged: (val) {
+                                                                                      if (status != 'Pending') {
+                                                                                        setState(() {
+                                                                                          result = val;
+                                                                                        });
+                                                                                      }
+                                                                                    },
+                                                                                  ),
+                                                                                  Text(
+                                                                                    'Fail',
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              if (result == "Fail")
+                                                                                const SizedBox(
+                                                                                  height: 10,
+                                                                                ),
+                                                                              if (result == "Fail")
+                                                                                const Center(child: Text("Rejection Note", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 238, 5, 5), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              if (result == "Fail")
+                                                                                Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: <Widget>[
+                                                                                    Checkbox(
+                                                                                      value: packagingRejection,
+                                                                                      onChanged: (value) {
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            packagingRejection = value!;
+                                                                                          });
+                                                                                        }
+                                                                                      },
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Visual/Verification',
+                                                                                      style: AppStyles.textfieldCaptionTextStyle,
+                                                                                    ),
+                                                                                    Checkbox(
+                                                                                      value: visualRejection,
+                                                                                      onChanged: (value) {
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            visualRejection = value!;
+                                                                                          });
+                                                                                        }
+                                                                                      },
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Visual',
+                                                                                      style: AppStyles.textfieldCaptionTextStyle,
+                                                                                    ),
+                                                                                    Checkbox(
+                                                                                      value: physicalRejection,
+                                                                                      onChanged: (value) {
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            physicalRejection = value!;
+                                                                                          });
+                                                                                        }
+                                                                                      },
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Verification-1',
+                                                                                      style: AppStyles.textfieldCaptionTextStyle,
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              if (result == "Fail")
+                                                                                const SizedBox(
+                                                                                  height: 5,
+                                                                                ),
+                                                                              if (result == "Fail")
+                                                                                Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: <Widget>[
+                                                                                    Checkbox(
+                                                                                      value: frontbusRejection,
+                                                                                      onChanged: (value) {
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            frontbusRejection = value!;
+                                                                                          });
+                                                                                        }
+                                                                                      },
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Verification-2',
+                                                                                      style: AppStyles.textfieldCaptionTextStyle,
+                                                                                    ),
+                                                                                    Checkbox(
+                                                                                      value: verificationRejection,
+                                                                                      onChanged: (value) {
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            verificationRejection = value!;
+                                                                                          });
+                                                                                        }
+                                                                                      },
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Verification-3',
+                                                                                      style: AppStyles.textfieldCaptionTextStyle,
+                                                                                    ),
+                                                                                    // Checkbox(
+                                                                                    //   value: electricalRejection,
+                                                                                    //   onChanged: (value) {
+                                                                                    //     if (status != 'Pending') {
+                                                                                    //       setState(() {
+                                                                                    //         electricalRejection = value!;
+                                                                                    //       });
+                                                                                    //     }
+                                                                                    //   },
+                                                                                    // ),
+                                                                                    // Text(
+                                                                                    //   'Testing',
+                                                                                    //   style: AppStyles.textfieldCaptionTextStyle,
+                                                                                    // ),
+                                                                                  ],
+                                                                                ),
+                                                                              // if (result == "Fail")
+                                                                              //   const SizedBox(
+                                                                              //     height: 5,
+                                                                              //   ),
+                                                                              // if (result == "Fail")
+                                                                              //   Row(
+                                                                              //     mainAxisAlignment: MainAxisAlignment.center,
+                                                                              //     children: <Widget>[
+                                                                              //       Checkbox(
+                                                                              //         value: performanceRejection,
+                                                                              //         onChanged: (value) {
+                                                                              //           if (status != 'Pending') {
+                                                                              //             setState(() {
+                                                                              //               performanceRejection = value!;
+                                                                              //             });
+                                                                              //           }
+                                                                              //         },
+                                                                              //       ),
+                                                                              //       Text(
+                                                                              //         'Performance',
+                                                                              //         style: AppStyles.textfieldCaptionTextStyle,
+                                                                              //       ),
+                                                                              //     ],
+                                                                              //   ),
+                                                                              if (result == "Fail")
+                                                                                const SizedBox(
+                                                                                  height: 5,
+                                                                                ),
+                                                                              if (result == "Fail")
+                                                                                Text(
+                                                                                  'Rejection Reason',
+                                                                                  style: AppStyles.textfieldCaptionTextStyle,
+                                                                                ),
+                                                                              if (result == "Fail")
+                                                                                const SizedBox(
+                                                                                  height: 5,
+                                                                                ),
+                                                                              if (result == "Fail")
+                                                                                TextFormField(
+                                                                                  controller: rejectionReasonController,
+                                                                                  keyboardType: TextInputType.text,
+                                                                                  textInputAction: TextInputAction.next,
+                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(hintText: "Please Enter Rejection Reason", counterText: ''),
+                                                                                  style: AppStyles.textInputTextStyle,
+                                                                                  maxLines: 3,
+                                                                                  readOnly: status == 'Pending' ? true : false,
+                                                                                  validator: (value) {
+                                                                                    if (value!.isEmpty) {
+                                                                                      return "Please Enter Rejection Reason";
+                                                                                    } else {
+                                                                                      return null;
+                                                                                    }
+                                                                                  },
+                                                                                ),
                                                                               const SizedBox(
                                                                                 height: 15,
                                                                               ),
                                                                               Text(
-                                                                                "Reference Doc",
+                                                                                "Upload Invoice Pdf*",
                                                                                 style: AppStyles.textfieldCaptionTextStyle,
                                                                               ),
                                                                               const SizedBox(
                                                                                 height: 5,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: electricalReferenceDocController,
+                                                                                controller: invoicePdfController,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    // hintText: "Please Enter Day Lot No.",
+                                                                                    hintText: "Please Select Invoice Pdf",
+                                                                                    suffixIcon: IconButton(
+                                                                                      onPressed: () async {
+                                                                                        if (widget.id != null && widget.id != '' && invoicePdfController.text != '') {
+                                                                                          UrlLauncher.launch(invoicePdfController.text);
+                                                                                        } else if (status != 'Pending') {
+                                                                                          _pickInvoicePDF();
+                                                                                        }
+                                                                                      },
+                                                                                      icon: widget.id != null && widget.id != '' && invoicePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
                                                                                     ),
+                                                                                    counterText: ''),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                maxLines: 1,
                                                                                 readOnly: true,
+                                                                                validator: (value) {
+                                                                                  if (value!.isEmpty) {
+                                                                                    return "Please Select Invoice Pdf";
+                                                                                  } else {
+                                                                                    return null;
+                                                                                  }
+                                                                                },
                                                                               ),
                                                                               const SizedBox(
                                                                                 height: 15,
                                                                               ),
                                                                               Text(
-                                                                                "Acceptance Criteria",
+                                                                                "Upload Coc Pdf*",
                                                                                 style: AppStyles.textfieldCaptionTextStyle,
                                                                               ),
                                                                               const SizedBox(
                                                                                 height: 5,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: electricalAcceptanceCriteriaController,
+                                                                                controller: cocPdfController,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    // hintText: "Please Enter Day Lot No.",
+                                                                                    hintText: "Please Select Coc Pdf",
+                                                                                    suffixIcon: IconButton(
+                                                                                      onPressed: () async {
+                                                                                        if (widget.id != null && widget.id != '' && cocPdfController.text != '') {
+                                                                                          UrlLauncher.launch(cocPdfController.text);
+                                                                                        } else if (status != 'Pending') {
+                                                                                          _pickcocPDF();
+                                                                                        }
+                                                                                      },
+                                                                                      icon: widget.id != null && widget.id != '' && cocPdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
                                                                                     ),
-                                                                                maxLines: 2,
+                                                                                    counterText: ''),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                maxLines: 1,
                                                                                 readOnly: true,
+                                                                                validator: (value) {
+                                                                                  if (value!.isEmpty) {
+                                                                                    return "Please Select Coc Pdf";
+                                                                                  } else {
+                                                                                    return null;
+                                                                                  }
+                                                                                },
                                                                               ),
-                                                                              const SizedBox(
+                                                                              SizedBox(
                                                                                 height: 15,
                                                                               ),
                                                                               const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                                                                               _isLoading
                                                                                   ? const Center(child: CircularProgressIndicator())
-                                                                                  : AppButton(
-                                                                                      textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
-                                                                                      onTap: () {
-                                                                                        AppHelper.hideKeyboard(context);
-                                                                                        _electricalFormKey.currentState!.save;
-                                                                                        if (_electricalFormKey.currentState!.validate()) {
-                                                                                          // ignore: unnecessary_null_comparison
-                                                                                          if (electricalSampleSizeController.text != "") {
-                                                                                            int num = int.parse(electricalSampleSizeController.text);
-                                                                                            setState(() {
-                                                                                              setPage = 'checkelectrical';
-                                                                                              numberOfElectricalSampleFields = num;
-                                                                                            });
-                                                                                          }
-                                                                                          if (status != 'Pending') {
-                                                                                            setState(() {
-                                                                                              sendStatus = 'Inprogress';
-                                                                                            });
-                                                                                            createData();
-                                                                                          }
-                                                                                        }
-
-                                                                                        // Dynamic Start......
-                                                                                        selectedElectricalTestValues = List<bool>.generate(numberOfElectricalSampleFields, (index) => false);
-
-                                                                                        for (int i = 0; i < numberOfElectricalSampleFields; i++) {
-                                                                                          electricalBarcodeControllers.add(TextEditingController());
-                                                                                          electricalRemarksControllers.add(TextEditingController());
-
-                                                                                          // Update Time.......
-                                                                                          if (widget.id != "" && widget.id != null && Electrical.length > 0) {
-                                                                                            electricalBarcodeControllers[i].text = Electrical[i]['ElectricalSampleBarcode${i + 1}'];
-
-                                                                                            selectedElectricalTestValues[i] = Electrical[i]['ElectricalSampleTest${i + 1}'] ?? false;
-
-                                                                                            electricalRemarksControllers[i].text = Electrical[i]['ElectricalSampleRemarks${i + 1}'];
-                                                                                          }
-                                                                                        }
-
-                                                                                        // Dynamic  End......
-                                                                                      },
-                                                                                      label: "Check",
-                                                                                      organization: '',
-                                                                                    ),
-                                                                              const SizedBox(
-                                                                                height: 10,
-                                                                              ),
+                                                                                  : (widget.id == "" || widget.id == null) || (status == 'Inprogress' && widget.id != null)
+                                                                                      ? AppButton(
+                                                                                          textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                          onTap: () {
+                                                                                            AppHelper.hideKeyboard(context);
+                                                                                            _resultFormKey.currentState!.save;
+                                                                                            if (_resultFormKey.currentState!.validate()) {
+                                                                                              if (status != 'Pending') {
+                                                                                                setState(() {
+                                                                                                  sendStatus = 'Pending';
+                                                                                                });
+                                                                                                createData();
+                                                                                              }
+                                                                                            }
+                                                                                          },
+                                                                                          label: "Save",
+                                                                                          organization: '',
+                                                                                        )
+                                                                                      : Container(),
+                                                                              if (widget.id != "" && widget.id != null && status == 'Pending')
+                                                                                Container(
+                                                                                  color: Color.fromARGB(255, 191, 226, 187), // Change the background color to your desired color
+                                                                                  child: Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                                    children: [
+                                                                                      Divider(),
+                                                                                      const Center(child: Text("Approve/Reject Block", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 217, 3, 245), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                      Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                        children: <Widget>[
+                                                                                          Radio(
+                                                                                            value: "Approved",
+                                                                                            groupValue: approvalStatus,
+                                                                                            onChanged: (val) {
+                                                                                              setState(() {
+                                                                                                approvalStatus = val;
+                                                                                                rejectionReasonStatusController.text = '';
+                                                                                              });
+                                                                                            },
+                                                                                          ),
+                                                                                          Text(
+                                                                                            'Approved',
+                                                                                            style: AppStyles.textfieldCaptionTextStyle,
+                                                                                          ),
+                                                                                          const SizedBox(
+                                                                                            width: 10,
+                                                                                          ),
+                                                                                          Radio(
+                                                                                            value: "Rejected",
+                                                                                            groupValue: approvalStatus,
+                                                                                            onChanged: (val) {
+                                                                                              setState(() {
+                                                                                                approvalStatus = val;
+                                                                                              });
+                                                                                            },
+                                                                                          ),
+                                                                                          Text(
+                                                                                            'Rejected',
+                                                                                            style: AppStyles.textfieldCaptionTextStyle,
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                      const SizedBox(
+                                                                                        height: 15,
+                                                                                      ),
+                                                                                      if (approvalStatus == "Approved")
+                                                                                        AppButton(
+                                                                                          textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                          onTap: () {
+                                                                                            AppHelper.hideKeyboard(context);
+                                                                                            _resultFormKey.currentState!.save;
+                                                                                            if (_resultFormKey.currentState!.validate()) {
+                                                                                              setApprovalStatus();
+                                                                                            }
+                                                                                          },
+                                                                                          label: "Approved",
+                                                                                          organization: '',
+                                                                                        ),
+                                                                                      if (approvalStatus == "Rejected")
+                                                                                        TextFormField(
+                                                                                          controller: rejectionReasonStatusController,
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(hintText: "Please Enter Rejection Reason", counterText: ''),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          maxLines: 3,
+                                                                                          validator: (value) {
+                                                                                            if (value!.isEmpty) {
+                                                                                              return "Please Enter Rejection Reason";
+                                                                                            } else {
+                                                                                              return null;
+                                                                                            }
+                                                                                          },
+                                                                                        ),
+                                                                                      SizedBox(
+                                                                                        height: 15,
+                                                                                      ),
+                                                                                      if (approvalStatus == "Rejected")
+                                                                                        AppButton(
+                                                                                          textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                          onTap: () {
+                                                                                            AppHelper.hideKeyboard(context);
+                                                                                            _resultFormKey.currentState!.save;
+                                                                                            if (_resultFormKey.currentState!.validate()) {
+                                                                                              setApprovalStatus();
+                                                                                            }
+                                                                                          },
+                                                                                          label: "Rejected",
+                                                                                          organization: '',
+                                                                                        ),
+                                                                                      const SizedBox(
+                                                                                        height: 10,
+                                                                                      ),
+                                                                                      Divider(),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
                                                                               Center(
                                                                                 child: Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
                                                                                   child: InkWell(
                                                                                     onTap: () {
                                                                                       setState(() {
+                                                                                        _isLoading = false;
                                                                                         setPage = "checkverification";
                                                                                       });
                                                                                       // Navigator.of(context).pushReplacement(
@@ -5103,697 +5334,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                         )),
                                                                       ],
                                                                     )
-                                                                  : setPage ==
-                                                                          "checkelectrical"
-                                                                      ? Scaffold(
-                                                                          body:
-                                                                              Form(
-                                                                            key:
-                                                                                _electricalsampleformKey,
-                                                                            child:
-                                                                                ListView.builder(
-                                                                              itemCount: numberOfElectricalSampleFields,
-                                                                              itemBuilder: (context, index) {
-                                                                                return Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        "Sample ${index + 1}",
-                                                                                        style: AppStyles.textfieldCaptionTextStyle,
-                                                                                      ),
-                                                                                      const SizedBox(height: 8),
-
-                                                                                      TextFormField(
-                                                                                        controller: electricalBarcodeControllers[index],
-                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                          hintText: "Please Scan Sample Barcode",
-                                                                                          counterText: '',
-                                                                                          contentPadding: EdgeInsets.all(10),
-                                                                                          suffixIcon: IconButton(
-                                                                                            onPressed: () async {
-                                                                                              if (status != 'Pending') {
-                                                                                                barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                                                                                                  '#FF6666',
-                                                                                                  'Cancel',
-                                                                                                  true,
-                                                                                                  ScanMode.DEFAULT,
-                                                                                                );
-
-                                                                                                setState(() {
-                                                                                                  electricalBarcodeControllers[index].text = (barcodeScanRes != "-1" ? barcodeScanRes : '')!;
-                                                                                                });
-                                                                                              }
-                                                                                            },
-                                                                                            icon: const Icon(Icons.qr_code),
-                                                                                          ),
-                                                                                        ),
-                                                                                        readOnly: status == 'Pending' ? true : false,
-                                                                                        style: AppStyles.textInputTextStyle,
-                                                                                        validator: (value) {
-                                                                                          if (value == null || value.isEmpty) {
-                                                                                            return 'Please Scan Sample Barcode.';
-                                                                                          }
-                                                                                          return null;
-                                                                                        },
-                                                                                      ),
-
-                                                                                      const SizedBox(height: 8), // Add space between TextFormField and Radio Buttons
-                                                                                      Row(
-                                                                                        children: [
-                                                                                          Radio(
-                                                                                            value: true,
-                                                                                            groupValue: selectedElectricalTestValues[index],
-                                                                                            onChanged: (bool? value) {
-                                                                                              if (status != 'Pending') {
-                                                                                                setState(() {
-                                                                                                  selectedElectricalTestValues[index] = value!;
-                                                                                                  electricalRemarksControllers[index].text = '';
-                                                                                                });
-                                                                                              }
-                                                                                            },
-                                                                                          ),
-                                                                                          Text(
-                                                                                            'True',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                          const SizedBox(width: 8),
-                                                                                          Radio(
-                                                                                            value: false,
-                                                                                            groupValue: selectedElectricalTestValues[index],
-                                                                                            onChanged: (bool? value) {
-                                                                                              if (status != 'Pending') {
-                                                                                                setState(() {
-                                                                                                  selectedElectricalTestValues[index] = value!;
-                                                                                                });
-                                                                                              }
-                                                                                            },
-                                                                                          ),
-                                                                                          Text(
-                                                                                            'False',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                      if (selectedElectricalTestValues[index] == false) const SizedBox(height: 8),
-                                                                                      if (selectedElectricalTestValues[index] == false)
-                                                                                        TextFormField(
-                                                                                          controller: electricalRemarksControllers[index],
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Remarks",
-                                                                                            counterText: '',
-                                                                                            contentPadding: EdgeInsets.all(10),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' ? true : false,
-                                                                                          validator: (value) {
-                                                                                            if (value == null || value.isEmpty) {
-                                                                                              return 'Please Enter Remarks.';
-                                                                                            }
-                                                                                            return null;
-                                                                                          },
-                                                                                        ),
-                                                                                      const SizedBox(height: 8),
-                                                                                      Container(
-                                                                                        width: MediaQuery.of(context).size.width,
-                                                                                        color: AppColors.dividerColor,
-                                                                                        height: 1,
-                                                                                      )
-                                                                                    ],
-                                                                                  ),
-                                                                                );
-                                                                              },
-                                                                            ),
-                                                                          ),
-                                                                          bottomNavigationBar:
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(14.0),
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                              children: [
-                                                                                InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      setPage = "electrical";
-                                                                                    });
-                                                                                  },
-                                                                                  child: const Text(
-                                                                                    "BACK",
-                                                                                    style: TextStyle(fontFamily: appFontFamily, fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.redColor),
-                                                                                  ),
-                                                                                ),
-                                                                                ElevatedButton(
-                                                                                  onPressed: () {
-                                                                                    AppHelper.hideKeyboard(context);
-                                                                                    _electricalsampleformKey.currentState!.save;
-
-                                                                                    // Validate the form
-                                                                                    if (_electricalsampleformKey.currentState!.validate()) {
-                                                                                      electricalSampleData = [];
-
-                                                                                      for (int i = 0; i < numberOfElectricalSampleFields; i++) {
-                                                                                        electricalSampleData.add({
-                                                                                          "ElectricalSampleBarcode${i + 1}": electricalBarcodeControllers[i].text,
-                                                                                          "ElectricalSampleTest${i + 1}": selectedElectricalTestValues[i],
-                                                                                          "ElectricalSampleRemarks${i + 1}": electricalRemarksControllers[i].text
-                                                                                        });
-                                                                                      }
-
-                                                                                      setState(() {
-                                                                                        setPage = "result";
-                                                                                      });
-                                                                                      if (status != 'Pending') {
-                                                                                        setState(() {
-                                                                                          sendStatus = 'Inprogress';
-                                                                                        });
-                                                                                        createData();
-                                                                                      }
-                                                                                    }
-                                                                                    // setState(() {
-                                                                                    //   setPage = "performance";
-                                                                                    // });
-                                                                                    // _electricalsampleformKey = GlobalKey<FormState>();
-                                                                                  },
-                                                                                  style: ElevatedButton.styleFrom(
-                                                                                    backgroundColor: const Color.fromARGB(255, 134, 8, 4), // Set button color to red
-                                                                                  ),
-                                                                                  child: const Text(
-                                                                                    'Next',
-                                                                                    style: TextStyle(
-                                                                                      color: Colors.white, // Set text color to white
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : setPage ==
-                                                                              "result"
-                                                                          ? Stack(
-                                                                              alignment: Alignment.center,
-                                                                              fit: StackFit.expand,
-                                                                              children: [
-                                                                                SingleChildScrollView(
-                                                                                    child: Form(
-                                                                                  key: _resultFormKey,
-                                                                                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                                                                                  child: Column(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: <Widget>[
-                                                                                      Container(
-                                                                                        alignment: Alignment.center,
-                                                                                        child: Column(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                          children: [
-                                                                                            Image.asset(
-                                                                                              AppAssets.imgLogo,
-                                                                                              height: 100,
-                                                                                              width: 230,
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      ),
-                                                                                      const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Quality Control Plan", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
-                                                                                      const Center(child: Text("(Junction Box)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
-                                                                                      const SizedBox(
-                                                                                        height: 35,
-                                                                                      ),
-                                                                                      Row(
-                                                                                        children: [
-                                                                                          Text(
-                                                                                            'Document No : ',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                          const SizedBox(
-                                                                                            width: 8,
-                                                                                          ),
-                                                                                          Text(
-                                                                                            'GSPL/JB(IQC)/001',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                      const SizedBox(
-                                                                                        height: 8,
-                                                                                      ),
-                                                                                      Row(
-                                                                                        children: [
-                                                                                          Text(
-                                                                                            'Rev.No. / Rev. Date : ',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                          const SizedBox(
-                                                                                            width: 8,
-                                                                                          ),
-                                                                                          Text(
-                                                                                            'Ver.2.0 / 13-03-2024',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                      const SizedBox(
-                                                                                        height: 15,
-                                                                                      ),
-                                                                                      const Center(child: Text("Result", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 6, 2, 240), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
-                                                                                      Row(
-                                                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                                                        children: <Widget>[
-                                                                                          Radio(
-                                                                                            value: "Pass",
-                                                                                            groupValue: result,
-                                                                                            onChanged: (val) {
-                                                                                              if (status != 'Pending') {
-                                                                                                setState(() {
-                                                                                                  result = val;
-                                                                                                  rejectionReasonController.text = '';
-                                                                                                  packagingRejection = false;
-                                                                                                  visualRejection = false;
-                                                                                                  physicalRejection = false;
-                                                                                                  frontbusRejection = false;
-                                                                                                  electricalRejection = false;
-                                                                                                  //  performanceRejection = false;
-                                                                                                });
-                                                                                              }
-                                                                                            },
-                                                                                          ),
-                                                                                          Text(
-                                                                                            'Pass',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                          const SizedBox(
-                                                                                            width: 10,
-                                                                                          ),
-                                                                                          Radio(
-                                                                                            value: "Fail",
-                                                                                            groupValue: result,
-                                                                                            onChanged: (val) {
-                                                                                              if (status != 'Pending') {
-                                                                                                setState(() {
-                                                                                                  result = val;
-                                                                                                });
-                                                                                              }
-                                                                                            },
-                                                                                          ),
-                                                                                          Text(
-                                                                                            'Fail',
-                                                                                            style: AppStyles.textfieldCaptionTextStyle,
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                      if (result == "Fail")
-                                                                                        const SizedBox(
-                                                                                          height: 10,
-                                                                                        ),
-                                                                                      if (result == "Fail") const Center(child: Text("Rejection Note", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 238, 5, 5), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
-                                                                                      if (result == "Fail")
-                                                                                        Row(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                          children: <Widget>[
-                                                                                            Checkbox(
-                                                                                              value: packagingRejection,
-                                                                                              onChanged: (value) {
-                                                                                                if (status != 'Pending') {
-                                                                                                  setState(() {
-                                                                                                    packagingRejection = value!;
-                                                                                                  });
-                                                                                                }
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Visual',
-                                                                                              style: AppStyles.textfieldCaptionTextStyle,
-                                                                                            ),
-                                                                                            Checkbox(
-                                                                                              value: visualRejection,
-                                                                                              onChanged: (value) {
-                                                                                                if (status != 'Pending') {
-                                                                                                  setState(() {
-                                                                                                    visualRejection = value!;
-                                                                                                  });
-                                                                                                }
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Physical',
-                                                                                              style: AppStyles.textfieldCaptionTextStyle,
-                                                                                            ),
-                                                                                            Checkbox(
-                                                                                              value: physicalRejection,
-                                                                                              onChanged: (value) {
-                                                                                                if (status != 'Pending') {
-                                                                                                  setState(() {
-                                                                                                    physicalRejection = value!;
-                                                                                                  });
-                                                                                                }
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Electrical',
-                                                                                              style: AppStyles.textfieldCaptionTextStyle,
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        const SizedBox(
-                                                                                          height: 5,
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        Row(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                          children: <Widget>[
-                                                                                            Checkbox(
-                                                                                              value: frontbusRejection,
-                                                                                              onChanged: (value) {
-                                                                                                if (status != 'Pending') {
-                                                                                                  setState(() {
-                                                                                                    frontbusRejection = value!;
-                                                                                                  });
-                                                                                                }
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Measurement',
-                                                                                              style: AppStyles.textfieldCaptionTextStyle,
-                                                                                            ),
-                                                                                            Checkbox(
-                                                                                              value: verificationRejection,
-                                                                                              onChanged: (value) {
-                                                                                                if (status != 'Pending') {
-                                                                                                  setState(() {
-                                                                                                    verificationRejection = value!;
-                                                                                                  });
-                                                                                                }
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Verification-1',
-                                                                                              style: AppStyles.textfieldCaptionTextStyle,
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        const SizedBox(
-                                                                                          height: 5,
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        Row(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                          children: <Widget>[
-                                                                                            Checkbox(
-                                                                                              value: electricalRejection,
-                                                                                              onChanged: (value) {
-                                                                                                if (status != 'Pending') {
-                                                                                                  setState(() {
-                                                                                                    electricalRejection = value!;
-                                                                                                  });
-                                                                                                }
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Verification-2',
-                                                                                              style: AppStyles.textfieldCaptionTextStyle,
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        const SizedBox(
-                                                                                          height: 5,
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        Text(
-                                                                                          'Rejection Reason',
-                                                                                          style: AppStyles.textfieldCaptionTextStyle,
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        const SizedBox(
-                                                                                          height: 5,
-                                                                                        ),
-                                                                                      if (result == "Fail")
-                                                                                        TextFormField(
-                                                                                          controller: rejectionReasonController,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(hintText: "Please Enter Rejection Reason", counterText: ''),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          maxLines: 3,
-                                                                                          readOnly: status == 'Pending' ? true : false,
-                                                                                          validator: (value) {
-                                                                                            if (value!.isEmpty) {
-                                                                                              return "Please Enter Rejection Reason";
-                                                                                            } else {
-                                                                                              return null;
-                                                                                            }
-                                                                                          },
-                                                                                        ),
-                                                                                      const SizedBox(
-                                                                                        height: 15,
-                                                                                      ),
-                                                                                      Text(
-                                                                                        "Upload Invoice Pdf*",
-                                                                                        style: AppStyles.textfieldCaptionTextStyle,
-                                                                                      ),
-                                                                                      const SizedBox(
-                                                                                        height: 5,
-                                                                                      ),
-                                                                                      TextFormField(
-                                                                                        controller: invoicePdfController,
-                                                                                        keyboardType: TextInputType.text,
-                                                                                        textInputAction: TextInputAction.next,
-                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Select Invoice Pdf",
-                                                                                            suffixIcon: IconButton(
-                                                                                              onPressed: () async {
-                                                                                                if (widget.id != null && widget.id != '' && invoicePdfController.text != '') {
-                                                                                                  UrlLauncher.launch(invoicePdfController.text);
-                                                                                                } else if (status != 'Pending') {
-                                                                                                  _pickInvoicePDF();
-                                                                                                }
-                                                                                              },
-                                                                                              icon: widget.id != null && widget.id != '' && invoicePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
-                                                                                            ),
-                                                                                            counterText: ''),
-                                                                                        style: AppStyles.textInputTextStyle,
-                                                                                        maxLines: 1,
-                                                                                        readOnly: true,
-                                                                                        validator: (value) {
-                                                                                          if (value!.isEmpty) {
-                                                                                            return "Please Select Invoice Pdf";
-                                                                                          } else {
-                                                                                            return null;
-                                                                                          }
-                                                                                        },
-                                                                                      ),
-                                                                                      const SizedBox(
-                                                                                        height: 15,
-                                                                                      ),
-                                                                                      Text(
-                                                                                        "Upload Coc Pdf*",
-                                                                                        style: AppStyles.textfieldCaptionTextStyle,
-                                                                                      ),
-                                                                                      const SizedBox(
-                                                                                        height: 5,
-                                                                                      ),
-                                                                                      TextFormField(
-                                                                                        controller: cocPdfController,
-                                                                                        keyboardType: TextInputType.text,
-                                                                                        textInputAction: TextInputAction.next,
-                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Select Coc Pdf",
-                                                                                            suffixIcon: IconButton(
-                                                                                              onPressed: () async {
-                                                                                                if (widget.id != null && widget.id != '' && cocPdfController.text != '') {
-                                                                                                  UrlLauncher.launch(cocPdfController.text);
-                                                                                                } else if (status != 'Pending') {
-                                                                                                  _pickcocPDF();
-                                                                                                }
-                                                                                              },
-                                                                                              icon: widget.id != null && widget.id != '' && cocPdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.open_in_browser),
-                                                                                            ),
-                                                                                            counterText: ''),
-                                                                                        style: AppStyles.textInputTextStyle,
-                                                                                        maxLines: 1,
-                                                                                        readOnly: true,
-                                                                                        validator: (value) {
-                                                                                          if (value!.isEmpty) {
-                                                                                            return "Please Select Coc Pdf";
-                                                                                          } else {
-                                                                                            return null;
-                                                                                          }
-                                                                                        },
-                                                                                      ),
-                                                                                      SizedBox(
-                                                                                        height: 15,
-                                                                                      ),
-                                                                                      const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                                                                      _isLoading
-                                                                                          ? const Center(child: CircularProgressIndicator())
-                                                                                          : (widget.id == "" || widget.id == null) || (status == 'Inprogress' && widget.id != null)
-                                                                                              ? AppButton(
-                                                                                                  textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
-                                                                                                  onTap: () {
-                                                                                                    AppHelper.hideKeyboard(context);
-                                                                                                    _resultFormKey.currentState!.save;
-                                                                                                    if (_resultFormKey.currentState!.validate()) {
-                                                                                                      if (status != 'Pending') {
-                                                                                                        setState(() {
-                                                                                                          sendStatus = 'Pending';
-                                                                                                        });
-                                                                                                        createData();
-                                                                                                      }
-                                                                                                    }
-                                                                                                  },
-                                                                                                  label: "Save",
-                                                                                                  organization: '',
-                                                                                                )
-                                                                                              : Container(),
-                                                                                      if (widget.id != "" && widget.id != null && status == 'Pending')
-                                                                                        Container(
-                                                                                          color: Color.fromARGB(255, 191, 226, 187), // Change the background color to your desired color
-                                                                                          child: Column(
-                                                                                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                                                            children: [
-                                                                                              Divider(),
-                                                                                              const Center(child: Text("Approve/Reject Block", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 217, 3, 245), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
-                                                                                              Row(
-                                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                                children: <Widget>[
-                                                                                                  Radio(
-                                                                                                    value: "Approved",
-                                                                                                    groupValue: approvalStatus,
-                                                                                                    onChanged: (val) {
-                                                                                                      setState(() {
-                                                                                                        approvalStatus = val;
-                                                                                                        rejectionReasonStatusController.text = '';
-                                                                                                      });
-                                                                                                    },
-                                                                                                  ),
-                                                                                                  Text(
-                                                                                                    'Approved',
-                                                                                                    style: AppStyles.textfieldCaptionTextStyle,
-                                                                                                  ),
-                                                                                                  const SizedBox(
-                                                                                                    width: 10,
-                                                                                                  ),
-                                                                                                  Radio(
-                                                                                                    value: "Rejected",
-                                                                                                    groupValue: approvalStatus,
-                                                                                                    onChanged: (val) {
-                                                                                                      setState(() {
-                                                                                                        approvalStatus = val;
-                                                                                                      });
-                                                                                                    },
-                                                                                                  ),
-                                                                                                  Text(
-                                                                                                    'Rejected',
-                                                                                                    style: AppStyles.textfieldCaptionTextStyle,
-                                                                                                  ),
-                                                                                                ],
-                                                                                              ),
-                                                                                              const SizedBox(
-                                                                                                height: 15,
-                                                                                              ),
-                                                                                              if (approvalStatus == "Approved")
-                                                                                                AppButton(
-                                                                                                  textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
-                                                                                                  onTap: () {
-                                                                                                    AppHelper.hideKeyboard(context);
-                                                                                                    _resultFormKey.currentState!.save;
-                                                                                                    if (_resultFormKey.currentState!.validate()) {
-                                                                                                      setApprovalStatus();
-                                                                                                    }
-                                                                                                  },
-                                                                                                  label: "Approved",
-                                                                                                  organization: '',
-                                                                                                ),
-                                                                                              if (approvalStatus == "Rejected")
-                                                                                                TextFormField(
-                                                                                                  controller: rejectionReasonStatusController,
-                                                                                                  keyboardType: TextInputType.text,
-                                                                                                  textInputAction: TextInputAction.next,
-                                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(hintText: "Please Enter Rejection Reason", counterText: ''),
-                                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                                  maxLines: 3,
-                                                                                                  validator: (value) {
-                                                                                                    if (value!.isEmpty) {
-                                                                                                      return "Please Enter Rejection Reason";
-                                                                                                    } else {
-                                                                                                      return null;
-                                                                                                    }
-                                                                                                  },
-                                                                                                ),
-                                                                                              SizedBox(
-                                                                                                height: 15,
-                                                                                              ),
-                                                                                              if (approvalStatus == "Rejected")
-                                                                                                AppButton(
-                                                                                                  textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
-                                                                                                  onTap: () {
-                                                                                                    AppHelper.hideKeyboard(context);
-                                                                                                    _resultFormKey.currentState!.save;
-                                                                                                    if (_resultFormKey.currentState!.validate()) {
-                                                                                                      setApprovalStatus();
-                                                                                                    }
-                                                                                                  },
-                                                                                                  label: "Rejected",
-                                                                                                  organization: '',
-                                                                                                ),
-                                                                                              const SizedBox(
-                                                                                                height: 10,
-                                                                                              ),
-                                                                                              Divider(),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      Center(
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.all(8.0),
-                                                                                          child: InkWell(
-                                                                                            onTap: () {
-                                                                                              setState(() {
-                                                                                                _isLoading = false;
-                                                                                                setPage = "checkelectrical";
-                                                                                              });
-                                                                                              // Navigator.of(context).pushReplacement(
-                                                                                              //     MaterialPageRoute(
-                                                                                              //         builder: (BuildContext context) =>
-                                                                                              //             LoginPage(
-                                                                                              //                 appName: widget.appName)));
-                                                                                            },
-                                                                                            child: const Text(
-                                                                                              "BACK",
-                                                                                              style: TextStyle(fontFamily: appFontFamily, fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.redColor),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      const SizedBox(
-                                                                                        height: 25,
-                                                                                      ),
-                                                                                      Container(
-                                                                                        alignment: Alignment.center,
-                                                                                        child: const Column(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                          children: [
-                                                                                            Text("Powered By Gautam Solar Pvt. Ltd.", style: TextStyle(fontSize: 14, fontFamily: appFontFamily, color: AppColors.greyColor, fontWeight: FontWeight.w400)),
-                                                                                            SizedBox(
-                                                                                              height: 10,
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      )
-                                                                                    ],
-                                                                                  ),
-                                                                                )),
-                                                                              ],
-                                                                            )
-                                                                          : Container(),
+                                                                  : Container(),
                 ),
           bottomNavigationBar: Container(
             height: 60,
