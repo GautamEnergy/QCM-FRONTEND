@@ -1,7 +1,10 @@
+import 'package:QCM/AluminiumFrame.dart';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Encapsulant.dart';
+import 'package:QCM/Flux.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
+import 'package:QCM/JunctionBox.dart';
 import 'package:QCM/Ribbon.dart';
 
 import 'package:QCM/SolarCell.dart';
@@ -207,10 +210,10 @@ class _WelcomePageState extends State<IqcpPage> {
                 Expanded(
                     child: tabDashboard(
                         'Junction Box', AppAssets.imgAttendanceReport, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => InOut()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => JunctionBox()),
+                      (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,
@@ -218,10 +221,10 @@ class _WelcomePageState extends State<IqcpPage> {
                 Expanded(
                     child: tabDashboard(
                         'Aluminium Frame', AppAssets.imgSalaryReport, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => SalaryReport()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => AluminiumFrame()),
+                      (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,
@@ -242,10 +245,10 @@ class _WelcomePageState extends State<IqcpPage> {
                 ),
                 Expanded(
                     child: tabDashboard('Flux', AppAssets.flux, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => InOut()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Flux()),
+                      (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,

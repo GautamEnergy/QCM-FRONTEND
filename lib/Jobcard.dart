@@ -586,6 +586,10 @@ class _JobcardState extends State<Jobcard> {
             memberPic: pic,
             logo: "logo",
             onTap: () {
+              setState(() {
+                sendStatus = "Inprogress";
+              });
+              createData();
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return IpqcPage();
               }));
