@@ -15,6 +15,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/ipqc_list_model.dart';
+import 'package:QCM/prelam.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -843,7 +844,11 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                     builder: (BuildContext context) =>
                                         type == "Job Card"
                                             ? Jobcard(id: id)
-                                            : BomCard(id: id)),
+                                            : type == "Bom Card"
+                                                ? BomCard(id: id)
+                                                : type == "PreLam"
+                                                    ? PreCard(id: id)
+                                                    : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -866,7 +871,11 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                     builder: (BuildContext context) =>
                                         type == "Job Card"
                                             ? Jobcard(id: id)
-                                            : BomCard(id: id)),
+                                            : type == "Bom Card"
+                                                ? BomCard(id: id)
+                                                : type == "PreLam"
+                                                    ? PreCard(id: id)
+                                                    : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

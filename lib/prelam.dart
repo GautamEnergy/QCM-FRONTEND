@@ -1,329 +1,1416 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:QCM/Ipqc.dart';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
-
+import 'package:QCM/ipqcTestList.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
-
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:dio/src/response.dart' as Response;
 import 'package:http/http.dart' as http;
-
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
 import '../constant/app_color.dart';
 import '../constant/app_fonts.dart';
 import '../constant/app_helper.dart';
-
 import '../constant/app_styles.dart';
 
-class PreLam extends StatefulWidget {
-  const PreLam({super.key});
-
+class PreCard extends StatefulWidget {
+  final String? id;
+  PreCard({this.id});
   @override
-  _PrelamState createState() => _PrelamState();
+  _PreCardState createState() => _PreCardState();
 }
 
-class _PrelamState extends State<PreLam> {
-  final _registerFormKey = GlobalKey<FormState>();
-  TextEditingController dateController = TextEditingController();
+class _PreCardState extends State<PreCard> {
+  final _preLamFormKey = GlobalKey<FormState>();
+  // final _glassSideFormKey = GlobalKey<FormState>();
+  // final _temperatureFormKey = GlobalKey<FormState>();
+  // final _cellCuttingFormKey = GlobalKey<FormState>();
+  // final _cellLoadingFormKey = GlobalKey<FormState>();
+  // final _tabberFormKey = GlobalKey<FormState>();
+  // final _autoStringFormKey = GlobalKey<FormState>();
+  // final _autoBussingFormKey = GlobalKey<FormState>();
+  // final _evaFormKey = GlobalKey<FormState>();
+  // final _preLaminatorFormKey = GlobalKey<FormState>();
+  // final _stringFormKey = GlobalKey<FormState>();
+  // final _pmoduleFormKey = GlobalKey<FormState>();
+  // final _laminatorFormKey = GlobalKey<FormState>();
+
+  TextEditingController DayController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
-  TextEditingController LineController = TextEditingController();
-  TextEditingController poController = TextEditingController();
+  TextEditingController lineController = TextEditingController();
+  TextEditingController PoController = TextEditingController();
+  //1. Glass Loader
+  // final _registerFormKey = GlobalKey<FormState>();
+  TextEditingController GlassLoaderFreqquency1Controller =
+      TextEditingController();
+  TextEditingController GlassLoaderGlassDimensionController =
+      TextEditingController();
+  TextEditingController GlassLoaderCriteria1Controller =
+      TextEditingController();
+  TextEditingController GlassLoaderFrequency2Controller =
+      TextEditingController();
+  TextEditingController GlassLoaderAvaibilityController =
+      TextEditingController();
+  TextEditingController GlassLoaderCriteria2Controller =
+      TextEditingController();
+  TextEditingController GlassLoaderRemarkController = TextEditingController();
 
-  TextEditingController solarCellSupplierController = TextEditingController();
-  TextEditingController solarCellSpecificationController =
+  //2.  Glass side EVA cutting machine
+  TextEditingController GlassEVAFrequency1Controller = TextEditingController();
+  TextEditingController GlassEVADimensionController = TextEditingController();
+  TextEditingController GlassEVACriteria1Controller = TextEditingController();
+  TextEditingController GlasCuttingFrequencyController =
       TextEditingController();
-  TextEditingController solarCellLotBatchController = TextEditingController();
-  TextEditingController solarCellremarkController = TextEditingController();
+  TextEditingController GlasCuttingEdgeController = TextEditingController();
+  TextEditingController GlasCuttingCriteriaController = TextEditingController();
+  TextEditingController GlasPositionFrequencyController =
+      TextEditingController();
+  TextEditingController GlasPositionFrontController = TextEditingController();
+  TextEditingController GlasPositionCriteriaController =
+      TextEditingController();
+  TextEditingController GlasAvabilityFrequencyController =
+      TextEditingController();
+  TextEditingController GlasAvabilitySpecificationController =
+      TextEditingController();
+  TextEditingController GlasAvabilityCriteriaController =
+      TextEditingController();
+  TextEditingController GlasSideRemarkController = TextEditingController();
 
-  TextEditingController fluxLotBatchController = TextEditingController();
-  TextEditingController fluxSpecificationController = TextEditingController();
-  TextEditingController fluxSupplierController = TextEditingController();
-  TextEditingController fluxremarkController = TextEditingController();
+  //3. Temperature & Relative humidity(%RH) monitoring
+  TextEditingController TempShopFrequencyController = TextEditingController();
+  TextEditingController TempShopFloorController = TextEditingController();
+  TextEditingController TempShopCriteriaController = TextEditingController();
+  TextEditingController TempRelativeFrequencyController =
+      TextEditingController();
+  TextEditingController TempRelativeHumidityController =
+      TextEditingController();
+  TextEditingController TempRelativeCriteriaController =
+      TextEditingController();
+  TextEditingController TemperatureRemarkController = TextEditingController();
 
-  TextEditingController ribbonSupplierController = TextEditingController();
-  TextEditingController ribbonSpecificationController = TextEditingController();
-  TextEditingController ribbonLotBatchController = TextEditingController();
-  TextEditingController ribbonremarkController = TextEditingController();
+  //4. Cell Cutting Machine
+  TextEditingController CellSizeFrequencyController = TextEditingController();
+  TextEditingController CellSizelengthController = TextEditingController();
+  TextEditingController CellSizeCriteriaController = TextEditingController();
+  TextEditingController CellManufactureFrequencyController =
+      TextEditingController();
+  TextEditingController CellManufactureEffController = TextEditingController();
+  TextEditingController CellManufactureCriteriaController =
+      TextEditingController();
+  TextEditingController CellcolorFrequencyController = TextEditingController();
+  TextEditingController CellcolorController = TextEditingController();
+  TextEditingController CellcolorCriteriaController = TextEditingController();
+  TextEditingController CellAvabilityofFrequencyController =
+      TextEditingController();
+  TextEditingController CellAvabilityofSpecificationController =
+      TextEditingController();
+  TextEditingController CellAvabilityofCriteriaController =
+      TextEditingController();
+  TextEditingController CellCuttingRemarkController = TextEditingController();
 
-  TextEditingController InterconnectorSupplierController =
+  //5. Cell Loading
+  TextEditingController CellLoadingcellFrequencyController =
       TextEditingController();
-  TextEditingController InterconnectorLotBatchController =
+  TextEditingController CellLoadingcellColorController =
       TextEditingController();
-  TextEditingController InterconnectorSpecificationController =
+  TextEditingController CellLoadingcellCriteriaController =
       TextEditingController();
-  TextEditingController InterconnectorremarkController =
+  TextEditingController CellLoadingCleanFrequencyController =
+      TextEditingController();
+  TextEditingController CellLoadingCleanLinessController =
+      TextEditingController();
+  TextEditingController CellLoadingCleanCriteriaController =
+      TextEditingController();
+  TextEditingController CellLoadingWIFrequencyController =
+      TextEditingController();
+  TextEditingController CellLoadingWIController = TextEditingController();
+  TextEditingController CellLoadingWICriteriaController =
+      TextEditingController();
+  TextEditingController CellLoadingAvabilityFrequencyController =
+      TextEditingController();
+  TextEditingController CellLoadingAvabilityController =
+      TextEditingController();
+  TextEditingController CellLoadingAvabilityCriteriaController =
+      TextEditingController();
+  TextEditingController CellLoadingVerificationFrequencyController =
+      TextEditingController();
+  TextEditingController CellLoadingVerificationController =
+      TextEditingController();
+  TextEditingController CellLoadingVerificationCriteriaController =
       TextEditingController();
 
-  TextEditingController GlassSupplierController = TextEditingController();
-  TextEditingController GlassSpecificationController = TextEditingController();
-  TextEditingController GlassLotBatchController = TextEditingController();
-  TextEditingController GlassremarkController = TextEditingController();
+  // ** Entert the number of the Stringer ****
+  TextEditingController CellLoadingStringFrequencyController =
+      TextEditingController();
+  TextEditingController CellLoadingnumberOfStringerController =
+      TextEditingController();
+  List<TextEditingController> cellLoaderVerificationControllers = [];
+  TextEditingController LoadstrinGapController = TextEditingController();
+  TextEditingController cellLoaderStringCriteriaController =
+      TextEditingController();
+  TextEditingController cellLoaderRemarkController = TextEditingController();
 
-  TextEditingController EvaGlassSupplierController = TextEditingController();
-  TextEditingController EvaGlassSpecificationController =
+  //6. Tabber & Stringer
+  TextEditingController TabberVisualFrequencyController =
       TextEditingController();
-  TextEditingController EvaGlassLotBatchController = TextEditingController();
-  TextEditingController EvaGlassremarkController = TextEditingController();
+  TextEditingController TabberVisualnumberOfStringersController =
+      TextEditingController();
+  List<TextEditingController> TabberVisualStringerControllers = [];
+  TextEditingController TabberVisualCheckController = TextEditingController();
+  TextEditingController TabberVisualCriteriaController =
+      TextEditingController();
 
-  TextEditingController EvaGlassSideSupplierController =
+  TextEditingController TabberEIimageFrequencyController =
       TextEditingController();
-  TextEditingController EvaGlassSideSpecificationController =
+  TextEditingController tabberEIimagenumberOfStringersController =
       TextEditingController();
-  TextEditingController EvaGlassSideLotBatchController =
+  List<TextEditingController> TabberEIimageofStringerControllers = [];
+  TextEditingController TabberEIimageCheckController = TextEditingController();
+  TextEditingController TabberEIimageCriteriaController =
       TextEditingController();
-  TextEditingController EvaGlassSideremarkController = TextEditingController();
 
-  TextEditingController BackSheetSupplierController = TextEditingController();
-  TextEditingController BackSheetSpecificationController =
+  TextEditingController TabberVerificationFrequencyController =
       TextEditingController();
-  TextEditingController BackSheetLotBatchController = TextEditingController();
-  TextEditingController BackSheetremarkController = TextEditingController();
+  TextEditingController TabberVerificationNumberofstringController =
+      TextEditingController();
+  List<TextEditingController> TabberVerificationofsilderingControllers = [];
+  TextEditingController TabberVerificationCheckController =
+      TextEditingController();
+  TextEditingController TabberVerificationCriteriaController =
+      TextEditingController();
 
-  TextEditingController FrameSupplierController = TextEditingController();
-  TextEditingController FrameSpecificationController = TextEditingController();
-  TextEditingController FrameLotBatchController = TextEditingController();
-  TextEditingController FrameremarkController = TextEditingController();
+  TextEditingController TabberAvaibilityFrequencyController =
+      TextEditingController();
+  TextEditingController TabberAvabilityofSpecificationController =
+      TextEditingController();
+  TextEditingController TabberAvabilityofCriteriaController =
+      TextEditingController();
 
-  TextEditingController JunctionBoxSupplierController = TextEditingController();
-  TextEditingController JunctionBoxSpecificationController =
+  //-- reamrk for the Tabber
+  TextEditingController TabberstringerRemarkController =
       TextEditingController();
-  TextEditingController JunctionBoxLotBatchController = TextEditingController();
-  TextEditingController JunctionBoxremarkController = TextEditingController();
 
-  TextEditingController pottingJBSupplierController = TextEditingController();
-  TextEditingController pottingJBSpecificationController =
-      TextEditingController();
-  TextEditingController pottingJBLotBatchController = TextEditingController();
-  TextEditingController pottingJBremarkController = TextEditingController();
+  //7. Auto String Layup
+  TextEditingController AutoCellFrequencyController = TextEditingController();
+  TextEditingController AutoCellController = TextEditingController();
+  TextEditingController AutoCellCriteriaController = TextEditingController();
+  // TextEditingController AutoTimeController = TextEditingController();
 
-  TextEditingController FrameAdhesiveSupplierController =
-      TextEditingController();
-  TextEditingController FrameAdhesiveSpecificationController =
-      TextEditingController();
-  TextEditingController FrameAdhesiveLotBatchController =
-      TextEditingController();
-  TextEditingController FrameAdhesiveremarkController = TextEditingController();
+  TextEditingController AutoStringFrequencyController = TextEditingController();
+  TextEditingController AutoStringController = TextEditingController();
+  TextEditingController AutoStringCriteriaController = TextEditingController();
 
-  TextEditingController RfidSupplierController = TextEditingController();
-  TextEditingController RfidSpecificationController = TextEditingController();
-  TextEditingController RfidLotBatchController = TextEditingController();
-  TextEditingController RfidremarkController = TextEditingController();
+  TextEditingController AutoCelledgeFrequencyController =
+      TextEditingController();
+  TextEditingController AutoCelledController = TextEditingController();
+  TextEditingController AutoCellEdgeCriteriaController =
+      TextEditingController();
+
+  TextEditingController AutoStringerRemarkController = TextEditingController();
+
+  //8. Auto Bussing & Tapping
+  TextEditingController AutoSolderingFrequencyController =
+      TextEditingController();
+  TextEditingController AutoSolderingController = TextEditingController();
+  TextEditingController AutoSolderingCriteriaController =
+      TextEditingController();
+
+  TextEditingController AutoTerminalFrequencyController =
+      TextEditingController();
+  TextEditingController AutoTerminalStringController = TextEditingController();
+  TextEditingController AutoTerminalCriteriaController =
+      TextEditingController();
+
+  TextEditingController AutoSolderingQualityFrequencyController =
+      TextEditingController();
+  TextEditingController AutoSolderingQualityController =
+      TextEditingController();
+  TextEditingController AutoSolderingQualityCriteriaController =
+      TextEditingController();
+
+  TextEditingController AutoClearanceFrequencyController =
+      TextEditingController();
+  TextEditingController AutoClearanceController = TextEditingController();
+  TextEditingController AutoClearanceCriteriaController =
+      TextEditingController();
+
+  TextEditingController AutoPositionFrequencyController =
+      TextEditingController();
+  TextEditingController AutoPositionController = TextEditingController();
+  TextEditingController AutoPositionCriteriaController =
+      TextEditingController();
+
+  TextEditingController AutoTopFrequencyController = TextEditingController();
+  TextEditingController AutoTopController = TextEditingController();
+  TextEditingController AutoTopCriteriaController = TextEditingController();
+
+  TextEditingController AutoqualityofFrequencyController =
+      TextEditingController();
+  TextEditingController AutoQualityController = TextEditingController();
+  TextEditingController AutoQualityCriteriaController = TextEditingController();
+
+  TextEditingController AutoAvaibilityFrequencyController =
+      TextEditingController();
+  TextEditingController AutoAvaibilityController = TextEditingController();
+  TextEditingController AutoAvaibilityCriteriaController =
+      TextEditingController();
+
+  TextEditingController AutoBussingRemarkController = TextEditingController();
+
+  // 9. EVA/Backsheet Cutting
+  TextEditingController EVARearFrequencyController = TextEditingController();
+  TextEditingController EVARearController = TextEditingController();
+  TextEditingController EVARearCriteriaController = TextEditingController();
+
+  TextEditingController EVABackFrequencyController = TextEditingController();
+  TextEditingController EVABackController = TextEditingController();
+  TextEditingController EVABackCriteriaController = TextEditingController();
+
+  TextEditingController EVACuttingFrequencyController = TextEditingController();
+  TextEditingController EVAcuttingController = TextEditingController();
+  TextEditingController EVACuttingCriteriaController = TextEditingController();
+
+  TextEditingController EVAPositionFrequencyController =
+      TextEditingController();
+  TextEditingController EVAPositionController = TextEditingController();
+  TextEditingController EVAPositionCriteriaController = TextEditingController();
+
+  TextEditingController EVAAvaibilityFrequencyController =
+      TextEditingController();
+  TextEditingController EVAAvaibilityController = TextEditingController();
+  TextEditingController EVAAvaibilityCriteriaController =
+      TextEditingController();
+
+  TextEditingController EVABacksheetRemarkController = TextEditingController();
+
+  // 10. Pre Lamination El & Visual inspection
+  TextEditingController PreLaminationEIinspectionFrequencyController =
+      TextEditingController();
+  TextEditingController PreLaminationEInumberOfStringersController =
+      TextEditingController();
+  List<TextEditingController> PreLaminationEIinspectionrControllers = [];
+  TextEditingController PreLaminationEIinspectionController =
+      TextEditingController();
+  TextEditingController PreLaminationEIinspectionCriteriaController =
+      TextEditingController();
+
+  TextEditingController PreLaminationVisualFrequencyController =
+      TextEditingController();
+  TextEditingController PreLaminationVisualnumberOfStringersController =
+      TextEditingController();
+  List<TextEditingController> PreLaminationVisualinspectionrControllers = [];
+  TextEditingController PreLaminationVisualinspectionController =
+      TextEditingController();
+  TextEditingController PreLaminationVisualinspectionCriteriaController =
+      TextEditingController();
+
+  TextEditingController PreLaminationAvaibilityFrequencyController =
+      TextEditingController();
+  TextEditingController PreLaminationAvaibilityController =
+      TextEditingController();
+  TextEditingController PreLaminationAvaibilityWIController =
+      TextEditingController();
+
+  TextEditingController PreLaminationELRemarkController =
+      TextEditingController();
+
+  // 11. String Rework Station
+  TextEditingController StringAvaibilityFrequencyController =
+      TextEditingController();
+  TextEditingController StringAvaibilityController = TextEditingController();
+  TextEditingController StringAvaibilityCriteriaController =
+      TextEditingController();
+
+  TextEditingController StringCleaningFrequencyController =
+      TextEditingController();
+  TextEditingController StringCleaningController = TextEditingController();
+  TextEditingController StringCleaningCriteriaController =
+      TextEditingController();
+
+  TextEditingController StringReworkRemarkController = TextEditingController();
+
+  // 12. Module Rework Station
+  TextEditingController ModuleAvaibilityFrequencyController =
+      TextEditingController();
+  TextEditingController ModuleAvaibilityController = TextEditingController();
+  TextEditingController ModuleAvaibilityCriteriaController =
+      TextEditingController();
+
+  TextEditingController ModuleMethodCleaningFrequencyController =
+      TextEditingController();
+  TextEditingController ModuleMethodCleaningController =
+      TextEditingController();
+  TextEditingController ModuleMethodCleaningCriteriaController =
+      TextEditingController();
+
+  TextEditingController ModuleHandlingFrequencyController =
+      TextEditingController();
+  TextEditingController ModuleHandlingController = TextEditingController();
+  TextEditingController ModuleHandlingCriteriaController =
+      TextEditingController();
+
+  TextEditingController ModuleCleaningofReworkFrequencyController =
+      TextEditingController();
+  TextEditingController ModuleCleaningofReworkController =
+      TextEditingController();
+  TextEditingController ModuleCleaningofReworkCriteriaController =
+      TextEditingController();
+
+  TextEditingController ModuleCleaningRemarkController =
+      TextEditingController();
+
+  // 13. Laminator
+  TextEditingController LaminatorMonitoringFrequencyController =
+      TextEditingController();
+  TextEditingController LaminatorMonitoringController = TextEditingController();
+  TextEditingController LaminatorMonitoringCriteriaController =
+      TextEditingController();
+
+  TextEditingController LaminatorAdhesiveFrequencyController =
+      TextEditingController();
+  TextEditingController LaminatorAdhesiveController = TextEditingController();
+  TextEditingController LaminatorAdhesiveCriteriaController =
+      TextEditingController();
+
+  TextEditingController LaminatorPeelFrequencyController =
+      TextEditingController();
+  TextEditingController LaminatorPeelController = TextEditingController();
+  TextEditingController LaminatorPeelCriteriaController =
+      TextEditingController();
+
+  TextEditingController LaminatorGelFrequencyController =
+      TextEditingController();
+  TextEditingController LaminatorGelController = TextEditingController();
+  TextEditingController LaminatorGelCriteriaController =
+      TextEditingController();
+
+  TextEditingController LaminatorRemarkController = TextEditingController();
+  TextEditingController referencePdfController = TextEditingController();
+
   bool menu = false, user = false, face = false, home = false;
+  int numberOfStringers = 0;
+  int numberOfStringers1 = 0;
+  int numberOfStringers2 = 0;
+  int numberOfStringers4 = 0;
+  int numberOfStringers5 = 0;
+  int numberOfStringers6 = 0;
   bool _isLoading = false;
-  String setPage = '', pic = '';
+  String setPage = '', pic = '', site = '', personid = '';
   String invoiceDate = '';
-  late String dateOfQualityCheck;
-  String date = '';
+  String dateOfQualityCheck = '';
   bool? isCycleTimeTrue;
-  bool? isBacksheetCuttingTrue;
+  String sendStatus = '';
+  String status = '',
+      prelamId = '',
+      approvalStatus = "Approved",
+      designation = '',
+      token = '',
+      department = '';
+  final _dio = Dio();
+  Response.Response? _response;
+  List data = [];
+  List<int>? referencePdfFileBytes;
+
+  List sample1Controller = [];
+  List sample2Controller = [];
+  List sample3Controller = [];
+  List sample4Controller = [];
+  List sample5Controller = [];
+  List sample6Controller = [];
+
+  void addControllers(int count) {
+    for (int i = 0; i < count; i++) {
+      cellLoaderVerificationControllers.add(TextEditingController());
+    }
+  }
+
+  void addTabberVisualControllers(int count) {
+    for (int i = 0; i < count; i++) {
+      TabberVisualStringerControllers.add(TextEditingController());
+    }
+  }
+
+  void addTabberEImageControllers(int count) {
+    for (int i = 0; i < count; i++) {
+      TabberEIimageofStringerControllers.add(TextEditingController());
+    }
+  }
+
+  void addTabberVerificationControllers(int count) {
+    for (int i = 0; i < count; i++) {
+      TabberVerificationofsilderingControllers.add(TextEditingController());
+    }
+  }
+
+  void addPreLaminationEIControllers(int count) {
+    for (int i = 0; i < count; i++) {
+      PreLaminationEIinspectionrControllers.add(TextEditingController());
+    }
+  }
+
+  void addPreLaminationVisualControllers(int count) {
+    for (int i = 0; i < count; i++) {
+      PreLaminationVisualinspectionrControllers.add(TextEditingController());
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-  }
-
-  void sendDataToBackend() async {
-    var data = {
-      'date': dateController.text,
-      'shift': shiftController.text,
-      'line': LineController.text,
-      'po': poController.text,
-      'solarCellSupplier': solarCellSupplierController.text,
-      'solarCellSpecification': solarCellSpecificationController.text,
-      'solarCellLotBatch': solarCellLotBatchController.text,
-      'solarCellRemark': solarCellremarkController.text,
-      'fluxLotBatch': fluxLotBatchController.text,
-      'fluxSpecification': fluxSpecificationController.text,
-      'fluxSupplier': fluxSupplierController.text,
-      'fluxRemark': fluxremarkController.text,
-      'ribbonSupplier': ribbonSupplierController.text,
-      'ribbonSpecification': ribbonSpecificationController.text,
-      'ribbonLotBatch': ribbonLotBatchController.text,
-      'ribbonRemark': ribbonremarkController.text,
-      'interconnectorSupplier': InterconnectorSupplierController.text,
-      'interconnectorLotBatch': InterconnectorLotBatchController.text,
-      'interconnectorSpecification': InterconnectorSpecificationController.text,
-      'interconnectorRemark': InterconnectorremarkController.text,
-      'glassSupplier': GlassSupplierController.text,
-      'glassSpecification': GlassSpecificationController.text,
-      'glassLotBatch': GlassLotBatchController.text,
-      'glassRemark': GlassremarkController.text,
-      'evaGlassSupplier': EvaGlassSupplierController.text,
-      'evaGlassSpecification': EvaGlassSpecificationController.text,
-      'evaGlassLotBatch': EvaGlassLotBatchController.text,
-      'evaGlassRemark': EvaGlassremarkController.text,
-      'evaGlassSideSupplier': EvaGlassSideSupplierController.text,
-      'evaGlassSideSpecification': EvaGlassSideSpecificationController.text,
-      'evaGlassSideLotBatch': EvaGlassSideLotBatchController.text,
-      'evaGlassSideRemark': EvaGlassSideremarkController.text,
-      'backSheetSupplier': BackSheetSupplierController.text,
-      'backSheetSpecification': BackSheetSpecificationController.text,
-      'backSheetLotBatch': BackSheetLotBatchController.text,
-      'backSheetRemark': BackSheetremarkController.text,
-      'frameSupplier': FrameSupplierController.text,
-      'frameSpecification': FrameSpecificationController.text,
-      'frameLotBatch': FrameLotBatchController.text,
-      'frameRemark': FrameremarkController.text,
-      'junctionBoxSupplier': JunctionBoxSupplierController.text,
-      'junctionBoxSpecification': JunctionBoxSpecificationController.text,
-      'junctionBoxLotBatch': JunctionBoxLotBatchController.text,
-      'junctionBoxRemark': JunctionBoxremarkController.text,
-      'pottingJBSupplier': pottingJBSupplierController.text,
-      'pottingJBSpecification': pottingJBSpecificationController.text,
-      'pottingJBLotBatch': pottingJBLotBatchController.text,
-      'pottingJBRemark': pottingJBremarkController.text,
-      'frameAdhesiveSupplier': FrameAdhesiveSupplierController.text,
-      'frameAdhesiveSpecification': FrameAdhesiveSpecificationController.text,
-      'frameAdhesiveLotBatch': FrameAdhesiveLotBatchController.text,
-      'frameAdhesiveRemark': FrameAdhesiveremarkController.text,
-      'rfidSupplier': RfidSupplierController.text,
-      'rfidSpecification': RfidSpecificationController.text,
-      'rfidLotBatch': RfidLotBatchController.text,
-      'rfidRemark': RfidremarkController.text,
-      // Add more fields as needed
-    };
-    // let data = [
-    //   {
-    //     Process:'Glass Washing',
-    //     EmployeeID:'',
-    //     Description:{
-    //       LotNo:'xyx',
-    //       size:'yz'
-    //     },
-    //   Comment:'comment'
-    //   },
-    //   {
-    //     Process:'Foil cutterr',
-    //     EmployeeID:'',
-    //     Description:{
-    //      EVA_Lot_No:'',
-    //      EVA_Size:'',
-    //      Backsheet_Lot:'',
-    //      Backsheet_size:''
-    //     },
-    //   Comment:'comment'
-    //   },
-
-    // ]
-    print('Sending data to backend: $data');
-  }
-
-  Future getdata(String phone, BuildContext context) async {
     setState(() {
-      _isLoading = true;
-    });
-    FocusScope.of(context).unfocus();
+      // 1. Glass Loader
+      GlassLoaderFreqquency1Controller.text = "Once a Shift";
+      GlassLoaderCriteria1Controller.text =
+          "Refer Production Order & Module Drawing";
+      GlassLoaderFrequency2Controller.text = "Once a Shift";
+      GlassLoaderCriteria2Controller.text =
+          "Avability of WI & Operator Should be aware with WI";
 
-    const url = "AppStrings.path" 'login/RegistersendOTP';
-    final prefs = await SharedPreferences.getInstance();
-    var params = {"Mobile": phone};
-    var response = await http.post(
-      Uri.parse(url),
-      body: json.encode(params),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    if (response.statusCode == 200) {
-      setState(() {
-        _isLoading = false;
-      });
-      var objData = json.decode(response.body);
-      if (objData['success'] == false) {
-        Toast.show(objData['message'],
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.redColor);
-      } else {
-        Toast.show(objData['data']['message'],
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.blueColor);
-        setState(() {
-          setPage = 'second';
-          //  otp = objData['data']['sentotp']['otp'].toString();
-        });
-      }
-    } else {
-      Toast.show("Error In Server",
-          duration: Toast.lengthLong, gravity: Toast.center);
-    }
+      // 2. Glass side EVA Cutting
+      GlassEVAFrequency1Controller.text = "Once a Shift";
+      GlassEVACriteria1Controller.text =
+          "Refer Production order & Module Drawing";
+      GlasCuttingFrequencyController.text = "Once a Shift";
+      GlasCuttingCriteriaController.text = "Should not be uneven";
+
+      GlasPositionFrequencyController.text = "Once a Shift";
+      GlasPositionCriteriaController.text =
+          "Shifting of EVA on Glass not allowed";
+
+      GlasAvabilityFrequencyController.text = "Once a Shift";
+      GlasAvabilityCriteriaController.text =
+          "Avability of Specification and WI & operator should be aware with specification";
+
+      // 3. Temperature & Relative
+      TempShopFrequencyController.text = "Once a Shift";
+      TempShopCriteriaController.text = "Temperature: 25+/- °C";
+
+      TempRelativeFrequencyController.text = "Once per Shift";
+      TempRelativeCriteriaController.text = "Humidity(%RH)<= 60%";
+
+      // 4. Cell Cutting Machine
+      CellSizeFrequencyController.text = "Thrice per shift";
+      CellSizeCriteriaController.text = "Refere Production Order";
+
+      CellManufactureFrequencyController.text = "Thrice per Shift";
+      CellManufactureCriteriaController.text = "Refer Production Order";
+
+      CellcolorFrequencyController.text = "Thrice per Shift";
+      CellcolorCriteriaController.text =
+          "Proper Segregation should be done as per color mixing not allowed";
+
+      CellAvabilityofFrequencyController.text = "Once a Shift";
+      CellAvabilityofCriteriaController.text =
+          "Avaibility of Specification and WI & operator Should be aware with specification ";
+
+      // 5. Cell Loading
+      CellLoadingcellFrequencyController.text = "Thrice per Shift";
+      CellLoadingcellCriteriaController.text =
+          "Different Color of cell loading at a time not allowed";
+
+      CellLoadingCleanFrequencyController.text = "Once per Shift";
+      CellLoadingCleanCriteriaController.text =
+          "no unwanted or waste material should be near cell Loading Area";
+
+      CellLoadingWIFrequencyController.text = "Once Per Shift";
+      CellLoadingWICriteriaController.text = "As per WI";
+
+      CellLoadingAvabilityFrequencyController.text = "Once per Shift ";
+      CellAvabilityofCriteriaController.text =
+          "Avability of WI & Operator should be aware with WI";
+
+      CellLoadingVerificationFrequencyController.text = "Once per Shift";
+      CellLoadingVerificationCriteriaController.text =
+          "As pe Machine per Specification ";
+
+      CellLoadingStringFrequencyController.text = "5 string/stringer/shift ";
+      cellLoaderStringCriteriaController.text =
+          "Refer Production Order 7 Module Drawing";
+
+      // 6. Tabber & Stringer
+      TabberVisualFrequencyController.text = "5 string/stringer/shift ";
+      TabberVisualCriteriaController.text = "As per pre Lam Visual Criteria";
+
+      TabberEIimageFrequencyController.text = "5 string/stringer/shift ";
+      TabberEIimageCriteriaController.text = "As per pre Lam EI Criteria ";
+
+      TabberVerificationFrequencyController.text = "2 string/stringer/shift ";
+      TabberVerificationCriteriaController.text =
+          ">=0.5N  |  Refer:GSPL/IPQC/GP/001";
+      TabberAvaibilityFrequencyController.text = "Once per Shift";
+      TabberAvabilityofCriteriaController.text =
+          "Avaibility of specification and wi & operator should be aware with specification";
+
+      // 7. Auto String Layup
+      AutoCellFrequencyController.text = "Once per Shift";
+      AutoCellCriteriaController.text = "None";
+
+      AutoStringFrequencyController.text = "Once per Shift";
+      AutoStringCriteriaController.text = "None";
+
+      AutoCelledgeFrequencyController.text = "Once per Shift";
+      AutoCellEdgeCriteriaController.text = "None";
+
+      // 8. Auto Bussing & Tapping
+      AutoSolderingFrequencyController.text = "Once per Shift";
+      AutoSolderingCriteriaController.text = ">=4N | Refer";
+
+      AutoTerminalFrequencyController.text = "Once per Shift";
+      AutoTerminalCriteriaController.text = "As per respective Layup Drawing";
+
+      AutoSolderingQualityFrequencyController.text = "Thrice per Shift";
+      AutoSolderingQualityCriteriaController.text = "No Dry Soldering";
+
+      AutoClearanceFrequencyController.text = "Thrice per Shift";
+      AutoClearanceCriteriaController.text =
+          "Should not be 2mm-4mm gapfrom the cell to the patch";
+
+      AutoPositionFrequencyController.text = "Thrice per Shift";
+      AutoPositionCriteriaController.text =
+          "Shiould not be tilt,Busbar should not visible";
+
+      AutoTopFrequencyController.text = "Thrice per Shift";
+      AutoTopCriteriaController.text = "creepage distance should be 16+-1mm";
+
+      AutoqualityofFrequencyController.text = "Once per Shift";
+      AutoQualityCriteriaController.text =
+          "No poor taping,cell shifting,cell breakage";
+
+      AutoAvaibilityFrequencyController.text = "Once per Shift";
+      AutoAvaibilityCriteriaController.text =
+          "Avaibility of specification & WI & operator should be aware of specification ";
+
+      // 9. EVA/Backsheet Cutting
+      EVARearFrequencyController.text = "Once per Shift";
+      EVARearCriteriaController.text =
+          "As per Specification GSPL/EVA(IQC)/001 & production order";
+
+      EVABackFrequencyController.text = "Once per Shift";
+      EVABackCriteriaController.text =
+          "As per Specification GSPL/BS(IQC)/001 & production order";
+
+      EVACuttingFrequencyController.text = "Once per Shift";
+      EVACuttingCriteriaController.text = "Should not be uneven";
+
+      EVAPositionFrequencyController.text = "Once per Shift";
+      EVAPositionCriteriaController.text =
+          "Shifting of EVA on Glass not allowed";
+
+      EVAAvaibilityFrequencyController.text = "Once per Shift";
+      EVAAvaibilityCriteriaController.text =
+          "Avaibility of Specification & WI & operator should be";
+
+      // 10. Pre Lamination El & Visual inspection
+      PreLaminationEIinspectionFrequencyController.text = "5 Pieces Per Shift ";
+      PreLaminationEIinspectionCriteriaController.text =
+          "EI image should fulfil the EL Acceptance Critoria ";
+
+      PreLaminationVisualFrequencyController.text = "5 Pieces Per Shift ";
+      PreLaminationVisualinspectionCriteriaController.text =
+          "Visual image should fulfil the Visual Acceptance Critoria as per GSPL/IPQC/EL/020";
+
+      PreLaminationAvaibilityFrequencyController.text = "Once per Shift";
+      PreLaminationAvaibilityWIController.text =
+          "Avaibility of Acceptance Criteria and operator should be aware of Criteria";
+
+      // 11. String Rework Station
+      StringAvaibilityFrequencyController.text = "Once per Shift";
+      StringAvaibilityCriteriaController.text =
+          "WI Should be available at station and operator should be aware of WI";
+
+      StringCleaningFrequencyController.text = "Once per Shift";
+      StringCleaningCriteriaController.text = "Rework Station should be Clean";
+
+      // 12. Module Rework Station
+      ModuleAvaibilityFrequencyController.text = "Once per Shift";
+      ModuleAvaibilityCriteriaController.text =
+          "WI Should be available at station and operator should be aware of WI";
+
+      ModuleMethodCleaningFrequencyController.text = "Once per Shift";
+      ModuleMethodCleaningCriteriaController.text = "As per WI";
+
+      ModuleHandlingFrequencyController.text = "Once per Shift";
+      ModuleHandlingCriteriaController.text =
+          "Operator Should handle the rework module with both the Hands";
+
+      ModuleCleaningofReworkFrequencyController.text = "Once per Shift";
+      ModuleCleaningofReworkCriteriaController.text =
+          "Rework station should be clean";
+      // 13. Laminator
+      LaminatorMonitoringFrequencyController.text = "Once per Shift";
+      LaminatorMonitoringCriteriaController.text =
+          "Laminator specification GSPL/IPQC/LM/008 |  GSPL/IPQC/LM/009 |  GSPL/IPQC/LM/010";
+
+      LaminatorAdhesiveFrequencyController.text = "Once per Shift";
+      LaminatorAdhesiveCriteriaController.text =
+          "Teflon should be clean, No EVA residue is allowed ";
+
+      LaminatorPeelFrequencyController.text =
+          "All Position | All Laminator Once a Week";
+      LaminatorPeelCriteriaController.text =
+          "Eva to Glass = 70N/cm EVA to Backsheet >= 80N/cm";
+
+      LaminatorGelFrequencyController.text =
+          " All Position | All Laminator once a week ";
+      LaminatorGelCriteriaController.text = "75 to 95% ";
+    });
+    store();
   }
 
-  Future register(List Data) async {
-    print("Bhhhhhhhhhhhhh");
-    print(Data);
-    const url = "AppStrings.path" 'login/Registermember';
-    var response = await http.post(
-      Uri.parse(url),
+  void store() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pic = prefs.getString('pic')!;
+      personid = prefs.getString('personid')!;
+      site = prefs.getString('site')!;
+      designation = prefs.getString('designation')!;
+      department = prefs.getString('department')!;
+      token = prefs.getString('token')!;
+    });
+    _get();
+  }
+
+  Future _get() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
+    print(widget.id);
+    setState(() {
+      if (widget.id != '' && widget.id != null) {
+        _isLoading = true;
+      }
+      site = prefs.getString('site')!;
+    });
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificPreLam');
+    final allSolarData = await http.post(
+      Uri.parse(AllSolarData),
       body: jsonEncode(<String, String>{
-        // "personid": personid != null ? (personid ?? '') : '',
-        // "Firstname": fname,
-        // "Lastname": lname,
-        // "Phonenum": phone,
-        // "Organization": organization,
-        // "AppType": widget.appName,
-        // "Country": country == null ? '' : country,
-        // "State": state == null ? '' : state,
-        // "City": city == null ? '' : city,
-        // "Gender": gender == null ? '' : gender,
-        // "Referred": referral == null ? '' : referral,
-        // "Occupation": occupation == null ? '' : occupation,
-        // "businesscategory": businessscategory == null ? '' : businessscategory,
-        // "businessname": companyname == null ? '' : companyname,
-        // "designation": desigation == null ? '' : desigation,
-        // "Otp": (otp ?? ''),
+        "JobCardDetailId": widget.id ?? '',
+        "token": token!
       }),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _isLoading = false;
-      });
-      var responseData = json.decode(response.body);
+    setState(() {
+      _isLoading = false;
+    });
+    print("hhhhhhhhhhhhhhhh");
 
-      if (responseData['success'] == true) {
-        Toast.show('Provide Some More Information',
+    var resBody = json.decode(allSolarData.body);
+
+    if (mounted) {
+      setState(() {
+        if (resBody != '') {
+          print("Aaaaaaaaaaaaaaaaaaajajaaa");
+          // print(resBody['response']['Status']);
+          print(resBody);
+          // print(resBody['response']['Visual Inspection & Laminator Description']
+          //     ["Cycle_Time"]);
+
+          print("saiffffffffffffffffffffffffffffffffffffffffff");
+          print("kulllllllllllllllllllllllllllllllllllllllllll");
+          // dateController.text = resBody['response']['Date'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          dateOfQualityCheck = resBody['response']['Date'] ?? '';
+          DayController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          shiftController.text = resBody['response']['Shift'] ?? '';
+          lineController.text = resBody['response']['Line'] ?? '';
+          PoController.text = resBody['response']['PONo'] ?? '';
+          // Glass Loader
+          GlassLoaderGlassDimensionController.text = resBody['response']
+                      ['GlassLoaderCheckPoint']
+                  ['Glass dimension(LengthxWidthxThickness)'] ??
+              '';
+          GlassLoaderAvaibilityController.text = resBody['response']
+                  ['GlassLoaderCheckPoint']['Avaibility of WI'] ??
+              '';
+          GlassLoaderRemarkController.text =
+              resBody['response']['GlassLoaderRemark'] ?? '';
+
+          // Glass Side Eva
+          GlassEVADimensionController.text = resBody['response']
+                      ['GlasssideEVAcuttingmachineCheckPoint']
+                  ['EVA dimension{LengthxWidthxThickness)'] ??
+              '';
+          GlasCuttingEdgeController.text = resBody['response']
+                      ['GlasssideEVAcuttingmachineCheckPoint']
+                  ['Cutting Edge EVA'] ??
+              '';
+          GlasPositionFrontController.text = resBody['response']
+                      ['GlasssideEVAcuttingmachineCheckPoint']
+                  ['Position of front EVA'] ??
+              '';
+          GlasAvabilitySpecificationController.text = resBody['response']
+                      ['GlasssideEVAcuttingmachineCheckPoint']
+                  ['Avability of Specification & WI'] ??
+              '';
+          GlasSideRemarkController.text =
+              resBody['response']['GlasssideEVAcuttingmachineRemark'] ?? '';
+
+          // Tempreture And Relatives
+          TempShopFloorController.text = resBody['response']
+                      ['Temperature&Relativehumidity(%RH)monitoringCheckPoint']
+                  ['shop floor Temperature condition'] ??
+              '';
+          TempRelativeHumidityController.text = resBody['response']
+                      ['Temperature&Relativehumidity(%RH)monitoringCheckPoint']
+                  ['Relative humidity(%RH)in shop floor'] ??
+              '';
+          TemperatureRemarkController.text = resBody['response']
+                  ['Temperature&Relativehumidity(%RH)monitoringRemark'] ??
+              '';
+
+          // Cell Cutting machine
+          CellSizelengthController.text = resBody['response']
+                  ['CellcuttingmachineCheckPoint']['cell Size'] ??
+              '';
+          CellManufactureEffController.text = resBody['response']
+                  ['CellcuttingmachineCheckPoint']['Cell manufacture & Eff'] ??
+              '';
+          CellcolorController.text = resBody['response']
+                  ['CellcuttingmachineCheckPoint']['cell color '] ??
+              '';
+          CellAvabilityofSpecificationController.text = resBody['response']
+                      ['CellcuttingmachineCheckPoint']
+                  ['Avability of Specification & WI.'] ??
+              '';
+          CellCuttingRemarkController.text =
+              resBody['response']['CellcuttingmachineRemark'] ?? '';
+
+          // Cell Loading
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // Tabber and Stringer
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // Auto String Layup
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // Auto Bushing And Tapping
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // Eva BackSheet
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // Pre LAmination El And Visual
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // String Rework Station
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // Modal Rework
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          // Laminator
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+        }
+      });
+    }
+  }
+
+  Future<void> _pickReferencePDF() async {
+    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        referencePdfFileBytes = pdffile.readAsBytesSync();
+        referencePdfController.text = result.files.single.name;
+      });
+      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
+      print(referencePdfFileBytes);
+    } else {
+      // User canceled the file picker
+    }
+  }
+
+  uploadPDF(List<int> referenceBytes) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+
+    var currentdate = DateTime.now().microsecondsSinceEpoch;
+    var formData = FormData.fromMap({
+      "JobCardDetailId": prelamId,
+      "PreLamPdf": MultipartFile.fromBytes(
+        referenceBytes,
+        filename:
+            (referencePdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+    });
+    print("Hoiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    print(formData.files);
+
+    _response = await _dio.post((site! + 'IPQC/UploadPreLamPdf'), // Prod
+
+        options: Options(
+          contentType: 'multipart/form-data',
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+        data: formData);
+
+    try {
+      if (_response?.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Toast.show("Job Card Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
-
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-            // personid = responseData['data']['data'][0]['personid'];
-
-            if (responseData['data']['data'][0]['Response'] ==
-                'Registration successfull') {
-              Toast.show(responseData['data']['data'][0]['Response'],
-                  duration: Toast.lengthLong,
-                  gravity: Toast.center,
-                  backgroundColor: AppColors.blueColor);
-              setPage = "fourth";
-            } else {
-              setPage = "third";
-            }
-          });
-        }
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
       } else {
-        Toast.show("OTP is Invalid",
+        Toast.show("Error In Server",
+            duration: Toast.lengthLong, gravity: Toast.center);
+      }
+    } catch (err) {
+      print("Error");
+    }
+  }
+
+  // ****************************************  Send the Data where will be Used to Backend **************************
+
+  Future sendDataToBackend() async {
+    print("Kya aayaa...?????");
+    // print(PreLaminationEIinspectionrControllers);
+    print('Problem are there');
+    print(sample1Controller);
+    print(widget.id);
+
+    // print(sample1Controller)
+    print(prelamId);
+    var data = [
+      {
+        "PreLamDetailId": prelamId != '' && prelamId != null
+            ? prelamId
+            : widget.id != '' && widget.id != null
+                ? widget.id
+                : '',
+        "Type": "PreLam",
+        "CurrentUser": personid,
+        "Status": sendStatus,
+        "DocNo": "GSPL/IPQC/IPC/003",
+        "RevNo": "1.0 dated 12.08.2023",
+        "Date": dateOfQualityCheck,
+        "Shift": shiftController.text,
+        "Line": lineController.text,
+        "PONo": PoController.text
+      },
+      [
+        {
+          "Stage": "Glass Loader",
+          "CheckPoint": {
+            "Glass dimension(LengthxWidthxThickness)":
+                GlassLoaderGlassDimensionController.text,
+            "Avaibility of WI": GlassLoaderAvaibilityController.text,
+          },
+          "AcceptanceCriteria": {
+            "Glass dimension(LengthxWidthxThickness)":
+                GlassLoaderCriteria1Controller.text,
+            "Avaibility of WI": GlassLoaderCriteria2Controller.text
+          },
+          "Frequency": {
+            "Glass dimension(LengthxWidthxThickness)":
+                GlassLoaderFreqquency1Controller.text,
+            "Avaibility of WI": GlassLoaderFrequency2Controller.text
+          },
+          "Remark": GlassLoaderRemarkController.text
+        },
+        {
+          "Stage": "Glass side EVA cutting machine",
+          "CheckPoint": {
+            "EVA dimension{LengthxWidthxThickness}":
+                GlassEVADimensionController.text,
+            "Cutting Edge EVA ": GlasCuttingEdgeController.text,
+            "Position of front EVA": GlasPositionFrontController.text,
+            "Avability of Specification & WI":
+                GlasAvabilitySpecificationController.text
+          },
+          "AcceptanceCriteria": {
+            "EVA dimension{LengthxWidthxThickness}":
+                GlassEVACriteria1Controller.text,
+            "Cutting Edge EVA ": GlasCuttingCriteriaController.text,
+            "Position of front EVA": GlasPositionCriteriaController.text,
+            "Avability of Specification & WI":
+                GlasAvabilityCriteriaController.text
+          },
+          "Frequency": {
+            "EVA dimension{LengthxWidthxThickness}":
+                GlassEVAFrequency1Controller.text,
+            "Cutting Edge EVA ": GlasCuttingFrequencyController.text,
+            "Position of front EVA": GlasPositionFrequencyController.text,
+            "Avability of Specification & WI":
+                GlasAvabilityFrequencyController.text
+          },
+          "Remark": GlasSideRemarkController.text
+        },
+        {
+          "Stage": "Temperature & Relative humidity(%RH)monitoring",
+          "CheckPoint": {
+            "shop floor Temperature condition": TempShopFloorController.text,
+            "Relative humidity(%RH)in shop floor":
+                TempRelativeHumidityController.text,
+          },
+          "AcceptanceCriteria": {
+            "shop floor Temperature condition": TempShopCriteriaController.text,
+            "Relative humidity(%RH)in shop floor":
+                TempRelativeCriteriaController.text,
+          },
+          "Frequency": {
+            "shop floor Temperature condition":
+                TempShopFrequencyController.text,
+            "Relative humidity(%RH)in shop floor":
+                TempRelativeFrequencyController.text,
+          },
+          "Remark": TemperatureRemarkController.text
+        },
+        {
+          "Stage": "Cell cutting machine",
+          "CheckPoint": {
+            "cell Size": CellSizelengthController.text,
+            "Cell manufacture & Eff.": CellManufactureEffController.text,
+            "cell color ": CellcolorController.text,
+            "Avability of Specification & WI.":
+                CellAvabilityofSpecificationController.text,
+          },
+          "AcceptanceCriteria": {
+            "cell Size": CellSizeCriteriaController.text,
+            "Cell manufacture & Eff.": CellManufactureCriteriaController.text,
+            "cell color ": CellcolorCriteriaController.text,
+            "Avability of Specification & WI.":
+                CellAvabilityofCriteriaController.text,
+          },
+          "Frequency": {
+            "cell Size": CellSizeFrequencyController.text,
+            "Cell manufacture & Eff.": CellManufactureFrequencyController.text,
+            "cell color ": CellcolorFrequencyController.text,
+            "Avability of Specification & WI.":
+                CellAvabilityofFrequencyController.text,
+          },
+          "Remark": CellCuttingRemarkController.text
+        },
+        {
+          "Stage": "Cell Loading",
+          "CheckPoint": {
+            "cellcolor": CellLoadingcellColorController.text,
+            "cleanlines of cell Loading Area ":
+                CellLoadingCleanLinessController.text,
+            "Cell loading as per WI": CellLoadingWIController.text,
+            "Avability of WI ": CellLoadingAvabilityController.text,
+            "Verification of process parameter":
+                CellLoadingVerificationController.text,
+            "string length & cell to cell gap": LoadstrinGapController.text,
+          },
+          "AcceptanceCriteria": {
+            "cell color": CellLoadingcellCriteriaController.text,
+            "cleanlines of cell Loading Area ":
+                CellLoadingCleanCriteriaController.text,
+            "Cell loading as per WI": CellLoadingWICriteriaController.text,
+            "Avability of WI ": CellLoadingAvabilityCriteriaController.text,
+            "Verification of process parameter":
+                CellLoadingVerificationCriteriaController.text,
+            "string length & cell to cell gap":
+                cellLoaderStringCriteriaController.text,
+          },
+          "Frequency": {
+            "cell color": CellLoadingcellFrequencyController.text,
+            "cleanlines of cell Loading Area ":
+                CellLoadingCleanFrequencyController.text,
+            "Cell loading as per WI": CellLoadingWIFrequencyController.text,
+            "Avability of WI ": CellLoadingAvabilityFrequencyController.text,
+            "Verification of process parameter":
+                CellLoadingVerificationFrequencyController.text,
+            "string length & cell to cell gap":
+                CellLoadingStringFrequencyController.text,
+            "string length Number of String":
+                CellLoadingnumberOfStringerController.text,
+            "string length Number of String Number of Created Input text":
+                '$sample1Controller',
+          },
+          "Remark": cellLoaderRemarkController.text
+        },
+        {
+          "Stage": "Tabber & Stringer",
+          "CheckPoint": {
+            "Visual Check after stringer": TabberVisualCheckController.text,
+            "EI image of string": TabberEIimageCheckController.text,
+            "Verification of sildering peel strength":
+                TabberVerificationCheckController.text,
+            "Avaibility os Specification & WI":
+                TabberAvabilityofSpecificationController.text,
+          },
+          "AcceptanceCriteria": {
+            "Visual Check after stringer": TabberVisualCriteriaController.text,
+            "EI image of string": TabberEIimageCriteriaController.text,
+            "Verification of sildering peel strength":
+                TabberVerificationCriteriaController.text,
+            "Avaibility os Specification & WI":
+                TabberAvabilityofCriteriaController.text,
+          },
+          "Frequency": {
+            "Visual Check after stringer": TabberVisualFrequencyController.text,
+            "Visual Check after stringer Number of Stringer":
+                TabberVisualnumberOfStringersController.text,
+            "Visual Check after stringer Number of Created Input text ":
+                '$sample2Controller',
+            "EI image of string": TabberEIimageFrequencyController.text,
+            "EI image of string  Number of Stringer ":
+                tabberEIimagenumberOfStringersController.text,
+            "EI image of string  Number of Created Input text ":
+                '$sample3Controller',
+            "Verification of sildering peel strength":
+                TabberVerificationFrequencyController.text,
+            "Verification of sildering peel strength  Number of Stringer ":
+                TabberVerificationNumberofstringController.text,
+            "Verification of sildering peel strength Created Inputtext":
+                '$sample4Controller',
+            "Avaibility os Specification & WI":
+                TabberAvaibilityFrequencyController.text,
+          },
+          "Remark": TabberstringerRemarkController.text
+        },
+        {
+          "Stage": "Auto String Layup",
+          "CheckPoint": {
+            "Cell to cell gap": AutoCellController.text,
+            "String to string gap": AutoStringController.text,
+            "cell edge to glass edge(Top,bottom & sides)":
+                AutoCelledController.text,
+          },
+          "AcceptanceCriteria": {
+            "Cell to cell gap": AutoCellCriteriaController.text,
+            "String to string gap": AutoStringCriteriaController.text,
+            "cell edge to glass edge(Top,bottom & sides)":
+                AutoCellEdgeCriteriaController.text,
+          },
+          "Frequency": {
+            "Cell to cell gap": AutoCellFrequencyController.text,
+            "String to string gap": AutoStringFrequencyController.text,
+            "cell edge to glass edge(Top,bottom & sides)":
+                AutoCelledgeFrequencyController.text,
+          },
+          "Remark": AutoStringerRemarkController.text
+        },
+        {
+          "Stage": "Auto Bussing & Tapping",
+          "CheckPoint": {
+            "Soldering Peel strength between Ribbon to bushbar interconnector":
+                AutoSolderingController.text,
+            "Terminal busbar to edge of cell":
+                AutoTerminalStringController.text,
+            "soldering quality of Ribbon to busbar":
+                AutoSolderingQualityController.text,
+            "Clearance between RFID&Logo patch to cell in module":
+                AutoClearanceController.text,
+            "Position verification of RFID& Logo Patch on Module":
+                AutoPositionController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass":
+                AutoTopController.text,
+            "quality of auto taping": AutoQualityController.text,
+            "Avaibility of specification & WI": AutoAvaibilityController.text,
+          },
+          "AcceptanceCriteria": {
+            "Soldering Peel strength between Ribbon to bushbar interconnector":
+                AutoSolderingCriteriaController.text,
+            "Terminal busbar to edge of cell":
+                AutoTerminalCriteriaController.text,
+            "soldering quality of Ribbon to busbar":
+                AutoSolderingQualityCriteriaController.text,
+            "Clearance between RFID&Logo patch to cell in module":
+                AutoClearanceCriteriaController.text,
+            "Position verification of RFID& Logo Patch on Module":
+                AutoPositionCriteriaController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass":
+                AutoTopCriteriaController.text,
+            "quality of auto taping": AutoQualityCriteriaController.text,
+            "Avaibility of specification & WI":
+                AutoAvaibilityCriteriaController.text,
+          },
+          "Frequency": {
+            "Soldering Peel strength between Ribbon to bushbar interconnector":
+                AutoSolderingFrequencyController.text,
+            "Terminal busbar to edge of cell":
+                AutoTerminalFrequencyController.text,
+            "soldering quality of Ribbon to busbar":
+                AutoSolderingFrequencyController.text,
+            "Clearance between RFID&Logo patch to cell in module":
+                AutoClearanceFrequencyController.text,
+            "Position verification of RFID& Logo Patch on Module":
+                AutoPositionFrequencyController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass":
+                AutoTopFrequencyController.text,
+            "quality of auto taping": AutoqualityofFrequencyController.text,
+            "Avaibility of specification & WI":
+                AutoAvaibilityFrequencyController.text
+          },
+          "Remark": AutoBussingRemarkController.text
+        },
+        {
+          "Stage": "EVA/Backsheet cutting",
+          "CheckPoint": {
+            "Rear EVA dimension & sift cutting width(mm)":
+                EVARearController.text,
+            "Back-sheet dimension& slit cutting diameter":
+                EVABackController.text,
+            "cutting Edge of Rear EVA & Backsheet on Glass":
+                EVAcuttingController.text,
+            "Position of Back EVA & Backsheet on Glass":
+                EVAPositionController.text,
+            "Avaibility of specification&wI.": EVAAvaibilityController.text,
+          },
+          "AcceptanceCriteria": {
+            "Rear EVA dimension & sift cutting width(mm)":
+                EVARearCriteriaController.text,
+            "Back-sheet dimension& slit cutting diameter":
+                EVABackCriteriaController.text,
+            "cutting Edge of Rear EVA & Backsheet on Glass":
+                EVACuttingCriteriaController.text,
+            "Position of Back EVA & Backsheet on Glass":
+                EVAPositionCriteriaController.text,
+            "Avaibility of specification&wI.": EVAAvaibilityController.text,
+          },
+          "Frequency": {
+            "Rear EVA dimension & sift cutting width(mm)":
+                EVARearFrequencyController.text,
+            "Back-sheet dimension& slit cutting diameter":
+                EVABackFrequencyController.text,
+            "cutting Edge of Rear EVA & Backsheet on Glass":
+                EVACuttingFrequencyController.text,
+            "Position of Back EVA & Backsheet on Glass":
+                EVAPositionFrequencyController.text,
+            "Avaibility of acceptance criteria & WI":
+                EVAAvaibilityFrequencyController.text,
+          },
+          "Remark": EVABacksheetRemarkController.text
+        },
+        {
+          "Stage": "Pre lamination EL &Visual",
+          "CheckPoint": {
+            "EI Inspection": PreLaminationEIinspectionController.text,
+            "Visual inspection": PreLaminationVisualinspectionController.text,
+            "Avaibility of acceptance criteria & WI":
+                PreLaminationAvaibilityController.text,
+          },
+          "AcceptanceCriteria": {
+            "EI Inspection": PreLaminationEIinspectionCriteriaController.text,
+            "Visual inspection":
+                PreLaminationVisualinspectionCriteriaController.text,
+            "Avaibility of acceptance criteria & WI":
+                PreLaminationAvaibilityWIController.text,
+          },
+          "Frequency": {
+            "EI Inspection after stringer":
+                PreLaminationEIinspectionFrequencyController.text,
+            "EI Inspection after stringer Number of Stringer":
+                PreLaminationEInumberOfStringersController.text,
+            "EI Inspection after stringer Number of Created Input text ":
+                '$sample5Controller',
+            "Visual inspection of string":
+                PreLaminationEIinspectionFrequencyController.text,
+            "Visual inspection of string  Number of Stringer ":
+                PreLaminationVisualnumberOfStringersController.text,
+            "Visual inspection of string  Number of Created Input text ":
+                '$sample6Controller',
+            "Avaibility of acceptance criteria & WI":
+                PreLaminationAvaibilityFrequencyController.text,
+          },
+          "Remark": PreLaminationELRemarkController.text
+        },
+        {
+          "Stage": "String Rework station",
+          "CheckPoint": {
+            "Avaibility of work instruvtion(WI)":
+                StringAvaibilityController.text,
+            "Cleaning of Rework station/soldering iron sponge":
+                StringCleaningController.text,
+          },
+          "AcceptanceCriteria": {
+            "Avaibility of work instruvtion(WI)":
+                StringAvaibilityCriteriaController.text,
+            "Cleaning of Rework station/soldering iron sponge":
+                StringCleaningCriteriaController.text,
+          },
+          "Frequency": {
+            "Avaibility of work instruvtion(WI)":
+                StringAvaibilityFrequencyController.text,
+            "Cleaning of Rework station/soldering iron sponge":
+                StringCleaningFrequencyController.text,
+          },
+          "Remark": StringReworkRemarkController.text
+        },
+        {
+          "Stage": "Module Rework Station",
+          "CheckPoint": {
+            "Avaibility of work instruvtion(WI)":
+                ModuleAvaibilityController.text,
+            "Method of Rework": ModuleMethodCleaningController.text,
+            "Handling of Modules": ModuleHandlingController.text,
+            "Cleaning of Rework station/soldering iron sponge":
+                ModuleCleaningofReworkController.text,
+          },
+          "AcceptanceCriteria": {
+            "Avaibility of work instruvtion(WI)":
+                ModuleAvaibilityCriteriaController.text,
+            "Method of Rework": ModuleMethodCleaningCriteriaController.text,
+            "Handling of Modules": ModuleHandlingCriteriaController.text,
+            "Cleaning of Rework station/soldering iron sponge":
+                ModuleCleaningofReworkCriteriaController.text,
+          },
+          "Frequency": {
+            "Avaibility of work instruvtion(WI)":
+                ModuleAvaibilityFrequencyController.text,
+            "Method of Rework": ModuleMethodCleaningFrequencyController.text,
+            "Handling of Modules": ModuleHandlingFrequencyController.text,
+            "Cleaning of Rework station/soldering iron sponge":
+                ModuleCleaningofReworkFrequencyController.text,
+          },
+          "Remark": ModuleCleaningRemarkController.text
+        },
+        {
+          "Stage": "Laminator",
+          "CheckPoint": {
+            "Monitoring of Laminator Process parameter":
+                LaminatorMonitoringController.text,
+            "Adhesive on backsheet of the module":
+                LaminatorAdhesiveController.text,
+            "Peel Adhesive Test": LaminatorPeelController.text,
+            "Gel Content Test": LaminatorGelController.text,
+          },
+          "AcceptanceCriteria": {
+            "Monitoring of Laminator Process parameter":
+                LaminatorMonitoringCriteriaController.text,
+            "Adhesive on backsheet of the module":
+                LaminatorAdhesiveCriteriaController.text,
+            "Peel Adhesive Test": LaminatorPeelCriteriaController.text,
+            "Gel Content Test": LaminatorGelCriteriaController.text,
+          },
+          "Frequency": {
+            "Monitoring of Laminator Process parameter":
+                LaminatorMonitoringFrequencyController.text,
+            "Adhesive on backsheet of the module":
+                LaminatorAdhesiveFrequencyController.text,
+            "Peel Adhesive Test": LaminatorPeelFrequencyController.text,
+            "Gel Content Test": LaminatorGelFrequencyController.text,
+          },
+          "Remark": LaminatorRemarkController.text
+        },
+      ]
+    ];
+
+    print('Sending data to backend: ');
+
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+    FocusScope.of(context).unfocus();
+
+    final url = (site! + "IPQC/AddPreLam");
+
+    // ignore: unused_local_variable
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print("Bhanuu bhai");
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var objData = json.decode(response.body);
+      setState(() {
+        prelamId = objData['UUID'];
+
+        _isLoading = false;
+      });
+
+      print(
+          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      print(objData['UUID']);
+      if (objData['success'] == false) {
+        Toast.show(objData['message'],
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
+      } else {
+        if (sendStatus == 'Pending') {
+          Toast.show("PreLam Test Completed.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (BuildContext context) => IpqcPage()));
+          uploadPDF((referencePdfFileBytes ?? []));
+        } else {
+          Toast.show("Data has been saved.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+        }
       }
     } else {
       Toast.show("Error In Server",
           duration: Toast.lengthLong, gravity: Toast.center);
     }
+
+    print("hiiii kulbhusan");
+    print('$data');
   }
 
   @override
@@ -346,7 +1433,7 @@ class _PrelamState extends State<PreLam> {
             isBackRequired: true,
             memberId: "personid",
             imgPath: "ImagePath",
-            memberPic: pic,
+            memberPic: "pic",
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -355,25 +1442,20 @@ class _PrelamState extends State<PreLam> {
             },
           ),
           body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Stack(
-              alignment: Alignment.center,
-              fit: StackFit.expand,
-              children: [
-                SingleChildScrollView(
-                  child: Form(
-                    key: _registerFormKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: setPage == ''
+                ? Stack(
+                    alignment: Alignment.center,
+                    fit: StackFit.expand,
+                    children: [
+                      SingleChildScrollView(
+                        child: Form(
+                          key: _preLamFormKey,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
                               Container(
                                 alignment: Alignment.center,
                                 child: Column(
@@ -388,2171 +1470,9886 @@ class _PrelamState extends State<PreLam> {
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-
-                        //  ***************************?
-
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Text(
-                              "Pre Lamb IPQC Checksheet",
-                              style: TextStyle(
-                                fontSize: 27,
-                                color: AppColors.black,
-                                fontFamily: appFontFamily,
-                                fontWeight: FontWeight.w700,
+                              const Center(
+                                  child: Padding(
+                                      padding: EdgeInsets.only(top: 10),
+                                      child: Text(
+                                          "Incoming Production Quality Control",
+                                          style: TextStyle(
+                                              fontSize: 27,
+                                              color: AppColors.black,
+                                              fontFamily: appFontFamily,
+                                              fontWeight: FontWeight.w700)))),
+                              const Center(
+                                  child: Text("(Pre Lam prelam Checklist)",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontFamily: appFontFamily,
+                                          fontWeight: FontWeight.w700))),
+                              const SizedBox(
+                                height: 35,
                               ),
-                            ),
-                          ),
-                        ),
-
-                        // **************** Document Number *******************
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Document No : ',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'GSPL/IPQC/BM/002',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                          ],
-                        ),
-
-                        // *************************** Revisional Number ********************
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Rev.No./Dated : ',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'Ver.1.0 & 12-08-2023',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                          ],
-                        ),
-
-// ****************** Date *****************************************
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Date",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: dateController,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Date",
-                            counterText: '',
-                            suffixIcon: const Icon(Icons.calendar_month),
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          onTap: () async {
-                            DateTime date = DateTime(2021);
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            date = (await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime.now(),
-                            ))!;
-                            dateController.text =
-                                DateFormat("EEE MMM dd, yyyy").format(
-                              DateTime.parse(date.toString()),
-                            );
-                            setState(() {
-                              dateOfQualityCheck =
-                                  DateFormat("yyyy-MM-dd").format(
-                                DateTime.parse(date.toString()),
-                              );
-                            });
-                          },
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Date",
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        // ************************************* Shift *********************
-                        Text(
-                          "Shift",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        TextFormField(
-                          controller: shiftController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Shift",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please Enter Shift";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-
-                        // ********************************* Line *******************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Line.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: LineController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Line.",
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Line.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *******************************  PO Number ***********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Po Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: poController,
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Po Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Po Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-//  *******************************************   BOM Verification Check sheet ********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Solar Cell",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// *********************  Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: solarCellSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: solarCellSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: solarCellLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: solarCellremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Flux *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Flux ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// *********************  Flux-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: fluxSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter flux-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter flux-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Flux-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: fluxSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter flux-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter flux-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Flux- Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: fluxLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter flux-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter flux-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: fluxremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  flux-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter flux-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################   Ribbon ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Ribbon ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// *********************  ribbon-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: ribbonSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter ribbon-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter ribbon-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** ribbon-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: ribbonSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter ribbon-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter ribbon-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** ribbon-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: ribbonLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter ribbon-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter ribbon-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** ribbon-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: ribbonremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  ribbon-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter ribbon-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################   Interconnector-Bus-bar ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Interconnector Bus-bar",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// *********************  Interconnector-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: InterconnectorSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Interconnector-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Interconnector-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ***************************  Interconnector-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: InterconnectorSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter Interconnector-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Interconnector-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ***************************  Interconnector-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: InterconnectorLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter Interconnector-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Interconnector-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Interconnector-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: InterconnectorremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  Interconnector-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Interconnector-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################   Glass ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Glass ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// *********************  Glass-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: GlassSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Glass-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Glass-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Glass-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: GlassSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter Glass-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Glass-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Glass-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: GlassLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Glass-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Glass-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Glass-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: GlassremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  Glass-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Glass-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################  Eva Glass side(FrontEVA)  ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "EVA Glass side(frontEVA) ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// *********************  Eva-Glass-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Eva-Glass-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Eva-Glass-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Eva-Glass-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter Eva-Glass-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Eva-Glass-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Eva-Glass-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Eva-Glass-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Eva-Glass-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** EvaGlass-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  EvaGlass-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter EvaGlass-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################  Eva Glass side(rear EVA)  ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "EVA Glass Side(rearEVA)",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// ********************* EvaGlassSide-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassSideSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter EvaGlassSide-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter EvaGlassSide-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** EvaGlassSide-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassSideSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter EvaGlassSide-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter EvaGlassSide-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** EvaGlassSide-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassSideLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter EvaGlassSide-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter EvaGlassSide-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** EvaGlassSide-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: EvaGlassSideremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  EvaGlassSide-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter EvaGlassSide-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################  Back Sheet  ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Back Sheet",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// ********************* BackSheet-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: BackSheetSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter BackSheet-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter BackSheet-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** BackSheet-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: BackSheetSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter BackSheet-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter BackSheet-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** BackSheet-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: BackSheetLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter BackSheet-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter BackSheet-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** BackSheet-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: BackSheetremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  BackSheet-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter BackSheet-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################  Frame  ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Frame ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// ********************* Frame-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Frame-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Frame-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ***************************Frame-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter Frame-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Frame-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Frame-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Frame-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Frame-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Frame-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  Frame-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Frame-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################  JunctionBox  ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Junction Box ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// ********************* JunctionBox-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: JunctionBoxSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter JunctionBox-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter JunctionBox-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** JunctionBox-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: JunctionBoxSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter JunctionBox-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter JunctionBox-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** JunctionBox-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: JunctionBoxLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter JunctionBox-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter JunctionBox-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** JunctionBox-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: JunctionBoxremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  JunctionBox-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter JunctionBox-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// ####################################  Potting JB Sealant(A-B)   ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Potting JB Sealant(A-B) ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// ********************* pottingJB-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: JunctionBoxSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter pottingJB-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter pottingJB-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** pottingJB-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: pottingJBSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter pottingJB-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter pottingJB-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** pottingJB-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: pottingJBLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter pottingJB-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter pottingJB-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** JunctionBox-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: pottingJBremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  pottingJB-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter pottingJB-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// #################################### Frame Adhesive Sealant   ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "Frame Adhesive Sealant",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// ********************* FrameAdhesive-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameAdhesiveSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter FrameAdhesive-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter FrameAdhesive-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** FrameAdhesive-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameAdhesiveSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter FrameAdhesive-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter FrameAdhesive-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** FrameAdhesive-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameAdhesiveLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter FrameAdhesive-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter FrameAdhesive-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** FrameAdhesive-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: FrameAdhesiveremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  FrameAdhesive-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter FrameAdhesive-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// #################################### RFID   ########################################
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Center(
-                          child: Text(
-                            "RFID",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-
-// ********************* Rfid-Supplier ************************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Supplier",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: RfidSupplierController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Rfid-Supplier",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Rfid-Supplier",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Rfid-Specification / Model No. *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Specification / Model No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: RfidSpecificationController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText:
-                                "Please Enter Rfid-Specification / Model No.",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Rfid-Specification / Model No.",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Rfid-Lot/Batch Number *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Lot/Batch Number",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: RfidLotBatchController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Rfid-Lot/Batch Number",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Rfid-Lot/Batch Number",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Rfid-Remark *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Remark",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: RfidremarkController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter  Rfid-Remark",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Rfid-Remark",
-                              ),
-                            ],
-                          ),
-                        ),
-
-// *************************** Some style for the All Data *********************
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-// ****************** ****** *********
-
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                        _isLoading
-                            ? const Center(child: CircularProgressIndicator())
-                            : AppButton(
-                                textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.white,
-                                  fontSize: 16,
-                                ),
-                                onTap: () {
-                                  AppHelper.hideKeyboard(context);
-                                  // sendDataToBackend();
-
-                                  _registerFormKey.currentState!.save;
-                                  if (_registerFormKey.currentState!
-                                      .validate()) {
-                                    sendDataToBackend();
-                                  }
-                                },
-                                label: "Save",
-                                organization: '',
-                              ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        // Center(
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: InkWell(
-                        //       onTap: () {
-                        //         // Navigator.of(context).pushReplacement(
-                        //         //     MaterialPageRoute(
-                        //         //         builder: (BuildContext context) =>
-                        //         //             LoginPage(
-                        //         //                 appName: widget.appName)));
-                        //       },
-                        //       child: Text(
-                        //         "BACK",
-                        //         style: TextStyle(
-                        //           fontFamily: appFontFamily,
-                        //           fontSize: 16,
-                        //           fontWeight: FontWeight.w500,
-                        //           color: AppColors.redColor,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Powered By Gautam Solar Pvt. Ltd.",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: appFontFamily,
-                                  color: AppColors.greyColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Document No : ',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    'GSPL/prelam/IPC/003',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                ],
                               ),
                               SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Rev.No. / Rev. Date : ',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    'Ver.1.0 / 20-08-2023',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Date",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: DayController,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Date",
+                                  counterText: '',
+                                  suffixIcon: Icon(Icons.calendar_month),
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                onTap: () async {
+                                  if (status != 'Pending') {
+                                    DateTime date = DateTime(2021);
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
+                                    date = (await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now(),
+                                    ))!;
+                                    DayController.text =
+                                        DateFormat("EEE MMM dd, yyyy").format(
+                                      DateTime.parse(date.toString()),
+                                    );
+                                    setState(() {
+                                      dateOfQualityCheck =
+                                          DateFormat("yyyy-MM-dd").format(
+                                        DateTime.parse(date.toString()),
+                                      );
+                                    });
+                                  }
+                                },
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Date",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              // ************************************* Shift *********************
+                              Text(
+                                "Shift",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              TextFormField(
+                                controller: shiftController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Shift",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Please Enter Shift";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+
+                              // ********************************* Line *******************************
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Line.",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: lineController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Line.",
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Line.",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // *  PO Number ***********************
+
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Po Number",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: PoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Po Number",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Po Number",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // ************** step process end *****************
+
+                              // **************  Glass Loader *****************
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              const Center(
+                                  child: Text("Glass Loader",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color:
+                                              Color.fromARGB(255, 13, 160, 0),
+                                          fontFamily: appFontFamily,
+                                          fontWeight: FontWeight.w700))),
+
+                              // **********  step process ***********
+                              // *** first      111
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              Text(
+                                "Frequency",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: GlassLoaderFreqquency1Controller,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Once a Shift",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly: true,
+                              ),
+
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Glass Dimension {LengthxWidthxThickness}",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: GlassLoaderGlassDimensionController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Enter the Glass Dimension ",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Correct data",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              Text(
+                                "Acceptance Criteria",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: GlassLoaderCriteria1Controller,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText:
+                                      "Refer Production order & Module Drawing",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly: true,
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              // *** second  221
+                              Divider(
+                                color: Colors.black,
+                                thickness: 2,
+                                height: 20,
+                              ),
+
+                              Text(
+                                "Frequency",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: GlassLoaderFrequency2Controller,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Once a Shift",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly: true,
+                              ),
+
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Avaibility of WI",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: GlassLoaderAvaibilityController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Enter the Avaibility of WI ",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please Enter Correct Avaibility of WI ",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              Text(
+                                "Acceptance Criteria",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: GlassLoaderCriteria2Controller,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText:
+                                      "Avaibility of WI & Operator should be aware with WI",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly: true,
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              // *** Remark
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              Text(
+                                "Remark",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+
+                              TextFormField(
+                                controller: GlassLoaderRemarkController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Remark ",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Correct data",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // *** these data uesed to full code
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                              _isLoading
+                                  ? Center(child: CircularProgressIndicator())
+                                  : AppButton(
+                                      textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.white,
+                                        fontSize: 16,
+                                      ),
+                                      onTap: () {
+                                        AppHelper.hideKeyboard(context);
+                                        //500
+                                        if (status != 'Pending') {
+                                          setState(() {
+                                            sendStatus = 'Inprogress';
+                                          });
+                                          sendDataToBackend();
+                                        }
+                                        // _glassLoaderFormKey.currentState!.save;
+                                        // if (_glassLoaderFormKey.currentState!
+                                        //     .validate()) {}
+
+                                        setState(() {
+                                          setPage = "glassSide";
+                                        });
+                                      },
+                                      label: "Next",
+                                      organization: '',
+                                    ),
+                              const SizedBox(
                                 height: 10,
+                              ),
+
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Powered By Gautam Solar Pvt. Ltd.",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: appFontFamily,
+                                        color: AppColors.greyColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                      ),
+                    ],
+                  )
+                : setPage == "glassSide"
+                    // GlassSide start
+                    ? Stack(
+                        alignment: Alignment.center,
+                        fit: StackFit.expand,
+                        children: [
+                          SingleChildScrollView(
+                            child: Form(
+                              key: _preLamFormKey,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          AppAssets.imgLogo,
+                                          height: 100,
+                                          width: 230,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Center(
+                                      child: Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text(
+                                              "Incoming Production Quality Control",
+                                              style: TextStyle(
+                                                  fontSize: 27,
+                                                  color: AppColors.black,
+                                                  fontFamily: appFontFamily,
+                                                  fontWeight:
+                                                      FontWeight.w700)))),
+                                  const Center(
+                                      child: Text("(Pre Lam prelam Checklist)",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: AppColors.black,
+                                              fontFamily: appFontFamily,
+                                              fontWeight: FontWeight.w700))),
+                                  const SizedBox(
+                                    height: 35,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Document No : ',
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        'GSPL/prelam/IPC/003',
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Rev.No. / Rev. Date : ',
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        'Ver.1.0 / 20-08-2023',
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                    ],
+                                  ),
+
+                                  // **************  Glass1 Side EVA cutting machine *****************
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  const Center(
+                                      child: Text(
+                                          "Glass side EVA cutting machine ",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromARGB(
+                                                  255, 13, 160, 0),
+                                              fontFamily: appFontFamily,
+                                              fontWeight: FontWeight.w700))),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Text(
+                                    "Frequency",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlassEVAFrequency1Controller,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText: "Once a Shift",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    "EVA dimension {LengthxWidthxThickness}",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlassEVADimensionController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText: "Enter the EVA Dimension ",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
+                                    validator: MultiValidator(
+                                      [
+                                        RequiredValidator(
+                                          errorText:
+                                              "Please Enter Correct EVA Dimension",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Text(
+                                    "Acceptance Criteria",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlassEVACriteria1Controller,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText:
+                                          "Refer Production order & Module Drawing",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Divider(
+                                    color: Colors.black,
+                                    thickness: 2,
+                                    height: 20,
+                                  ),
+
+                                  Text(
+                                    "Frequency",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlasCuttingFrequencyController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText: "Once a Shift",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    "Cutting of Front EVA",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlasCuttingEdgeController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText:
+                                          "Enter the Cutting  of Front EVA.. ",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
+                                    validator: MultiValidator(
+                                      [
+                                        RequiredValidator(
+                                          errorText:
+                                              "Please Enter Correct Cutting  of Front EVA..",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Text(
+                                    "Acceptance Criteria",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlasCuttingCriteriaController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText: "shoul not be uneven",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Divider(
+                                    color: Colors.black,
+                                    thickness: 2,
+                                    height: 20,
+                                  ),
+
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Text(
+                                    "Frequency",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlasPositionFrequencyController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText: "Once a Shift",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    "Position of front Eva",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlasPositionFrontController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText:
+                                          "Enter the Position of front Eva.. ",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
+                                    validator: MultiValidator(
+                                      [
+                                        RequiredValidator(
+                                          errorText:
+                                              "Please Enter Correct Position of front Eva...",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Text(
+                                    "Acceptance Criteria",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlasPositionCriteriaController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText:
+                                          "shifting of EVA on Glass not allowed",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Divider(
+                                    color: Colors.black,
+                                    thickness: 2,
+                                    height: 20,
+                                  ),
+
+                                  Text(
+                                    "Frequency",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller:
+                                        GlasAvabilityFrequencyController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText: "Once a Shift",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    "Avability of Specification & WI",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller:
+                                        GlasAvabilitySpecificationController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText:
+                                          "Enter the Avability of Specification & WI ",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
+                                    validator: MultiValidator(
+                                      [
+                                        RequiredValidator(
+                                          errorText:
+                                              "Please Enter Correct Avability of Specification & WI ",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Text(
+                                    "Acceptance Criteria",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextFormField(
+                                    controller: GlasAvabilityCriteriaController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText:
+                                          "Avaibility of specification and WI & operator shoud br aware with specification",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: true,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  // *** Remark
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+
+                                  Text(
+                                    "Remark",
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+
+                                  TextFormField(
+                                    controller: GlasSideRemarkController,
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: AppStyles
+                                        .textFieldInputDecoration
+                                        .copyWith(
+                                      hintText: "Remark ",
+                                      counterText: '',
+                                    ),
+                                    style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
+                                    validator: MultiValidator(
+                                      [
+                                        RequiredValidator(
+                                          errorText: "Please Enter Remark",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                  _isLoading
+                                      ? Center(
+                                          child: CircularProgressIndicator())
+                                      : AppButton(
+                                          textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.white,
+                                            fontSize: 16,
+                                          ),
+                                          onTap: () {
+                                            AppHelper.hideKeyboard(context);
+                                            if (status != 'Pending') {
+                                              setState(() {
+                                                sendStatus = 'Inprogress';
+                                              });
+                                              sendDataToBackend();
+                                            }
+
+                                            // _glassSideFormKey
+                                            //     .currentState!.save;
+                                            // if (_glassSideFormKey.currentState!
+                                            //     .validate()) {}
+                                            setState(() {
+                                              setPage = "temperature";
+                                            });
+                                            // createData();
+                                          },
+                                          label: "Next",
+                                          organization: '',
+                                        ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  // Back button
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            setPage = '';
+                                          });
+                                          // Navigator.of(context).pushReplacement(
+                                          //     MaterialPageRoute(
+                                          //         builder: (BuildContext context) =>
+                                          //             LoginPage(
+                                          //                 appName: widget.appName)));
+                                        },
+                                        child: const Text(
+                                          "BACK",
+                                          style: TextStyle(
+                                              fontFamily: appFontFamily,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.redColor),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 25,
+                                  ),
+
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: const Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Powered By Gautam Solar Pvt. Ltd.",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: appFontFamily,
+                                            color: AppColors.greyColor,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    // ***Third Next start
+
+                    : setPage == "temperature"
+                        // Temperature start
+                        ? Stack(
+                            alignment: Alignment.center,
+                            fit: StackFit.expand,
+                            children: [
+                              SingleChildScrollView(
+                                child: Form(
+                                  key: _preLamFormKey,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              AppAssets.imgLogo,
+                                              height: 100,
+                                              width: 230,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Center(
+                                          child: Padding(
+                                              padding: EdgeInsets.only(top: 10),
+                                              child: Text(
+                                                  "Incoming Production Quality Control",
+                                                  style: TextStyle(
+                                                      fontSize: 27,
+                                                      color: AppColors.black,
+                                                      fontFamily: appFontFamily,
+                                                      fontWeight:
+                                                          FontWeight.w700)))),
+                                      const Center(
+                                          child: Text(
+                                              "(Pre Lam prelam Checklist)",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: AppColors.black,
+                                                  fontFamily: appFontFamily,
+                                                  fontWeight:
+                                                      FontWeight.w700))),
+                                      const SizedBox(
+                                        height: 35,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Document No : ',
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            'GSPL/prelam/IPC/003',
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Rev.No. / Rev. Date : ',
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            'Ver.1.0 / 20-08-2023',
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                        ],
+                                      ),
+
+                                      // ************** Temperature & Relative humidity(%RH) monitorin *****************
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      const Center(
+                                          child: Text(
+                                              "Temperature & Relative humidity(%RH) monitoring ",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Color.fromARGB(
+                                                      255, 13, 160, 0),
+                                                  fontFamily: appFontFamily,
+                                                  fontWeight:
+                                                      FontWeight.w700))),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+
+                                      Text(
+                                        "Frequency",
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextFormField(
+                                        controller: TempShopFrequencyController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText: "Once a Shift",
+                                          counterText: '',
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        readOnly: true,
+                                      ),
+
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        "Shop floor Temperature condition",
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextFormField(
+                                        controller: TempShopFloorController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText:
+                                              "Enter the Shop floor Temperature condition",
+                                          counterText: '',
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
+                                        validator: MultiValidator(
+                                          [
+                                            RequiredValidator(
+                                              errorText:
+                                                  "Please Enter Correct Shop floor Temperature condition",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+
+                                      Text(
+                                        "Acceptance Criteria",
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextFormField(
+                                        controller: TempShopCriteriaController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText: "Temprature: 25+/- °C",
+                                          counterText: '',
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        readOnly: true,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Divider(
+                                        color: Colors.black,
+                                        thickness: 2,
+                                        height: 20,
+                                      ),
+
+                                      Text(
+                                        "Frequency",
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextFormField(
+                                        controller:
+                                            TempRelativeFrequencyController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText: "Once a Shift",
+                                          counterText: '',
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        readOnly: true,
+                                      ),
+
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        "Relative humadity(%RH) in shop floor",
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextFormField(
+                                        controller:
+                                            TempRelativeHumidityController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText:
+                                              "Enter the Relative humadity.... ",
+                                          counterText: '',
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
+                                        validator: MultiValidator(
+                                          [
+                                            RequiredValidator(
+                                              errorText:
+                                                  "Please Enter Correct Relative humadity....",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+
+                                      Text(
+                                        "Acceptance Criteria",
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextFormField(
+                                        controller:
+                                            TempRelativeCriteriaController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText: "Humidity(%RH):<=60%",
+                                          counterText: '',
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        readOnly: true,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+
+                                      // *** Remark
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+
+                                      Text(
+                                        "Remark",
+                                        style:
+                                            AppStyles.textfieldCaptionTextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+
+                                      TextFormField(
+                                        controller: TemperatureRemarkController,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText: "Remark ",
+                                          counterText: '',
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
+                                        validator: MultiValidator(
+                                          [
+                                            RequiredValidator(
+                                              errorText:
+                                                  "Please Enter Correct data",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                      _isLoading
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : AppButton(
+                                              textStyle: const TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.white,
+                                                fontSize: 16,
+                                              ),
+                                              onTap: () {
+                                                AppHelper.hideKeyboard(context);
+                                                if (status != 'Pending') {
+                                                  setState(() {
+                                                    sendStatus = 'Inprogress';
+                                                  });
+                                                  sendDataToBackend();
+                                                } //300
+
+                                                // _temperatureFormKey
+                                                //     .currentState!.save;
+                                                // if (_temperatureFormKey
+                                                //     .currentState!
+                                                //     .validate()) {
+                                                //   //   sendDataToBackend();
+                                                // }
+                                                setState(() {
+                                                  setPage =
+                                                      "Cell Cutting Machine";
+                                                });
+                                                // createData();
+                                              },
+                                              label: "Next",
+                                              organization: '',
+                                            ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+
+                                      // Back button
+                                      Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                setPage = 'glassSide';
+                                              });
+                                              // Navigator.of(context).pushReplacement(
+                                              //     MaterialPageRoute(
+                                              //         builder: (BuildContext context) =>
+                                              //             LoginPage(
+                                              //                 appName: widget.appName)));
+                                            },
+                                            child: const Text(
+                                              "BACK",
+                                              style: TextStyle(
+                                                  fontFamily: appFontFamily,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.redColor),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 25,
+                                      ),
+
+                                      Container(
+                                        alignment: Alignment.center,
+                                        child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Powered By Gautam Solar Pvt. Ltd.",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: appFontFamily,
+                                                color: AppColors.greyColor,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        // *** Cell Cutting Machine Next start #101
+
+                        : setPage == "Cell Cutting Machine"
+                            // Cell Cutting Machine start
+                            ? Stack(
+                                alignment: Alignment.center,
+                                fit: StackFit.expand,
+                                children: [
+                                  SingleChildScrollView(
+                                    child: Form(
+                                      key: _preLamFormKey,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            alignment: Alignment.center,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  AppAssets.imgLogo,
+                                                  height: 100,
+                                                  width: 230,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const Center(
+                                              child: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Text(
+                                                      "Incoming Production Quality Control",
+                                                      style: TextStyle(
+                                                          fontSize: 27,
+                                                          color:
+                                                              AppColors.black,
+                                                          fontFamily:
+                                                              appFontFamily,
+                                                          fontWeight: FontWeight
+                                                              .w700)))),
+                                          const Center(
+                                              child: Text(
+                                                  "(Pre Lam prelam Checklist)",
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: AppColors.black,
+                                                      fontFamily: appFontFamily,
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                          const SizedBox(
+                                            height: 35,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Document No : ',
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                'GSPL/prelam/IPC/003',
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Rev.No. / Rev. Date : ',
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                'Ver.1.0 / 20-08-2023',
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                            ],
+                                          ),
+// **************  Cell Cutting Machine *****************
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          const Center(
+                                              child: Text(
+                                                  "Cell Cutting Machine",
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: Color.fromARGB(
+                                                          255, 13, 160, 0),
+                                                      fontFamily: appFontFamily,
+                                                      fontWeight:
+                                                          FontWeight.w700))),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+
+                                          Text(
+                                            "Frequency",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellSizeFrequencyController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText: "Thrice per shift",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            "Cell Size(Lengthxwidth)",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellSizelengthController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Enter the Cell Size(Lengthxwidth)",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Correct Cell Size(Lengthxwidth)",
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+
+                                          Text(
+                                            "Acceptance Criteria",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellSizeCriteriaController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Refer Production Order",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Divider(
+                                            color: Colors.black,
+                                            thickness: 2,
+                                            height: 20,
+                                          ),
+
+                                          Text(
+                                            "Frequency",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellManufactureFrequencyController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText: "Thrice per Shift",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            "Cell Menufacturer & Eff.",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellManufactureEffController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Enter the Cell Menufacturer & Eff.  ",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Correct Cell Menufacturer & Eff.",
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+
+                                          Text(
+                                            "Acceptance Criteria",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellManufactureCriteriaController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Refer Production Order",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Divider(
+                                            color: Colors.black,
+                                            thickness: 2,
+                                            height: 20,
+                                          ),
+
+                                          Text(
+                                            "Frequency",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellcolorFrequencyController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText: "Thrice per Shift",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            "Cell Color",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller: CellcolorController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText: "Enter the Cell Color ",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Correct Cell Color",
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+
+                                          Text(
+                                            "Acceptance Criteria",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellcolorCriteriaController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Proper Segregation should be done as per color mixing not allowed",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Divider(
+                                            color: Colors.black,
+                                            thickness: 2,
+                                            height: 20,
+                                          ),
+
+                                          Text(
+                                            "Frequency",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellAvabilityofFrequencyController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText: "Once per Shift",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Text(
+                                            "Avability of specification & WI.",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellAvabilityofSpecificationController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Enter the Avability of specification & WI.",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Correct Avability of specification & WI.",
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+
+                                          Text(
+                                            "Acceptance Criteria",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          TextFormField(
+                                            controller:
+                                                CellAvabilityofCriteriaController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Avaibility of specification and wi & operator should br aware with specification",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: true,
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+
+                                          // *** Remark
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+
+                                          Text(
+                                            "Remark",
+                                            style: AppStyles
+                                                .textfieldCaptionTextStyle,
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+
+                                          TextFormField(
+                                            controller:
+                                                CellCuttingRemarkController,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText: "Remark ",
+                                              counterText: '',
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Correct data",
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 10, 0, 0)),
+                                          _isLoading
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator())
+                                              : AppButton(
+                                                  textStyle: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                  onTap: () {
+                                                    AppHelper.hideKeyboard(
+                                                        context);
+                                                    print("hiiiiiiiiiiiiii");
+                                                    // print(CellManufactureEffController
+                                                    //     .text);
+                                                    if (status != 'Pending') {
+                                                      setState(() {
+                                                        sendStatus =
+                                                            'Inprogress';
+                                                      });
+                                                      sendDataToBackend();
+                                                    }
+
+                                                    // _cellCuttingFormKey
+                                                    //     .currentState!.save;
+                                                    // if (_cellCuttingFormKey
+                                                    //     .currentState!
+                                                    //     .validate()) {}
+                                                    setState(() {
+                                                      setPage = "Cell Loading";
+                                                    });
+                                                    // createData();
+                                                  },
+                                                  label: "Next",
+                                                  organization: '',
+                                                ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+
+                                          Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    setPage = 'temperature';
+                                                  });
+                                                  // Navigator.of(context).pushReplacement(
+                                                  //     MaterialPageRoute(
+                                                  //         builder: (BuildContext context) =>
+                                                  //             LoginPage(
+                                                  //                 appName: widget.appName)));
+                                                },
+                                                child: const Text(
+                                                  "BACK",
+                                                  style: TextStyle(
+                                                      fontFamily: appFontFamily,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color:
+                                                          AppColors.redColor),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 25,
+                                          ),
+                                          Container(
+                                            alignment: Alignment.center,
+                                            child: const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Powered By Gautam Solar Pvt. Ltd.",
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontFamily: appFontFamily,
+                                                    color: AppColors.greyColor,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+
+                            // *** Cell Loading Next start #102
+                            : setPage == "Cell Loading"
+                                // Cell Loading start
+                                ? Stack(
+                                    alignment: Alignment.center,
+                                    fit: StackFit.expand,
+                                    children: [
+                                      SingleChildScrollView(
+                                        child: Form(
+                                          key: _preLamFormKey,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      AppAssets.imgLogo,
+                                                      height: 100,
+                                                      width: 230,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const Center(
+                                                  child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 10),
+                                                      child: Text(
+                                                          "Incoming Production Quality Control",
+                                                          style: TextStyle(
+                                                              fontSize: 27,
+                                                              color: AppColors
+                                                                  .black,
+                                                              fontFamily:
+                                                                  appFontFamily,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700)))),
+                                              const Center(
+                                                  child: Text(
+                                                      "(Pre Lam prelam Checklist)",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color:
+                                                              AppColors.black,
+                                                          fontFamily:
+                                                              appFontFamily,
+                                                          fontWeight: FontWeight
+                                                              .w700))),
+                                              const SizedBox(
+                                                height: 35,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Document No : ',
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    'GSPL/prelam/IPC/003',
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Rev.No. / Rev. Date : ',
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    'Ver.1.0 / 20-08-2023',
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                ],
+                                              ),
+
+// **************  Cell Loading *****************
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              const Center(
+                                                  child: Text("Cell Loading..",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Color.fromARGB(
+                                                              255, 13, 160, 0),
+                                                          fontFamily:
+                                                              appFontFamily,
+                                                          fontWeight: FontWeight
+                                                              .w700))),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Frequency",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingcellFrequencyController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText: "Thrice per shift",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                "Cell Color",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingcellColorController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Enter the Cell Color",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Correct Cell color",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Acceptance Criteria",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingcellCriteriaController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Different color of cell loading at a time not allowed ",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 2,
+                                                height: 20,
+                                              ),
+
+                                              Text(
+                                                "Frequency",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingCleanFrequencyController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText: "Once per Shift",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                "Cleanliness of cell Loading Area",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingCleanLinessController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Enter the Cleanliness of cell Loading Area ",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Correct Cleanliness of cell Loading Area",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Acceptance Criteria",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingCleanCriteriaController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "no unwanted or waste material should be near cell Loading Area",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 2,
+                                                height: 20,
+                                              ),
+
+                                              Text(
+                                                "Frequency",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingWIFrequencyController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText: "Once per Shift",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                "Cell loading as per WI",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingWIController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Enter the Cell loading as per WI ",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Correct Cell loading as per WI",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Acceptance Criteria",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingWICriteriaController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText: "As per WI",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 2,
+                                                height: 20,
+                                              ),
+
+                                              Text(
+                                                "Frequency",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingAvabilityFrequencyController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText: "Once per Shift",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                "Avability of WI.",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingAvabilityController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Enter the Avability WI.",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Correct Avability of  WI.",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Acceptance Criteria",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingAvabilityCriteriaController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Avaibility of  wi & operator should br aware with WI",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 2,
+                                                height: 20,
+                                              ),
+
+                                              Text(
+                                                "Frequency",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingVerificationFrequencyController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText: "Once per Shift",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                "Verification of process parameter",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingVerificationController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Enter the Verification of process parameter",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Correct Verification of process parameter",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Acceptance Criteria",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingVerificationCriteriaController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "As per machine specification ",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 2,
+                                                height: 20,
+                                              ),
+
+                                              Text(
+                                                "Frequency",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingStringFrequencyController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "5 string/stringer/shift ",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                "How many Stringers",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(height: 5),
+                                              TextFormField(
+                                                controller:
+                                                    CellLoadingnumberOfStringerController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    numberOfStringers =
+                                                        int.tryParse(value) ??
+                                                            0;
+                                                    addControllers(
+                                                        numberOfStringers * 5);
+                                                  });
+                                                },
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Enter the number of Stringers",
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                              ),
+                                              SizedBox(height: 20),
+                                              ListView.builder(
+                                                shrinkWrap: true,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                itemCount:
+                                                    numberOfStringers * 5,
+                                                itemBuilder: (context, index) {
+                                                  int stringerIndex =
+                                                      (index ~/ 5) + 1;
+                                                  int textFieldIndex =
+                                                      index % 5;
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      if (textFieldIndex == 0)
+                                                        Text(
+                                                          "Stringer $stringerIndex",
+                                                          style: AppStyles
+                                                              .textInputTextStyle
+                                                              .copyWith(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      SizedBox(height: 5),
+                                                      TextFormField(
+                                                        controller:
+                                                            cellLoaderVerificationControllers[
+                                                                index],
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Remarks",
+                                                          counterText: '',
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator: (value) {
+                                                          if (value == null ||
+                                                              value.isEmpty) {
+                                                            return 'Please Enter Remarks.';
+                                                          }
+                                                          return null;
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                "String length & cell to cell gap",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    LoadstrinGapController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Enter the String length & cell to cell gap",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Correct String length & cell to cell gap",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Acceptance Criteria",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    cellLoaderStringCriteriaController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "refer Production order & module Drawing ",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: true,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              // *** Remark
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+
+                                              Text(
+                                                "Remark",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+
+                                              TextFormField(
+                                                controller:
+                                                    cellLoaderRemarkController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText: "Remark ",
+                                                  counterText: '',
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Correct data",
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Padding(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      0, 10, 0, 0)),
+                                              _isLoading
+                                                  ? Center(
+                                                      child:
+                                                          CircularProgressIndicator())
+                                                  : AppButton(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: AppColors.white,
+                                                        fontSize: 16,
+                                                      ),
+                                                      onTap: () {
+                                                        AppHelper.hideKeyboard(
+                                                            context);
+                                                        //100
+
+                                                        // _cellLoadingFormKey.currentState!.save;
+                                                        // if (_cellLoadingFormKey.currentState!
+                                                        //     .validate()) {
+
+                                                        // }
+                                                        sample1Controller = [];
+                                                        for (int i = 0;
+                                                            i <
+                                                                numberOfStringers *
+                                                                    5;
+                                                            i++) {
+                                                          sample1Controller
+                                                              .add({
+                                                            "cellLoaderVerificationControllers${i + 1}":
+                                                                cellLoaderVerificationControllers[
+                                                                        i]
+                                                                    .text,
+                                                          });
+                                                        }
+
+                                                        if (status !=
+                                                            'Pending') {
+                                                          setState(() {
+                                                            sendStatus =
+                                                                'Inprogress';
+                                                          });
+                                                          sendDataToBackend();
+                                                        }
+                                                        // _cellLoadingFormKey
+                                                        //     .currentState!.save;
+                                                        // if (_cellLoadingFormKey
+                                                        //     .currentState!
+                                                        //     .validate()) {}
+
+                                                        print(
+                                                            sample1Controller);
+
+                                                        setState(() {
+                                                          setPage =
+                                                              "Tabber & Stringer";
+                                                        });
+                                                        // createData();
+                                                        print("Page set");
+                                                        print(setPage);
+                                                      },
+                                                      label: "Next",
+                                                      organization: '',
+                                                    ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+
+                                              // Back button
+                                              Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        setPage =
+                                                            'Cell Cutting Machine';
+                                                      });
+                                                      // Navigator.of(context).pushReplacement(
+                                                      //     MaterialPageRoute(
+                                                      //         builder: (BuildContext context) =>
+                                                      //             LoginPage(
+                                                      //                 appName: widget.appName)));
+                                                    },
+                                                    child: const Text(
+                                                      "BACK",
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              appFontFamily,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: AppColors
+                                                              .redColor),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 25,
+                                              ),
+
+                                              const SizedBox(
+                                                height: 25,
+                                              ),
+                                              Container(
+                                                alignment: Alignment.center,
+                                                child: const Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "Powered By Gautam Solar Pvt. Ltd.",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontFamily:
+                                                            appFontFamily,
+                                                        color:
+                                                            AppColors.greyColor,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : setPage == "Tabber & Stringer"
+                                    // Tabber & Stringer start
+                                    ? Stack(
+                                        alignment: Alignment.center,
+                                        fit: StackFit.expand,
+                                        children: [
+                                          SingleChildScrollView(
+                                            child: Form(
+                                              key: _preLamFormKey,
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                          AppAssets.imgLogo,
+                                                          height: 100,
+                                                          width: 230,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  const Center(
+                                                      child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 10),
+                                                          child: Text(
+                                                              "Incoming Production Quality Control",
+                                                              style: TextStyle(
+                                                                  fontSize: 27,
+                                                                  color:
+                                                                      AppColors
+                                                                          .black,
+                                                                  fontFamily:
+                                                                      appFontFamily,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700)))),
+                                                  const Center(
+                                                      child: Text(
+                                                          "(Pre Lam prelam Checklist)",
+                                                          style: TextStyle(
+                                                              fontSize: 20,
+                                                              color: AppColors
+                                                                  .black,
+                                                              fontFamily:
+                                                                  appFontFamily,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700))),
+                                                  const SizedBox(
+                                                    height: 35,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Document No : ',
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      Text(
+                                                        'GSPL/prelam/IPC/003',
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Rev.No. / Rev. Date : ',
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      Text(
+                                                        'Ver.1.0 / 20-08-2023',
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                    ],
+                                                  ),
+// ************** Tabber & Stringer *****************
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  const Center(
+                                                      child: Text(
+                                                          "Tabber & Stringer",
+                                                          style: TextStyle(
+                                                              fontSize: 20,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      13,
+                                                                      160,
+                                                                      0),
+                                                              fontFamily:
+                                                                  appFontFamily,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700))),
+
+                                                  // **********  start Tabber ***********
+
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  Divider(
+                                                    color: Colors.black,
+                                                    thickness: 2,
+                                                    height: 20,
+                                                  ),
+
+                                                  Text(
+                                                    "Frequency",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVisualFrequencyController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "5 string/stringer/shift ",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "How many Stringers",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(height: 5),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVisualnumberOfStringersController,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        numberOfStringers1 =
+                                                            int.tryParse(
+                                                                    value) ??
+                                                                0;
+                                                        addTabberVisualControllers(
+                                                            numberOfStringers1 *
+                                                                5);
+                                                      });
+                                                    },
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Enter the number of Stringers",
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                  ),
+                                                  SizedBox(height: 20),
+                                                  ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemCount:
+                                                        numberOfStringers1 * 5,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      int stringerIndex =
+                                                          (index ~/ 5) + 1;
+                                                      int textFieldIndex =
+                                                          index % 5;
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          if (textFieldIndex ==
+                                                              0)
+                                                            Text(
+                                                              "Stringer $stringerIndex",
+                                                              style: AppStyles
+                                                                  .textInputTextStyle
+                                                                  .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          SizedBox(height: 5),
+                                                          TextFormField(
+                                                            controller:
+                                                                TabberVisualStringerControllers[
+                                                                    index],
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Please Enter Remarks",
+                                                              counterText: '',
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            validator: (value) {
+                                                              if (value ==
+                                                                      null ||
+                                                                  value
+                                                                      .isEmpty) {
+                                                                return 'Please Enter Remarks.';
+                                                              }
+                                                              return null;
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "Visual Check after stringer",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVisualCheckController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Enter the Visual Check after stringer",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Correct Visual Check after stringer",
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  Text(
+                                                    "Acceptance Criteria",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVisualCriteriaController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "As per pre Lam Visual Criteria ",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  // ------------------------------------------------------------
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  Divider(
+                                                    color: Colors.black,
+                                                    thickness: 2,
+                                                    height: 20,
+                                                  ),
+
+                                                  Text(
+                                                    "Frequency",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberEIimageFrequencyController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "5 string/stringer/shift ",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "How many Stringers",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(height: 5),
+                                                  TextFormField(
+                                                    controller:
+                                                        tabberEIimagenumberOfStringersController,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        numberOfStringers2 =
+                                                            int.tryParse(
+                                                                    value) ??
+                                                                0;
+                                                        addTabberEImageControllers(
+                                                            numberOfStringers2 *
+                                                                5);
+                                                      });
+                                                    },
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Enter the number of Stringers",
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                  ),
+                                                  SizedBox(height: 20),
+                                                  ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemCount:
+                                                        numberOfStringers2 * 5,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      int stringerIndex =
+                                                          (index ~/ 5) + 1;
+                                                      int textFieldIndex =
+                                                          index % 5;
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          if (textFieldIndex ==
+                                                              0)
+                                                            Text(
+                                                              "Stringer $stringerIndex",
+                                                              style: AppStyles
+                                                                  .textInputTextStyle
+                                                                  .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          SizedBox(height: 5),
+                                                          TextFormField(
+                                                            controller:
+                                                                TabberEIimageofStringerControllers[
+                                                                    index],
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Please Enter Remarks",
+                                                              counterText: '',
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator: (value) {
+                                                              if (value ==
+                                                                      null ||
+                                                                  value
+                                                                      .isEmpty) {
+                                                                return 'Please Enter Remarks.';
+                                                              }
+                                                              return null;
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "EI image of String",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberEIimageCheckController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Enter the EI image of String",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Correct EI image of String",
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  Text(
+                                                    "Acceptance Criteria",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberEIimageCriteriaController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "As per pre Lam EI Criteria ",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  Divider(
+                                                    color: Colors.black,
+                                                    thickness: 2,
+                                                    height: 20,
+                                                  ),
+
+                                                  Text(
+                                                    "Frequency",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVerificationFrequencyController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "2 string/stringer/shift ",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "How many Stringers",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(height: 5),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVerificationNumberofstringController,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        numberOfStringers4 =
+                                                            int.tryParse(
+                                                                    value) ??
+                                                                0;
+                                                        addTabberVerificationControllers(
+                                                            numberOfStringers4 *
+                                                                5);
+                                                      });
+                                                    },
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Enter the number of Stringers",
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                  ),
+                                                  SizedBox(height: 20),
+                                                  ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemCount:
+                                                        numberOfStringers4 * 5,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      int stringerIndex =
+                                                          (index ~/ 5) + 1;
+                                                      int textFieldIndex =
+                                                          index % 5;
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          if (textFieldIndex ==
+                                                              0)
+                                                            Text(
+                                                              "Stringer $stringerIndex",
+                                                              style: AppStyles
+                                                                  .textInputTextStyle
+                                                                  .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          SizedBox(height: 5),
+                                                          TextFormField(
+                                                            controller:
+                                                                TabberVerificationofsilderingControllers[
+                                                                    index],
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Please Enter Remarks",
+                                                              counterText: '',
+                                                              contentPadding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator: (value) {
+                                                              if (value ==
+                                                                      null ||
+                                                                  value
+                                                                      .isEmpty) {
+                                                                return 'Please Enter Remarks.';
+                                                              }
+                                                              return null;
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "Verification of sildering peel strength",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVerificationCheckController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Enter the Verification of sildering peel strength",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Correct Verification of sildering peel strength",
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  Text(
+                                                    "Acceptance Criteria",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberVerificationCriteriaController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          ">=0.5N  |  Refer:GSPL/IPQC/GP/001",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  Divider(
+                                                    color: Colors.black,
+                                                    thickness: 2,
+                                                    height: 20,
+                                                  ),
+
+                                                  Text(
+                                                    "Frequency",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberAvaibilityFrequencyController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Once per Shift",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "Avability of specification & WI.",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberAvabilityofSpecificationController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Enter the Avability of specification & WI.",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Correct Avability of specification & WI.",
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  Text(
+                                                    "Acceptance Criteria",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberAvabilityofCriteriaController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Avaibility of specification and wi & operator should be aware with specification",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: true,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  // *** Remark
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+
+                                                  Text(
+                                                    "Remark",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+
+                                                  TextFormField(
+                                                    controller:
+                                                        TabberstringerRemarkController,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText: "Remark ",
+                                                      counterText: '',
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Correct data",
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  Padding(
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              0, 10, 0, 0)),
+                                                  _isLoading
+                                                      ? Center(
+                                                          child:
+                                                              CircularProgressIndicator())
+                                                      : AppButton(
+                                                          textStyle:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                AppColors.white,
+                                                            fontSize: 16,
+                                                          ),
+                                                          onTap: () {
+                                                            AppHelper
+                                                                .hideKeyboard(
+                                                                    context);
+                                                            //100
+
+                                                            // _tabberFormKey.currentState!.save;
+                                                            // if (_tabberFormKey.currentState!
+                                                            //     .validate()) {
+                                                            //   sendDataToBackend();
+                                                            // }
+                                                            sample2Controller =
+                                                                [];
+                                                            for (int i = 0;
+                                                                i <
+                                                                    numberOfStringers1 *
+                                                                        5;
+                                                                i++) {
+                                                              sample2Controller
+                                                                  .add({
+                                                                "TabberVisualStringerControllers${i + 1}":
+                                                                    TabberVisualStringerControllers[
+                                                                            i]
+                                                                        .text,
+                                                              });
+                                                            }
+
+                                                            sample3Controller =
+                                                                [];
+                                                            for (int i = 0;
+                                                                i <
+                                                                    numberOfStringers2 *
+                                                                        5;
+                                                                i++) {
+                                                              sample3Controller
+                                                                  .add({
+                                                                "TabberEIimageofStringerControllers${i + 1}":
+                                                                    TabberEIimageofStringerControllers[
+                                                                            i]
+                                                                        .text,
+                                                              });
+                                                            }
+
+                                                            sample4Controller =
+                                                                [];
+                                                            for (int i = 0;
+                                                                i <
+                                                                    numberOfStringers4 *
+                                                                        5;
+                                                                i++) {
+                                                              sample4Controller
+                                                                  .add({
+                                                                "TabberVerificationofsilderingControllers${i + 1}":
+                                                                    TabberVerificationofsilderingControllers[
+                                                                            i]
+                                                                        .text,
+                                                              });
+                                                            }
+                                                            if (status !=
+                                                                'Pending') {
+                                                              setState(() {
+                                                                sendStatus =
+                                                                    'Inprogress';
+                                                              });
+                                                              sendDataToBackend();
+                                                            }
+                                                            // _tabberFormKey
+                                                            //     .currentState!
+                                                            //     .save;
+                                                            // if (_tabberFormKey
+                                                            //     .currentState!
+                                                            //     .validate()) {}
+
+                                                            setState(() {
+                                                              setPage =
+                                                                  "Auto String Layup";
+                                                            });
+                                                            // createData();
+                                                            print("Page set");
+                                                            print(setPage);
+                                                          },
+                                                          label: "Next",
+                                                          organization: '',
+                                                        ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+
+                                                  // Back button
+                                                  Center(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            setPage =
+                                                                'Cell Loading';
+                                                          });
+                                                          // Navigator.of(context).pushReplacement(
+                                                          //     MaterialPageRoute(
+                                                          //         builder: (BuildContext context) =>
+                                                          //             LoginPage(
+                                                          //                 appName: widget.appName)));
+                                                        },
+                                                        child: const Text(
+                                                          "BACK",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  appFontFamily,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: AppColors
+                                                                  .redColor),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 25,
+                                                  ),
+
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    child: const Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          "Powered By Gautam Solar Pvt. Ltd.",
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontFamily:
+                                                                appFontFamily,
+                                                            color: AppColors
+                                                                .greyColor,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : setPage == "Auto String Layup"
+                                        // Auto String Layup start
+                                        ? Stack(
+                                            alignment: Alignment.center,
+                                            fit: StackFit.expand,
+                                            children: [
+                                              SingleChildScrollView(
+                                                child: Form(
+                                                  key: _preLamFormKey,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Image.asset(
+                                                              AppAssets.imgLogo,
+                                                              height: 100,
+                                                              width: 230,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const Center(
+                                                          child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 10),
+                                                              child: Text(
+                                                                  "Incoming Production Quality Control",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          27,
+                                                                      color: AppColors
+                                                                          .black,
+                                                                      fontFamily:
+                                                                          appFontFamily,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700)))),
+                                                      const Center(
+                                                          child: Text(
+                                                              "(Pre Lam prelam Checklist)",
+                                                              style: TextStyle(
+                                                                  fontSize: 20,
+                                                                  color:
+                                                                      AppColors
+                                                                          .black,
+                                                                  fontFamily:
+                                                                      appFontFamily,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700))),
+                                                      const SizedBox(
+                                                        height: 35,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            'Document No : ',
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Text(
+                                                            'GSPL/prelam/IPC/003',
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 8,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            'Rev.No. / Rev. Date : ',
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Text(
+                                                            'Ver.1.0 / 20-08-2023',
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                        ],
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      const Center(
+                                                          child: Text(
+                                                              "Auto String Layup",
+                                                              style: TextStyle(
+                                                                  fontSize: 20,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          13,
+                                                                          160,
+                                                                          0),
+                                                                  fontFamily:
+                                                                      appFontFamily,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700))),
+
+                                                      // **********  start Tabber ***********
+
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      //
+
+                                                      Divider(
+                                                        color: Colors.black,
+                                                        thickness: 2,
+                                                        height: 20,
+                                                      ),
+
+                                                      Text(
+                                                        "Frequency",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoCellFrequencyController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Once per Shift",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: true,
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Text(
+                                                        "Cell to cell gap",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoCellController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Enter the Cell to cell gap.",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Correct Cell to cell gap",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      Text(
+                                                        "Acceptance Criteria",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoCellCriteriaController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText: "None",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: true,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      // *** Time
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      Text(
+                                                        "Time",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+
+                                                      // TextFormField(
+                                                      //   controller:
+                                                      //       AutoTimeController,
+                                                      //   keyboardType:
+                                                      //       TextInputType.text,
+                                                      //   textInputAction:
+                                                      //       TextInputAction
+                                                      //           .next,
+                                                      //   decoration: AppStyles
+                                                      //       .textFieldInputDecoration
+                                                      //       .copyWith(
+                                                      //     hintText: "Time ",
+                                                      //     counterText: '',
+                                                      //   ),
+                                                      //   style: AppStyles
+                                                      //       .textInputTextStyle,
+                                                      //   validator:
+                                                      //       MultiValidator(
+                                                      //     [
+                                                      //       RequiredValidator(
+                                                      //         errorText:
+                                                      //             "Please Enter Correct Time",
+                                                      //       ),
+                                                      //     ],
+                                                      //   ),
+                                                      // ),
+
+                                                      // const SizedBox(
+                                                      //   height: 15,
+                                                      // ),
+
+                                                      Divider(
+                                                        color: Colors.black,
+                                                        thickness: 2,
+                                                        height: 20,
+                                                      ),
+
+                                                      Text(
+                                                        "Frequency",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoStringFrequencyController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Once per Shift",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: true,
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Text(
+                                                        "String to String Gap",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoStringController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Enter the String to String Gap",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Correct String to String Gap",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      Text(
+                                                        "Acceptance Criteria",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoStringCriteriaController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText: "None",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: true,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      Divider(
+                                                        color: Colors.black,
+                                                        thickness: 2,
+                                                        height: 20,
+                                                      ),
+
+                                                      Text(
+                                                        "Frequency",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoCelledgeFrequencyController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Once per Shift",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: true,
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Text(
+                                                        "Cell edge to glass edge(Top, bottom & sides)",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoCelledController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Enter the Cell edge to glass edge(Top, bottom & sides)",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Correct Cell edge to glass edge(Top, bottom & sides)",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      Text(
+                                                        "Acceptance Criteria",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoCellEdgeCriteriaController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText: "None",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: true,
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      // *** Remark
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      Text(
+                                                        "Remark",
+                                                        style: AppStyles
+                                                            .textfieldCaptionTextStyle,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+
+                                                      TextFormField(
+                                                        controller:
+                                                            AutoStringerRemarkController,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText: "Remark ",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Correct data",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+
+                                                      Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 10, 0, 0)),
+                                                      _isLoading
+                                                          ? Center(
+                                                              child:
+                                                                  CircularProgressIndicator())
+                                                          : AppButton(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: AppColors
+                                                                    .white,
+                                                                fontSize: 16,
+                                                              ),
+                                                              onTap: () {
+                                                                AppHelper
+                                                                    .hideKeyboard(
+                                                                        context);
+                                                                sendDataToBackend(); //100
+
+                                                                // _autoStringFormKey
+                                                                //     .currentState!
+                                                                //     .save;
+                                                                // if (_autoStringFormKey
+                                                                //     .currentState!
+                                                                //     .validate()) {}
+                                                                setState(() {
+                                                                  setPage =
+                                                                      "Auto Bussing & Tapping";
+                                                                  sendStatus =
+                                                                      "Inprogress";
+                                                                });
+                                                                // createData();
+                                                                print(
+                                                                    "Page set");
+                                                                print(setPage);
+                                                              },
+                                                              label: "Next",
+                                                              organization: '',
+                                                            ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      // Back button
+                                                      Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                setPage =
+                                                                    'Tabber & Stringer';
+                                                              });
+                                                              // Navigator.of(context).pushReplacement(
+                                                              //     MaterialPageRoute(
+                                                              //         builder: (BuildContext context) =>
+                                                              //             LoginPage(
+                                                              //                 appName: widget.appName)));
+                                                            },
+                                                            child: const Text(
+                                                              "BACK",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      appFontFamily,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: AppColors
+                                                                      .redColor),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 25,
+                                                      ),
+                                                      Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: const Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              "Powered By Gautam Solar Pvt. Ltd.",
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontFamily:
+                                                                    appFontFamily,
+                                                                color: AppColors
+                                                                    .greyColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : setPage == "Auto Bussing & Tapping"
+                                            // Auto Bussing & Tapping
+                                            ? Stack(
+                                                alignment: Alignment.center,
+                                                fit: StackFit.expand,
+                                                children: [
+                                                  SingleChildScrollView(
+                                                    child: Form(
+                                                      key: _preLamFormKey,
+                                                      autovalidateMode:
+                                                          AutovalidateMode
+                                                              .onUserInteraction,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Image.asset(
+                                                                  AppAssets
+                                                                      .imgLogo,
+                                                                  height: 100,
+                                                                  width: 230,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const Center(
+                                                              child: Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          top:
+                                                                              10),
+                                                                  child: Text(
+                                                                      "Incoming Production Quality Control",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              27,
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontFamily:
+                                                                              appFontFamily,
+                                                                          fontWeight:
+                                                                              FontWeight.w700)))),
+                                                          const Center(
+                                                              child: Text(
+                                                                  "(Pre Lam prelam Checklist)",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          20,
+                                                                      color: AppColors
+                                                                          .black,
+                                                                      fontFamily:
+                                                                          appFontFamily,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700))),
+                                                          const SizedBox(
+                                                            height: 35,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                'Document No : ',
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              Text(
+                                                                'GSPL/prelam/IPC/003',
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 8,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                'Rev.No. / Rev. Date : ',
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 8,
+                                                              ),
+                                                              Text(
+                                                                'Ver.1.0 / 20-08-2023',
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const Center(
+                                                              child: Text(
+                                                                  "Auto Bussing & Tapping",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          20,
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          13,
+                                                                          160,
+                                                                          0),
+                                                                      fontFamily:
+                                                                          appFontFamily,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700))),
+
+                                                          // **********  start Auto Bussing & Tapping ***********
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          //
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoSolderingFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Once per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Soldering Peel strength between Ribbon to bushbar interconnector",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoSolderingController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the Soldering Peel strength between Ribbon to bushbar interconnector",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct Soldering Peel strength between Ribbon to bushbar interconnector",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoSolderingCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  ">=4N | Refer",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoTerminalFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Thrice per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Terminal busbar to edge of cell",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoTerminalStringController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the Terminal busbar to edge of cell",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct Terminal busbar to edge of cell",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoTerminalCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "As per respective Layup Drawing",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoSolderingQualityFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Thrice per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "soldering quality of Ribbon to busbar",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoSolderingQualityController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the soldering quality of Ribbon to busbar",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct soldering quality of Ribbon to busbar",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoSolderingQualityCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "No Dry Soldering",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoClearanceFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Thrice per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Clearance between RFID&Logo patch to cell in module",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoClearanceController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the Clearance between RFID&Logo patch to cell in module",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoClearanceCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Should not be 2mm-4mm gapfrom the cell to the patch",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoPositionFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Thrice per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Position verification of RFID& Logo Patch on Module",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoPositionController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the Position verification of RFID& Logo Patch on Module",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct Position verification of RFID& Logo Patch on Module",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoPositionCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Shiould not be tilt,Busbar should not visible",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoTopFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Thrice per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoTopController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoTopCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Creepage distance should be 16+-1mm",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoqualityofFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Once per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Quality of auto taping",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoQualityController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the  Quality of auto taping",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct Quality of auto taping",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoQualityCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "No poor taping,cell shifting,cell breakage",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Divider(
+                                                            color: Colors.black,
+                                                            thickness: 2,
+                                                            height: 20,
+                                                          ),
+
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoAvaibilityFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Once per Shift",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Avaibility of specification & WI",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoAvaibilityController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Enter the Avaibility of specification & WI",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct Avaibility of specification & WI",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Acceptance Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoAvaibilityCriteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Avaibility of specification & WI & operator should be aware of specification ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          // *** Remark
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Remark",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+
+                                                          TextFormField(
+                                                            controller:
+                                                                AutoBussingRemarkController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Remark ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Correct data",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          0,
+                                                                          10,
+                                                                          0,
+                                                                          0)),
+                                                          _isLoading
+                                                              ? Center(
+                                                                  child:
+                                                                      CircularProgressIndicator())
+                                                              : AppButton(
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    color: AppColors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        16,
+                                                                  ),
+                                                                  onTap: () {
+                                                                    AppHelper
+                                                                        .hideKeyboard(
+                                                                            context);
+                                                                    if (status !=
+                                                                        'Pending') {
+                                                                      setState(
+                                                                          () {
+                                                                        sendStatus =
+                                                                            'Inprogress';
+                                                                      });
+                                                                      sendDataToBackend();
+                                                                    } //100
+
+                                                                    // _autoBussingFormKey
+                                                                    //     .currentState!
+                                                                    //     .save;
+                                                                    // if (_autoBussingFormKey
+                                                                    //     .currentState!
+                                                                    //     .validate()) {}
+                                                                    setState(
+                                                                        () {
+                                                                      setPage =
+                                                                          "EVA/Backsheet Cutting";
+                                                                    });
+                                                                    // createData();
+                                                                    print(
+                                                                        "Page set");
+                                                                    print(
+                                                                        setPage);
+                                                                  },
+                                                                  label: "Next",
+                                                                  organization:
+                                                                      '',
+                                                                ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          // Back button
+                                                          Center(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    setPage =
+                                                                        'Auto String Layup';
+                                                                  });
+                                                                  // Navigator.of(context).pushReplacement(
+                                                                  //     MaterialPageRoute(
+                                                                  //         builder: (BuildContext context) =>
+                                                                  //             LoginPage(
+                                                                  //                 appName: widget.appName)));
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                  "BACK",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          appFontFamily,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: AppColors
+                                                                          .redColor),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 25,
+                                                          ),
+                                                          Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: const Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Text(
+                                                                  "Powered By Gautam Solar Pvt. Ltd.",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontFamily:
+                                                                        appFontFamily,
+                                                                    color: AppColors
+                                                                        .greyColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : setPage == "EVA/Backsheet Cutting"
+                                                // EVA/Backsheet Cutting
+                                                ? Stack(
+                                                    alignment: Alignment.center,
+                                                    fit: StackFit.expand,
+                                                    children: [
+                                                      SingleChildScrollView(
+                                                        child: Form(
+                                                          key: _preLamFormKey,
+                                                          autovalidateMode:
+                                                              AutovalidateMode
+                                                                  .onUserInteraction,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: <Widget>[
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Image.asset(
+                                                                      AppAssets
+                                                                          .imgLogo,
+                                                                      height:
+                                                                          100,
+                                                                      width:
+                                                                          230,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const Center(
+                                                                  child: Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          top:
+                                                                              10),
+                                                                      child: Text(
+                                                                          "Incoming Production Quality Control",
+                                                                          style: TextStyle(
+                                                                              fontSize: 27,
+                                                                              color: AppColors.black,
+                                                                              fontFamily: appFontFamily,
+                                                                              fontWeight: FontWeight.w700)))),
+                                                              const Center(
+                                                                  child: Text(
+                                                                      "(Pre Lam IPQC Checklist)",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              20,
+                                                                          color: AppColors
+                                                                              .black,
+                                                                          fontFamily:
+                                                                              appFontFamily,
+                                                                          fontWeight:
+                                                                              FontWeight.w700))),
+                                                              const SizedBox(
+                                                                height: 35,
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    'Document No : ',
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 8,
+                                                                  ),
+                                                                  Text(
+                                                                    'GSPL/IPQC/IPC/003',
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 8,
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    'Rev.No. / Rev. Date : ',
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 8,
+                                                                  ),
+                                                                  Text(
+                                                                    'Ver.2.0 / 20-03-2024',
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              const Center(
+                                                                  child: Text(
+                                                                      "EVA/Backsheet Cutting",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              20,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              13,
+                                                                              160,
+                                                                              0),
+                                                                          fontFamily:
+                                                                              appFontFamily,
+                                                                          fontWeight:
+                                                                              FontWeight.w700))),
+
+                                                              // **********  start EVA/Backsheet Cutting ***********
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 2,
+                                                                height: 20,
+                                                              ),
+
+                                                              Text(
+                                                                "Frequency",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVARearFrequencyController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Once per Shift",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              Text(
+                                                                "Rear EVA dimension & sift cutting width(mm)",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVARearController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Enter the  Rear EVA dimension & sift cutting width(mm)",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Correct Rear EVA dimension & sift cutting width(mm)",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Acceptance Criteria",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVARearCriteriaController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "As per Specification GSPL/EVA(IQC)/001 & production order",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 2,
+                                                                height: 20,
+                                                              ),
+
+                                                              Text(
+                                                                "Frequency",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVABackFrequencyController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Once per Shift",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              Text(
+                                                                "Back-sheet dimension& slit cutting diameter",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVABackController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Enter the Back-sheet dimension& slit cutting diameter",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Correct Back-sheet dimension& slit cutting diameter",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Acceptance Criteria",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVABackCriteriaController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "As per Specification GSPL/BS(IQC)/001 & production order",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 2,
+                                                                height: 20,
+                                                              ),
+
+                                                              Text(
+                                                                "Frequency",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVACuttingFrequencyController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Once per Shift",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              Text(
+                                                                "cutting Edge of Rear EVA & Backsheet on Glass",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVAcuttingController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Enter the cutting Edge of Rear EVA & Backsheet on Glass",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Correct cutting Edge of Rear EVA & Backsheet on Glass",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Acceptance Criteria",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVACuttingCriteriaController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Should not be uneven",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 2,
+                                                                height: 20,
+                                                              ),
+
+                                                              Text(
+                                                                "Frequency",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVAPositionFrequencyController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Once per Shift",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              Text(
+                                                                "Position of Back EVA & Backsheet on Glass",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVAPositionController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Enter the Position of Back EVA & Backsheet on Glass",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Correct Position of Back EVA & Backsheet on Glass",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Acceptance Criteria",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVAPositionCriteriaController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Shifting of EVA on Glass not allowed",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 2,
+                                                                height: 20,
+                                                              ),
+
+                                                              Text(
+                                                                "Frequency",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVAAvaibilityFrequencyController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Once per Shift",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              Text(
+                                                                "Avaibility of specification&wI.",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVAAvaibilityController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Enter the Avaibility of specification&wI.",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Correct Avaibility of specification&wI.",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Acceptance Criteria",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVAAvaibilityCriteriaController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Avaibility of Specification & WI & operator should be",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Divider(
+                                                                color: Colors
+                                                                    .black,
+                                                                thickness: 2,
+                                                                height: 20,
+                                                              ),
+
+                                                              // *** Remark
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Remark",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 5,
+                                                              ),
+
+                                                              TextFormField(
+                                                                controller:
+                                                                    EVABacksheetRemarkController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Remark ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Correct data",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Padding(
+                                                                  padding: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          0,
+                                                                          10,
+                                                                          0,
+                                                                          0)),
+                                                              _isLoading
+                                                                  ? Center(
+                                                                      child:
+                                                                          CircularProgressIndicator())
+                                                                  : AppButton(
+                                                                      textStyle:
+                                                                          const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        color: AppColors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16,
+                                                                      ),
+                                                                      onTap:
+                                                                          () {
+                                                                        AppHelper.hideKeyboard(
+                                                                            context);
+                                                                        if (status !=
+                                                                            'Pending') {
+                                                                          setState(
+                                                                              () {
+                                                                            sendStatus =
+                                                                                'Inprogress';
+                                                                          });
+                                                                          sendDataToBackend();
+                                                                        } //100
+
+                                                                        // _evaFormKey
+                                                                        //     .currentState!
+                                                                        //     .save;
+                                                                        // if (_evaFormKey
+                                                                        //     .currentState!
+                                                                        //     .validate()) {}
+                                                                        setState(
+                                                                            () {
+                                                                          setPage =
+                                                                              "Pre Lamination El & Visual inspection";
+                                                                        });
+                                                                        print(
+                                                                            "Page set");
+                                                                        print(
+                                                                            setPage);
+                                                                      },
+                                                                      label:
+                                                                          "Next",
+                                                                      organization:
+                                                                          '',
+                                                                    ),
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              // Back button
+                                                              Center(
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        setPage =
+                                                                            'Auto Bussing & Tapping';
+                                                                      });
+                                                                      // Navigator.of(context).pushReplacement(
+                                                                      //     MaterialPageRoute(
+                                                                      //         builder: (BuildContext context) =>
+                                                                      //             LoginPage(
+                                                                      //                 appName: widget.appName)));
+                                                                    },
+                                                                    child:
+                                                                        const Text(
+                                                                      "BACK",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              appFontFamily,
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight: FontWeight
+                                                                              .w500,
+                                                                          color:
+                                                                              AppColors.redColor),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 25,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 25,
+                                                              ),
+                                                              Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child:
+                                                                    const Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Powered By Gautam Solar Pvt. Ltd.",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontFamily:
+                                                                            appFontFamily,
+                                                                        color: AppColors
+                                                                            .greyColor,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : setPage ==
+                                                        "Pre Lamination El & Visual inspection"
+                                                    // Pre Lamination El & Visual inspection
+                                                    ? Stack(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        fit: StackFit.expand,
+                                                        children: [
+                                                          SingleChildScrollView(
+                                                            child: Form(
+                                                              key:
+                                                                  _preLamFormKey,
+                                                              autovalidateMode:
+                                                                  AutovalidateMode
+                                                                      .onUserInteraction,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: <Widget>[
+                                                                  Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Image
+                                                                            .asset(
+                                                                          AppAssets
+                                                                              .imgLogo,
+                                                                          height:
+                                                                              100,
+                                                                          width:
+                                                                              230,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  const Center(
+                                                                      child: Padding(
+                                                                          padding: EdgeInsets.only(
+                                                                              top:
+                                                                                  10),
+                                                                          child: Text(
+                                                                              "Incoming Production Quality Control",
+                                                                              style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
+                                                                  const Center(
+                                                                      child: Text(
+                                                                          "(Pre Lam IPQC Checklist)",
+                                                                          style: TextStyle(
+                                                                              fontSize: 20,
+                                                                              color: AppColors.black,
+                                                                              fontFamily: appFontFamily,
+                                                                              fontWeight: FontWeight.w700))),
+                                                                  const SizedBox(
+                                                                    height: 35,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        'Document No : ',
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            8,
+                                                                      ),
+                                                                      Text(
+                                                                        'GSPL/IPQC/IPC/003',
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 8,
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        'Rev.No. / Rev. Date : ',
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            8,
+                                                                      ),
+                                                                      Text(
+                                                                        'Ver.2.0 / 20-03-2024',
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+
+// **************  "Pre Lamination El & Visual inspection  *****************
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  const Center(
+                                                                      child: Text(
+                                                                          "Pre Lamination El & Visual inspection ",
+                                                                          style: TextStyle(
+                                                                              fontSize: 20,
+                                                                              color: Color.fromARGB(255, 13, 160, 0),
+                                                                              fontFamily: appFontFamily,
+                                                                              fontWeight: FontWeight.w700))),
+
+                                                                  // **********  start Pre Lamination El & Visual inspection  ***********
+
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  Divider(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    thickness:
+                                                                        2,
+                                                                    height: 20,
+                                                                  ),
+
+                                                                  Text(
+                                                                    "Frequency",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationEIinspectionFrequencyController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "5 Pieces Per Shift ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly:
+                                                                        true,
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    "How many Stringers",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          5),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationEInumberOfStringersController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .number,
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      setState(
+                                                                          () {
+                                                                        numberOfStringers5 =
+                                                                            int.tryParse(value) ??
+                                                                                0;
+                                                                        addPreLaminationEIControllers(
+                                                                            numberOfStringers5 *
+                                                                                5);
+                                                                      });
+                                                                    },
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Enter the number of Stringers",
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          20),
+                                                                  ListView
+                                                                      .builder(
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    physics:
+                                                                        NeverScrollableScrollPhysics(),
+                                                                    itemCount:
+                                                                        numberOfStringers5 *
+                                                                            5,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      int stringerIndex =
+                                                                          (index ~/ 5) +
+                                                                              1;
+                                                                      int textFieldIndex =
+                                                                          index %
+                                                                              5;
+                                                                      return Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          if (textFieldIndex ==
+                                                                              0)
+                                                                            Text(
+                                                                              "Stringer $stringerIndex",
+                                                                              style: AppStyles.textInputTextStyle.copyWith(
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                          SizedBox(
+                                                                              height: 5),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                PreLaminationEIinspectionrControllers[index],
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Remarks",
+                                                                              counterText: '',
+                                                                              contentPadding: EdgeInsets.all(10),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                (value) {
+                                                                              if (value == null || value.isEmpty) {
+                                                                                return 'Please Enter Remarks.';
+                                                                              }
+                                                                              return null;
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    },
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    "EI Inspection",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationEIinspectionController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Enter the EI Inspection",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Correct EI Inspection",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+
+                                                                  Text(
+                                                                    "Acceptance Criteria",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationEIinspectionCriteriaController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "EI image should fulfil the EL Acceptance Critoria ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly:
+                                                                        true,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  Divider(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    thickness:
+                                                                        2,
+                                                                    height: 20,
+                                                                  ),
+
+                                                                  Text(
+                                                                    "Frequency",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationVisualFrequencyController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "5 Pieces Per Shift ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly:
+                                                                        true,
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    "How many Stringers",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          5),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationVisualnumberOfStringersController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .number,
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      setState(
+                                                                          () {
+                                                                        numberOfStringers6 =
+                                                                            int.tryParse(value) ??
+                                                                                0;
+                                                                        addPreLaminationVisualControllers(
+                                                                            numberOfStringers6 *
+                                                                                5);
+                                                                      });
+                                                                    },
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Enter the number of Stringers",
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          20),
+                                                                  ListView
+                                                                      .builder(
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    physics:
+                                                                        NeverScrollableScrollPhysics(),
+                                                                    itemCount:
+                                                                        numberOfStringers6 *
+                                                                            5,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      int stringerIndex =
+                                                                          (index ~/ 5) +
+                                                                              1;
+                                                                      int textFieldIndex =
+                                                                          index %
+                                                                              5;
+                                                                      return Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          if (textFieldIndex ==
+                                                                              0)
+                                                                            Text(
+                                                                              "Stringer $stringerIndex",
+                                                                              style: AppStyles.textInputTextStyle.copyWith(
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                          SizedBox(
+                                                                              height: 5),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                PreLaminationVisualinspectionrControllers[index],
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter stringer",
+                                                                              counterText: '',
+                                                                              contentPadding: EdgeInsets.all(10),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                (value) {
+                                                                              if (value == null || value.isEmpty) {
+                                                                                return 'Please Enter Stringer.';
+                                                                              }
+                                                                              return null;
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    },
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    "Visual Inspection",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationVisualinspectionController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Enter the Visual Inspection",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Correct Visual Inspection",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+
+                                                                  Text(
+                                                                    "Acceptance Criteria",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationVisualinspectionCriteriaController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Visual image should fulfil the Visual Acceptance Critoria as per GSPL/IPQC/EL/020",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly:
+                                                                        true,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+
+                                                                  Divider(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    thickness:
+                                                                        2,
+                                                                    height: 20,
+                                                                  ),
+
+                                                                  Text(
+                                                                    "Frequency",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationAvaibilityFrequencyController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Once per Shift",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly:
+                                                                        true,
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    "Avaibility of acceptance Criteria & wI.",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationAvaibilityController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Enter the Avaibility of acceptance Criteria & wI.",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Correct Avaibility of acceptance Criteria & wI.",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+
+                                                                  Text(
+                                                                    "Acceptance Criteria",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationAvaibilityWIController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Avaibility of Acceptance Criteria and operator should be aware of Criteria",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly:
+                                                                        true,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+
+                                                                  //  *** Remark
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+
+                                                                  Text(
+                                                                    "Remark",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        PreLaminationELRemarkController,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Remark ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Correct data",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  Padding(
+                                                                      padding: EdgeInsets
+                                                                          .fromLTRB(
+                                                                              0,
+                                                                              10,
+                                                                              0,
+                                                                              0)),
+                                                                  _isLoading
+                                                                      ? Center(
+                                                                          child:
+                                                                              CircularProgressIndicator())
+                                                                      : AppButton(
+                                                                          textStyle:
+                                                                              const TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.w700,
+                                                                            color:
+                                                                                AppColors.white,
+                                                                            fontSize:
+                                                                                16,
+                                                                          ),
+                                                                          onTap:
+                                                                              () {
+                                                                            AppHelper.hideKeyboard(context);
+
+                                                                            sample5Controller =
+                                                                                [];
+                                                                            for (int i = 0;
+                                                                                i < numberOfStringers5 * 5;
+                                                                                i++) {
+                                                                              sample5Controller.add({
+                                                                                "PreLaminationEIinspectionrControllers${i + 1}": PreLaminationEIinspectionrControllers[i].text,
+                                                                              });
+                                                                            }
+
+                                                                            sample6Controller =
+                                                                                [];
+                                                                            for (int i = 0;
+                                                                                i < numberOfStringers6 * 5;
+                                                                                i++) {
+                                                                              sample6Controller.add({
+                                                                                "PreLaminationVisualinspectionrControllers${i + 1}": PreLaminationVisualinspectionrControllers[i].text,
+                                                                              });
+                                                                            }
+                                                                            if (status !=
+                                                                                'Pending') {
+                                                                              setState(() {
+                                                                                sendStatus = 'Inprogress';
+                                                                              });
+                                                                              sendDataToBackend();
+                                                                            } //100
+
+                                                                            // _preLaminatorFormKey.currentState!.save;
+                                                                            // if (_preLaminatorFormKey.currentState!.validate()) {}
+                                                                            setState(() {
+                                                                              setPage = "String Rework Station";
+                                                                            });
+                                                                            print("Page set");
+                                                                            print(setPage);
+                                                                          },
+                                                                          label:
+                                                                              "Next",
+                                                                          organization:
+                                                                              '',
+                                                                        ),
+                                                                  const SizedBox(
+                                                                    height: 10,
+                                                                  ),
+
+// Back button
+                                                                  // const SizedBox(
+                                                                  //   height: 15,
+                                                                  // ),
+                                                                  // AppButton(
+                                                                  //   textStyle:
+                                                                  //       const TextStyle(
+                                                                  //     fontWeight:
+                                                                  //         FontWeight
+                                                                  //             .w700,
+                                                                  //     color: AppColors
+                                                                  //         .white,
+                                                                  //     fontSize:
+                                                                  //         16,
+                                                                  //   ),
+                                                                  //   onTap: () {
+                                                                  //     AppHelper
+                                                                  //         .hideKeyboard(
+                                                                  //             context);
+
+                                                                  //     setState(
+                                                                  //         () {
+                                                                  //       setPage =
+                                                                  //           'EVA/Backsheet Cutting';
+                                                                  //     });
+                                                                  //     print(
+                                                                  //         "Page set");
+                                                                  //     print(
+                                                                  //         setPage);
+                                                                  //   },
+                                                                  //   label:
+                                                                  //       "Back",
+                                                                  //   organization:
+                                                                  //       '',
+                                                                  // ),
+                                                                  // const SizedBox(
+                                                                  //   height: 10,
+                                                                  // ),
+                                                                  // const SizedBox(
+                                                                  //   height: 25,
+                                                                  // ),
+                                                                  // Back button
+                                                                  Center(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                      child:
+                                                                          InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            // setPage = 'glassSide';
+                                                                          });
+                                                                          // Navigator.of(context).pushReplacement(
+                                                                          //     MaterialPageRoute(
+                                                                          //         builder: (BuildContext context) =>
+                                                                          //             LoginPage(
+                                                                          //                 appName: widget.appName)));
+                                                                        },
+                                                                        child:
+                                                                            const Text(
+                                                                          "BACK",
+                                                                          style: TextStyle(
+                                                                              fontFamily: appFontFamily,
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.w500,
+                                                                              color: AppColors.redColor),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 25,
+                                                                  ),
+
+                                                                  Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        const Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Text(
+                                                                          "Powered By Gautam Solar Pvt. Ltd.",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontFamily:
+                                                                                appFontFamily,
+                                                                            color:
+                                                                                AppColors.greyColor,
+                                                                            fontWeight:
+                                                                                FontWeight.w400,
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              10,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : setPage ==
+                                                            "String Rework Station"
+                                                        // String Rework Station start
+                                                        ? Stack(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            fit:
+                                                                StackFit.expand,
+                                                            children: [
+                                                              SingleChildScrollView(
+                                                                child: Form(
+                                                                  key:
+                                                                      _preLamFormKey,
+                                                                  autovalidateMode:
+                                                                      AutovalidateMode
+                                                                          .onUserInteraction,
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: <Widget>[
+                                                                      Container(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.center,
+                                                                          children: [
+                                                                            Image.asset(
+                                                                              AppAssets.imgLogo,
+                                                                              height: 100,
+                                                                              width: 230,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      const Center(
+                                                                          child: Padding(
+                                                                              padding: EdgeInsets.only(top: 10),
+                                                                              child: Text("Incoming Production Quality Control", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
+                                                                      const Center(
+                                                                          child: Text(
+                                                                              "(Pre Lam IPQC Checklist)",
+                                                                              style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            35,
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            'Document No : ',
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                8,
+                                                                          ),
+                                                                          Text(
+                                                                            'GSPL/IPQC/IPC/003',
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            8,
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            'Rev.No. / Rev. Date : ',
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                8,
+                                                                          ),
+                                                                          Text(
+                                                                            'Ver.2.0 / 20-03-2024',
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+
+// ************** String Rework Station *****************
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      const Center(
+                                                                          child: Text(
+                                                                              "String Rework Station",
+                                                                              style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Frequency",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            StringAvaibilityFrequencyController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Once a Shift",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            20,
+                                                                      ),
+                                                                      Text(
+                                                                        "Avaibility of Work instruction(WI)",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            StringAvaibilityController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Enter the Avaibility of Work instruction(WI)",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            MultiValidator(
+                                                                          [
+                                                                            RequiredValidator(
+                                                                              errorText: "Please Enter Correct Avaibility of Work instruction(WI)",
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Acceptance Criteria",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            StringAvaibilityCriteriaController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "WI Should be available at station and operator should be aware of WI",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Divider(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        thickness:
+                                                                            2,
+                                                                        height:
+                                                                            20,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Frequency",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            StringCleaningFrequencyController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Once a Shift",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            20,
+                                                                      ),
+                                                                      Text(
+                                                                        "Cleaning of Rework station/soldering iron sponge",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            StringCleaningController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Enter the Cleaning of Rework station/soldering iron sponge",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            MultiValidator(
+                                                                          [
+                                                                            RequiredValidator(
+                                                                              errorText: "Please Enter Correct Cleaning of Rework station/soldering iron sponge",
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Acceptance Criteria",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            StringCleaningCriteriaController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Rework Station should be Clean",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      // *** Remark
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Remark",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            StringReworkRemarkController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Remark ",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            MultiValidator(
+                                                                          [
+                                                                            RequiredValidator(
+                                                                              errorText: "Please Enter Correct data",
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Padding(
+                                                                          padding: EdgeInsets.fromLTRB(
+                                                                              0,
+                                                                              10,
+                                                                              0,
+                                                                              0)),
+                                                                      _isLoading
+                                                                          ? Center(
+                                                                              child: CircularProgressIndicator())
+                                                                          : AppButton(
+                                                                              textStyle: const TextStyle(
+                                                                                fontWeight: FontWeight.w700,
+                                                                                color: AppColors.white,
+                                                                                fontSize: 16,
+                                                                              ),
+                                                                              onTap: () {
+                                                                                AppHelper.hideKeyboard(context);
+                                                                                if (status != 'Pending') {
+                                                                                  setState(() {
+                                                                                    sendStatus = 'Inprogress';
+                                                                                  });
+                                                                                  sendDataToBackend();
+                                                                                }
+                                                                                // _stringFormKey.currentState!.save;
+                                                                                // if (_stringFormKey.currentState!.validate()) {}
+                                                                                setState(() {
+                                                                                  setPage = "Module Rework Station";
+                                                                                  sendStatus = "Inprogress";
+                                                                                });
+                                                                                // createData();
+                                                                                print("Page set");
+                                                                                print(setPage);
+                                                                              },
+                                                                              label: "Next",
+                                                                              organization: '',
+                                                                            ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+
+                                                                      // Back button
+                                                                      Center(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets
+                                                                              .all(
+                                                                              8.0),
+                                                                          child:
+                                                                              InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              setState(() {
+                                                                                // setPage = 'glassSide';
+                                                                              });
+                                                                              // Navigator.of(context).pushReplacement(
+                                                                              //     MaterialPageRoute(
+                                                                              //         builder: (BuildContext context) =>
+                                                                              //             LoginPage(
+                                                                              //                 appName: widget.appName)));
+                                                                            },
+                                                                            child:
+                                                                                const Text(
+                                                                              "BACK",
+                                                                              style: TextStyle(fontFamily: appFontFamily, fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.redColor),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            25,
+                                                                      ),
+                                                                      Container(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        child:
+                                                                            const Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.center,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Powered By Gautam Solar Pvt. Ltd.",
+                                                                              style: TextStyle(
+                                                                                fontSize: 14,
+                                                                                fontFamily: appFontFamily,
+                                                                                color: AppColors.greyColor,
+                                                                                fontWeight: FontWeight.w400,
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 10,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : setPage ==
+                                                                "Module Rework Station"
+                                                            //   Module Rework Station start
+                                                            ? Stack(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                fit: StackFit
+                                                                    .expand,
+                                                                children: [
+                                                                  SingleChildScrollView(
+                                                                    child: Form(
+                                                                      key:
+                                                                          _preLamFormKey,
+                                                                      autovalidateMode:
+                                                                          AutovalidateMode
+                                                                              .onUserInteraction,
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: <Widget>[
+                                                                          Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            child:
+                                                                                Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                                              children: [
+                                                                                Image.asset(
+                                                                                  AppAssets.imgLogo,
+                                                                                  height: 100,
+                                                                                  width: 230,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          const Center(
+                                                                              child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Production Quality Control", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
+                                                                          const Center(
+                                                                              child: Text("(Pre Lam IPQC Checklist)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                35,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                'Document No : ',
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                width: 8,
+                                                                              ),
+                                                                              Text(
+                                                                                'GSPL/IPQC/IPC/003',
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                8,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                'Rev.No. / Rev. Date : ',
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                width: 8,
+                                                                              ),
+                                                                              Text(
+                                                                                'Ver.2.0 / 20-03-2024',
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                            ],
+                                                                          ),
+
+// ************** Module Rework Station *****************
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+                                                                          const Center(
+                                                                              child: Text("Module Rework Station", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Frequency",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleAvaibilityFrequencyController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Once a Shift",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                20,
+                                                                          ),
+                                                                          Text(
+                                                                            "Avaibility of Work instruction(WI)",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleAvaibilityController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Enter the Avaibility of Work instruction(WI)",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Correct Avaibility of Work instruction(WI)",
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Acceptance Criteria",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleAvaibilityCriteriaController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "WI Should be available at station and operator should be aware of WI",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+                                                                          Divider(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            thickness:
+                                                                                2,
+                                                                            height:
+                                                                                20,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Frequency",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleMethodCleaningFrequencyController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Once a Shift",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                20,
+                                                                          ),
+                                                                          Text(
+                                                                            "Method of Rework",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleMethodCleaningController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Enter the Method of Rework",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Correct Method of Rework",
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Acceptance Criteria",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleMethodCleaningCriteriaController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "As per WI",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          Divider(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            thickness:
+                                                                                2,
+                                                                            height:
+                                                                                20,
+                                                                          ),
+                                                                          Text(
+                                                                            "Frequency",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleHandlingFrequencyController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Once a Shift",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                20,
+                                                                          ),
+                                                                          Text(
+                                                                            "Handling of Modules",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleHandlingController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Enter the Handling of Modules",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Correct Handling of Modules",
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Acceptance Criteria",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleHandlingCriteriaController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Operator Should handle the rework module with both the Hands",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+                                                                          Divider(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            thickness:
+                                                                                2,
+                                                                            height:
+                                                                                20,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Frequency",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleCleaningofReworkFrequencyController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Once a Shift",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                20,
+                                                                          ),
+                                                                          Text(
+                                                                            "Cleaning of Rework station/soldering iron sponge",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleCleaningofReworkController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Enter the Cleaning of Rework station/soldering iron sponge",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Correct Cleaning of Rework station/soldering iron sponge",
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Acceptance Criteria",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleCleaningofReworkCriteriaController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Rework station should be clean",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly:
+                                                                                true,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          // *** Remark
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+
+                                                                          Text(
+                                                                            "Remark",
+                                                                            style:
+                                                                                AppStyles.textfieldCaptionTextStyle,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+
+                                                                          TextFormField(
+                                                                            controller:
+                                                                                ModuleCleaningRemarkController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Remark ",
+                                                                              counterText: '',
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Correct data",
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+                                                                          Padding(
+                                                                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                                                          _isLoading
+                                                                              ? Center(child: CircularProgressIndicator())
+                                                                              : AppButton(
+                                                                                  textStyle: const TextStyle(
+                                                                                    fontWeight: FontWeight.w700,
+                                                                                    color: AppColors.white,
+                                                                                    fontSize: 16,
+                                                                                  ),
+                                                                                  onTap: () {
+                                                                                    AppHelper.hideKeyboard(context);
+                                                                                    if (status != 'Pending') {
+                                                                                      setState(() {
+                                                                                        sendStatus = 'Inprogress';
+                                                                                      });
+                                                                                      sendDataToBackend();
+                                                                                    } //300
+
+                                                                                    // _pmoduleFormKey.currentState!.save;
+                                                                                    // if (_pmoduleFormKey.currentState!.validate()) {}
+                                                                                    setState(() {
+                                                                                      setPage = "Laminator";
+                                                                                    });
+                                                                                    // createData();
+                                                                                    print("Page set");
+                                                                                    print(setPage);
+                                                                                  },
+                                                                                  label: "Next",
+                                                                                  organization: '',
+                                                                                ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                10,
+                                                                          ),
+                                                                          // Back button
+                                                                          // Back button
+                                                                          Center(
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: InkWell(
+                                                                                onTap: () {
+                                                                                  setState(() {
+                                                                                    // setPage = 'glassSide';
+                                                                                  });
+                                                                                  // Navigator.of(context).pushReplacement(
+                                                                                  //     MaterialPageRoute(
+                                                                                  //         builder: (BuildContext context) =>
+                                                                                  //             LoginPage(
+                                                                                  //                 appName: widget.appName)));
+                                                                                },
+                                                                                child: const Text(
+                                                                                  "BACK",
+                                                                                  style: TextStyle(fontFamily: appFontFamily, fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.redColor),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                25,
+                                                                          ),
+                                                                          Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            child:
+                                                                                const Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                                              children: [
+                                                                                Text(
+                                                                                  "Powered By Gautam Solar Pvt. Ltd.",
+                                                                                  style: TextStyle(
+                                                                                    fontSize: 14,
+                                                                                    fontFamily: appFontFamily,
+                                                                                    color: AppColors.greyColor,
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                  ),
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 10,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            : setPage ==
+                                                                    "Laminator"
+                                                                //   Laminator start
+                                                                ? Stack(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    fit: StackFit
+                                                                        .expand,
+                                                                    children: [
+                                                                      SingleChildScrollView(
+                                                                        child:
+                                                                            Form(
+                                                                          key:
+                                                                              _preLamFormKey,
+                                                                          autovalidateMode:
+                                                                              AutovalidateMode.onUserInteraction,
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Container(
+                                                                                alignment: Alignment.center,
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Image.asset(
+                                                                                      AppAssets.imgLogo,
+                                                                                      height: 100,
+                                                                                      width: 230,
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Production Quality Control", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
+                                                                              const Center(child: Text("(Pre Lam IPQC Checklist)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              const SizedBox(
+                                                                                height: 35,
+                                                                              ),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Text(
+                                                                                    'Document No : ',
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    width: 8,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    'GSPL/IPQC/IPC/003',
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 8,
+                                                                              ),
+                                                                              Row(
+                                                                                children: [
+                                                                                  Text(
+                                                                                    'Rev.No. / Rev. Date : ',
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    width: 8,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    'Ver.2.0 / 20-03-2024',
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+
+// ************** Laminator  *****************
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              const Center(child: Text("Laminator", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Frequency",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorMonitoringFrequencyController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Once a Shift",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 20,
+                                                                              ),
+                                                                              Text(
+                                                                                "Monitoring of Laminator Process Parameter",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorMonitoringController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Enter the Monitoring of Laminator Process Parameter",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Correct Monitoring of Laminator Process Parameter",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Acceptance Criteria",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorMonitoringCriteriaController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Laminator specification GSPL/IPQC/LM/008 |  GSPL/IPQC/LM/009 |  GSPL/IPQC/LM/010",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              Divider(
+                                                                                color: Colors.black,
+                                                                                thickness: 2,
+                                                                                height: 20,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Frequency",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorAdhesiveFrequencyController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Once a Shift",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 20,
+                                                                              ),
+                                                                              Text(
+                                                                                "Adhesive on backsheet of the module",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorAdhesiveController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Enter the Adhesive on backsheet of the module",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Correct Adhesive on backsheet of the module",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Acceptance Criteria",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorAdhesiveCriteriaController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Teflon should be clean, No EVA residue is allowed ",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Divider(
+                                                                                color: Colors.black,
+                                                                                thickness: 2,
+                                                                                height: 20,
+                                                                              ),
+                                                                              Text(
+                                                                                "Frequency",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorPeelFrequencyController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "All Position | All Laminator Once a Week",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 20,
+                                                                              ),
+                                                                              Text(
+                                                                                "Peel Adhesive Test",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorPeelController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Enter the Peel Adhesive Test",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Correct Peel Adhesive Test",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Acceptance Criteria",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorPeelCriteriaController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Eva to Glass = 70N/cm EVA to Backsheet >= 80N/cm",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              Divider(
+                                                                                color: Colors.black,
+                                                                                thickness: 2,
+                                                                                height: 20,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Frequency",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorGelFrequencyController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "All Position | All Laminator once a week ",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 20,
+                                                                              ),
+                                                                              Text(
+                                                                                "Gel Content Test",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorGelController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Enter the Gel Content Test",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Correct Gel Content Test",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Acceptance Criteria",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: LaminatorGelCriteriaController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "75 to 95% ",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              // *** Remark
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Text(
+                                                                                "Remark",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+
+                                                                              TextFormField(
+                                                                                controller: LaminatorRemarkController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Remark ",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Correct data",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              Text(
+                                                                                "Reference PDF Document ",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: referencePdfController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                    hintText: "Please Select Reference Pdf",
+                                                                                    suffixIcon: IconButton(
+                                                                                      onPressed: () async {
+                                                                                        if (widget.id != null && widget.id != '' && referencePdfController.text != '') {
+                                                                                          UrlLauncher.launch(referencePdfController.text);
+                                                                                        } else if (status != 'Pending') {
+                                                                                          _pickReferencePDF();
+                                                                                        }
+                                                                                      },
+                                                                                      icon: widget.id != null && widget.id != '' && referencePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.upload_file),
+                                                                                    ),
+                                                                                    counterText: ''),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                maxLines: 1,
+                                                                                readOnly: true,
+                                                                                validator: (value) {
+                                                                                  if (value!.isEmpty) {
+                                                                                    return "Please Select Reference Pdf";
+                                                                                  } else {
+                                                                                    return null;
+                                                                                  }
+                                                                                },
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+
+                                                                              Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                                                              _isLoading
+                                                                                  ? Center(child: CircularProgressIndicator())
+                                                                                  : AppButton(
+                                                                                      textStyle: const TextStyle(
+                                                                                        fontWeight: FontWeight.w700,
+                                                                                        color: AppColors.white,
+                                                                                        fontSize: 16,
+                                                                                      ),
+                                                                                      onTap: () {
+                                                                                        AppHelper.hideKeyboard(context);
+                                                                                        //sendDataToBackend(); //300
+
+                                                                                        _preLamFormKey.currentState!.save;
+                                                                                        if (_preLamFormKey.currentState!.validate()) {
+                                                                                          setState(() {
+                                                                                            // setPage = "Cell Cutting Machine";
+                                                                                            sendStatus = "Pending";
+                                                                                          });
+                                                                                          sendDataToBackend();
+                                                                                        }
+                                                                                      },
+                                                                                      label: "Save",
+                                                                                      organization: '',
+                                                                                    ),
+
+                                                                              const SizedBox(
+                                                                                height: 10,
+                                                                              ),
+                                                                              // Back button
+                                                                              // Back button
+                                                                              Center(
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: InkWell(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        // setPage = 'glassSide';
+                                                                                      });
+                                                                                      // Navigator.of(context).pushReplacement(
+                                                                                      //     MaterialPageRoute(
+                                                                                      //         builder: (BuildContext context) =>
+                                                                                      //             LoginPage(
+                                                                                      //                 appName: widget.appName)));
+                                                                                    },
+                                                                                    child: const Text(
+                                                                                      "BACK",
+                                                                                      style: TextStyle(fontFamily: appFontFamily, fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.redColor),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 25,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 25,
+                                                                              ),
+                                                                              Container(
+                                                                                alignment: Alignment.center,
+                                                                                child: const Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      "Powered By Gautam Solar Pvt. Ltd.",
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 14,
+                                                                                        fontFamily: appFontFamily,
+                                                                                        color: AppColors.greyColor,
+                                                                                        fontWeight: FontWeight.w400,
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 10,
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : Container(),
           ),
           bottomNavigationBar: Container(
             height: 60,

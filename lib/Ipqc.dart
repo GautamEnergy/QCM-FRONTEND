@@ -14,6 +14,7 @@ import 'package:QCM/directory.dart';
 import 'package:QCM/dynamicfield.dart';
 import 'package:QCM/postlam.dart';
 import 'package:QCM/bomcard.dart';
+import 'package:QCM/prelam.dart';
 import 'package:QCM/salaryreports.dart';
 import 'package:flutter/material.dart';
 
@@ -170,10 +171,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'Pre-Lam IPQC Check Sheet', AppAssets.prelam, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => BomCard()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => PreCard()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
@@ -181,10 +182,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'Post-Lam IPQC Check Sheet', AppAssets.postlam, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => Postlam()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Postlam()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
