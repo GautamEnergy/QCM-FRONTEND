@@ -527,7 +527,11 @@ class _BomCardState extends State<BomCard> {
     var Bom = [
       {
         "Type": "BOM Verification",
-        "BOMDetailId": widget.id != '' && widget.id != null ? widget.id : '',
+        "BOMDetailId": BomId != '' && BomId != null
+            ? BomId
+            : widget.id != '' && widget.id != null
+                ? widget.id
+                : '',
         "CurrentUser": personid,
         "Status": sendStatus,
         "DocNo": "GSPL/IPQC/BM/002",
@@ -650,7 +654,7 @@ class _BomCardState extends State<BomCard> {
     );
     print("helllllllllllllllllllllllllllllllllllllooooooooo");
     print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       print("hiiiiiiiiiiiiiiiiiiiiiiiiii");

@@ -8,27 +8,21 @@ import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/dialogs/all_member_list_model.dart';
 import 'package:QCM/ipqcTestList.dart';
 import 'package:dio/dio.dart';
-
 import 'package:file_picker/file_picker.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:intl/intl.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/src/response.dart' as Response;
-
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
 import '../constant/app_color.dart';
 import '../constant/app_fonts.dart';
 import '../constant/app_helper.dart';
-
 import '../constant/app_styles.dart';
 
 class Jobcard extends StatefulWidget {
@@ -358,8 +352,11 @@ class _JobcardState extends State<Jobcard> {
       {
         "JobCardDetails": {
           "Type": "Job Card",
-          "JobCardDetailId":
-              widget.id != '' && widget.id != null ? widget.id : '',
+          "JobCardDetailId": jobCarId != '' && jobCarId != null
+              ? jobCarId
+              : widget.id != '' && widget.id != null
+                  ? widget.id
+                  : '',
           "date": jobCardDate,
           "moduleType": moduleTypeController.text,
           "matrixSize": matrixSizeController.text,

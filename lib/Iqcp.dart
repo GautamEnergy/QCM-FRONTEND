@@ -1,4 +1,5 @@
 import 'package:QCM/AluminiumFrame.dart';
+import 'package:QCM/Backsheet.dart';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Encapsulant.dart';
 import 'package:QCM/Flux.dart';
@@ -256,10 +257,10 @@ class _WelcomePageState extends State<IqcpPage> {
                 Expanded(
                     child: tabDashboard(
                         'Backsheet', AppAssets.imgAttendanceList, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => SalaryReport()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Backsheet()),
+                      (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,
