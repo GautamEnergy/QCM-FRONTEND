@@ -1,18 +1,28 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
+import 'package:QCM/ipqcTestList.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:form_field_validator/form_field_validator.dart';
+
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/src/response.dart' as Response;
 
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
@@ -23,6 +33,8 @@ import '../constant/app_helper.dart';
 import '../constant/app_styles.dart';
 
 class Postlam extends StatefulWidget {
+  final String? id;
+  Postlam({this.id});
   @override
   _PostlamState createState() => _PostlamState();
 }
@@ -35,7 +47,7 @@ class _PostlamState extends State<Postlam> {
   TextEditingController poController = TextEditingController();
 
   /******Trimming **********/
-  final _registerFormKey = GlobalKey<FormState>();
+  final _postLamFormKey = GlobalKey<FormState>();
   TextEditingController trimmingWiCrieteriaController = TextEditingController();
   TextEditingController trimmingWiFrequencyController = TextEditingController();
   TextEditingController trimmingWiController = TextEditingController();
@@ -375,14 +387,27 @@ class _PostlamState extends State<Postlam> {
       TextEditingController();
   TextEditingController packagingStretchObs5Controller =
       TextEditingController();
+  TextEditingController referencePdfController = TextEditingController();
 
   bool menu = false, user = false, face = false, home = false;
   bool _isLoading = false;
-  String setPage = 'trimming', pic = '';
+  String setPage = 'trimming', pic = '', site = '', personid = '';
   String invoiceDate = '';
   String date = '';
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
+  String sendStatus = '';
+  String status = '',
+      prelamId = '',
+      approvalStatus = "Approved",
+      designation = '',
+      token = '',
+      department = '';
+  final _dio = Dio();
+  Response.Response? _response;
+  List data = [];
+  List<int>? referencePdfFileBytes;
+  String dateOfPostLam = '';
 
   @override
   void initState() {
@@ -521,404 +546,931 @@ class _PostlamState extends State<Postlam> {
       packagingStretchFrequencyController.text = "5 Box per Shift";
       packagingStretchCrieteriaController.text = "Should be all around";
     });
+    store();
   }
 
   Future createData() async {
     print('sampleeeeeeeeeeeeeeeeeeeeeeeee');
+    print(sunExpiryController.text);
     print(junctionWiController.text);
+    var data = [
+      {
+        "PreLamDetailId": prelamId != '' && prelamId != null
+            ? prelamId
+            : widget.id != '' && widget.id != null
+                ? widget.id
+                : '',
+        "Type": "PostLam",
+        "CurrentUser": personid,
+        "Status": sendStatus,
+        "DocNo": "GSPL/IPQC/IPC/003",
+        "RevNo": "1.0 dated 12.08.2023",
+        "Date": dateOfPostLam,
+        "Shift": shiftController.text,
+        "Line": lineController.text,
+        "PONo": poController.text
+      },
+      [
+        {
+          "Stage": "Trimming",
+          "CheckPoint": {
+            "Avaibility of WI": trimmingWiController.text,
+            "Physical verification of Union trimming & Blade replacing frequency":
+                {
+              "Observation 1": trimmingPhysicalObs1Controller.text,
+              "Observation 2": trimmingPhysicalObs2Controller.text,
+              "Observation 3": trimmingPhysicalObs3Controller.text,
+              "Observation 4": trimmingPhysicalObs4Controller.text,
+              "Observation 5": trimmingPhysicalObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Avaibility of WI": trimmingWiCrieteriaController.text,
+            "Physical verification of Union trimming & Blade replacing frequency":
+                trimmingPhysicalCriteriaController.text
+          },
+          "Frequency": {
+            "Avaibility of WI": trimmingWiFrequencyController.text,
+            "Physical verification of Union trimming & Blade replacing frequency":
+                trimmingPhysicalFrequencyController.text
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Post Lam Visual Inspection",
+          "CheckPoint": {
+            "Avaibility of WI & criteria": postLamWiController.text,
+            "Visual Defects": {
+              "Observation 1": postLamVisualObs1Controller.text,
+              "Observation 2": postLamVisualObs2Controller.text,
+              "Observation 3": postLamVisualObs3Controller.text,
+              "Observation 4": postLamVisualObs4Controller.text,
+              "Observation 5": postLamVisualObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Avaibility of WI & criteria": postLamWiCrieteriaController.text,
+            "Visual Defects": postLamVisualCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibility of WI & criteria": postLamWiFrequencyController.text,
+            "Visual Defects": postLamVisualFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Framing",
+          "CheckPoint": {
+            "Avaibility of WI & Sealant weight Specification":
+                framingWiController.text,
+            "Glue uniformity & continuity in frame groove": {
+              "Observation 1": framingGlueUniObs1Controller.text,
+              "Observation 2": framingGlueUniObs2Controller.text,
+              "Observation 3": framingGlueUniObs3Controller.text,
+              "Observation 4": framingGlueUniObs4Controller.text,
+              "Observation 5": framingGlueUniObs5Controller.text,
+            },
+            "Glue Weight": framingGlueWeightController.text,
+            "Corner Gap": {
+              "Observation 1": framingCornerObs1Controller.text,
+              "Observation 2": framingCornerObs2Controller.text,
+              "Observation 3": framingCornerObs3Controller.text,
+              "Observation 4": framingCornerObs4Controller.text,
+              "Observation 5": framingCornerObs5Controller.text,
+            },
+            "Top & Buttom cut Length side cut length":
+                framingGlueWeightController.text,
+            "Mounting hole x,y pitch": framingMountingController.text,
+            "Anodizing thicknes": framingAnodizingController.text,
+          },
+          "AcceptanceCriteria": {
+            "Avaibility of WI & Sealant weight Specification":
+                framingWiCrieteriaController.text,
+            "Glue uniformity & continuity in frame groove":
+                framingGlueUniCrieteriaController.text,
+            "Glue Weight": framingGlueWeightCrieteriaController.text,
+            "Corner Gap": framingCornerCrieteriaController.text,
+            "Top & Buttom cut Length side cut length":
+                framingTopCrieteriaController.text,
+            "Mounting hole x,y pitch": framingMountingCrieteriaController.text,
+            "Anodizing thicknes": framingAnodizingCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibility of WI & Sealant weight Specification":
+                framingWiFrequencyController.text,
+            "Glue uniformity & continuity in frame groove":
+                framingGlueUniFrequencyController.text,
+            "Glue Weight": framingGlueWeightFrequencyController.text,
+            "Corner Gap": framingCornerFrequencyController.text,
+            "Top & Buttom cut Length side cut length":
+                framingTopFrequencyController.text,
+            "Mounting hole x,y pitch": framingMountingFrequencyController.text,
+            "Anodizing thicknes": framingAnodizingFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Junction Box Assembly",
+          "CheckPoint": {
+            "Avaibility of WI & sealant weight specification":
+                junctionWiController.text,
+            "Glue around jB": {
+              "Observation 1": junctionGlueObs1Controller.text,
+              "Observation 2": junctionGlueObs2Controller.text,
+              "Observation 3": junctionGlueObs3Controller.text,
+              "Observation 4": junctionGlueObs4Controller.text,
+              "Observation 5": junctionGlueObs5Controller.text,
+            },
+            "JB tilt": {
+              "Observation 1": junctionJbObs1Controller.text,
+              "Observation 2": junctionJbObs2Controller.text,
+              "Observation 3": junctionJbObs3Controller.text,
+              "Observation 4": junctionJbObs4Controller.text,
+              "Observation 5": junctionJbObs5Controller.text,
+            },
+            "Glue Weight": junctionGlueWeightController.text,
+            "Glue(Base+Catalyst)potting Ratio & Weight":
+                junctionGlueRatioController.text,
+          },
+          "AcceptanceCriteria": {
+            "Avaibility of WI & sealant weight specification":
+                junctionWiCrieteriaController.text,
+            "Glue around jB": junctionGlueFrequencyController.text,
+            "JB tilt": junctionJbCrieteriaController.text,
+            "Glue Weight": junctionGlueWeightCrieteriaController.text,
+            "Glue(Base+Catalyst)potting Ratio & Weight":
+                junctionGlueRatioCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibility of WI & sealant weight specification":
+                junctionWiFrequencyController.text,
+            "Glue around jB": junctionGlueFrequencyController.text,
+            "JB tilt": junctionJbFrequencyController.text,
+            "Glue Weight": junctionGlueWeightFrequencyController.text,
+            "Glue(Base+Catalyst)potting Ratio & Weight":
+                junctionGlueRatioFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Curing",
+          "CheckPoint": {
+            "Avaibility of WI": curingWiController.text,
+            "Curing Time": curingTimeController.text,
+            "Temperature & Humidity": curingTempController.text,
+          },
+          "AcceptanceCriteria": {
+            "Avaibility of WI": curingWiCrieteriaController.text,
+            "Curing Time": curingTimeCrieteriaController.text,
+            "Temperature & Humidity": curingTempCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibility of WI": curingWiFrequencyController.text,
+            "Curing Time": curingTimeFrequencyController.text,
+            "Temperature & Humidity": curingTempFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Buffing",
+          "CheckPoint": {
+            "Avaibillity of WI": buffingWiController.text,
+            "Edge of corner, Buffing belt condition": {
+              "Observation 1": buffingEdseObs1Controller.text,
+              "Observation 2": buffingEdseObs2Controller.text,
+              "Observation 3": buffingEdseObs3Controller.text,
+              "Observation 4": buffingEdseObs4Controller.text,
+              "Observation 5": buffingEdseObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Avaibillity of WI": buffingWiCrieteriaController.text,
+            "Edge of corner, Buffing belt condition":
+                buffingEdgeCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibillity of WI": buffingWiFrequencyController.text,
+            "Edge of corner, Buffing belt condition":
+                buffingEdgeFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Cleaning",
+          "CheckPoint": {
+            "Avaibillity of WI": cleaningWiController.text,
+            "Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr":
+                {
+              "Observation 1": cleaningModuleObs1Controller.text,
+              "Observation 2": cleaningModuleObs2Controller.text,
+              "Observation 3": cleaningModuleObs3Controller.text,
+              "Observation 4": cleaningModuleObs4Controller.text,
+              "Observation 5": cleaningModuleObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Avaibillity of WI": cleaningWiCrieteriaController.text,
+            "Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr":
+                cleaningModuleCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibillity of WI": cleaningWiFrequencyController.text,
+            "Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr":
+                cleaningModuleFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Sun Simulator Calibration",
+          "CheckPoint": {
+            "Avaibillity of WI": sunWiController.text,
+            "Temperature": sunTempController.text,
+            "Irradiance": sunIrradianceController.text,
+            "Each sun simulator validated after every four hours using valid silver reference PV module":
+                {
+              "Inspection First": {
+                "Time": sunCali1TimeController.text,
+                "Room Temp": sunCali1RoomController.text,
+                "Module Temp": sunCali1ModuleTempController.text,
+                "Module Id": sunCali1ModuleIdController.text,
+              },
+              "Inspection Second": {
+                "Time": sunCali2TimeController.text,
+                "Room Temp": sunCali2RoomController.text,
+                "Module Temp": sunCali2ModuleTempController.text,
+                "Module Id": sunCali2ModuleIdController.text,
+              },
+              "Inspection Third": {
+                "Time": sunCali3TimeController.text,
+                "Room Temp": sunCali3RoomController.text,
+                "Module Temp": sunCali3ModuleTempController.text,
+                "Module Id": sunCali3ModuleIdController.text,
+              },
+            },
+            "Last Validation or calibration date and time": {
+              "First Inspection": sunLast1Controller.text,
+              "Second Inspection": sunLast2Controller.text,
+              "Third Inspection": sunLast3Controller.text,
+            },
+            "Expiry Date of Silver Module Verification":
+                sunExpiryController.text,
+          },
+          "AcceptanceCriteria": {
+            "Avaibillity of WI": sunWiCrieteriaController.text,
+            "Temperature": sunTempCrieteriaController.text,
+            "Irradiance": sunIrradianceCrieteriaController.text,
+            "Each sun simulator validated after every four hours using valid silver reference PV module":
+                sunCaliCrieteriaController.text,
+            "Last Validation or calibration date and time":
+                sunLastCrieteriaController.text,
+            "Expiry Date of Silver Module Verification":
+                sunExpiryCrieteriaController.text
+          },
+          "Frequency": {
+            "Avaibillity of WI": sunWiFrequencyController.text,
+            "Temperature": sunTempFrequencyController.text,
+            "Irradiance": sunIrradianceFrequencyController.text,
+            "Each sun simulator validated after every four hours using valid silver reference PV module":
+                sunCaliFrequencyController.text,
+            "Last Validation or calibration date and time":
+                sunLastFrequencyController.text,
+            "Expiry Date of Silver Module Verification":
+                sunExpiryFrequencyController.text
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Hipot",
+          "CheckPoint": {
+            "Avaibillity of WI": hipotWiController.text,
+            "parameter": hipotParameterController.text,
+            "DCW-4.0KV ": {
+              "Observation 1": hipotDCWObs1Controller.text,
+              "Observation 2": hipotDCWObs2Controller.text,
+              "Observation 3": hipotDCWObs3Controller.text,
+              "Observation 4": hipotDCWObs4Controller.text,
+              "Observation 5": hipotDCWObs5Controller.text,
+            },
+            "DCW-4.0KV ": {
+              "Observation 1": hipotDCWObs1Controller.text,
+              "Observation 2": hipotDCWObs2Controller.text,
+              "Observation 3": hipotDCWObs3Controller.text,
+              "Observation 4": hipotDCWObs4Controller.text,
+              "Observation 5": hipotDCWObs5Controller.text,
+            },
+            "Ground Continuity-62.5A ": {
+              "Observation 1": hipotGroundObs1Controller.text,
+              "Observation 2": hipotGroundObs2Controller.text,
+              "Observation 3": hipotGroundObs3Controller.text,
+              "Observation 4": hipotGroundObs4Controller.text,
+              "Observation 5": hipotGroundObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Avaibillity of WI": hipotWiCrieteriaController.text,
+            "parameter": hipotParameterCrieteriaController.text,
+            "DCW-4.0KV": hipotDCWCrieteriaController.text,
+            "IR-1.5 KV": hipotIRCrieteriaController.text,
+            "Ground Continuity-62.5A.": hipotGroundCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibillity of WI": hipotWiFrequencyController.text,
+            "parameter": hipotParameterFrequencyController.text,
+            "DCW-4.0KV": hipotDCWFrequencyController.text,
+            "IR-1.5 KV": hipotIRFrequencyController.text,
+            "Ground Continuity-62.5A.": hipotGroundFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Final EL TEST",
+          "CheckPoint": {
+            "Avaibillity of WI": elWiController.text,
+            "Voltage & Current Verification in DC power supply":
+                elVoltageController.text,
+            "EL Defect": {
+              "Observation 1": elDefectsObs1Controller.text,
+              "Observation 2": elDefectsObs2Controller.text,
+              "Observation 3": elDefectsObs3Controller.text,
+              "Observation 4": elDefectsObs4Controller.text,
+              "Observation 5": elDefectsObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Avaibillity of WI": elWiCrieteriaController.text,
+            "Voltage & Current Verification in DC power supply":
+                elVoltageCrieteriaController.text,
+            "EL Defect": elDefectsCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibillity of WI": elWiFrequencyController.text,
+            "Voltage & Current Verification in DC power supply":
+                elVoltageFrequencyController.text,
+            "EL Defect": elDefectsFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "RFID Reading & writing",
+          "CheckPoint": {
+            "Avaibillity of WI": rfidWiController.text,
+            "Fixing position": {
+              "Observation 1": rfidFixingObs1Controller.text,
+              "Observation 2": rfidFixingObs2Controller.text,
+              "Observation 3": rfidFixingObs3Controller.text,
+              "Observation 4": rfidFixingObs4Controller.text,
+              "Observation 5": rfidFixingObs5Controller.text,
+            },
+            "Tag read & write": rfidTagController.text,
+            "Certification Date Verification": rfidCertificationController.text,
+            "Cell Make & Manufacturing Month Verification":
+                rfidCellController.text,
+            "Module Manufacturing Month Verification":
+                rfidModuleController.text,
+          },
+          "AcceptanceCriteria": {
+            "Avaibillity of WI": rfidWiCrieteriaController.text,
+            "Fixing position": rfidFixingCrieteriaController.text,
+            "Tag read & write": rfidTagCrieteriaController.text,
+            "Certification Date Verification":
+                rfidCertificationCrieteriaController.text,
+            "Cell Make & Manufacturing Month Verification":
+                rfidCellCrieteriaController.text,
+            "Module Manufacturing Month Verification":
+                rfidModuleCrieteriaController.text,
+          },
+          "Frequency": {
+            "Avaibillity of WI": rfidWiFrequencyController.text,
+            "Fixing position": rfidFixingFrequencyController.text,
+            "Tag read & write": rfidTagFrequencyController.text,
+            "Certification Date Verification":
+                rfidCertificationFrequencyController.text,
+            "Cell Make & Manufacturing Month Verification":
+                rfidCellFrequencyController.text,
+            "Module Manufacturing Month Verification":
+                rfidModuleFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Back Label",
+          "CheckPoint": {
+            "Data Verification": {
+              "Observation 1": backLabelDataObs1Controller.text,
+              "Observation 2": backLabelDataObs2Controller.text,
+              "Observation 3": backLabelDataObs3Controller.text,
+              "Observation 4": backLabelDataObs4Controller.text,
+              "Observation 5": backLabelDataObs5Controller.text,
+            },
+            "Air Bubbles,Tilt & Misprint": {
+              "Observation 1": backLabelAirObs1Controller.text,
+              "Observation 2": backLabelAirObs2Controller.text,
+              "Observation 3": backLabelAirObs3Controller.text,
+              "Observation 4": backLabelAirObs4Controller.text,
+              "Observation 5": backLabelAirObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Data Verification": backLabelDataCrieteriaController.text,
+            "Air Bubbles,Tilt & Misprint": backLabelAirCrieteriaController.text,
+          },
+          "Frequency": {
+            "Data Verification": backLabelDataFrequencyController.text,
+            "Air Bubbles,Tilt & Misprint": backLabelAirFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Final Visual Inspection",
+          "CheckPoint": {
+            "Visual inspection ": {
+              "Observation 1": finalInspectionObs1Controller.text,
+              "Observation 2": finalInspectionObs2Controller.text,
+              "Observation 3": finalInspectionObs3Controller.text,
+              "Observation 4": finalInspectionObs4Controller.text,
+              "Observation 5": finalInspectionObs5Controller.text,
+            },
+            "Fitment of JB cover": {
+              "Observation 1": finalFitmentObs1Controller.text,
+              "Observation 2": finalFitmentObs2Controller.text,
+              "Observation 3": finalFitmentObs3Controller.text,
+              "Observation 4": finalFitmentObs4Controller.text,
+              "Observation 5": finalFitmentObs5Controller.text,
+            },
+            "Availability of acceptance Criteri & WI": finalWiController.text,
+          },
+          "AcceptanceCriteria": {
+            "Visual inspection": finalInspectionCrieteriaController.text,
+            "Fitment of JB cover": finalFitmentCrieteriaController.text,
+            "Availability of acceptance Criteri & WI":
+                finalWiCrieteriaController.text,
+          },
+          "Frequency": {
+            "Visual inspection": finalInspectionFrequencyController.text,
+            "Fitment of JB cover": finalFitmentFrequencyController.text,
+            "Availability of acceptance Criteri & WI":
+                finalWiFrequencyController.text,
+          },
+          "Remark": ""
+        },
+        {
+          "Stage": "Packaging",
+          "CheckPoint": {
+            "Barcode Defects(unclear/duplication) ": {
+              "Observation 1": packagingBarcodeObs1Controller.text,
+              "Observation 2": packagingBarcodeObs2Controller.text,
+              "Observation 3": packagingBarcodeObs3Controller.text,
+              "Observation 4": packagingBarcodeObs4Controller.text,
+              "Observation 5": packagingBarcodeObs5Controller.text,
+            },
+            "Packing Label & Contents": {
+              "Observation 1": packagingpackingObs1Controller.text,
+              "Observation 2": packagingpackingObs2Controller.text,
+              "Observation 3": packagingpackingObs3Controller.text,
+              "Observation 4": packagingpackingObs4Controller.text,
+              "Observation 5": packagingpackingObs5Controller.text,
+            },
+            "Box Condition": {
+              "Observation 1": packagingBoxObs1Controller.text,
+              "Observation 2": packagingBoxObs2Controller.text,
+              "Observation 3": packagingBoxObs3Controller.text,
+              "Observation 4": packagingBoxObs4Controller.text,
+              "Observation 5": packagingBoxObs5Controller.text,
+            },
+            "Stretch wrapping": {
+              "Observation 1": packagingStretchObs1Controller.text,
+              "Observation 2": packagingStretchObs2Controller.text,
+              "Observation 3": packagingStretchObs3Controller.text,
+              "Observation 4": packagingStretchObs4Controller.text,
+              "Observation 5": packagingStretchObs5Controller.text,
+            },
+          },
+          "AcceptanceCriteria": {
+            "Barcode Defects(unclear/duplication)":
+                packagingBarcodeCrieteriaController.text,
+            "Packing Label & Contents":
+                packagingpackingCrieteriaController.text,
+            "Box Condition": packagingBoxCrieteriaController.text,
+            "Stretch wrapping": packagingStretchCrieteriaController.text,
+          },
+          "Frequency": {
+            "Barcode Defects(unclear/duplication)":
+                packagingBarcodeFrequencyController.text,
+            "Packing Label & Contents":
+                packagingpackingFrequencyController.text,
+            "Box Condition": packagingBoxFrequencyController.text,
+            "Stretch wrapping": packagingStretchFrequencyController.text,
+          },
+          "Remark": ""
+        },
+      ]
+    ];
     // print(packagingSampleData);
-    var PostLamDetails = {
-      "Date": date,
-      "Shift": shiftController.text,
-      "Line": lineController.text,
-      "Po.No": poController.text,
-      "Document No": "GSPL/IPQC/IPC/003",
-      "RevNo": "Ver2.0/28-03-2024"
-    };
+    // var PostLamDetails = {
+    //   "PreLamDetailId": prelamId != '' && prelamId != null
+    //       ? prelamId
+    //       : widget.id != '' && widget.id != null
+    //           ? widget.id
+    //           : '',
+    //   "Type": "PostLam",
+    //   "CurrentUser": personid,
+    //   "Status": sendStatus,
+    //   "Date": date,
+    //   "Shift": shiftController.text,
+    //   "Line": lineController.text,
+    //   "PONo": poController.text,
+    //   "Document No": "GSPL/IPQC/IPC/003",
+    //   "RevNo": "Ver2.0/28-03-2024"
+    // };
 
-    var Postlam = {
-      "Trimming": {
-        "Avaibility of WI": trimmingWiController.text,
-        "Frequency": trimmingWiFrequencyController.text,
-        "Crieteria": trimmingWiCrieteriaController.text,
-        "Physical verification of Union trimming & Blade replacing frequency": {
-          "Observation 1": trimmingPhysicalObs1Controller.text,
-          "Observation 2": trimmingPhysicalObs2Controller.text,
-          "Observation 3": trimmingPhysicalObs3Controller.text,
-          "Observation 4": trimmingPhysicalObs4Controller.text,
-          "Observation 5": trimmingPhysicalObs5Controller.text,
-        },
-        "Frequency": trimmingPhysicalFrequencyController.text,
-        "Acceptance_Criteria": trimmingPhysicalCriteriaController.text,
-      },
-      "Post Lam Visual Inspection": {
-        "Avaibility of WI & criteria": postLamWiController.text,
-        "Frequency": postLamWiFrequencyController.text,
-        "Acceptance_Criteria": postLamWiCrieteriaController.text,
-        "Visual Defects": {
-          "Observation 1": postLamVisualObs1Controller.text,
-          "Observation 2": postLamVisualObs2Controller.text,
-          "Observation 3": postLamVisualObs3Controller.text,
-          "Observation 4": postLamVisualObs4Controller.text,
-          "Observation 5": postLamVisualObs5Controller.text,
-        },
-        "Frequency": postLamVisualFrequencyController.text,
-        "Crieteria": postLamVisualCrieteriaController.text,
-      },
-      "Framing": {
-        "Avaibility of WI & Sealant weight Specification":
-            framingWiController.text,
-        "Frequency": framingWiFrequencyController.text,
-        "Crieteria": framingWiCrieteriaController.text,
-        "Glue uniformity & continuity in frame groove": {
-          "Observation 1": framingGlueUniObs1Controller.text,
-          "Observation 2": framingGlueUniObs2Controller.text,
-          "Observation 3": framingGlueUniObs3Controller.text,
-          "Observation 4": framingGlueUniObs4Controller.text,
-          "Observation 5": framingGlueUniObs5Controller.text,
-        },
-        "Frequency": framingGlueUniFrequencyController.text,
-        "Crieteria": framingGlueUniCrieteriaController.text,
-        "Glue Weight": framingGlueWeightController.text,
-        "Frequency": framingGlueWeightFrequencyController.text,
-        "Crieteria": framingGlueWeightCrieteriaController.text,
-        "Corner Gap": {
-          "Observation 1": framingCornerObs1Controller.text,
-          "Observation 2": framingCornerObs2Controller.text,
-          "Observation 3": framingCornerObs3Controller.text,
-          "Observation 4": framingCornerObs4Controller.text,
-          "Observation 5": framingCornerObs5Controller.text,
-        },
-        "Frequency": framingCornerFrequencyController.text,
-        "Crieteria": framingCornerCrieteriaController.text,
-        "Top & Buttom cut Length side cut length": framingTopController.text,
-        "Frequency": framingTopFrequencyController.text,
-        "Crieteria": framingTopCrieteriaController.text,
-        "Mounting hole x,y pitch": framingMountingController.text,
-        "Frequency": framingMountingFrequencyController.text,
-        "Crieteria": framingMountingCrieteriaController.text,
-        "Anodizing thicknes": framingAnodizingController.text,
-        "Frequency": framingAnodizingFrequencyController.text,
-        "Crieteria": framingAnodizingCrieteriaController.text,
-      },
-      "Junction Box Assembly": {
-        "Avaibility of WI & sealant weight specification":
-            junctionWiController.text,
-        "Frequency": junctionWiFrequencyController.text,
-        "Crieteria": junctionWiCrieteriaController.text,
-        "Glue around jB": {
-          "Observation 1": junctionGlueObs1Controller.text,
-          "Observation 2": junctionGlueObs2Controller.text,
-          "Observation 3": junctionGlueObs3Controller.text,
-          "Observation 4": junctionGlueObs4Controller.text,
-          "Observation 5": junctionGlueObs5Controller.text,
-        },
-        "Frequency": junctionGlueFrequencyController.text,
-        "Crieteria": junctionGlueFrequencyController.text,
-        "JB tilt": {
-          "Observation 1": junctionJbObs1Controller.text,
-          "Observation 2": junctionJbObs2Controller.text,
-          "Observation 3": junctionJbObs3Controller.text,
-          "Observation 4": junctionJbObs4Controller.text,
-          "Observation 5": junctionJbObs5Controller.text,
-        },
-        "Frequency": junctionJbFrequencyController.text,
-        "Crieteria": junctionJbFrequencyController.text,
-        "Glue Weight": junctionGlueWeightController.text,
-        "Frequency": junctionGlueWeightFrequencyController.text,
-        "Crieteria": junctionGlueWeightCrieteriaController.text,
-        "Glue(Base+Catalyst)potting Ratio &Weight":
-            junctionGlueRatioController.text,
-        "Frequency": junctionGlueRatioFrequencyController.text,
-        "Crieteria": junctionGlueRatioCrieteriaController.text,
-      },
-      "Curing": {
-        "Avaibility of WI ": curingWiController.text,
-        "Frequency": curingWiFrequencyController.text,
-        "Crieteria": curingWiCrieteriaController.text,
-        "Curing Time ": curingTimeController.text,
-        "Frequency": curingTimeFrequencyController.text,
-        "Crieteria": curingTimeCrieteriaController.text,
-        "Temperature & Humidity ": curingTempController.text,
-        "Frequency": curingTempFrequencyController.text,
-        "Crieteria": curingTempCrieteriaController.text,
-      },
-      "Buffing": {
-        "Avaibillity of WI": buffingWiController.text,
-        "Frequency": buffingWiFrequencyController.text,
-        "Crieteria": buffingWiCrieteriaController.text,
-        "Edge of corner, Buffing belt condition": {
-          "Observation 1": buffingEdseObs1Controller.text,
-          "Observation 2": buffingEdseObs2Controller.text,
-          "Observation 3": buffingEdseObs3Controller.text,
-          "Observation 4": buffingEdseObs4Controller.text,
-          "Observation 5": buffingEdseObs5Controller.text,
-        },
-        "Frequency": buffingEdgeFrequencyController.text,
-        "Crieteria": buffingEdgeCrieteriaController.text,
-      },
-      "Cleaning": {
-        "Avaibillity of WI": cleaningWiController.text,
-        "Frequency": cleaningWiFrequencyController.text,
-        "Crieteria": cleaningWiCrieteriaController.text,
-        "Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr":
-            {
-          "Observation 1": cleaningModuleObs1Controller.text,
-          "Observation 2": cleaningModuleObs2Controller.text,
-          "Observation 3": cleaningModuleObs3Controller.text,
-          "Observation 4": cleaningModuleObs4Controller.text,
-          "Observation 5": cleaningModuleObs5Controller.text,
-        },
-        "Frequency": cleaningModuleFrequencyController.text,
-        "Crieteria": cleaningModuleCrieteriaController.text,
-      },
-      "Sun Simulator Calibration": {
-        "Avaibillity of WI": sunWiController.text,
-        "Frequency": sunWiFrequencyController.text,
-        "Crieteria": sunWiCrieteriaController.text,
-        "Temperature": sunTempController.text,
-        "Frequency": sunTempFrequencyController.text,
-        "Crieteria": sunTempCrieteriaController.text,
-        "Irradiance": sunIrradianceController.text,
-        "Frequency": sunIrradianceFrequencyController.text,
-        "Crieteria": sunIrradianceCrieteriaController.text,
-        "Each sun simulator validated after every four hours using valid silver reference PV module":
-            {
-          "Inspection First": {
-            "Time": sunCali1TimeController.text,
-            "Room Temp": sunCali1RoomController.text,
-            "Module Temp": sunCali1ModuleTempController.text,
-            "Module Id": sunCali1ModuleIdController.text,
-          },
-          "Inspection Second": {
-            "Time": sunCali2TimeController.text,
-            "Room Temp": sunCali2RoomController.text,
-            "Module Temp": sunCali2ModuleTempController.text,
-            "Module Id": sunCali2ModuleIdController.text,
-          },
-          "Inspection Third": {
-            "Time": sunCali3TimeController.text,
-            "Room Temp": sunCali3RoomController.text,
-            "Module Temp": sunCali3ModuleTempController.text,
-            "Module Id": sunCali3ModuleIdController.text,
-          },
-        },
-        "Frequency": sunCaliFrequencyController.text,
-        "Crieteria": sunCaliCrieteriaController.text,
-        "Last Validation or calibration date and time": {
-          "First Inspection": sunLast1Controller.text,
-          "Second Inspection": sunLast2Controller.text,
-          "Third Inspection": sunLast3Controller.text,
-        },
-        "Frequency": sunLastFrequencyController.text,
-        "Crieteria": sunLastCrieteriaController.text,
-        "Expiry Date of Silver Module Verification": sunExpiryController.text,
-        "Frequency": sunExpiryFrequencyController.text,
-        "Crieteria": sunExpiryCrieteriaController.text,
-      },
-      "Hipot": {
-        "Avaibillity of WI": hipotWiController.text,
-        "Frequency": hipotWiFrequencyController.text,
-        "Crieteria": hipotWiCrieteriaController.text,
-        "parameter": hipotParameterController.text,
-        "Frequency": hipotParameterFrequencyController.text,
-        "Crieteria": hipotParameterCrieteriaController.text,
-        "DCW-4.0KV ": {
-          "Observation 1": hipotDCWObs1Controller.text,
-          "Observation 2": hipotDCWObs2Controller.text,
-          "Observation 3": hipotDCWObs3Controller.text,
-          "Observation 4": hipotDCWObs4Controller.text,
-          "Observation 5": hipotDCWObs5Controller.text,
-        },
-        "Frequency": hipotDCWFrequencyController.text,
-        "Crieteria": hipotDCWCrieteriaController.text,
-        "IR-1.5 KV ": {
-          "Observation 1": hipotIRObs1Controller.text,
-          "Observation 2": hipotIRObs2Controller.text,
-          "Observation 3": hipotIRObs3Controller.text,
-          "Observation 4": hipotIRObs4Controller.text,
-          "Observation 5": hipotIRObs5Controller.text,
-        },
-        "Frequency": hipotIRFrequencyController.text,
-        "Crieteria": hipotIRCrieteriaController.text,
-        "Ground Continuity-62.5A ": {
-          "Observation 1": hipotGroundObs1Controller.text,
-          "Observation 2": hipotGroundObs2Controller.text,
-          "Observation 3": hipotGroundObs3Controller.text,
-          "Observation 4": hipotGroundObs4Controller.text,
-          "Observation 5": hipotGroundObs5Controller.text,
-        },
-        "Frequency": hipotGroundFrequencyController.text,
-        "Crieteria": hipotGroundCrieteriaController.text,
-      },
-      "Final EL TEST": {
-        "Avaibillity of WI": elWiController.text,
-        "Frequency": elWiFrequencyController.text,
-        "Crieteria": elWiCrieteriaController.text,
-        "Voltage & Current Verification in DC power supply":
-            elVoltageController.text,
-        "Frequency": elVoltageFrequencyController.text,
-        "Crieteria": elVoltageCrieteriaController.text,
-        "EL Defect": {
-          "Observation 1": elDefectsObs1Controller.text,
-          "Observation 2": elDefectsObs2Controller.text,
-          "Observation 3": elDefectsObs3Controller.text,
-          "Observation 4": elDefectsObs4Controller.text,
-          "Observation 5": elDefectsObs5Controller.text,
-        },
-        "Frequency": elDefectsFrequencyController.text,
-        "Crieteria": elDefectsCrieteriaController.text,
-      },
-      "RFID Reading & writing": {
-        "Avaibillity of WI": rfidWiController.text,
-        "Frequency": rfidWiFrequencyController.text,
-        "Crieteria": rfidWiCrieteriaController.text,
-        "Fixing position": {
-          "Observation 1": rfidFixingObs1Controller.text,
-          "Observation 2": rfidFixingObs2Controller.text,
-          "Observation 3": rfidFixingObs3Controller.text,
-          "Observation 4": rfidFixingObs4Controller.text,
-          "Observation 5": rfidFixingObs5Controller.text,
-        },
-        "Frequency": rfidFixingFrequencyController.text,
-        "Crieteria": rfidFixingCrieteriaController.text,
-        "Tag read & write": rfidTagController.text,
-        "Frequency": rfidTagFrequencyController.text,
-        "Crieteria": rfidTagCrieteriaController.text,
-        "Certification Date Verification": rfidCertificationController.text,
-        "Frequency": rfidCertificationFrequencyController.text,
-        "Crieteria": rfidCertificationCrieteriaController.text,
-        "Module Manufacturing Month Verification": rfidModuleController.text,
-        "Frequency": rfidModuleFrequencyController.text,
-        "Crieteria": rfidModuleCrieteriaController.text,
-      },
-      "Back Label": {
-        "Data Verification": {
-          "Observation 1": backLabelDataObs1Controller.text,
-          "Observation 2": backLabelDataObs2Controller.text,
-          "Observation 3": backLabelDataObs3Controller.text,
-          "Observation 4": backLabelDataObs4Controller.text,
-          "Observation 5": backLabelDataObs5Controller.text,
-        },
-        "Frequency": backLabelDataFrequencyController.text,
-        "Crieteria": backLabelDataCrieteriaController.text,
-        "Air Bubbles,Tilt & Misprint": {
-          "Observation 1": backLabelAirObs1Controller.text,
-          "Observation 2": backLabelAirObs2Controller.text,
-          "Observation 3": backLabelAirObs3Controller.text,
-          "Observation 4": backLabelAirObs4Controller.text,
-          "Observation 5": backLabelAirObs5Controller.text,
-        },
-        "Frequency": backLabelAirFrequencyController.text,
-        "Crieteria": backLabelAirCrieteriaController.text,
-      },
-      "Final Visual Inspection": {
-        "Visual inspection ": {
-          "Observation 1": finalInspectionObs1Controller.text,
-          "Observation 2": finalInspectionObs2Controller.text,
-          "Observation 3": finalInspectionObs3Controller.text,
-          "Observation 4": finalInspectionObs4Controller.text,
-          "Observation 5": finalInspectionObs5Controller.text,
-        },
-        "Frequency": finalInspectionFrequencyController.text,
-        "Crieteria": finalInspectionCrieteriaController.text,
-        "Fitment of JB cover": {
-          "Observation 1": finalFitmentObs1Controller.text,
-          "Observation 2": finalFitmentObs2Controller.text,
-          "Observation 3": finalFitmentObs3Controller.text,
-          "Observation 4": finalFitmentObs4Controller.text,
-          "Observation 5": finalFitmentObs5Controller.text,
-        },
-        "Frequency": finalFitmentFrequencyController.text,
-        "Crieteria": finalFitmentCrieteriaController.text,
-        "Availability of acceptance Criteri & WI": finalWiController.text,
-        "Frequency": finalWiFrequencyController.text,
-        "Crieteria": finalWiCrieteriaController.text,
-      },
-      "Packaging": {
-        "Barcode Defects(unclear/duplication) ": {
-          "Observation 1": packagingBarcodeObs1Controller.text,
-          "Observation 2": packagingBarcodeObs2Controller.text,
-          "Observation 3": packagingBarcodeObs3Controller.text,
-          "Observation 4": packagingBarcodeObs4Controller.text,
-          "Observation 5": packagingBarcodeObs5Controller.text,
-        },
-        "Frequency": packagingBarcodeFrequencyController.text,
-        "Crieteria": packagingBarcodeCrieteriaController.text,
-        "Packing Label & Contents": {
-          "Observation 1": packagingpackingObs1Controller.text,
-          "Observation 2": packagingpackingObs2Controller.text,
-          "Observation 3": packagingpackingObs3Controller.text,
-          "Observation 4": packagingpackingObs4Controller.text,
-          "Observation 5": packagingpackingObs5Controller.text,
-        },
-        "Frequency": packagingpackingFrequencyController.text,
-        "Crieteria": packagingpackingCrieteriaController.text,
-        "Box Condition": {
-          "Observation 1": packagingBoxObs1Controller.text,
-          "Observation 2": packagingBoxObs2Controller.text,
-          "Observation 3": packagingBoxObs3Controller.text,
-          "Observation 4": packagingBoxObs4Controller.text,
-          "Observation 5": packagingBoxObs5Controller.text,
-        },
-        "Frequency": packagingBoxFrequencyController.text,
-        "Crieteria": packagingBoxCrieteriaController.text,
-        "Stretch wrapping": {
-          "Observation 1": packagingStretchObs1Controller.text,
-          "Observation 2": packagingStretchObs2Controller.text,
-          "Observation 3": packagingStretchObs3Controller.text,
-          "Observation 4": packagingStretchObs4Controller.text,
-          "Observation 5": packagingStretchObs5Controller.text,
-        },
-        "Frequency": packagingStretchFrequencyController.text,
-        "Crieteria": packagingStretchCrieteriaController.text,
-      },
-    };
-
-    print(Postlam);
-  }
-
-  Future getdata(String phone, BuildContext context) async {
+    // var Postlam = {
+    //   "Trimming": {
+    //     "Avaibility of WI": trimmingWiController.text,
+    //     "Frequency": trimmingWiFrequencyController.text,
+    //     "Crieteria": trimmingWiCrieteriaController.text,
+    //     "Physical verification of Union trimming & Blade replacing frequency": {
+    //       "Observation 1": trimmingPhysicalObs1Controller.text,
+    //       "Observation 2": trimmingPhysicalObs2Controller.text,
+    //       "Observation 3": trimmingPhysicalObs3Controller.text,
+    //       "Observation 4": trimmingPhysicalObs4Controller.text,
+    //       "Observation 5": trimmingPhysicalObs5Controller.text,
+    //     },
+    //     "Frequency": trimmingPhysicalFrequencyController.text,
+    //     "Acceptance_Criteria": trimmingPhysicalCriteriaController.text,
+    //   },
+    //   "Post Lam Visual Inspection": {
+    //     "Avaibility of WI & criteria": postLamWiController.text,
+    //     "Frequency": postLamWiFrequencyController.text,
+    //     "Acceptance_Criteria": postLamWiCrieteriaController.text,
+    //     "Visual Defects": {
+    //       "Observation 1": postLamVisualObs1Controller.text,
+    //       "Observation 2": postLamVisualObs2Controller.text,
+    //       "Observation 3": postLamVisualObs3Controller.text,
+    //       "Observation 4": postLamVisualObs4Controller.text,
+    //       "Observation 5": postLamVisualObs5Controller.text,
+    //     },
+    //     "Frequency": postLamVisualFrequencyController.text,
+    //     "Crieteria": postLamVisualCrieteriaController.text,
+    //   },
+    //   "Framing": {
+    //     "Avaibility of WI & Sealant weight Specification":
+    //         framingWiController.text,
+    //     "Frequency": framingWiFrequencyController.text,
+    //     "Crieteria": framingWiCrieteriaController.text,
+    //     "Glue uniformity & continuity in frame groove": {
+    //       "Observation 1": framingGlueUniObs1Controller.text,
+    //       "Observation 2": framingGlueUniObs2Controller.text,
+    //       "Observation 3": framingGlueUniObs3Controller.text,
+    //       "Observation 4": framingGlueUniObs4Controller.text,
+    //       "Observation 5": framingGlueUniObs5Controller.text,
+    //     },
+    //     "Frequency": framingGlueUniFrequencyController.text,
+    //     "Crieteria": framingGlueUniCrieteriaController.text,
+    //     "Glue Weight": framingGlueWeightController.text,
+    //     "Frequency": framingGlueWeightFrequencyController.text,
+    //     "Crieteria": framingGlueWeightCrieteriaController.text,
+    //     "Corner Gap": {
+    //       "Observation 1": framingCornerObs1Controller.text,
+    //       "Observation 2": framingCornerObs2Controller.text,
+    //       "Observation 3": framingCornerObs3Controller.text,
+    //       "Observation 4": framingCornerObs4Controller.text,
+    //       "Observation 5": framingCornerObs5Controller.text,
+    //     },
+    //     "Frequency": framingCornerFrequencyController.text,
+    //     "Crieteria": framingCornerCrieteriaController.text,
+    //     "Top & Buttom cut Length side cut length": framingTopController.text,
+    //     "Frequency": framingTopFrequencyController.text,
+    //     "Crieteria": framingTopCrieteriaController.text,
+    //     "Mounting hole x,y pitch": framingMountingController.text,
+    //     "Frequency": framingMountingFrequencyController.text,
+    //     "Crieteria": framingMountingCrieteriaController.text,
+    //     "Anodizing thicknes": framingAnodizingController.text,
+    //     "Frequency": framingAnodizingFrequencyController.text,
+    //     "Crieteria": framingAnodizingCrieteriaController.text,
+    //   },
+    //   "Junction Box Assembly": {
+    //     "Avaibility of WI & sealant weight specification":
+    //         junctionWiController.text,
+    //     "Frequency": junctionWiFrequencyController.text,
+    //     "Crieteria": junctionWiCrieteriaController.text,
+    //     "Glue around jB": {
+    //       "Observation 1": junctionGlueObs1Controller.text,
+    //       "Observation 2": junctionGlueObs2Controller.text,
+    //       "Observation 3": junctionGlueObs3Controller.text,
+    //       "Observation 4": junctionGlueObs4Controller.text,
+    //       "Observation 5": junctionGlueObs5Controller.text,
+    //     },
+    //     "Frequency": junctionGlueFrequencyController.text,
+    //     "Crieteria": junctionGlueFrequencyController.text,
+    //     "JB tilt": {
+    //       "Observation 1": junctionJbObs1Controller.text,
+    //       "Observation 2": junctionJbObs2Controller.text,
+    //       "Observation 3": junctionJbObs3Controller.text,
+    //       "Observation 4": junctionJbObs4Controller.text,
+    //       "Observation 5": junctionJbObs5Controller.text,
+    //     },
+    //     "Frequency": junctionJbFrequencyController.text,
+    //     "Crieteria": junctionJbFrequencyController.text,
+    //     "Glue Weight": junctionGlueWeightController.text,
+    //     "Frequency": junctionGlueWeightFrequencyController.text,
+    //     "Crieteria": junctionGlueWeightCrieteriaController.text,
+    //     "Glue(Base+Catalyst)potting Ratio &Weight":
+    //         junctionGlueRatioController.text,
+    //     "Frequency": junctionGlueRatioFrequencyController.text,
+    //     "Crieteria": junctionGlueRatioCrieteriaController.text,
+    //   },
+    //   "Curing": {
+    //     "Avaibility of WI ": curingWiController.text,
+    //     "Frequency": curingWiFrequencyController.text,
+    //     "Crieteria": curingWiCrieteriaController.text,
+    //     "Curing Time ": curingTimeController.text,
+    //     "Frequency": curingTimeFrequencyController.text,
+    //     "Crieteria": curingTimeCrieteriaController.text,
+    //     "Temperature & Humidity ": curingTempController.text,
+    //     "Frequency": curingTempFrequencyController.text,
+    //     "Crieteria": curingTempCrieteriaController.text,
+    //   },
+    //   "Buffing": {
+    //     "Avaibillity of WI": buffingWiController.text,
+    //     "Frequency": buffingWiFrequencyController.text,
+    //     "Crieteria": buffingWiCrieteriaController.text,
+    //     "Edge of corner, Buffing belt condition": {
+    //       "Observation 1": buffingEdseObs1Controller.text,
+    //       "Observation 2": buffingEdseObs2Controller.text,
+    //       "Observation 3": buffingEdseObs3Controller.text,
+    //       "Observation 4": buffingEdseObs4Controller.text,
+    //       "Observation 5": buffingEdseObs5Controller.text,
+    //     },
+    //     "Frequency": buffingEdgeFrequencyController.text,
+    //     "Crieteria": buffingEdgeCrieteriaController.text,
+    //   },
+    //   "Cleaning": {
+    //     "Avaibillity of WI": cleaningWiController.text,
+    //     "Frequency": cleaningWiFrequencyController.text,
+    //     "Crieteria": cleaningWiCrieteriaController.text,
+    //     "Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr":
+    //         {
+    //       "Observation 1": cleaningModuleObs1Controller.text,
+    //       "Observation 2": cleaningModuleObs2Controller.text,
+    //       "Observation 3": cleaningModuleObs3Controller.text,
+    //       "Observation 4": cleaningModuleObs4Controller.text,
+    //       "Observation 5": cleaningModuleObs5Controller.text,
+    //     },
+    //     "Frequency": cleaningModuleFrequencyController.text,
+    //     "Crieteria": cleaningModuleCrieteriaController.text,
+    //   },
+    //   "Sun Simulator Calibration": {
+    //     "Avaibillity of WI": sunWiController.text,
+    //     "Frequency": sunWiFrequencyController.text,
+    //     "Crieteria": sunWiCrieteriaController.text,
+    //     "Temperature": sunTempController.text,
+    //     "Frequency": sunTempFrequencyController.text,
+    //     "Crieteria": sunTempCrieteriaController.text,
+    //     "Irradiance": sunIrradianceController.text,
+    //     "Frequency": sunIrradianceFrequencyController.text,
+    //     "Crieteria": sunIrradianceCrieteriaController.text,
+    //     "Each sun simulator validated after every four hours using valid silver reference PV module":
+    //         {
+    //       "Inspection First": {
+    //         "Time": sunCali1TimeController.text,
+    //         "Room Temp": sunCali1RoomController.text,
+    //         "Module Temp": sunCali1ModuleTempController.text,
+    //         "Module Id": sunCali1ModuleIdController.text,
+    //       },
+    //       "Inspection Second": {
+    //         "Time": sunCali2TimeController.text,
+    //         "Room Temp": sunCali2RoomController.text,
+    //         "Module Temp": sunCali2ModuleTempController.text,
+    //         "Module Id": sunCali2ModuleIdController.text,
+    //       },
+    //       "Inspection Third": {
+    //         "Time": sunCali3TimeController.text,
+    //         "Room Temp": sunCali3RoomController.text,
+    //         "Module Temp": sunCali3ModuleTempController.text,
+    //         "Module Id": sunCali3ModuleIdController.text,
+    //       },
+    //     },
+    //     "Frequency": sunCaliFrequencyController.text,
+    //     "Crieteria": sunCaliCrieteriaController.text,
+    //     "Last Validation or calibration date and time": {
+    //       "First Inspection": sunLast1Controller.text,
+    //       "Second Inspection": sunLast2Controller.text,
+    //       "Third Inspection": sunLast3Controller.text,
+    //     },
+    //     "Frequency": sunLastFrequencyController.text,
+    //     "Crieteria": sunLastCrieteriaController.text,
+    //     "Expiry Date of Silver Module Verification": sunExpiryController.text,
+    //     "Frequency": sunExpiryFrequencyController.text,
+    //     "Crieteria": sunExpiryCrieteriaController.text,
+    //   },
+    //   "Hipot": {
+    //     "Avaibillity of WI": hipotWiController.text,
+    //     "Frequency": hipotWiFrequencyController.text,
+    //     "Crieteria": hipotWiCrieteriaController.text,
+    //     "parameter": hipotParameterController.text,
+    //     "Frequency": hipotParameterFrequencyController.text,
+    //     "Crieteria": hipotParameterCrieteriaController.text,
+    //     "DCW-4.0KV ": {
+    //       "Observation 1": hipotDCWObs1Controller.text,
+    //       "Observation 2": hipotDCWObs2Controller.text,
+    //       "Observation 3": hipotDCWObs3Controller.text,
+    //       "Observation 4": hipotDCWObs4Controller.text,
+    //       "Observation 5": hipotDCWObs5Controller.text,
+    //     },
+    //     "Frequency": hipotDCWFrequencyController.text,
+    //     "Crieteria": hipotDCWCrieteriaController.text,
+    //     "IR-1.5 KV ": {
+    //       "Observation 1": hipotIRObs1Controller.text,
+    //       "Observation 2": hipotIRObs2Controller.text,
+    //       "Observation 3": hipotIRObs3Controller.text,
+    //       "Observation 4": hipotIRObs4Controller.text,
+    //       "Observation 5": hipotIRObs5Controller.text,
+    //     },
+    //     "Frequency": hipotIRFrequencyController.text,
+    //     "Crieteria": hipotIRCrieteriaController.text,
+    //     "Ground Continuity-62.5A ": {
+    //       "Observation 1": hipotGroundObs1Controller.text,
+    //       "Observation 2": hipotGroundObs2Controller.text,
+    //       "Observation 3": hipotGroundObs3Controller.text,
+    //       "Observation 4": hipotGroundObs4Controller.text,
+    //       "Observation 5": hipotGroundObs5Controller.text,
+    //     },
+    //     "Frequency": hipotGroundFrequencyController.text,
+    //     "Crieteria": hipotGroundCrieteriaController.text,
+    //   },
+    //   "Final EL TEST": {
+    //     "Avaibillity of WI": elWiController.text,
+    //     "Frequency": elWiFrequencyController.text,
+    //     "Crieteria": elWiCrieteriaController.text,
+    //     "Voltage & Current Verification in DC power supply":
+    //         elVoltageController.text,
+    //     "Frequency": elVoltageFrequencyController.text,
+    //     "Crieteria": elVoltageCrieteriaController.text,
+    //     "EL Defect": {
+    //       "Observation 1": elDefectsObs1Controller.text,
+    //       "Observation 2": elDefectsObs2Controller.text,
+    //       "Observation 3": elDefectsObs3Controller.text,
+    //       "Observation 4": elDefectsObs4Controller.text,
+    //       "Observation 5": elDefectsObs5Controller.text,
+    //     },
+    //     "Frequency": elDefectsFrequencyController.text,
+    //     "Crieteria": elDefectsCrieteriaController.text,
+    //   },
+    //   "RFID Reading & writing": {
+    //     "Avaibillity of WI": rfidWiController.text,
+    //     "Frequency": rfidWiFrequencyController.text,
+    //     "Crieteria": rfidWiCrieteriaController.text,
+    //     "Fixing position": {
+    //       "Observation 1": rfidFixingObs1Controller.text,
+    //       "Observation 2": rfidFixingObs2Controller.text,
+    //       "Observation 3": rfidFixingObs3Controller.text,
+    //       "Observation 4": rfidFixingObs4Controller.text,
+    //       "Observation 5": rfidFixingObs5Controller.text,
+    //     },
+    //     "Frequency": rfidFixingFrequencyController.text,
+    //     "Crieteria": rfidFixingCrieteriaController.text,
+    //     "Tag read & write": rfidTagController.text,
+    //     "Frequency": rfidTagFrequencyController.text,
+    //     "Crieteria": rfidTagCrieteriaController.text,
+    //     "Certification Date Verification": rfidCertificationController.text,
+    //     "Frequency": rfidCertificationFrequencyController.text,
+    //     "Crieteria": rfidCertificationCrieteriaController.text,
+    //     "Module Manufacturing Month Verification": rfidModuleController.text,
+    //     "Frequency": rfidModuleFrequencyController.text,
+    //     "Crieteria": rfidModuleCrieteriaController.text,
+    //   },
+    //   "Back Label": {
+    //     "Data Verification": {
+    //       "Observation 1": backLabelDataObs1Controller.text,
+    //       "Observation 2": backLabelDataObs2Controller.text,
+    //       "Observation 3": backLabelDataObs3Controller.text,
+    //       "Observation 4": backLabelDataObs4Controller.text,
+    //       "Observation 5": backLabelDataObs5Controller.text,
+    //     },
+    //     "Frequency": backLabelDataFrequencyController.text,
+    //     "Crieteria": backLabelDataCrieteriaController.text,
+    //     "Air Bubbles,Tilt & Misprint": {
+    //       "Observation 1": backLabelAirObs1Controller.text,
+    //       "Observation 2": backLabelAirObs2Controller.text,
+    //       "Observation 3": backLabelAirObs3Controller.text,
+    //       "Observation 4": backLabelAirObs4Controller.text,
+    //       "Observation 5": backLabelAirObs5Controller.text,
+    //     },
+    //     "Frequency": backLabelAirFrequencyController.text,
+    //     "Crieteria": backLabelAirCrieteriaController.text,
+    //   },
+    //   "Final Visual Inspection": {
+    //     "Visual inspection ": {
+    //       "Observation 1": finalInspectionObs1Controller.text,
+    //       "Observation 2": finalInspectionObs2Controller.text,
+    //       "Observation 3": finalInspectionObs3Controller.text,
+    //       "Observation 4": finalInspectionObs4Controller.text,
+    //       "Observation 5": finalInspectionObs5Controller.text,
+    //     },
+    //     "Frequency": finalInspectionFrequencyController.text,
+    //     "Crieteria": finalInspectionCrieteriaController.text,
+    //     "Fitment of JB cover": {
+    //       "Observation 1": finalFitmentObs1Controller.text,
+    //       "Observation 2": finalFitmentObs2Controller.text,
+    //       "Observation 3": finalFitmentObs3Controller.text,
+    //       "Observation 4": finalFitmentObs4Controller.text,
+    //       "Observation 5": finalFitmentObs5Controller.text,
+    //     },
+    //     "Frequency": finalFitmentFrequencyController.text,
+    //     "Crieteria": finalFitmentCrieteriaController.text,
+    //     "Availability of acceptance Criteri & WI": finalWiController.text,
+    //     "Frequency": finalWiFrequencyController.text,
+    //     "Crieteria": finalWiCrieteriaController.text,
+    //   },
+    //   "Packaging": {
+    //     "Barcode Defects(unclear/duplication) ": {
+    //       "Observation 1": packagingBarcodeObs1Controller.text,
+    //       "Observation 2": packagingBarcodeObs2Controller.text,
+    //       "Observation 3": packagingBarcodeObs3Controller.text,
+    //       "Observation 4": packagingBarcodeObs4Controller.text,
+    //       "Observation 5": packagingBarcodeObs5Controller.text,
+    //     },
+    //     "Frequency": packagingBarcodeFrequencyController.text,
+    //     "Crieteria": packagingBarcodeCrieteriaController.text,
+    //     "Packing Label & Contents": {
+    //       "Observation 1": packagingpackingObs1Controller.text,
+    //       "Observation 2": packagingpackingObs2Controller.text,
+    //       "Observation 3": packagingpackingObs3Controller.text,
+    //       "Observation 4": packagingpackingObs4Controller.text,
+    //       "Observation 5": packagingpackingObs5Controller.text,
+    //     },
+    //     "Frequency": packagingpackingFrequencyController.text,
+    //     "Crieteria": packagingpackingCrieteriaController.text,
+    //     "Box Condition": {
+    //       "Observation 1": packagingBoxObs1Controller.text,
+    //       "Observation 2": packagingBoxObs2Controller.text,
+    //       "Observation 3": packagingBoxObs3Controller.text,
+    //       "Observation 4": packagingBoxObs4Controller.text,
+    //       "Observation 5": packagingBoxObs5Controller.text,
+    //     },
+    //     "Frequency": packagingBoxFrequencyController.text,
+    //     "Crieteria": packagingBoxCrieteriaController.text,
+    //     "Stretch wrapping": {
+    //       "Observation 1": packagingStretchObs1Controller.text,
+    //       "Observation 2": packagingStretchObs2Controller.text,
+    //       "Observation 3": packagingStretchObs3Controller.text,
+    //       "Observation 4": packagingStretchObs4Controller.text,
+    //       "Observation 5": packagingStretchObs5Controller.text,
+    //     },
+    //     "Frequency": packagingStretchFrequencyController.text,
+    //     "Crieteria": packagingStretchCrieteriaController.text,
+    //   },
+    // };
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    if (lotSizeController.text.isEmpty || phone.isEmpty) {
-      Toast.show("Please enter required details !",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: AppColors.redColor);
-      return;
-    }
-    final url = "AppStrings.path" + 'login/RegistersendOTP';
+
+    final url = (site! + "IPQC/AddPreLam");
+
     final prefs = await SharedPreferences.getInstance();
-    var params = {"Mobile": phone};
+
     var response = await http.post(
       Uri.parse(url),
-      body: json.encode(params),
+      body: json.encode(data),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
+    print("Bhanuu bhai");
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
+      var objData = json.decode(response.body);
       setState(() {
+        prelamId = objData['UUID'];
+
         _isLoading = false;
       });
-      var objData = json.decode(response.body);
+
+      print(
+          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show(objData['data']['message'],
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.blueColor);
-        setState(() {
-          setPage = 'second';
-          //  otp = objData['data']['sentotp']['otp'].toString();
-        });
+        if (sendStatus == 'Pending') {
+          Toast.show("PreLam Test Completed.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (BuildContext context) => IpqcPage()));
+          uploadPDF((referencePdfFileBytes ?? []));
+        } else {
+          Toast.show("Data has been saved.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+        }
       }
     } else {
       Toast.show("Error In Server",
@@ -926,73 +1478,318 @@ class _PostlamState extends State<Postlam> {
     }
   }
 
-  Future register(List Data) async {
-    print("Bhhhhhhhhhhhhh");
-    print(Data);
-    final url = "AppStrings.path" + 'login/Registermember';
-    var response = await http.post(
-      Uri.parse(url),
+  void store() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pic = prefs.getString('pic')!;
+      personid = prefs.getString('personid')!;
+      site = prefs.getString('site')!;
+      designation = prefs.getString('designation')!;
+      department = prefs.getString('department')!;
+      token = prefs.getString('token')!;
+    });
+    _get();
+  }
+
+  Future _get() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
+    print(widget.id);
+    setState(() {
+      if (widget.id != '' && widget.id != null) {
+        _isLoading = true;
+      }
+      site = prefs.getString('site')!;
+    });
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificPreLam');
+    final allSolarData = await http.post(
+      Uri.parse(AllSolarData),
       body: jsonEncode(<String, String>{
-        // "personid": personid != null ? (personid ?? '') : '',
-        // "Firstname": fname,
-        // "Lastname": lname,
-        // "Phonenum": phone,
-        // "Organization": organization,
-        // "AppType": widget.appName,
-        // "Country": country == null ? '' : country,
-        // "State": state == null ? '' : state,
-        // "City": city == null ? '' : city,
-        // "Gender": gender == null ? '' : gender,
-        // "Referred": referral == null ? '' : referral,
-        // "Occupation": occupation == null ? '' : occupation,
-        // "businesscategory": businessscategory == null ? '' : businessscategory,
-        // "businessname": companyname == null ? '' : companyname,
-        // "designation": desigation == null ? '' : desigation,
-        // "Otp": (otp ?? ''),
+        "JobCardDetailId": widget.id ?? '',
+        "token": token!
       }),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _isLoading = false;
-      });
-      var responseData = json.decode(response.body);
+    setState(() {
+      _isLoading = false;
+    });
+    print("hhhhhhhhhhhhhhhh");
 
-      if (responseData['success'] == true) {
-        Toast.show('Provide Some More Information',
+    var resBody = json.decode(allSolarData.body);
+
+    if (mounted) {
+      setState(() {
+        if (resBody != '') {
+          print("Aaaaaaaaaaaaaaaaaaajajaaa");
+          // print(resBody['response']['Status']);
+          print(resBody);
+          //  print(resBody['response'] != ""
+          //         ? resBody
+          //         ['Tabber&StringerFrequency']['Visual Check after stringer Number of Stringer']);
+
+          print("saiffffffffffffffffffffffffffffffffffffffffff");
+          print("kulllllllllllllllllllllllllllllllllllllllllll");
+          // dateController.text = resBody['response']['Date'] ?? '';
+          // status = resBody['response']['Status'] ?? '';
+          // dateOfQualityCheck = resBody['response']['Date'] ?? '';
+          // DayController.text = resBody['response']['Date'] != ''
+          //     ? DateFormat("EEE MMM dd, yyyy").format(
+          //         DateTime.parse(resBody['response']['Date'].toString()))
+          //     : '';
+          // shiftController.text = resBody['response']['Shift'] ?? '';
+          // lineController.text = resBody['response']['Line'] ?? '';
+          // PoController.text = resBody['response']['PONo'] ?? '';
+          // // Glass Loader
+          // GlassLoaderGlassDimensionController.text = resBody['response']
+          //             ['GlassLoaderCheckPoint']
+          //         ['Glass dimension(LengthxWidthxThickness)'] ??
+          //     '';
+          // GlassLoaderAvaibilityController.text = resBody['response']
+          //         ['GlassLoaderCheckPoint']['Avaibility of WI'] ??
+          //     '';
+          // GlassLoaderRemarkController.text =
+          //     resBody['response']['GlassLoaderRemark'] ?? '';
+
+          // // Glass Side Eva
+          // GlassEVADimensionController.text = resBody['response']
+          //             ['GlasssideEVAcuttingmachineCheckPoint']
+          //         ['EVA dimension{LengthxWidthxThickness)'] ??
+          //     '';
+          // GlasCuttingEdgeController.text = resBody['response']
+          //             ['GlasssideEVAcuttingmachineCheckPoint']
+          //         ['Cutting Edge EVA'] ??
+          //     '';
+          // GlasPositionFrontController.text = resBody['response']
+          //             ['GlasssideEVAcuttingmachineCheckPoint']
+          //         ['Position of front EVA'] ??
+          //     '';
+          // GlasAvabilitySpecificationController.text = resBody['response']
+          //             ['GlasssideEVAcuttingmachineCheckPoint']
+          //         ['Avability of Specification & WI'] ??
+          //     '';
+          // GlasSideRemarkController.text =
+          //     resBody['response']['GlasssideEVAcuttingmachineRemark'] ?? '';
+
+          // // Tempreture And Relatives
+          // TempShopFloorController.text = resBody['response']
+          //             ['Temperature&Relativehumidity(%RH)monitoringCheckPoint']
+          //         ['shop floor Temperature condition'] ??
+          //     '';
+          // TempRelativeHumidityController.text = resBody['response']
+          //             ['Temperature&Relativehumidity(%RH)monitoringCheckPoint']
+          //         ['Relative humidity(%RH)in shop floor'] ??
+          //     '';
+          // TemperatureRemarkController.text = resBody['response']
+          //         ['Temperature&Relativehumidity(%RH)monitoringRemark'] ??
+          //     '';
+
+          // // Cell Cutting machine
+          // CellSizelengthController.text = resBody['response']
+          //         ['CellcuttingmachineCheckPoint']['cell Size'] ??
+          //     '';
+          // CellManufactureEffController.text = resBody['response']
+          //         ['CellcuttingmachineCheckPoint']['Cell manufacture & Eff'] ??
+          //     '';
+          // CellcolorController.text = resBody['response']
+          //         ['CellcuttingmachineCheckPoint']['cell color '] ??
+          //     '';
+          // CellAvabilityofSpecificationController.text = resBody['response']
+          //             ['CellcuttingmachineCheckPoint']
+          //         ['Avability of Specification & WI.'] ??
+          //     '';
+          // CellCuttingRemarkController.text =
+          //     resBody['response']['CellcuttingmachineRemark'] ?? '';
+
+          // Cell Loading
+          // CellAvabilityofSpecificationController.text =
+          //     resBody['response']['CellLoadingCheckPoint']['cellcolor'] ?? '';
+          // CellAvabilityofSpecificationController.text = resBody['response']
+          //             ['CellLoadingCheckPoint']
+          //         ['cleanlines of cell Loading Area '] ??
+          //     '';
+          // CellAvabilityofSpecificationController.text = resBody['response']
+          //         ['CellLoadingCheckPoint']['Cell loading as per WI'] ??
+          //     '';
+          // CellAvabilityofSpecificationController.text = resBody['response']
+          //         ['CellLoadingCheckPoint']['Avability of WI '] ??
+          //     '';
+          // CellAvabilityofSpecificationController.text = resBody['response']
+          //             ['CellLoadingCheckPoint']
+          //         ['Verification of process parameter'] ??
+          //     '';
+          // CellAvabilityofSpecificationController.text = resBody['response']
+          //             ['CellLoadingCheckPoint']
+          //         ['string length & cell to cell gap'] ??
+          //     '';
+          // CellAvabilityofSpecificationController.text =
+          //     resBody['response']['CellLoadingCheckPoint']['cellcolor'] ?? '';
+          // CellCuttingRemarkController.text =
+          //     resBody['response']['CellcuttingmachineRemark'] ?? '';
+          // status = resBody['response']['Status'] ?? '';
+          // status = resBody['response']['Status'] ?? '';
+          // status = resBody['response']['Status'] ?? '';
+          // status = resBody['response']['Status'] ?? '';
+          // Tabber and Stringer
+          // Check if 'response' is not empty
+          // Check if 'response' is not empty
+          // Check if 'response' is not empty
+//           if (resBody['response'] != "") {
+//             // Assign the value of 'Visual Check after stringer Number of Stringer' to 'TabberVisualnumberOfStringersController.text'
+//             TabberVisualnumberOfStringersController.text =
+//                 resBody['Tabber&StringerFrequency']
+//                     ['Visual Check after stringer Number of Stringer'];
+//           }
+
+// // Parse the stringified array of objects and assign it to 'sample1Controller', or an empty list if it's not present
+//           List<Map<String, dynamic>> sample2Controller = [];
+//           final String stringifiedArray = resBody['Tabber&StringerFrequency']
+//               ['Visual Check after stringer Number of Created Input text '];
+//           if (stringifiedArray != null && stringifiedArray.isNotEmpty) {
+//             final List<String> objects = stringifiedArray
+//                 .substring(1, stringifiedArray.length - 1)
+//                 .split(", ");
+//             objects.forEach((obj) {
+//               final List<String> keyValue = obj.split(": ");
+//               if (keyValue.length == 2) {
+//                 final String key = keyValue[0].trim().substring(
+//                     1,
+//                     keyValue[0].trim().length -
+//                         1); // Remove surrounding curly braces
+//                 final String value = keyValue[1].trim();
+//                 final Map<String, dynamic> parsedObject = {key: value};
+//                 sample2Controller.add(parsedObject);
+//               }
+//             });
+//           }
+
+// // Populate 'sample2Controller'
+//           List<Map<String, String>> sample2ControllerData = [];
+//           for (int i = 0; i < numberOfStringers1 * 5; i++) {
+//             sample2ControllerData.add({
+//               "TabberVisualStringerControllers${i + 1}":
+//                   TabberVisualStringerControllers[i].text,
+//             });
+//           }
+
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           // Auto String Layup
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           // Auto Bushing And Tapping
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           // Eva BackSheet
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           // Pre LAmination El And Visual
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           // String Rework Station
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           // Modal Rework
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           // Laminator
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+//           status = resBody['response']['Status'] ?? '';
+        }
+      });
+    }
+  }
+
+  Future<void> _pickReferencePDF() async {
+    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        referencePdfFileBytes = pdffile.readAsBytesSync();
+        referencePdfController.text = result.files.single.name;
+      });
+      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
+      print(referencePdfFileBytes);
+    } else {
+      // User canceled the file picker
+    }
+  }
+
+  uploadPDF(List<int> referenceBytes) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+
+    var currentdate = DateTime.now().microsecondsSinceEpoch;
+    var formData = FormData.fromMap({
+      "JobCardDetailId": prelamId,
+      "PreLamPdf": MultipartFile.fromBytes(
+        referenceBytes,
+        filename:
+            (referencePdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+    });
+    print("Hoiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    print(formData.files);
+
+    _response = await _dio.post((site! + 'IPQC/UploadPreLamPdf'), // Prod
+
+        options: Options(
+          contentType: 'multipart/form-data',
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+        data: formData);
+
+    try {
+      if (_response?.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Toast.show("Post Lam Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
-
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-            // personid = responseData['data']['data'][0]['personid'];
-
-            if (responseData['data']['data'][0]['Response'] ==
-                'Registration successfull') {
-              Toast.show(responseData['data']['data'][0]['Response'],
-                  duration: Toast.lengthLong,
-                  gravity: Toast.center,
-                  backgroundColor: AppColors.blueColor);
-              setPage = "fourth";
-            } else {
-              setPage = "third";
-            }
-          });
-        }
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
       } else {
-        Toast.show("OTP is Invalid",
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
-            backgroundColor: AppColors.redColor);
+        Toast.show("Error In Server",
+            duration: Toast.lengthLong, gravity: Toast.center);
       }
-    } else {
-      Toast.show("Error In Server",
-          duration: Toast.lengthLong, gravity: Toast.center);
+    } catch (err) {
+      print("Error");
     }
   }
 
@@ -1033,7 +1830,7 @@ class _PostlamState extends State<Postlam> {
                     children: [
                       SingleChildScrollView(
                         child: Form(
-                          key: _registerFormKey,
+                          key: _postLamFormKey,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -1137,7 +1934,7 @@ class _PostlamState extends State<Postlam> {
                                 height: 4,
                               ),
                               TextFormField(
-                                  // controller: dateController,
+                                  controller: dateController,
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.next,
                                   decoration: AppStyles.textFieldInputDecoration
@@ -1149,23 +1946,30 @@ class _PostlamState extends State<Postlam> {
                                             color: AppColors.primaryColor,
                                           )),
                                   style: AppStyles.textInputTextStyle,
+                                  readOnly:
+                                      status == 'Pending' && designation != "QC"
+                                          ? true
+                                          : false,
                                   onTap: () async {
-                                    DateTime date = DateTime(2021);
-                                    FocusScope.of(context)
-                                        .requestFocus(new FocusNode());
-                                    date = (await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime.now(),
-                                        lastDate: DateTime.now()))!;
-                                    dateController.text =
-                                        DateFormat("EEE MMM dd, yyyy").format(
-                                            DateTime.parse(date.toString()));
-                                    setState(() {
-                                      date = DateFormat("yyyy-MM-dd").format(
-                                              DateTime.parse(date.toString()))
-                                          as DateTime;
-                                    });
+                                    if (status != 'Pending') {
+                                      DateTime date = DateTime(2021);
+                                      FocusScope.of(context)
+                                          .requestFocus(new FocusNode());
+                                      date = (await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()))!;
+                                      dateController.text =
+                                          DateFormat("EEE MMM dd, yyyy").format(
+                                              DateTime.parse(date.toString()));
+                                      setState(() {
+                                        dateOfPostLam =
+                                            DateFormat("yyyy-MM-dd").format(
+                                          DateTime.parse(date.toString()),
+                                        );
+                                      });
+                                    }
                                   },
                                   validator: MultiValidator([
                                     RequiredValidator(
@@ -1191,6 +1995,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return "Please Enter Shift";
@@ -1220,6 +2028,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1247,6 +2059,10 @@ class _PostlamState extends State<Postlam> {
                                   hintText: "Please Enter Po.No",
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1313,6 +2129,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1396,6 +2216,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1417,6 +2241,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1438,6 +2266,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1459,6 +2291,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1480,6 +2316,10 @@ class _PostlamState extends State<Postlam> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1527,15 +2367,17 @@ class _PostlamState extends State<Postlam> {
                                       ),
                                       onTap: () {
                                         AppHelper.hideKeyboard(context);
-                                        createData();
-                                        print(
-                                            trimmingPhysicalFrequencyController
-                                                .text);
-                                        // sendDataToBackend();
+                                        if (status != 'Pending') {
+                                          setState(() {
+                                            sendStatus = 'Inprogress';
+                                          });
+                                          createData();
+                                        }
+                                        // createData();
 
-                                        _registerFormKey.currentState!.save;
-                                        if (_registerFormKey.currentState!
-                                            .validate()) {}
+                                        // _registerFormKey.currentState!.save;
+                                        // if (_registerFormKey.currentState!
+                                        //  .validate()) {}
                                         setState(() {
                                           setPage = 'postlamvisualinspection';
                                         });
@@ -1607,7 +2449,7 @@ class _PostlamState extends State<Postlam> {
                         children: [
                           SingleChildScrollView(
                             child: Form(
-                              //  key: _registerFormKey,
+                              key: _postLamFormKey,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               child: Column(
@@ -1745,6 +2587,10 @@ class _PostlamState extends State<Postlam> {
                                       counterText: '',
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1832,6 +2678,10 @@ class _PostlamState extends State<Postlam> {
                                       counterText: '',
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1855,6 +2705,10 @@ class _PostlamState extends State<Postlam> {
                                       counterText: '',
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1878,6 +2732,10 @@ class _PostlamState extends State<Postlam> {
                                       counterText: '',
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1901,6 +2759,10 @@ class _PostlamState extends State<Postlam> {
                                       counterText: '',
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1924,6 +2786,10 @@ class _PostlamState extends State<Postlam> {
                                       counterText: '',
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1975,13 +2841,18 @@ class _PostlamState extends State<Postlam> {
                                           ),
                                           onTap: () {
                                             AppHelper.hideKeyboard(context);
-                                            createData();
-                                            // sendDataToBackend();
+                                            if (status != 'Pending') {
+                                              setState(() {
+                                                sendStatus = 'Inprogress';
+                                              });
+                                              createData();
+                                            }
+                                            // createData();
 
                                             // _registerFormKey.currentState!.save;
                                             // if (_registerFormKey.currentState!
                                             //     .validate()) {
-                                            //   sendDataToBackend();
+                                            //   createData();
                                             // }
                                             setState(() {
                                               setPage = "framing";
@@ -2086,7 +2957,7 @@ class _PostlamState extends State<Postlam> {
                             children: [
                               SingleChildScrollView(
                                 child: Form(
-                                  //  key: _registerFormKey,
+                                  key: _postLamFormKey,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   child: Column(
@@ -2230,6 +3101,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2324,6 +3199,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2349,6 +3228,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2374,6 +3257,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2399,6 +3286,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2424,6 +3315,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2518,6 +3413,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2610,6 +3509,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2633,6 +3536,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2656,6 +3563,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2679,6 +3590,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2702,6 +3617,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2796,6 +3715,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2889,6 +3812,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2982,6 +3909,10 @@ class _PostlamState extends State<Postlam> {
                                           counterText: '',
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -3035,14 +3966,19 @@ class _PostlamState extends State<Postlam> {
                                               ),
                                               onTap: () {
                                                 AppHelper.hideKeyboard(context);
-                                                // sendDataToBackend();
+                                                if (status != 'Pending') {
+                                                  setState(() {
+                                                    sendStatus = 'Inprogress';
+                                                  });
+                                                  createData();
+                                                }
 
                                                 // _registerFormKey
                                                 //     .currentState!.save;
                                                 // if (_registerFormKey
                                                 //     .currentState!
                                                 //     .validate()) {
-                                                //   // sendDataToBackend();
+                                                //   // createData();
                                                 // }
                                                 setState(() {
                                                   setPage = 'junctionbox';
@@ -3146,7 +4082,7 @@ class _PostlamState extends State<Postlam> {
                                 children: [
                                   SingleChildScrollView(
                                     child: Form(
-                                      //  key: _registerFormKey,
+                                      key: _postLamFormKey,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       child: Column(
@@ -3298,6 +4234,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3395,6 +4335,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3421,6 +4365,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3447,6 +4395,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3473,6 +4425,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3499,6 +4455,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3599,6 +4559,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3625,6 +4589,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3651,6 +4619,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3677,6 +4649,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3703,6 +4679,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3800,6 +4780,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3900,6 +4884,10 @@ class _PostlamState extends State<Postlam> {
                                               counterText: '',
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -3956,14 +4944,20 @@ class _PostlamState extends State<Postlam> {
                                                   onTap: () {
                                                     AppHelper.hideKeyboard(
                                                         context);
-                                                    // sendDataToBackend();
+                                                    if (status != 'Pending') {
+                                                      setState(() {
+                                                        sendStatus =
+                                                            'Inprogress';
+                                                      });
+                                                      createData();
+                                                    }
 
                                                     // _registerFormKey
                                                     //     .currentState!.save;
                                                     // if (_registerFormKey
                                                     //     .currentState!
                                                     //     .validate()) {
-                                                    //   // sendDataToBackend();
+                                                    //   // createData();
                                                     // }
                                                     setState(() {
                                                       setPage = 'curing';
@@ -4069,7 +5063,7 @@ class _PostlamState extends State<Postlam> {
                                     children: [
                                       SingleChildScrollView(
                                         child: Form(
-                                          //  key: _registerFormKey,
+                                          key: _postLamFormKey,
                                           autovalidateMode: AutovalidateMode
                                               .onUserInteraction,
                                           child: Column(
@@ -4228,6 +5222,10 @@ class _PostlamState extends State<Postlam> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -4332,6 +5330,10 @@ class _PostlamState extends State<Postlam> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -4438,6 +5440,10 @@ class _PostlamState extends State<Postlam> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -4498,14 +5504,21 @@ class _PostlamState extends State<Postlam> {
                                                       onTap: () {
                                                         AppHelper.hideKeyboard(
                                                             context);
-                                                        // sendDataToBackend();
+                                                        if (status !=
+                                                            'Pending') {
+                                                          setState(() {
+                                                            sendStatus =
+                                                                'Inprogress';
+                                                          });
+                                                          createData();
+                                                        }
 
                                                         // _registerFormKey
                                                         //     .currentState!.save;
                                                         // if (_registerFormKey
                                                         //     .currentState!
                                                         //     .validate()) {
-                                                        //   // sendDataToBackend();
+                                                        //   // createData();
                                                         // }
                                                         setState(() {
                                                           setPage = 'buffing';
@@ -4615,7 +5628,7 @@ class _PostlamState extends State<Postlam> {
                                         children: [
                                           SingleChildScrollView(
                                             child: Form(
-                                              //  key: _registerFormKey,
+                                              key: _postLamFormKey,
                                               autovalidateMode: AutovalidateMode
                                                   .onUserInteraction,
                                               child: Column(
@@ -4785,6 +5798,11 @@ class _PostlamState extends State<Postlam> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
                                                     validator: MultiValidator(
                                                       [
                                                         RequiredValidator(
@@ -4891,6 +5909,11 @@ class _PostlamState extends State<Postlam> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
                                                     validator: MultiValidator(
                                                       [
                                                         RequiredValidator(
@@ -4919,6 +5942,11 @@ class _PostlamState extends State<Postlam> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
                                                     validator: MultiValidator(
                                                       [
                                                         RequiredValidator(
@@ -4947,6 +5975,11 @@ class _PostlamState extends State<Postlam> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
                                                     validator: MultiValidator(
                                                       [
                                                         RequiredValidator(
@@ -4975,6 +6008,11 @@ class _PostlamState extends State<Postlam> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
                                                     validator: MultiValidator(
                                                       [
                                                         RequiredValidator(
@@ -5003,6 +6041,11 @@ class _PostlamState extends State<Postlam> {
                                                     ),
                                                     style: AppStyles
                                                         .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
                                                     validator: MultiValidator(
                                                       [
                                                         RequiredValidator(
@@ -5067,7 +6110,14 @@ class _PostlamState extends State<Postlam> {
                                                             AppHelper
                                                                 .hideKeyboard(
                                                                     context);
-                                                            // sendDataToBackend();
+                                                            if (status !=
+                                                                'Pending') {
+                                                              setState(() {
+                                                                sendStatus =
+                                                                    'Inprogress';
+                                                              });
+                                                              createData();
+                                                            }
 
                                                             // _registerFormKey
                                                             //     .currentState!
@@ -5075,7 +6125,7 @@ class _PostlamState extends State<Postlam> {
                                                             // if (_registerFormKey
                                                             //     .currentState!
                                                             //     .validate()) {
-                                                            //   // sendDataToBackend();
+                                                            //   // createData();
                                                             // }
                                                             setState(() {
                                                               setPage =
@@ -5192,7 +6242,7 @@ class _PostlamState extends State<Postlam> {
                                             children: [
                                               SingleChildScrollView(
                                                 child: Form(
-                                                  //  key: _registerFormKey,
+                                                  key: _postLamFormKey,
                                                   autovalidateMode:
                                                       AutovalidateMode
                                                           .onUserInteraction,
@@ -5371,6 +6421,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5480,6 +6536,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5590,6 +6652,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5707,6 +6775,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5736,6 +6810,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5766,6 +6846,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5796,6 +6882,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5834,6 +6926,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5863,6 +6961,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5893,6 +6997,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5923,6 +7033,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5961,6 +7077,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -5990,6 +7112,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -6020,6 +7148,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -6050,6 +7184,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -6161,6 +7301,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -6191,6 +7337,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -6221,6 +7373,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -6332,6 +7490,12 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         style: AppStyles
                                                             .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
                                                         validator:
                                                             MultiValidator(
                                                           [
@@ -6398,7 +7562,14 @@ class _PostlamState extends State<Postlam> {
                                                                 AppHelper
                                                                     .hideKeyboard(
                                                                         context);
-                                                                // sendDataToBackend();
+                                                                if (status !=
+                                                                    'Pending') {
+                                                                  setState(() {
+                                                                    sendStatus =
+                                                                        'Inprogress';
+                                                                  });
+                                                                  createData();
+                                                                }
 
                                                                 // _registerFormKey
                                                                 //     .currentState!
@@ -6406,7 +7577,7 @@ class _PostlamState extends State<Postlam> {
                                                                 // if (_registerFormKey
                                                                 //     .currentState!
                                                                 //     .validate()) {
-                                                                //   // sendDataToBackend();
+                                                                //   // createData();
                                                                 // }
                                                                 setState(() {
                                                                   setPage =
@@ -6525,7 +7696,7 @@ class _PostlamState extends State<Postlam> {
                                                 children: [
                                                   SingleChildScrollView(
                                                     child: Form(
-                                                      //  key: _registerFormKey,
+                                                      key: _postLamFormKey,
                                                       autovalidateMode:
                                                           AutovalidateMode
                                                               .onUserInteraction,
@@ -6707,6 +7878,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -6822,6 +7999,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -6939,6 +8122,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -6970,6 +8159,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7001,6 +8196,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7032,6 +8233,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7063,6 +8270,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7180,6 +8393,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7211,6 +8430,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7242,6 +8467,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7273,6 +8504,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7304,6 +8541,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7421,6 +8664,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7452,6 +8701,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7483,6 +8738,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7514,6 +8775,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7545,6 +8812,12 @@ class _PostlamState extends State<Postlam> {
                                                             ),
                                                             style: AppStyles
                                                                 .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
                                                             validator:
                                                                 MultiValidator(
                                                               [
@@ -7618,7 +8891,15 @@ class _PostlamState extends State<Postlam> {
                                                                     AppHelper
                                                                         .hideKeyboard(
                                                                             context);
-                                                                    // sendDataToBackend();
+                                                                    if (status !=
+                                                                        'Pending') {
+                                                                      setState(
+                                                                          () {
+                                                                        sendStatus =
+                                                                            'Inprogress';
+                                                                      });
+                                                                      createData();
+                                                                    }
 
                                                                     // _registerFormKey
                                                                     //     .currentState!
@@ -7626,7 +8907,7 @@ class _PostlamState extends State<Postlam> {
                                                                     // if (_registerFormKey
                                                                     //     .currentState!
                                                                     //     .validate()) {
-                                                                    //   // sendDataToBackend();
+                                                                    //   // createData();
                                                                     // }
                                                                     setState(
                                                                         () {
@@ -7751,7 +9032,7 @@ class _PostlamState extends State<Postlam> {
                                                     children: [
                                                       SingleChildScrollView(
                                                         child: Form(
-                                                          //  key: _registerFormKey,
+                                                          key: _postLamFormKey,
                                                           autovalidateMode:
                                                               AutovalidateMode
                                                                   .onUserInteraction,
@@ -7931,6 +9212,12 @@ class _PostlamState extends State<Postlam> {
                                                                 ),
                                                                 style: AppStyles
                                                                     .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
                                                                 validator:
                                                                     MultiValidator(
                                                                   [
@@ -8049,6 +9336,12 @@ class _PostlamState extends State<Postlam> {
                                                                 ),
                                                                 style: AppStyles
                                                                     .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
                                                                 validator:
                                                                     MultiValidator(
                                                                   [
@@ -8167,6 +9460,12 @@ class _PostlamState extends State<Postlam> {
                                                                 ),
                                                                 style: AppStyles
                                                                     .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
                                                                 validator:
                                                                     MultiValidator(
                                                                   [
@@ -8199,6 +9498,12 @@ class _PostlamState extends State<Postlam> {
                                                                 ),
                                                                 style: AppStyles
                                                                     .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
                                                                 validator:
                                                                     MultiValidator(
                                                                   [
@@ -8231,6 +9536,12 @@ class _PostlamState extends State<Postlam> {
                                                                 ),
                                                                 style: AppStyles
                                                                     .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
                                                                 validator:
                                                                     MultiValidator(
                                                                   [
@@ -8263,6 +9574,12 @@ class _PostlamState extends State<Postlam> {
                                                                 ),
                                                                 style: AppStyles
                                                                     .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
                                                                 validator:
                                                                     MultiValidator(
                                                                   [
@@ -8295,6 +9612,12 @@ class _PostlamState extends State<Postlam> {
                                                                 ),
                                                                 style: AppStyles
                                                                     .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
                                                                 validator:
                                                                     MultiValidator(
                                                                   [
@@ -8367,7 +9690,15 @@ class _PostlamState extends State<Postlam> {
                                                                           () {
                                                                         AppHelper.hideKeyboard(
                                                                             context);
-                                                                        // sendDataToBackend();
+                                                                        if (status !=
+                                                                            'Pending') {
+                                                                          setState(
+                                                                              () {
+                                                                            sendStatus =
+                                                                                'Inprogress';
+                                                                          });
+                                                                          createData();
+                                                                        }
 
                                                                         // _registerFormKey
                                                                         //     .currentState!
@@ -8375,7 +9706,7 @@ class _PostlamState extends State<Postlam> {
                                                                         // if (_registerFormKey
                                                                         //     .currentState!
                                                                         //     .validate()) {
-                                                                        //   // sendDataToBackend();
+                                                                        //   // createData();
                                                                         // }
                                                                         setState(
                                                                             () {
@@ -8505,7 +9836,8 @@ class _PostlamState extends State<Postlam> {
                                                         children: [
                                                           SingleChildScrollView(
                                                             child: Form(
-                                                              //  key: _registerFormKey,
+                                                              key:
+                                                                  _postLamFormKey,
                                                               autovalidateMode:
                                                                   AutovalidateMode
                                                                       .onUserInteraction,
@@ -8675,6 +10007,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -8796,6 +10134,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -8828,6 +10172,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -8860,6 +10210,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -8892,6 +10248,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -8924,6 +10286,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -9045,6 +10413,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -9168,6 +10542,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -9292,6 +10672,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -9415,6 +10801,12 @@ class _PostlamState extends State<Postlam> {
                                                                     ),
                                                                     style: AppStyles
                                                                         .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
                                                                     validator:
                                                                         MultiValidator(
                                                                       [
@@ -9487,13 +10879,19 @@ class _PostlamState extends State<Postlam> {
                                                                           onTap:
                                                                               () {
                                                                             AppHelper.hideKeyboard(context);
-                                                                            // sendDataToBackend();
+                                                                            if (status !=
+                                                                                'Pending') {
+                                                                              setState(() {
+                                                                                sendStatus = 'Inprogress';
+                                                                              });
+                                                                              createData();
+                                                                            }
 
-                                                                            _registerFormKey.currentState!.save;
+                                                                            //_registerFormKey.currentState!.save;
                                                                             // if (_registerFormKey
                                                                             //     .currentState!
                                                                             //     .validate()) {
-                                                                            //   // sendDataToBackend();
+                                                                            //   // createData();
                                                                             // }
                                                                             setState(() {
                                                                               setPage = 'backlabel';
@@ -9619,7 +11017,8 @@ class _PostlamState extends State<Postlam> {
                                                             children: [
                                                               SingleChildScrollView(
                                                                 child: Form(
-                                                                  //  key: _registerFormKey,
+                                                                  key:
+                                                                      _postLamFormKey,
                                                                   autovalidateMode:
                                                                       AutovalidateMode
                                                                           .onUserInteraction,
@@ -9773,6 +11172,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -9803,6 +11206,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -9833,6 +11240,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -9863,6 +11274,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -9893,6 +11308,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -10014,6 +11433,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -10044,6 +11467,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -10074,6 +11501,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -10104,6 +11535,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -10134,6 +11569,10 @@ class _PostlamState extends State<Postlam> {
                                                                         ),
                                                                         style: AppStyles
                                                                             .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
                                                                         validator:
                                                                             MultiValidator(
                                                                           [
@@ -10199,13 +11638,17 @@ class _PostlamState extends State<Postlam> {
                                                                               ),
                                                                               onTap: () {
                                                                                 AppHelper.hideKeyboard(context);
-                                                                                // sendDataToBackend();
-
-                                                                                _registerFormKey.currentState!.save;
+                                                                                if (status != 'Pending') {
+                                                                                  setState(() {
+                                                                                    sendStatus = 'Inprogress';
+                                                                                  });
+                                                                                  createData();
+                                                                                }
+                                                                                //_registerFormKey.currentState!.save;
                                                                                 // if (_registerFormKey
                                                                                 //     .currentState!
                                                                                 //     .validate()) {
-                                                                                //   // sendDataToBackend();
+                                                                                //   // createData();
                                                                                 // }
                                                                                 setState(() {
                                                                                   setPage = 'finalvisual';
@@ -10319,7 +11762,8 @@ class _PostlamState extends State<Postlam> {
                                                                 children: [
                                                                   SingleChildScrollView(
                                                                     child: Form(
-                                                                      //  key: _registerFormKey,
+                                                                      key:
+                                                                          _postLamFormKey,
                                                                       autovalidateMode:
                                                                           AutovalidateMode
                                                                               .onUserInteraction,
@@ -10452,6 +11896,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10479,6 +11926,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10506,6 +11956,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10533,6 +11986,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10560,6 +12016,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10669,6 +12128,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10696,6 +12158,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10723,6 +12188,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10750,6 +12218,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10777,6 +12248,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10885,6 +12359,9 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                             style:
                                                                                 AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
                                                                             validator:
                                                                                 MultiValidator(
                                                                               [
@@ -10941,13 +12418,18 @@ class _PostlamState extends State<Postlam> {
                                                                                   ),
                                                                                   onTap: () {
                                                                                     AppHelper.hideKeyboard(context);
-                                                                                    // sendDataToBackend();
+                                                                                    if (status != 'Pending') {
+                                                                                      setState(() {
+                                                                                        sendStatus = 'Inprogress';
+                                                                                      });
+                                                                                      createData();
+                                                                                    }
 
-                                                                                    _registerFormKey.currentState!.save;
+                                                                                    //_registerFormKey.currentState!.save;
                                                                                     // if (_registerFormKey
                                                                                     //     .currentState!
                                                                                     //     .validate()) {
-                                                                                    //   // sendDataToBackend();
+                                                                                    //   // createData();
                                                                                     // }
                                                                                     setState(() {
                                                                                       setPage = 'packaging';
@@ -11055,7 +12537,8 @@ class _PostlamState extends State<Postlam> {
                                                                       SingleChildScrollView(
                                                                         child:
                                                                             Form(
-                                                                          //  key: _registerFormKey,
+                                                                          key:
+                                                                              _postLamFormKey,
                                                                           autovalidateMode:
                                                                               AutovalidateMode.onUserInteraction,
                                                                           child:
@@ -11162,6 +12645,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11182,6 +12666,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11202,6 +12687,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11222,6 +12708,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11242,6 +12729,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11322,6 +12810,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11342,6 +12831,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11362,6 +12852,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11382,6 +12873,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11402,6 +12894,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11481,6 +12974,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11501,6 +12995,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11521,6 +13016,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11541,6 +13037,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11561,6 +13058,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11640,6 +13138,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11660,6 +13159,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11680,6 +13180,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11700,6 +13201,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11720,6 +13222,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
@@ -11753,33 +13256,76 @@ class _PostlamState extends State<Postlam> {
                                                                               const SizedBox(
                                                                                 height: 15,
                                                                               ),
+                                                                              Text(
+                                                                                "Reference PDF Document ",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: referencePdfController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                    hintText: "Please Select Reference Pdf",
+                                                                                    suffixIcon: IconButton(
+                                                                                      onPressed: () async {
+                                                                                        if (widget.id != null && widget.id != '' && referencePdfController.text != '') {
+                                                                                          UrlLauncher.launch(referencePdfController.text);
+                                                                                        } else if (status != 'Pending') {
+                                                                                          _pickReferencePDF();
+                                                                                        }
+                                                                                      },
+                                                                                      icon: widget.id != null && widget.id != '' && referencePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.upload_file),
+                                                                                    ),
+                                                                                    counterText: ''),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                maxLines: 1,
+                                                                                readOnly: true,
+                                                                                validator: (value) {
+                                                                                  if (value!.isEmpty) {
+                                                                                    return "Please Select Reference Pdf";
+                                                                                  } else {
+                                                                                    return null;
+                                                                                  }
+                                                                                },
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
 
                                                                               Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                                                                               _isLoading
                                                                                   ? Center(child: CircularProgressIndicator())
-                                                                                  : AppButton(
-                                                                                      textStyle: const TextStyle(
-                                                                                        fontWeight: FontWeight.w700,
-                                                                                        color: AppColors.white,
-                                                                                        fontSize: 16,
-                                                                                      ),
-                                                                                      onTap: () {
-                                                                                        AppHelper.hideKeyboard(context);
-                                                                                        // sendDataToBackend();
+                                                                                  : (widget.id == "" || widget.id == null) || (status == 'Inprogress' && widget.id != null)
+                                                                                      ? AppButton(
+                                                                                          textStyle: const TextStyle(
+                                                                                            fontWeight: FontWeight.w700,
+                                                                                            color: AppColors.white,
+                                                                                            fontSize: 16,
+                                                                                          ),
+                                                                                          onTap: () {
+                                                                                            AppHelper.hideKeyboard(context);
+                                                                                            //createData();
 
-                                                                                        _registerFormKey.currentState!.save;
-                                                                                        // if (_registerFormKey
-                                                                                        //     .currentState!
-                                                                                        //     .validate()) {
-                                                                                        //   // sendDataToBackend();
-                                                                                        // }
-                                                                                        setState(() {
-                                                                                          setPage = 'backlabel';
-                                                                                        });
-                                                                                      },
-                                                                                      label: "Next",
-                                                                                      organization: '',
-                                                                                    ),
+                                                                                            _postLamFormKey.currentState!.save;
+                                                                                            if (_postLamFormKey.currentState!.validate()) {
+                                                                                              if (status != 'Pending') {
+                                                                                                setState(() {
+                                                                                                  sendStatus = 'Pending';
+                                                                                                });
+                                                                                                createData();
+                                                                                              }
+                                                                                            }
+                                                                                            setState(() {
+                                                                                              setPage = 'backlabel';
+                                                                                            });
+                                                                                          },
+                                                                                          label: "Submit",
+                                                                                          organization: '',
+                                                                                        )
+                                                                                      : Container(),
                                                                               const SizedBox(
                                                                                 height: 10,
                                                                               ),
