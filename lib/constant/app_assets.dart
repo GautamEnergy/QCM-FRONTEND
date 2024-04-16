@@ -96,4 +96,18 @@ class AppAssets {
   static String icCalenderBlue = 'assets/icons/ic_calender_blue.png';
 
   static String icApproved = 'assets/icons/approved.png';
+
+  // Stringer, Laminator  Sealant
+  static String Stringer = 'assets/icons/stringer.png';
+  static String Stringer1 = 'assets/icons/stringer1.png';
+  static String Stringer2 = 'assets/icons/stringer2.png';
+  static String Stringer3 = 'assets/icons/stringer3.png';
+
+  static String Laminator1 = 'assets/icons/laminator1.png';
+  static String Laminator2 = 'assets/icons/laminator2.png';
+
+  //testing
+  static String peel = 'assets/icons/peel.png';
+  static String busbar = 'assets/icons/busbar.png';
+  static String iron = 'assets/icons/iron.png';
 }
