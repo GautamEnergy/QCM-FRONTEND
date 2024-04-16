@@ -8,6 +8,7 @@ import 'package:QCM/Flux.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/JunctionBox.dart';
 import 'package:QCM/Ribbon.dart';
+import 'package:QCM/Sealant.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/SolarGlass.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -665,7 +666,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                               "Backsheet"
                                                           ? AppAssets
                                                               .imgAttendanceList
-                                                          : AppAssets.eva,
+                                                          : materialname ==
+                                                                  "Sealant/Poating"
+                                                              ? AppAssets
+                                                                  .Poating
+                                                              : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -691,7 +696,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                               "Backsheet"
                                                           ? AppAssets
                                                               .imgAttendanceList
-                                                          : AppAssets.eva,
+                                                          : materialname ==
+                                                                  "Sealant/Poating"
+                                                              ? AppAssets
+                                                                  .Poating
+                                                              : AppAssets.eva,
                               height: 60,
                               width: 60,
                             ),
@@ -967,8 +976,12 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                                     "Backsheet"
                                                                 ? Backsheet(
                                                                     id: id)
-                                                                : Encapsulant(
-                                                                    id: id)),
+                                                                : materialname ==
+                                                                        "Sealant/Poating"
+                                                                    ? Sealant(
+                                                                        id: id)
+                                                                    : Encapsulant(
+                                                                        id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -1007,8 +1020,12 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                                                     "Backsheet"
                                                                 ? Backsheet(
                                                                     id: id)
-                                                                : Encapsulant(
-                                                                    id: id)),
+                                                                : materialname ==
+                                                                        "Sealant/Poating"
+                                                                    ? Sealant(
+                                                                        id: id)
+                                                                    : Encapsulant(
+                                                                        id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

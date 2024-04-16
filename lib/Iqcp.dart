@@ -7,6 +7,7 @@ import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/JunctionBox.dart';
 import 'package:QCM/Ribbon.dart';
+import 'package:QCM/Sealant.dart';
 
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/SolarGlass.dart';
@@ -281,10 +282,10 @@ class _WelcomePageState extends State<IqcpPage> {
                 Expanded(
                     child:
                         tabDashboard('Sealant/Poating', AppAssets.Poating, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => InOut()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Sealant()),
+                      (Route<dynamic> route) => false);
                 })),
                 const SizedBox(
                   width: 10,
