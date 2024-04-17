@@ -469,9 +469,9 @@ class _PostlamState extends State<Postlam> {
           "should not be sharp & Buffing belt should be properly working";
       // Cleaning
       cleaningWiFrequencyController.text = "Once a Shift";
-      cleaningWiFrequencyController.text = "Must be Present";
+      cleaningWiCrieteriaController.text = "Must be Present";
       cleaningModuleFrequencyController.text = "5 Piece per Shift";
-      cleaningModuleFrequencyController.text =
+      cleaningModuleCrieteriaController.text =
           "As per visual inspection criteria Annexure-A8";
       // Sun Simulator
       sunWiFrequencyController.text = "Once a Shift";
@@ -482,11 +482,11 @@ class _PostlamState extends State<Postlam> {
       sunIrradianceCrieteriaController.text = "1000W/m²";
       sunCaliFrequencyController.text = "Every Four Hour";
       sunCaliCrieteriaController.text =
-          " Calibration performed at 25+-2°C room temperature ";
+          " Calibration performed at 25+-2°C room temperature";
       sunLastFrequencyController.text = "Every Four Hour";
-      sunLastCrieteriaController.text = " verify also it's result";
+      sunLastCrieteriaController.text = " verify also its result";
       sunExpiryFrequencyController.text = "Once a Shift";
-      sunExpiryCrieteriaController.text = " 3 Months";
+      sunExpiryCrieteriaController.text = "3 Months";
 
       // Hipot
       hipotWiFrequencyController.text = "Once a Shift";
@@ -851,12 +851,12 @@ class _PostlamState extends State<Postlam> {
               "Observation 4": hipotDCWObs4Controller.text,
               "Observation 5": hipotDCWObs5Controller.text,
             },
-            "DCW-4.0KV ": {
-              "Observation 1": hipotDCWObs1Controller.text,
-              "Observation 2": hipotDCWObs2Controller.text,
-              "Observation 3": hipotDCWObs3Controller.text,
-              "Observation 4": hipotDCWObs4Controller.text,
-              "Observation 5": hipotDCWObs5Controller.text,
+            "IR-2.5KV": {
+              "Observation 1": hipotIRObs1Controller.text,
+              "Observation 2": hipotIRObs2Controller.text,
+              "Observation 3": hipotIRObs3Controller.text,
+              "Observation 4": hipotIRObs4Controller.text,
+              "Observation 5": hipotIRObs5Controller.text,
             },
             "Ground Continuity-62.5A ": {
               "Observation 1": hipotGroundObs1Controller.text,
@@ -1065,7 +1065,9 @@ class _PostlamState extends State<Postlam> {
         },
       ]
     ];
-    // print(packagingSampleData);
+    print("hahahhahhahahhahahhahahhahahahhahahhahahhahahhah");
+
+    print(data);
     // var PostLamDetails = {
     //   "PreLamDetailId": prelamId != '' && prelamId != null
     //       ? prelamId
@@ -1524,14 +1526,474 @@ class _PostlamState extends State<Postlam> {
       setState(() {
         if (resBody != '') {
           print("Aaaaaaaaaaaaaaaaaaajajaaa");
-          // print(resBody['response']['Status']);
+          print(resBody['response']['Status']);
           print(resBody);
-          //  print(resBody['response'] != ""
-          //         ? resBody
-          //         ['Tabber&StringerFrequency']['Visual Check after stringer Number of Stringer']);
+          print(resBody['response']['TrimmingCheckPoint'][
+                  'Physical verification of Union trimming & Blade replacing frequency']
+              ['Observation 1']);
 
           print("saiffffffffffffffffffffffffffffffffffffffffff");
           print("kulllllllllllllllllllllllllllllllllllllllllll");
+          status = resBody['response']['Status'] ?? '';
+          dateOfPostLam = resBody['response']['Date'] ?? '';
+          dateController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          shiftController.text = resBody['response']['Shift'] ?? '';
+          lineController.text = resBody['response']['Line'] ?? '';
+          poController.text = resBody['response']['PONo'] ?? '';
+          // Trimming
+          trimmingWiController.text = resBody['response']['TrimmingCheckPoint']
+                  ['Avaibility of WI'] ??
+              '';
+          trimmingPhysicalObs1Controller.text = resBody['response']
+                          ['TrimmingCheckPoint'][
+                      'Physical verification of Union trimming & Blade replacing frequency']
+                  ['Observation 1'] ??
+              '';
+          trimmingPhysicalObs2Controller.text = resBody['response']
+                          ['TrimmingCheckPoint'][
+                      'Physical verification of Union trimming & Blade replacing frequency']
+                  ['Observation 2'] ??
+              '';
+          trimmingPhysicalObs3Controller.text = resBody['response']
+                          ['TrimmingCheckPoint'][
+                      'Physical verification of Union trimming & Blade replacing frequency']
+                  ['Observation 3'] ??
+              '';
+          trimmingPhysicalObs4Controller.text = resBody['response']
+                          ['TrimmingCheckPoint'][
+                      'Physical verification of Union trimming & Blade replacing frequency']
+                  ['Observation 4'] ??
+              '';
+          trimmingPhysicalObs5Controller.text = resBody['response']
+                          ['TrimmingCheckPoint'][
+                      'Physical verification of Union trimming & Blade replacing frequency']
+                  ['Observation 5'] ??
+              '';
+          // Post Lam
+          postLamWiController.text = resBody['response']
+                      ['PostLamVisualInspectionCheckPoint']
+                  ['Avaibility of WI & criteria'] ??
+              '';
+          postLamVisualObs1Controller.text = resBody['response']
+                      ['PostLamVisualInspectionCheckPoint']['Visual Defects']
+                  ['Observation 1'] ??
+              '';
+          postLamVisualObs2Controller.text = resBody['response']
+                      ['PostLamVisualInspectionCheckPoint']['Visual Defects']
+                  ['Observation 2'] ??
+              '';
+          postLamVisualObs3Controller.text = resBody['response']
+                      ['PostLamVisualInspectionCheckPoint']['Visual Defects']
+                  ['Observation 3'] ??
+              '';
+          postLamVisualObs4Controller.text = resBody['response']
+                      ['PostLamVisualInspectionCheckPoint']['Visual Defects']
+                  ['Observation 4'] ??
+              '';
+          postLamVisualObs5Controller.text = resBody['response']
+                      ['PostLamVisualInspectionCheckPoint']['Visual Defects']
+                  ['Observation 5'] ??
+              '';
+
+          // framing
+          framingWiController.text = resBody['response']['FramingCheckPoint']
+                  ['Avaibility of WI & Sealant weight Specification'] ??
+              '';
+          framingGlueUniObs1Controller.text = resBody['response']
+                          ['FramingCheckPoint']
+                      ['Glue uniformity & continuity in frame groove']
+                  ['Observation 1'] ??
+              '';
+          framingGlueUniObs2Controller.text = resBody['response']
+                          ['FramingCheckPoint']
+                      ['Glue uniformity & continuity in frame groove']
+                  ['Observation 2'] ??
+              '';
+          framingGlueUniObs3Controller.text = resBody['response']
+                          ['FramingCheckPoint']
+                      ['Glue uniformity & continuity in frame groove']
+                  ['Observation 3'] ??
+              '';
+          framingGlueUniObs4Controller.text = resBody['response']
+                          ['FramingCheckPoint']
+                      ['Glue uniformity & continuity in frame groove']
+                  ['Observation 4'] ??
+              '';
+          framingGlueUniObs5Controller.text = resBody['response']
+                          ['FramingCheckPoint']
+                      ['Glue uniformity & continuity in frame groove']
+                  ['Observation 5'] ??
+              '';
+          framingGlueWeightController.text =
+              resBody['response']['FramingCheckPoint']['Glue Weight'] ?? '';
+          framingCornerObs1Controller.text = resBody['response']
+                  ['FramingCheckPoint']['Corner Gap']['Observation 1'] ??
+              '';
+          framingCornerObs2Controller.text = resBody['response']
+                  ['FramingCheckPoint']['Corner Gap']['Observation 2'] ??
+              '';
+          framingCornerObs3Controller.text = resBody['response']
+                  ['FramingCheckPoint']['Corner Gap']['Observation 3'] ??
+              '';
+          framingCornerObs4Controller.text = resBody['response']
+                  ['FramingCheckPoint']['Corner Gap']['Observation 4'] ??
+              '';
+          framingCornerObs5Controller.text = resBody['response']
+                  ['FramingCheckPoint']['Corner Gap']['Observation 5'] ??
+              '';
+          framingTopController.text = resBody['response']['FramingCheckPoint']
+                  ['Top & Buttom cut Length side cut length'] ??
+              '';
+          framingMountingController.text = resBody['response']
+                  ['FramingCheckPoint']['Mounting hole x,y pitch'] ??
+              '';
+          framingAnodizingController.text = resBody['response']
+                  ['FramingCheckPoint']['Anodizing thicknes'] ??
+              '';
+          // Junction box Assembly
+          junctionWiController.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']
+                  ['Avaibility of WI & sealant weight specification'] ??
+              '';
+          junctionGlueObs1Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['Glue around jB']
+                  ['Observation 1'] ??
+              '';
+          junctionGlueObs2Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['Glue around jB']
+                  ['Observation 2'] ??
+              '';
+          junctionGlueObs3Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['Glue around jB']
+                  ['Observation 3'] ??
+              '';
+          junctionGlueObs4Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['Glue around jB']
+                  ['Observation 4'] ??
+              '';
+          junctionGlueObs5Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['Glue around jB']
+                  ['Observation 5'] ??
+              '';
+          junctionJbObs1Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['JB tilt']
+                  ['Observation 1'] ??
+              '';
+          junctionJbObs2Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['JB tilt']
+                  ['Observation 2'] ??
+              '';
+          junctionJbObs3Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['JB tilt']
+                  ['Observation 3'] ??
+              '';
+          junctionJbObs4Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['JB tilt']
+                  ['Observation 4'] ??
+              '';
+          junctionJbObs5Controller.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']['JB tilt']
+                  ['Observation 5'] ??
+              '';
+          junctionGlueWeightController.text = resBody['response']
+                  ['JunctionBoxAssemblyCheckPoint']['Glue Weight'] ??
+              '';
+          junctionGlueRatioController.text = resBody['response']
+                      ['JunctionBoxAssemblyCheckPoint']
+                  ['Glue(Base+Catalyst)potting Ratio & Weight'] ??
+              '';
+
+          // Curing
+          curingWiController.text =
+              resBody['response']['CuringCheckPoint']['Avaibility of WI'] ?? '';
+          curingTimeController.text =
+              resBody['response']['CuringCheckPoint']['Curing Time'] ?? '';
+          curingTempController.text = resBody['response']['CuringCheckPoint']
+                  ['Temperature & Humidity'] ??
+              '';
+
+          //Buffing
+          buffingWiController.text = resBody['response']['BuffingCheckPoint']
+                  ['Avaibillity of WI'] ??
+              '';
+          buffingEdseObs1Controller.text = resBody['response']
+                      ['BuffingCheckPoint']
+                  ['Edge of corner, Buffing belt condition']['Observation 1'] ??
+              '';
+          buffingEdseObs2Controller.text = resBody['response']
+                      ['BuffingCheckPoint']
+                  ['Edge of corner, Buffing belt condition']['Observation 2'] ??
+              '';
+          buffingEdseObs3Controller.text = resBody['response']
+                      ['BuffingCheckPoint']
+                  ['Edge of corner, Buffing belt condition']['Observation 3'] ??
+              '';
+          buffingEdseObs4Controller.text = resBody['response']
+                      ['BuffingCheckPoint']
+                  ['Edge of corner, Buffing belt condition']['Observation 4'] ??
+              '';
+          buffingEdseObs5Controller.text = resBody['response']
+                      ['BuffingCheckPoint']
+                  ['Edge of corner, Buffing belt condition']['Observation 5'] ??
+              '';
+
+          //Cleaning
+          cleaningWiController.text = resBody['response']['CleaningCheckPoint']
+                  ['Avaibillity of WI'] ??
+              '';
+          cleaningModuleObs1Controller.text = resBody['response']
+                          ['CleaningCheckPoint'][
+                      'Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr']
+                  ['Observation 1'] ??
+              '';
+          cleaningModuleObs2Controller.text = resBody['response']
+                          ['CleaningCheckPoint'][
+                      'Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr']
+                  ['Observation 2'] ??
+              '';
+          cleaningModuleObs3Controller.text = resBody['response']
+                          ['CleaningCheckPoint'][
+                      'Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr']
+                  ['Observation 3'] ??
+              '';
+          cleaningModuleObs4Controller.text = resBody['response']
+                          ['CleaningCheckPoint'][
+                      'Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr']
+                  ['Observation 4'] ??
+              '';
+          cleaningModuleObs5Controller.text = resBody['response']
+                          ['CleaningCheckPoint'][
+                      'Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr']
+                  ['Observation 5'] ??
+              '';
+          // Sun Simulator
+          sunWiController.text = resBody['response']
+                  ['SunSimulatorCalibrationCheckPoint']['Avaibility of WI'] ??
+              '';
+          sunTempController.text = resBody['response']
+                  ['SunSimulatorCalibrationCheckPoint']['Temperature'] ??
+              '';
+          sunIrradianceController.text = resBody['response']
+                  ['SunSimulatorCalibrationCheckPoint']['Irradiance'] ??
+              '';
+
+          sunCali1TimeController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection First']['Time'] ??
+              '';
+          sunCali1RoomController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection First']['Room Temp'] ??
+              '';
+          sunCali1ModuleTempController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection First']['Module Temp'] ??
+              '';
+          sunCali1ModuleIdController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection First']['Module Id'] ??
+              '';
+          sunCali2TimeController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Second']['Time'] ??
+              '';
+          sunCali2RoomController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Second']['Room Temp'] ??
+              '';
+          sunCali2ModuleTempController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Second']['Module Temp'] ??
+              '';
+          sunCali2ModuleIdController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Second']['Module Id'] ??
+              '';
+          sunCali3TimeController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Third']['Time'] ??
+              '';
+          sunCali3RoomController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Third']['Room Temp'] ??
+              '';
+          sunCali3ModuleTempController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Third']['Module Temp'] ??
+              '';
+          sunCali3ModuleIdController.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint'][
+                      'Each sun simulator validated after every four hours using valid silver reference PV module']
+                  ['Inspection Third']['Module Id'] ??
+              '';
+          sunLast1Controller.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint']
+                      ['Last Validation or calibration date and time']
+                  ['First Inspection'] ??
+              '';
+          sunLast2Controller.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint']
+                      ['Last Validation or calibration date and time']
+                  ['Second Inspection'] ??
+              '';
+          sunLast3Controller.text = resBody['response']
+                          ['SunSimulatorCalibrationCheckPoint']
+                      ['Last Validation or calibration date and time']
+                  ['Third Inspection'] ??
+              '';
+          sunExpiryController.text = resBody['response']
+                      ['SunSimulatorCalibrationCheckPoint']
+                  ['Expiry Date of Silver Module Verification'] ??
+              '';
+          //Hipot
+          hipotWiController.text =
+              resBody['response']['HipotCheckPoint']['Avaibillity of WI'] ?? '';
+          hipotParameterController.text =
+              resBody['response']['HipotCheckPoint']['parameter'] ?? '';
+          hipotDCWObs1Controller.text = resBody['response']['HipotCheckPoint']
+                  ['DCW-4.0KV ']['Observation 1'] ??
+              '';
+          hipotDCWObs2Controller.text = resBody['response']['HipotCheckPoint']
+                  ['DCW-4.0KV ']['Observation 2'] ??
+              '';
+          hipotDCWObs3Controller.text = resBody['response']['HipotCheckPoint']
+                  ['DCW-4.0KV ']['Observation 3'] ??
+              '';
+          hipotDCWObs4Controller.text = resBody['response']['HipotCheckPoint']
+                  ['DCW-4.0KV ']['Observation 4'] ??
+              '';
+          hipotDCWObs5Controller.text = resBody['response']['HipotCheckPoint']
+                  ['DCW-4.0KV ']['Observation 5'] ??
+              '';
+          //2nd
+          //  hipotDCWObs1Controller.text = resBody['response']
+          //             ['HipotCheckPoint']
+          //         ['IR-2.5KV']
+          //     ['Observation 1'] ??
+          // '';
+          //  hipotDCWObs2Controller.text = resBody['response']
+          //             ['HipotCheckPoint']
+          //         ['IR-2.5KV']
+          //     ['Observation 2'] ??
+          // '';
+          //  hipotDCWObs3Controller.text = resBody['response']
+          //             ['HipotCheckPoint']
+          //         ['IR-2.5KV']
+          //     ['Observation 3'] ??
+          // '';
+          //  hipotDCWObs4Controller.text = resBody['response']
+          //             ['HipotCheckPoint']
+          //         ['IR-2.5KV']
+          //     ['Observation 4'] ??
+          // '';
+          //  hipotDCWObs5Controller.text = resBody['response']
+          //             ['HipotCheckPoint']
+          //         ['IR-2.5KV']
+          //     ['Observation 5'] ??
+          // '';
+          // 3rd
+          hipotDCWObs1Controller.text = resBody['response']['HipotCheckPoint']
+                  ['Ground Continuity-62.5A ']['Observation 1'] ??
+              '';
+          hipotDCWObs2Controller.text = resBody['response']['HipotCheckPoint']
+                  ['Ground Continuity-62.5A ']['Observation 2'] ??
+              '';
+          hipotDCWObs3Controller.text = resBody['response']['HipotCheckPoint']
+                  ['Ground Continuity-62.5A ']['Observation 3'] ??
+              '';
+          hipotDCWObs4Controller.text = resBody['response']['HipotCheckPoint']
+                  ['Ground Continuity-62.5A ']['Observation 4'] ??
+              '';
+          hipotDCWObs5Controller.text = resBody['response']['HipotCheckPoint']
+                  ['Ground Continuity-62.5A ']['Observation 5'] ??
+              '';
+
+          //FinalEl
+          elWiController.text = resBody['response']['FinalELTESTCheckPoint']
+                  ['Avaibillity of WI'] ??
+              '';
+          elVoltageController.text = resBody['response']
+                      ['FinalELTESTCheckPoint']
+                  ['Voltage & Current Verification in DC power supply'] ??
+              '';
+          elDefectsObs1Controller.text = resBody['response']
+                  ['FinalELTESTCheckPoint']['EL Defect']['Observation 1'] ??
+              '';
+          elDefectsObs2Controller.text = resBody['response']
+                  ['FinalELTESTCheckPoint']['EL Defect']['Observation 2'] ??
+              '';
+          elDefectsObs3Controller.text = resBody['response']
+                  ['FinalELTESTCheckPoint']['EL Defect']['Observation 3'] ??
+              '';
+          elDefectsObs4Controller.text = resBody['response']
+                  ['FinalELTESTCheckPoint']['EL Defect']['Observation 4'] ??
+              '';
+          elDefectsObs5Controller.text = resBody['response']
+                  ['FinalELTESTCheckPoint']['EL Defect']['Observation 5'] ??
+              '';
+
+          // Rfid
+          rfidWiController.text = resBody['response']
+                  ['RFIDReading&writingCheckPoint']['Avaibillity of WI'] ??
+              '';
+          rfidFixingObs1Controller.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']['Fixing position']
+                  ['Observation 1'] ??
+              '';
+          rfidFixingObs2Controller.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']['Fixing position']
+                  ['Observation 2'] ??
+              '';
+          rfidFixingObs3Controller.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']['Fixing position']
+                  ['Observation 3'] ??
+              '';
+          rfidFixingObs4Controller.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']['Fixing position']
+                  ['Observation 4'] ??
+              '';
+          rfidFixingObs5Controller.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']['Fixing position']
+                  ['Observation 5'] ??
+              '';
+          rfidTagController.text = resBody['response']
+                  ['RFIDReading&writingCheckPoint']['Tag read & write'] ??
+              '';
+          rfidCertificationController.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']
+                  ['Certification Date Verification'] ??
+              '';
+          rfidCellController.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']
+                  ['Cell Make & Manufacturing Month Verification'] ??
+              '';
+          rfidModuleController.text = resBody['response']
+                      ['RFIDReading&writingCheckPoint']
+                  ['Module Manufacturing Month Verification'] ??
+              '';
+          // Black Label
+          lineController.text = resBody['response']['Line'] ?? '';
+          poController.text = resBody['response']['PONo'] ?? '';
+          // Final Visual
+          lineController.text = resBody['response']['Line'] ?? '';
+          poController.text = resBody['response']['PONo'] ?? '';
+          // Packaging
+          lineController.text = resBody['response']['Line'] ?? '';
+          poController.text = resBody['response']['PONo'] ?? '';
           // dateController.text = resBody['response']['Date'] ?? '';
           // status = resBody['response']['Status'] ?? '';
           // dateOfQualityCheck = resBody['response']['Date'] ?? '';
@@ -1720,6 +2182,56 @@ class _PostlamState extends State<Postlam> {
 //           status = resBody['response']['Status'] ?? '';
         }
       });
+    }
+  }
+
+  Future setApprovalStatus() async {
+    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    print(approvalStatus);
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
+
+    final url = (site! + "IPQC/UpdatePreLamStatus");
+
+    var params = {
+      "token": token,
+      "CurrentUser": personid,
+      "ApprovalStatus": approvalStatus,
+      "JobCardDetailId": widget.id ?? ""
+    };
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(params),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
+      var objData = json.decode(response.body);
+      if (objData['success'] == false) {
+        Toast.show("Please Try Again.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        Toast.show("Job Card Test $approvalStatus .",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
     }
   }
 
@@ -4637,7 +5149,7 @@ class _PostlamState extends State<Postlam> {
                                           ),
                                           TextFormField(
                                             controller:
-                                                junctionGlueObs4Controller,
+                                                junctionJbObs4Controller,
                                             keyboardType: TextInputType.text,
                                             textInputAction:
                                                 TextInputAction.next,
@@ -6129,7 +6641,7 @@ class _PostlamState extends State<Postlam> {
                                                             // }
                                                             setState(() {
                                                               setPage =
-                                                                  'sunsimulator';
+                                                                  'cleaning';
                                                             });
                                                           },
                                                           label: "Next",
@@ -6172,7 +6684,7 @@ class _PostlamState extends State<Postlam> {
                                                       child: InkWell(
                                                         onTap: () {
                                                           setState(() {
-                                                            setPage = "buffing";
+                                                            setPage = "curing";
                                                           });
                                                           // Navigator.of(context).pushReplacement(
                                                           //     MaterialPageRoute(
@@ -6232,10 +6744,8 @@ class _PostlamState extends State<Postlam> {
                                           ),
                                         ],
                                       )
-
-                                    /***************Sun Simulator calibration ******************* */
-
-                                    : setPage == "sunsimulator"
+                                    /*************************************************Cleaning***************************** */
+                                    : setPage == "cleaning"
                                         ? Stack(
                                             alignment: Alignment.center,
                                             fit: StackFit.expand,
@@ -6348,7 +6858,7 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                       const Center(
                                                           child: Text(
-                                                              "Sun Simulator Calibration",
+                                                              "Cleaning",
                                                               style: TextStyle(
                                                                   fontSize: 20,
                                                                   color: Color
@@ -6365,7 +6875,7 @@ class _PostlamState extends State<Postlam> {
                                                       const SizedBox(
                                                         height: 20,
                                                       ),
-                                                      // Sun SImulator Availability of WI
+                                                      // Cleaning Availability of WI
                                                       Text(
                                                         "Frequency",
                                                         style: AppStyles
@@ -6376,7 +6886,7 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                       TextFormField(
                                                         controller:
-                                                            sunWiFrequencyController,
+                                                            cleaningWiFrequencyController,
                                                         keyboardType:
                                                             TextInputType.text,
                                                         textInputAction:
@@ -6406,7 +6916,7 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                       TextFormField(
                                                         controller:
-                                                            sunWiController,
+                                                            cleaningWiController,
                                                         keyboardType:
                                                             TextInputType.text,
                                                         textInputAction:
@@ -6450,7 +6960,7 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                       TextFormField(
                                                         controller:
-                                                            sunWiCrieteriaController,
+                                                            cleaningWiCrieteriaController,
                                                         keyboardType:
                                                             TextInputType.text,
                                                         textInputAction:
@@ -6480,7 +6990,8 @@ class _PostlamState extends State<Postlam> {
                                                           thickness: 2.0,
                                                         ),
                                                       ),
-                                                      // Sun Simulator Temerature
+                                                      // Module Should be free
+
                                                       Text(
                                                         "Frequency",
                                                         style: AppStyles
@@ -6491,7 +7002,7 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                       TextFormField(
                                                         controller:
-                                                            sunTempFrequencyController,
+                                                            cleaningModuleFrequencyController,
                                                         keyboardType:
                                                             TextInputType.text,
                                                         textInputAction:
@@ -6501,7 +7012,7 @@ class _PostlamState extends State<Postlam> {
                                                             .textFieldInputDecoration
                                                             .copyWith(
                                                           hintText:
-                                                              "Once Piece  per Shift ",
+                                                              "5 Piece  per Shift ",
                                                           counterText: '',
                                                         ),
                                                         style: AppStyles
@@ -6512,7 +7023,7 @@ class _PostlamState extends State<Postlam> {
                                                         height: 15,
                                                       ),
                                                       Text(
-                                                        "Temperature",
+                                                        "Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr",
                                                         style: AppStyles
                                                             .textfieldCaptionTextStyle,
                                                       ),
@@ -6521,7 +7032,7 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                       TextFormField(
                                                         controller:
-                                                            sunTempController,
+                                                            cleaningModuleObs1Controller,
                                                         keyboardType:
                                                             TextInputType.text,
                                                         textInputAction:
@@ -6531,7 +7042,7 @@ class _PostlamState extends State<Postlam> {
                                                             .textFieldInputDecoration
                                                             .copyWith(
                                                           hintText:
-                                                              "Please Enter Observation  ",
+                                                              "Please Enter Observation 1 ",
                                                           counterText: '',
                                                         ),
                                                         style: AppStyles
@@ -6547,7 +7058,151 @@ class _PostlamState extends State<Postlam> {
                                                           [
                                                             RequiredValidator(
                                                               errorText:
-                                                                  "Please Enter Observation ",
+                                                                  "Please Enter Observation 1",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            cleaningModuleObs2Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 2 ",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 2",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            cleaningModuleObs3Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 3 ",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 3",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            cleaningModuleObs4Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 4 ",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 4",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      TextFormField(
+                                                        controller:
+                                                            cleaningModuleObs5Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 5 ",
+                                                          counterText: '',
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 5",
                                                             ),
                                                           ],
                                                         ),
@@ -6566,48 +7221,7 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                       TextFormField(
                                                         controller:
-                                                            sunTempCrieteriaController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "25+-2°C ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 10.0),
-                                                        child: Divider(
-                                                          color: Colors.black,
-                                                          height: 2.0,
-                                                          thickness: 2.0,
-                                                        ),
-                                                      ),
-                                                      // Sun Simulator Irradance
-                                                      Text(
-                                                        "Frequency",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunIrradianceFrequencyController,
+                                                            cleaningModuleCrieteriaController,
                                                         keyboardType:
                                                             TextInputType.text,
                                                         textInputAction:
@@ -6617,919 +7231,7 @@ class _PostlamState extends State<Postlam> {
                                                             .textFieldInputDecoration
                                                             .copyWith(
                                                           hintText:
-                                                              "Once Piece  per Shift ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Text(
-                                                        "Irradiance",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunIrradianceController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Please Enter Observation  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Observation ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Text(
-                                                        "Criteria",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunIrradianceCrieteriaController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "1000W/m² ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 10.0),
-                                                        child: Divider(
-                                                          color: Colors.black,
-                                                          height: 2.0,
-                                                          thickness: 2.0,
-                                                        ),
-                                                      ),
-                                                      //Sun Simulator Each Sun
-                                                      Text(
-                                                        "Frequency",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCaliFrequencyController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Every 4 Hours  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Text(
-                                                        "Each sun calibrated after every Four hours using valid silver reference PV module",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Text(
-                                                        "First Inspection",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali1TimeController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "Time  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Time ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali1RoomController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "Room Temp",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Temp ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali1ModuleTempController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Module Temp  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Module Temp ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali1ModuleIdController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Module Id  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Module Id ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      // second Inspection
-                                                      Text(
-                                                        "Second Inspection",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali2TimeController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "Time  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Time ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali2RoomController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "Room Temp",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Temp ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali2ModuleTempController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Module Temp  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Module Temp ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali2ModuleIdController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Module Id  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Module Id ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      // Third Inspection
-                                                      Text(
-                                                        "Third Inspection",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali3TimeController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "Time  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Time ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali3RoomController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "Room Temp",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Temp ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali3ModuleTempController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Module Temp  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Module Temp ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCali3ModuleIdController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Module Id  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Module Id ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Text(
-                                                        "Criteria",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunCaliCrieteriaController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Calibration performed at 25+-2°C room Temprature ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 10.0),
-                                                        child: Divider(
-                                                          color: Colors.black,
-                                                          height: 2.0,
-                                                          thickness: 2.0,
-                                                        ),
-                                                      ),
-                                                      // Last Callibration
-                                                      Text(
-                                                        "Frequency",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunLastFrequencyController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Every Four Hour  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Text(
-                                                        "Last Calibration Date And Time ",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunLast1Controller,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "First Inspection  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter First Inspection ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunLast2Controller,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Second Inspection  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Second Inspection ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunLast3Controller,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Third Inspection  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Third Inspection ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Text(
-                                                        "Criteria",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunLastCrieteriaController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Verify also its result ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 10.0),
-                                                        child: Divider(
-                                                          color: Colors.black,
-                                                          height: 2.0,
-                                                          thickness: 2.0,
-                                                        ),
-                                                      ),
-                                                      //  Sun Simulator Expiry Date
-                                                      Text(
-                                                        "Frequency",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunExpiryFrequencyController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Once Piece  per Shift ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: true,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Text(
-                                                        "Expiry Date Verification",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunExpiryController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText:
-                                                              "Please Enter Observation  ",
-                                                          counterText: '',
-                                                        ),
-                                                        style: AppStyles
-                                                            .textInputTextStyle,
-                                                        readOnly: status ==
-                                                                    'Pending' &&
-                                                                designation !=
-                                                                    "QC"
-                                                            ? true
-                                                            : false,
-                                                        validator:
-                                                            MultiValidator(
-                                                          [
-                                                            RequiredValidator(
-                                                              errorText:
-                                                                  "Please Enter Observation ",
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-
-                                                      Text(
-                                                        "Criteria",
-                                                        style: AppStyles
-                                                            .textfieldCaptionTextStyle,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      TextFormField(
-                                                        controller:
-                                                            sunExpiryCrieteriaController,
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        textInputAction:
-                                                            TextInputAction
-                                                                .next,
-                                                        decoration: AppStyles
-                                                            .textFieldInputDecoration
-                                                            .copyWith(
-                                                          hintText: "3 Months ",
+                                                              "As per visual inspection criteria Annexure-A8",
                                                           counterText: '',
                                                         ),
                                                         style: AppStyles
@@ -7581,7 +7283,7 @@ class _PostlamState extends State<Postlam> {
                                                                 // }
                                                                 setState(() {
                                                                   setPage =
-                                                                      'hipot';
+                                                                      'sunsimulator';
                                                                 });
                                                               },
                                                               label: "Next",
@@ -7625,7 +7327,7 @@ class _PostlamState extends State<Postlam> {
                                                             onTap: () {
                                                               setState(() {
                                                                 setPage =
-                                                                    "cleaning";
+                                                                    "buffing";
                                                               });
                                                               // Navigator.of(context).pushReplacement(
                                                               //     MaterialPageRoute(
@@ -7687,9 +7389,10 @@ class _PostlamState extends State<Postlam> {
                                               ),
                                             ],
                                           )
-                                        /*******************Hipot*************** */
 
-                                        : setPage == "hipot"
+                                        /***************Sun Simulator calibration ******************* */
+
+                                        : setPage == "sunsimulator"
                                             ? Stack(
                                                 alignment: Alignment.center,
                                                 fit: StackFit.expand,
@@ -7803,7 +7506,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           const Center(
                                                               child: Text(
-                                                                  "Hipot",
+                                                                  "Sun Simulator Calibration",
                                                                   style: TextStyle(
                                                                       fontSize:
                                                                           20,
@@ -7820,7 +7523,7 @@ class _PostlamState extends State<Postlam> {
                                                           const SizedBox(
                                                             height: 20,
                                                           ),
-                                                          // Hipot Availability of WI
+                                                          // Sun SImulator Availability of WI
                                                           Text(
                                                             "Frequency",
                                                             style: AppStyles
@@ -7831,7 +7534,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotWiFrequencyController,
+                                                                sunWiFrequencyController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -7862,7 +7565,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotWiController,
+                                                                sunWiController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -7907,7 +7610,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotWiCrieteriaController,
+                                                                sunWiCrieteriaController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -7940,8 +7643,7 @@ class _PostlamState extends State<Postlam> {
                                                               thickness: 2.0,
                                                             ),
                                                           ),
-                                                          // Hipot Paramerter
-
+                                                          // Sun Simulator Temerature
                                                           Text(
                                                             "Frequency",
                                                             style: AppStyles
@@ -7952,7 +7654,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotParameterFrequencyController,
+                                                                sunTempFrequencyController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -7963,7 +7665,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Once per Shift ",
+                                                                  "Once Piece  per Shift ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -7974,7 +7676,7 @@ class _PostlamState extends State<Postlam> {
                                                             height: 15,
                                                           ),
                                                           Text(
-                                                            "Module Should be free from-protective Film,Scratches on frame-Backsheet Corner Cleaning Module ,Silicon Sealant glue/backsheet ,frame cleaning ,jb cleaning ,No burr ",
+                                                            "Temperature",
                                                             style: AppStyles
                                                                 .textfieldCaptionTextStyle,
                                                           ),
@@ -7983,7 +7685,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotParameterController,
+                                                                sunTempController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8029,7 +7731,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotParameterCrieteriaController,
+                                                                sunTempCrieteriaController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8040,7 +7742,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "As per UL/ As per IEC  ",
+                                                                  "25+-2°C ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8063,8 +7765,7 @@ class _PostlamState extends State<Postlam> {
                                                               thickness: 2.0,
                                                             ),
                                                           ),
-                                                          //DCW_4.0KV
-
+                                                          // Sun Simulator Irradance
                                                           Text(
                                                             "Frequency",
                                                             style: AppStyles
@@ -8075,7 +7776,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotDCWFrequencyController,
+                                                                sunIrradianceFrequencyController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8086,7 +7787,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "5 Piece per Shift ",
+                                                                  "Once Piece  per Shift ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8097,7 +7798,7 @@ class _PostlamState extends State<Postlam> {
                                                             height: 15,
                                                           ),
                                                           Text(
-                                                            "DCW-4.0KV ",
+                                                            "Irradiance",
                                                             style: AppStyles
                                                                 .textfieldCaptionTextStyle,
                                                           ),
@@ -8106,7 +7807,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotDCWObs1Controller,
+                                                                sunIrradianceController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8117,7 +7818,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 1  ",
+                                                                  "Please Enter Observation  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8133,155 +7834,7 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 1",
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          TextFormField(
-                                                            controller:
-                                                                hipotDCWObs2Controller,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            textInputAction:
-                                                                TextInputAction
-                                                                    .next,
-                                                            decoration: AppStyles
-                                                                .textFieldInputDecoration
-                                                                .copyWith(
-                                                              hintText:
-                                                                  "Please Enter Observation 2  ",
-                                                              counterText: '',
-                                                            ),
-                                                            style: AppStyles
-                                                                .textInputTextStyle,
-                                                            readOnly: status ==
-                                                                        'Pending' &&
-                                                                    designation !=
-                                                                        "QC"
-                                                                ? true
-                                                                : false,
-                                                            validator:
-                                                                MultiValidator(
-                                                              [
-                                                                RequiredValidator(
-                                                                  errorText:
-                                                                      "Please Enter Observation 2",
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          TextFormField(
-                                                            controller:
-                                                                hipotDCWObs3Controller,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            textInputAction:
-                                                                TextInputAction
-                                                                    .next,
-                                                            decoration: AppStyles
-                                                                .textFieldInputDecoration
-                                                                .copyWith(
-                                                              hintText:
-                                                                  "Please Enter Observation 3  ",
-                                                              counterText: '',
-                                                            ),
-                                                            style: AppStyles
-                                                                .textInputTextStyle,
-                                                            readOnly: status ==
-                                                                        'Pending' &&
-                                                                    designation !=
-                                                                        "QC"
-                                                                ? true
-                                                                : false,
-                                                            validator:
-                                                                MultiValidator(
-                                                              [
-                                                                RequiredValidator(
-                                                                  errorText:
-                                                                      "Please Enter Observation 3",
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          TextFormField(
-                                                            controller:
-                                                                hipotDCWObs4Controller,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            textInputAction:
-                                                                TextInputAction
-                                                                    .next,
-                                                            decoration: AppStyles
-                                                                .textFieldInputDecoration
-                                                                .copyWith(
-                                                              hintText:
-                                                                  "Please Enter Observation 4  ",
-                                                              counterText: '',
-                                                            ),
-                                                            style: AppStyles
-                                                                .textInputTextStyle,
-                                                            readOnly: status ==
-                                                                        'Pending' &&
-                                                                    designation !=
-                                                                        "QC"
-                                                                ? true
-                                                                : false,
-                                                            validator:
-                                                                MultiValidator(
-                                                              [
-                                                                RequiredValidator(
-                                                                  errorText:
-                                                                      "Please Enter Observation 4",
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          TextFormField(
-                                                            controller:
-                                                                hipotDCWObs5Controller,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            textInputAction:
-                                                                TextInputAction
-                                                                    .next,
-                                                            decoration: AppStyles
-                                                                .textFieldInputDecoration
-                                                                .copyWith(
-                                                              hintText:
-                                                                  "Please Enter Observation 5  ",
-                                                              counterText: '',
-                                                            ),
-                                                            style: AppStyles
-                                                                .textInputTextStyle,
-                                                            readOnly: status ==
-                                                                        'Pending' &&
-                                                                    designation !=
-                                                                        "QC"
-                                                                ? true
-                                                                : false,
-                                                            validator:
-                                                                MultiValidator(
-                                                              [
-                                                                RequiredValidator(
-                                                                  errorText:
-                                                                      "Please Enter Observation 5",
+                                                                      "Please Enter Observation ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8300,7 +7853,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotDCWCrieteriaController,
+                                                                sunIrradianceCrieteriaController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8311,7 +7864,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "As per GSPL technical Specification ",
+                                                                  "1000W/m² ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8334,8 +7887,7 @@ class _PostlamState extends State<Postlam> {
                                                               thickness: 2.0,
                                                             ),
                                                           ),
-                                                          // IR-2.5KV
-
+                                                          //Sun Simulator Each Sun
                                                           Text(
                                                             "Frequency",
                                                             style: AppStyles
@@ -8346,7 +7898,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRFrequencyController,
+                                                                sunCaliFrequencyController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8357,7 +7909,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "5 Piece per Shift ",
+                                                                  "Every 4 Hours  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8368,7 +7920,15 @@ class _PostlamState extends State<Postlam> {
                                                             height: 15,
                                                           ),
                                                           Text(
-                                                            "1R-2.5KV ",
+                                                            "Each sun calibrated after every Four hours using valid silver reference PV module",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          Text(
+                                                            "First Inspection",
                                                             style: AppStyles
                                                                 .textfieldCaptionTextStyle,
                                                           ),
@@ -8377,7 +7937,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRObs1Controller,
+                                                                sunCali1TimeController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8388,7 +7948,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 1  ",
+                                                                  "Time  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8404,7 +7964,7 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 1 ",
+                                                                      "Please Enter Time ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8414,7 +7974,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRObs2Controller,
+                                                                sunCali1RoomController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8425,7 +7985,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 2  ",
+                                                                  "Room Temp",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8441,7 +8001,7 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 2 ",
+                                                                      "Please Enter Temp ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8451,7 +8011,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRObs3Controller,
+                                                                sunCali1ModuleTempController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8462,7 +8022,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 3  ",
+                                                                  "Module Temp  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8478,7 +8038,7 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 3 ",
+                                                                      "Please Enter Module Temp ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8488,7 +8048,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRObs4Controller,
+                                                                sunCali1ModuleIdController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8499,7 +8059,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 4  ",
+                                                                  "Module Id  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8515,7 +8075,53 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 4 ",
+                                                                      "Module Id ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          // second Inspection
+                                                          Text(
+                                                            "Second Inspection",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunCali2TimeController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Time  ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Time ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8525,7 +8131,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRObs5Controller,
+                                                                sunCali2RoomController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8536,7 +8142,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 5  ",
+                                                                  "Room Temp",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8552,7 +8158,238 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 5 ",
+                                                                      "Please Enter Temp ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunCali2ModuleTempController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Module Temp  ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Module Temp ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunCali2ModuleIdController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Module Id  ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Module Id ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          // Third Inspection
+                                                          Text(
+                                                            "Third Inspection",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunCali3TimeController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Time  ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Time ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunCali3RoomController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Room Temp",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Temp ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunCali3ModuleTempController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Module Temp  ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Module Temp ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunCali3ModuleIdController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Module Id  ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Module Id ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8571,7 +8408,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRCrieteriaController,
+                                                                sunCaliCrieteriaController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8582,7 +8419,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "As per GSPL Technical Specification ",
+                                                                  "Calibration performed at 25+-2°C room Temprature ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8605,8 +8442,7 @@ class _PostlamState extends State<Postlam> {
                                                               thickness: 2.0,
                                                             ),
                                                           ),
-                                                          // Ground Continutity-62.5A
-
+                                                          // Last Callibration
                                                           Text(
                                                             "Frequency",
                                                             style: AppStyles
@@ -8617,7 +8453,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotGroundFrequencyController,
+                                                                sunLastFrequencyController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8628,7 +8464,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "5 Piece per Shift ",
+                                                                  "Every Four Hour  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8639,7 +8475,7 @@ class _PostlamState extends State<Postlam> {
                                                             height: 15,
                                                           ),
                                                           Text(
-                                                            "Ground Continutity-62.5A ",
+                                                            "Last Calibration Date And Time ",
                                                             style: AppStyles
                                                                 .textfieldCaptionTextStyle,
                                                           ),
@@ -8648,7 +8484,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotGroundObs1Controller,
+                                                                sunLast1Controller,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8659,7 +8495,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 1  ",
+                                                                  "First Inspection  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8675,7 +8511,7 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 1 ",
+                                                                      "Please Enter First Inspection ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8685,7 +8521,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotGroundObs2Controller,
+                                                                sunLast2Controller,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8696,7 +8532,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 2  ",
+                                                                  "Second Inspection  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8712,7 +8548,7 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 2 ",
+                                                                      "Please Enter Second Inspection ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8722,7 +8558,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotGroundObs3Controller,
+                                                                sunLast3Controller,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8733,7 +8569,7 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Observation 3  ",
+                                                                  "Third Inspection  ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8749,81 +8585,7 @@ class _PostlamState extends State<Postlam> {
                                                               [
                                                                 RequiredValidator(
                                                                   errorText:
-                                                                      "Please Enter Observation 3 ",
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          TextFormField(
-                                                            controller:
-                                                                hipotGroundObs4Controller,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            textInputAction:
-                                                                TextInputAction
-                                                                    .next,
-                                                            decoration: AppStyles
-                                                                .textFieldInputDecoration
-                                                                .copyWith(
-                                                              hintText:
-                                                                  "Please Enter Observation 4  ",
-                                                              counterText: '',
-                                                            ),
-                                                            style: AppStyles
-                                                                .textInputTextStyle,
-                                                            readOnly: status ==
-                                                                        'Pending' &&
-                                                                    designation !=
-                                                                        "QC"
-                                                                ? true
-                                                                : false,
-                                                            validator:
-                                                                MultiValidator(
-                                                              [
-                                                                RequiredValidator(
-                                                                  errorText:
-                                                                      "Please Enter Observation 4 ",
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 15,
-                                                          ),
-                                                          TextFormField(
-                                                            controller:
-                                                                hipotGroundObs5Controller,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            textInputAction:
-                                                                TextInputAction
-                                                                    .next,
-                                                            decoration: AppStyles
-                                                                .textFieldInputDecoration
-                                                                .copyWith(
-                                                              hintText:
-                                                                  "Please Enter Observation 5  ",
-                                                              counterText: '',
-                                                            ),
-                                                            style: AppStyles
-                                                                .textInputTextStyle,
-                                                            readOnly: status ==
-                                                                        'Pending' &&
-                                                                    designation !=
-                                                                        "QC"
-                                                                ? true
-                                                                : false,
-                                                            validator:
-                                                                MultiValidator(
-                                                              [
-                                                                RequiredValidator(
-                                                                  errorText:
-                                                                      "Please Enter Observation 5 ",
+                                                                      "Please Enter Third Inspection ",
                                                                 ),
                                                               ],
                                                             ),
@@ -8842,7 +8604,7 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                           TextFormField(
                                                             controller:
-                                                                hipotIRCrieteriaController,
+                                                                sunLastCrieteriaController,
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
@@ -8853,7 +8615,129 @@ class _PostlamState extends State<Postlam> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "As per GSPL Technical Specification  ",
+                                                                  "Verify also its result ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical:
+                                                                        10.0),
+                                                            child: Divider(
+                                                              color:
+                                                                  Colors.black,
+                                                              height: 2.0,
+                                                              thickness: 2.0,
+                                                            ),
+                                                          ),
+                                                          //  Sun Simulator Expiry Date
+                                                          Text(
+                                                            "Frequency",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunExpiryFrequencyController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Once Piece  per Shift ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: true,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          Text(
+                                                            "Expiry Date Verification",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunExpiryController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "Please Enter Observation  ",
+                                                              counterText: '',
+                                                            ),
+                                                            style: AppStyles
+                                                                .textInputTextStyle,
+                                                            readOnly: status ==
+                                                                        'Pending' &&
+                                                                    designation !=
+                                                                        "QC"
+                                                                ? true
+                                                                : false,
+                                                            validator:
+                                                                MultiValidator(
+                                                              [
+                                                                RequiredValidator(
+                                                                  errorText:
+                                                                      "Please Enter Observation ",
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+
+                                                          Text(
+                                                            "Criteria",
+                                                            style: AppStyles
+                                                                .textfieldCaptionTextStyle,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          TextFormField(
+                                                            controller:
+                                                                sunExpiryCrieteriaController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .text,
+                                                            textInputAction:
+                                                                TextInputAction
+                                                                    .next,
+                                                            decoration: AppStyles
+                                                                .textFieldInputDecoration
+                                                                .copyWith(
+                                                              hintText:
+                                                                  "3 Months ",
                                                               counterText: '',
                                                             ),
                                                             style: AppStyles
@@ -8912,7 +8796,7 @@ class _PostlamState extends State<Postlam> {
                                                                     setState(
                                                                         () {
                                                                       setPage =
-                                                                          'finalel';
+                                                                          'hipot';
                                                                     });
                                                                   },
                                                                   label: "Next",
@@ -8957,7 +8841,7 @@ class _PostlamState extends State<Postlam> {
                                                                 onTap: () {
                                                                   setState(() {
                                                                     setPage =
-                                                                        "sunsimulator";
+                                                                        "cleaning";
                                                                   });
                                                                   // Navigator.of(context).pushReplacement(
                                                                   //     MaterialPageRoute(
@@ -9023,9 +8907,9 @@ class _PostlamState extends State<Postlam> {
                                                   ),
                                                 ],
                                               )
-                                            /**************Final EL Test ************* */
+                                            /*******************Hipot*************** */
 
-                                            : setPage == "finalel"
+                                            : setPage == "hipot"
                                                 ? Stack(
                                                     alignment: Alignment.center,
                                                     fit: StackFit.expand,
@@ -9136,7 +9020,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               const Center(
                                                                   child: Text(
-                                                                      "Final EL Test",
+                                                                      "Hipot",
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               20,
@@ -9152,7 +9036,7 @@ class _PostlamState extends State<Postlam> {
                                                               const SizedBox(
                                                                 height: 20,
                                                               ),
-                                                              // Final EL Availability of WI
+                                                              // Hipot Availability of WI
                                                               Text(
                                                                 "Frequency",
                                                                 style: AppStyles
@@ -9163,7 +9047,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elWiFrequencyController,
+                                                                    hipotWiFrequencyController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9195,7 +9079,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elWiController,
+                                                                    hipotWiController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9241,7 +9125,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elWiCrieteriaController,
+                                                                    hipotWiCrieteriaController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9276,18 +9160,19 @@ class _PostlamState extends State<Postlam> {
                                                                       2.0,
                                                                 ),
                                                               ),
-                                                              //Voltage & Current Verification in DC Power Supply
+                                                              // Hipot Paramerter
+
                                                               Text(
                                                                 "Frequency",
                                                                 style: AppStyles
                                                                     .textfieldCaptionTextStyle,
                                                               ),
                                                               SizedBox(
-                                                                height: 5,
+                                                                height: 15,
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elVoltageFrequencyController,
+                                                                    hipotParameterFrequencyController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9298,7 +9183,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "Once a Shift",
+                                                                      "Once per Shift ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9310,16 +9195,16 @@ class _PostlamState extends State<Postlam> {
                                                                 height: 15,
                                                               ),
                                                               Text(
-                                                                "Voltage & Current Verification in DC Power Supply",
+                                                                "Paramerter",
                                                                 style: AppStyles
                                                                     .textfieldCaptionTextStyle,
                                                               ),
                                                               SizedBox(
-                                                                height: 5,
+                                                                height: 15,
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elVoltageController,
+                                                                    hipotParameterController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9330,7 +9215,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "Please Enter Obsevation",
+                                                                      "Please Enter Observation  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9347,7 +9232,7 @@ class _PostlamState extends State<Postlam> {
                                                                   [
                                                                     RequiredValidator(
                                                                       errorText:
-                                                                          "Please Enter Obsevation ",
+                                                                          "Please Enter Observation ",
                                                                     ),
                                                                   ],
                                                                 ),
@@ -9355,17 +9240,18 @@ class _PostlamState extends State<Postlam> {
                                                               const SizedBox(
                                                                 height: 15,
                                                               ),
+
                                                               Text(
-                                                                "Crieteria",
+                                                                "Criteria",
                                                                 style: AppStyles
                                                                     .textfieldCaptionTextStyle,
                                                               ),
                                                               SizedBox(
-                                                                height: 5,
+                                                                height: 15,
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elVoltageCrieteriaController,
+                                                                    hipotParameterCrieteriaController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9376,7 +9262,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "AS per Voc & ISc",
+                                                                      "As per UL/ As per IEC  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9387,6 +9273,7 @@ class _PostlamState extends State<Postlam> {
                                                               const SizedBox(
                                                                 height: 15,
                                                               ),
+
                                                               Container(
                                                                 margin: EdgeInsets
                                                                     .symmetric(
@@ -9400,7 +9287,8 @@ class _PostlamState extends State<Postlam> {
                                                                       2.0,
                                                                 ),
                                                               ),
-                                                              // EL Defects
+                                                              //DCW_4.0KV
+
                                                               Text(
                                                                 "Frequency",
                                                                 style: AppStyles
@@ -9411,7 +9299,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elDefectsFrequencyController,
+                                                                    hipotDCWFrequencyController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9422,7 +9310,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "5 Piece  per Shift ",
+                                                                      "5 Piece per Shift ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9434,7 +9322,7 @@ class _PostlamState extends State<Postlam> {
                                                                 height: 15,
                                                               ),
                                                               Text(
-                                                                "EL Defects",
+                                                                "DCW-4.0KV ",
                                                                 style: AppStyles
                                                                     .textfieldCaptionTextStyle,
                                                               ),
@@ -9443,7 +9331,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elDefectsObs1Controller,
+                                                                    hipotDCWObs1Controller,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9454,7 +9342,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "Please Enter Observation 1 ",
+                                                                      "Please Enter Observation 1  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9481,7 +9369,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elDefectsObs2Controller,
+                                                                    hipotDCWObs2Controller,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9492,7 +9380,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "Please Enter Observation 2 ",
+                                                                      "Please Enter Observation 2  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9519,7 +9407,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elDefectsObs3Controller,
+                                                                    hipotDCWObs3Controller,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9530,7 +9418,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "Please Enter Observation 3 ",
+                                                                      "Please Enter Observation 3  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9557,7 +9445,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elDefectsObs4Controller,
+                                                                    hipotDCWObs4Controller,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9568,7 +9456,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "Please Enter Observation 4 ",
+                                                                      "Please Enter Observation 4  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9595,7 +9483,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elDefectsObs5Controller,
+                                                                    hipotDCWObs5Controller,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9606,7 +9494,7 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "Please Enter Observation 5 ",
+                                                                      "Please Enter Observation 5  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9642,7 +9530,7 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                               TextFormField(
                                                                 controller:
-                                                                    elDefectsCrieteriaController,
+                                                                    hipotDCWCrieteriaController,
                                                                 keyboardType:
                                                                     TextInputType
                                                                         .text,
@@ -9653,7 +9541,565 @@ class _PostlamState extends State<Postlam> {
                                                                     .textFieldInputDecoration
                                                                     .copyWith(
                                                                   hintText:
-                                                                      "As Per GSPL/IPQC/EL/020",
+                                                                      "As per GSPL technical Specification ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Container(
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            10.0),
+                                                                child: Divider(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  height: 2.0,
+                                                                  thickness:
+                                                                      2.0,
+                                                                ),
+                                                              ),
+                                                              // IR-2.5KV
+
+                                                              Text(
+                                                                "Frequency",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRFrequencyController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "5 Piece per Shift ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              Text(
+                                                                "1R-2.5KV ",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRObs1Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 1  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 1 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRObs2Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 2  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 2 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRObs3Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 3  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 3 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRObs4Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 4  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 4 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRObs5Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 5  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 5 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Criteria",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRCrieteriaController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "As per GSPL Technical Specification ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Container(
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            10.0),
+                                                                child: Divider(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  height: 2.0,
+                                                                  thickness:
+                                                                      2.0,
+                                                                ),
+                                                              ),
+                                                              // Ground Continutity-62.5A
+
+                                                              Text(
+                                                                "Frequency",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotGroundFrequencyController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "5 Piece per Shift ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: true,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              Text(
+                                                                "Ground Continutity-62.5A ",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotGroundObs1Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 1  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 1 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotGroundObs2Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 2  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 2 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotGroundObs3Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 3  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 3 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotGroundObs4Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 4  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 4 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotGroundObs5Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 5  ",
+                                                                  counterText:
+                                                                      '',
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 5 ",
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 15,
+                                                              ),
+
+                                                              Text(
+                                                                "Criteria",
+                                                                style: AppStyles
+                                                                    .textfieldCaptionTextStyle,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              TextFormField(
+                                                                controller:
+                                                                    hipotIRCrieteriaController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "As per GSPL Technical Specification  ",
                                                                   counterText:
                                                                       '',
                                                                 ),
@@ -9711,7 +10157,7 @@ class _PostlamState extends State<Postlam> {
                                                                         setState(
                                                                             () {
                                                                           setPage =
-                                                                              'rfid';
+                                                                              'finalel';
                                                                         });
                                                                       },
                                                                       label:
@@ -9760,7 +10206,7 @@ class _PostlamState extends State<Postlam> {
                                                                       setState(
                                                                           () {
                                                                         setPage =
-                                                                            "hipot";
+                                                                            "sunsimulator";
                                                                       });
                                                                       // Navigator.of(context).pushReplacement(
                                                                       //     MaterialPageRoute(
@@ -9827,8 +10273,9 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                     ],
                                                   )
-                                                /********************RFID Reading & Writing**************** */
-                                                : setPage == "rfid"
+                                                /**************Final EL Test ************* */
+
+                                                : setPage == "finalel"
                                                     ? Stack(
                                                         alignment:
                                                             Alignment.center,
@@ -9937,7 +10384,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   const Center(
                                                                       child: Text(
-                                                                          "RFID Reading & Writing",
+                                                                          "Final EL Test",
                                                                           style: TextStyle(
                                                                               fontSize: 20,
                                                                               color: Color.fromARGB(255, 13, 160, 0),
@@ -9946,7 +10393,7 @@ class _PostlamState extends State<Postlam> {
                                                                   const SizedBox(
                                                                     height: 20,
                                                                   ),
-                                                                  // RFID Availability of WI
+                                                                  // Final EL Availability of WI
                                                                   Text(
                                                                     "Frequency",
                                                                     style: AppStyles
@@ -9957,7 +10404,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidWiFrequencyController,
+                                                                        elWiFrequencyController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -9990,7 +10437,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidWiController,
+                                                                        elWiController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10036,7 +10483,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidWiCrieteriaController,
+                                                                        elWiCrieteriaController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10073,7 +10520,7 @@ class _PostlamState extends State<Postlam> {
                                                                           2.0,
                                                                     ),
                                                                   ),
-                                                                  //Fixing position
+                                                                  //Voltage & Current Verification in DC Power Supply
                                                                   Text(
                                                                     "Frequency",
                                                                     style: AppStyles
@@ -10084,7 +10531,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidFixingFrequencyController,
+                                                                        elVoltageFrequencyController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10095,7 +10542,7 @@ class _PostlamState extends State<Postlam> {
                                                                         .textFieldInputDecoration
                                                                         .copyWith(
                                                                       hintText:
-                                                                          "5 Piece Per Shift",
+                                                                          "Once a Shift",
                                                                       counterText:
                                                                           '',
                                                                     ),
@@ -10108,7 +10555,7 @@ class _PostlamState extends State<Postlam> {
                                                                     height: 15,
                                                                   ),
                                                                   Text(
-                                                                    "Fixing position",
+                                                                    "Voltage & Current Verification in DC Power Supply",
                                                                     style: AppStyles
                                                                         .textfieldCaptionTextStyle,
                                                                   ),
@@ -10117,7 +10564,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidFixingObs1Controller,
+                                                                        elVoltageController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10128,7 +10575,7 @@ class _PostlamState extends State<Postlam> {
                                                                         .textFieldInputDecoration
                                                                         .copyWith(
                                                                       hintText:
-                                                                          "Please Enter Obsevation 1",
+                                                                          "Please Enter Obsevation",
                                                                       counterText:
                                                                           '',
                                                                     ),
@@ -10145,159 +10592,7 @@ class _PostlamState extends State<Postlam> {
                                                                       [
                                                                         RequiredValidator(
                                                                           errorText:
-                                                                              "Please Enter Obsevation 1",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidFixingObs2Controller,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Please Enter Obsevation 2",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly: status ==
-                                                                                'Pending' &&
-                                                                            designation !=
-                                                                                "QC"
-                                                                        ? true
-                                                                        : false,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Obsevation 2",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidFixingObs3Controller,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Please Enter Obsevation 3",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly: status ==
-                                                                                'Pending' &&
-                                                                            designation !=
-                                                                                "QC"
-                                                                        ? true
-                                                                        : false,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Obsevation 3",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidFixingObs4Controller,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Please Enter Obsevation 4",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly: status ==
-                                                                                'Pending' &&
-                                                                            designation !=
-                                                                                "QC"
-                                                                        ? true
-                                                                        : false,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Obsevation 4",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidFixingObs5Controller,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Please Enter Obsevation 5",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly: status ==
-                                                                                'Pending' &&
-                                                                            designation !=
-                                                                                "QC"
-                                                                        ? true
-                                                                        : false,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Obsevation 5",
+                                                                              "Please Enter Obsevation ",
                                                                         ),
                                                                       ],
                                                                     ),
@@ -10315,7 +10610,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidFixingCrieteriaController,
+                                                                        elVoltageCrieteriaController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10326,7 +10621,7 @@ class _PostlamState extends State<Postlam> {
                                                                         .textFieldInputDecoration
                                                                         .copyWith(
                                                                       hintText:
-                                                                          "As per process Card",
+                                                                          "AS per Voc & ISc",
                                                                       counterText:
                                                                           '',
                                                                     ),
@@ -10352,7 +10647,7 @@ class _PostlamState extends State<Postlam> {
                                                                           2.0,
                                                                     ),
                                                                   ),
-                                                                  // Tag read & write
+                                                                  // EL Defects
                                                                   Text(
                                                                     "Frequency",
                                                                     style: AppStyles
@@ -10363,7 +10658,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidTagFrequencyController,
+                                                                        elDefectsFrequencyController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10374,7 +10669,7 @@ class _PostlamState extends State<Postlam> {
                                                                         .textFieldInputDecoration
                                                                         .copyWith(
                                                                       hintText:
-                                                                          "Continuos ",
+                                                                          "5 Piece  per Shift ",
                                                                       counterText:
                                                                           '',
                                                                     ),
@@ -10387,7 +10682,7 @@ class _PostlamState extends State<Postlam> {
                                                                     height: 15,
                                                                   ),
                                                                   Text(
-                                                                    "Tag read & write",
+                                                                    "EL Defects",
                                                                     style: AppStyles
                                                                         .textfieldCaptionTextStyle,
                                                                   ),
@@ -10396,7 +10691,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidTagController,
+                                                                        elDefectsObs1Controller,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10407,7 +10702,7 @@ class _PostlamState extends State<Postlam> {
                                                                         .textFieldInputDecoration
                                                                         .copyWith(
                                                                       hintText:
-                                                                          "Please Enter Observation  ",
+                                                                          "Please Enter Observation 1 ",
                                                                       counterText:
                                                                           '',
                                                                     ),
@@ -10424,7 +10719,159 @@ class _PostlamState extends State<Postlam> {
                                                                       [
                                                                         RequiredValidator(
                                                                           errorText:
-                                                                              "Please Enter Observation ",
+                                                                              "Please Enter Observation 1",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        elDefectsObs2Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 2 ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 2",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        elDefectsObs3Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 3 ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 3",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        elDefectsObs4Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 4 ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 4",
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 15,
+                                                                  ),
+                                                                  TextFormField(
+                                                                    controller:
+                                                                        elDefectsObs5Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 5 ",
+                                                                      counterText:
+                                                                          '',
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 5",
                                                                         ),
                                                                       ],
                                                                     ),
@@ -10443,7 +10890,7 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                   TextFormField(
                                                                     controller:
-                                                                        rfidTagCrieteriaController,
+                                                                        elDefectsCrieteriaController,
                                                                     keyboardType:
                                                                         TextInputType
                                                                             .text,
@@ -10454,395 +10901,7 @@ class _PostlamState extends State<Postlam> {
                                                                         .textFieldInputDecoration
                                                                         .copyWith(
                                                                       hintText:
-                                                                          "Tag should be read & write Content should comply MNRE guidlin",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly:
-                                                                        true,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-
-                                                                  Container(
-                                                                    margin: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            10.0),
-                                                                    child:
-                                                                        Divider(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      height:
-                                                                          2.0,
-                                                                      thickness:
-                                                                          2.0,
-                                                                    ),
-                                                                  ),
-                                                                  // Certification Date Verification
-                                                                  Text(
-                                                                    "Frequency",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidCertificationFrequencyController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Once a Shift ",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly:
-                                                                        true,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  Text(
-                                                                    "Certification Date Verification",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidCertificationController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Please Enter Observation  ",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly: status ==
-                                                                                'Pending' &&
-                                                                            designation !=
-                                                                                "QC"
-                                                                        ? true
-                                                                        : false,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Observation ",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-
-                                                                  Text(
-                                                                    "Criteria",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidCertificationCrieteriaController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "As per IEC/UL REPORT(As applicable)",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly:
-                                                                        true,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-
-                                                                  Container(
-                                                                    margin: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            10.0),
-                                                                    child:
-                                                                        Divider(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      height:
-                                                                          2.0,
-                                                                      thickness:
-                                                                          2.0,
-                                                                    ),
-                                                                  ),
-
-                                                                  /// Cell Make &Manufacturing Month Verification
-                                                                  Text(
-                                                                    "Frequency",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidCellFrequencyController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Once a Shift ",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly:
-                                                                        true,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  Text(
-                                                                    "Cell Make &Manufacturing Month Verification",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidCellController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Please Enter Observation  ",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly: status ==
-                                                                                'Pending' &&
-                                                                            designation !=
-                                                                                "QC"
-                                                                        ? true
-                                                                        : false,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Observation ",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-
-                                                                  Text(
-                                                                    "Criteria",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidCellCrieteriaController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "As per BOM",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly:
-                                                                        true,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-
-                                                                  Container(
-                                                                    margin: EdgeInsets.symmetric(
-                                                                        vertical:
-                                                                            10.0),
-                                                                    child:
-                                                                        Divider(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      height:
-                                                                          2.0,
-                                                                      thickness:
-                                                                          2.0,
-                                                                    ),
-                                                                  ),
-                                                                  // Module Manufacturing Month Verification
-                                                                  Text(
-                                                                    "Frequency",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidModuleFrequencyController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Once a Shift ",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly:
-                                                                        true,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  Text(
-                                                                    "Module Manufacturing Month Verification",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidModuleController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Please Enter Observation  ",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    readOnly: status ==
-                                                                                'Pending' &&
-                                                                            designation !=
-                                                                                "QC"
-                                                                        ? true
-                                                                        : false,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Observation ",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-
-                                                                  Text(
-                                                                    "Criteria",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        rfidModuleCrieteriaController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "As per process Card",
+                                                                          "As Per GSPL/IPQC/EL/020",
                                                                       counterText:
                                                                           '',
                                                                     ),
@@ -10887,14 +10946,16 @@ class _PostlamState extends State<Postlam> {
                                                                               createData();
                                                                             }
 
-                                                                            //_registerFormKey.currentState!.save;
+                                                                            // _registerFormKey
+                                                                            //     .currentState!
+                                                                            //     .save;
                                                                             // if (_registerFormKey
                                                                             //     .currentState!
                                                                             //     .validate()) {
                                                                             //   // createData();
                                                                             // }
                                                                             setState(() {
-                                                                              setPage = 'backlabel';
+                                                                              setPage = 'rfid';
                                                                             });
                                                                           },
                                                                           label:
@@ -10944,7 +11005,7 @@ class _PostlamState extends State<Postlam> {
                                                                           setState(
                                                                               () {
                                                                             setPage =
-                                                                                "finalel";
+                                                                                "hipot";
                                                                           });
                                                                           // Navigator.of(context).pushReplacement(
                                                                           //     MaterialPageRoute(
@@ -11007,8 +11068,8 @@ class _PostlamState extends State<Postlam> {
                                                           ),
                                                         ],
                                                       )
-                                                    /****************Back Label****************** */
-                                                    : setPage == "backlabel"
+                                                    /********************RFID Reading & Writing**************** */
+                                                    : setPage == "rfid"
                                                         ? Stack(
                                                             alignment: Alignment
                                                                 .center,
@@ -11106,13 +11167,13 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       const Center(
                                                                           child: Text(
-                                                                              "Back Label",
+                                                                              "RFID Reading & Writing",
                                                                               style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                       const SizedBox(
                                                                         height:
                                                                             20,
                                                                       ),
-                                                                      // Back Label Data Verification
+                                                                      // RFID Availability of WI
                                                                       Text(
                                                                         "Frequency",
                                                                         style: AppStyles
@@ -11124,7 +11185,131 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelDataFrequencyController,
+                                                                            rfidWiFrequencyController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Once a Shift",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Text(
+                                                                        "Avaibility of Wi ",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidWiController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Please Enter Obsevation",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            MultiValidator(
+                                                                          [
+                                                                            RequiredValidator(
+                                                                              errorText: "Please Enter Obsevation ",
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Text(
+                                                                        "Crieteria",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidWiCrieteriaController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Must be present",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Container(
+                                                                        margin: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                10.0),
+                                                                        child:
+                                                                            Divider(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          height:
+                                                                              2.0,
+                                                                          thickness:
+                                                                              2.0,
+                                                                        ),
+                                                                      ),
+                                                                      //Fixing position
+                                                                      Text(
+                                                                        "Frequency",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidFixingFrequencyController,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11147,7 +11332,7 @@ class _PostlamState extends State<Postlam> {
                                                                             15,
                                                                       ),
                                                                       Text(
-                                                                        "Data Verification",
+                                                                        "Fixing position",
                                                                         style: AppStyles
                                                                             .textfieldCaptionTextStyle,
                                                                       ),
@@ -11157,7 +11342,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelDataObs1Controller,
+                                                                            rfidFixingObs1Controller,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11191,7 +11376,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelDataObs2Controller,
+                                                                            rfidFixingObs2Controller,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11225,7 +11410,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelDataObs3Controller,
+                                                                            rfidFixingObs3Controller,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11259,7 +11444,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelDataObs4Controller,
+                                                                            rfidFixingObs4Controller,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11293,7 +11478,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelDataObs5Controller,
+                                                                            rfidFixingObs5Controller,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11336,7 +11521,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelDataCrieteriaController,
+                                                                            rfidFixingCrieteriaController,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11345,7 +11530,7 @@ class _PostlamState extends State<Postlam> {
                                                                             .textFieldInputDecoration
                                                                             .copyWith(
                                                                           hintText:
-                                                                              "As per Datasheet/process card",
+                                                                              "As per process Card",
                                                                           counterText:
                                                                               '',
                                                                         ),
@@ -11372,8 +11557,7 @@ class _PostlamState extends State<Postlam> {
                                                                               2.0,
                                                                         ),
                                                                       ),
-
-                                                                      // Air Bubbles,Tilt & Misprint
+                                                                      // Tag read & write
                                                                       Text(
                                                                         "Frequency",
                                                                         style: AppStyles
@@ -11385,7 +11569,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelAirFrequencyController,
+                                                                            rfidTagFrequencyController,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11394,7 +11578,7 @@ class _PostlamState extends State<Postlam> {
                                                                             .textFieldInputDecoration
                                                                             .copyWith(
                                                                           hintText:
-                                                                              "5 Piece  per Shift ",
+                                                                              "Continuos ",
                                                                           counterText:
                                                                               '',
                                                                         ),
@@ -11408,7 +11592,7 @@ class _PostlamState extends State<Postlam> {
                                                                             15,
                                                                       ),
                                                                       Text(
-                                                                        "Air Bubbles,Tilt & Misprint",
+                                                                        "Tag read & write",
                                                                         style: AppStyles
                                                                             .textfieldCaptionTextStyle,
                                                                       ),
@@ -11418,7 +11602,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelAirObs1Controller,
+                                                                            rfidTagController,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11427,7 +11611,7 @@ class _PostlamState extends State<Postlam> {
                                                                             .textFieldInputDecoration
                                                                             .copyWith(
                                                                           hintText:
-                                                                              "Please Enter Observation 1 ",
+                                                                              "Please Enter Observation  ",
                                                                           counterText:
                                                                               '',
                                                                         ),
@@ -11441,143 +11625,7 @@ class _PostlamState extends State<Postlam> {
                                                                             MultiValidator(
                                                                           [
                                                                             RequiredValidator(
-                                                                              errorText: "Please Enter Observation 1",
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            15,
-                                                                      ),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            backLabelAirObs2Controller,
-                                                                        keyboardType:
-                                                                            TextInputType.text,
-                                                                        textInputAction:
-                                                                            TextInputAction.next,
-                                                                        decoration: AppStyles
-                                                                            .textFieldInputDecoration
-                                                                            .copyWith(
-                                                                          hintText:
-                                                                              "Please Enter Observation 2 ",
-                                                                          counterText:
-                                                                              '',
-                                                                        ),
-                                                                        style: AppStyles
-                                                                            .textInputTextStyle,
-                                                                        readOnly: status == 'Pending' &&
-                                                                                designation != "QC"
-                                                                            ? true
-                                                                            : false,
-                                                                        validator:
-                                                                            MultiValidator(
-                                                                          [
-                                                                            RequiredValidator(
-                                                                              errorText: "Please Enter Observation 2",
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            15,
-                                                                      ),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            backLabelAirObs3Controller,
-                                                                        keyboardType:
-                                                                            TextInputType.text,
-                                                                        textInputAction:
-                                                                            TextInputAction.next,
-                                                                        decoration: AppStyles
-                                                                            .textFieldInputDecoration
-                                                                            .copyWith(
-                                                                          hintText:
-                                                                              "Please Enter Observation 3 ",
-                                                                          counterText:
-                                                                              '',
-                                                                        ),
-                                                                        style: AppStyles
-                                                                            .textInputTextStyle,
-                                                                        readOnly: status == 'Pending' &&
-                                                                                designation != "QC"
-                                                                            ? true
-                                                                            : false,
-                                                                        validator:
-                                                                            MultiValidator(
-                                                                          [
-                                                                            RequiredValidator(
-                                                                              errorText: "Please Enter Observation 3",
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            15,
-                                                                      ),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            backLabelAirObs4Controller,
-                                                                        keyboardType:
-                                                                            TextInputType.text,
-                                                                        textInputAction:
-                                                                            TextInputAction.next,
-                                                                        decoration: AppStyles
-                                                                            .textFieldInputDecoration
-                                                                            .copyWith(
-                                                                          hintText:
-                                                                              "Please Enter Observation 4 ",
-                                                                          counterText:
-                                                                              '',
-                                                                        ),
-                                                                        style: AppStyles
-                                                                            .textInputTextStyle,
-                                                                        readOnly: status == 'Pending' &&
-                                                                                designation != "QC"
-                                                                            ? true
-                                                                            : false,
-                                                                        validator:
-                                                                            MultiValidator(
-                                                                          [
-                                                                            RequiredValidator(
-                                                                              errorText: "Please Enter Observation 4",
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            15,
-                                                                      ),
-                                                                      TextFormField(
-                                                                        controller:
-                                                                            backLabelAirObs5Controller,
-                                                                        keyboardType:
-                                                                            TextInputType.text,
-                                                                        textInputAction:
-                                                                            TextInputAction.next,
-                                                                        decoration: AppStyles
-                                                                            .textFieldInputDecoration
-                                                                            .copyWith(
-                                                                          hintText:
-                                                                              "Please Enter Observation 5 ",
-                                                                          counterText:
-                                                                              '',
-                                                                        ),
-                                                                        style: AppStyles
-                                                                            .textInputTextStyle,
-                                                                        readOnly: status == 'Pending' &&
-                                                                                designation != "QC"
-                                                                            ? true
-                                                                            : false,
-                                                                        validator:
-                                                                            MultiValidator(
-                                                                          [
-                                                                            RequiredValidator(
-                                                                              errorText: "Please Enter Observation 5",
+                                                                              errorText: "Please Enter Observation ",
                                                                             ),
                                                                           ],
                                                                         ),
@@ -11598,7 +11646,7 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                       TextFormField(
                                                                         controller:
-                                                                            backLabelAirCrieteriaController,
+                                                                            rfidTagCrieteriaController,
                                                                         keyboardType:
                                                                             TextInputType.text,
                                                                         textInputAction:
@@ -11607,7 +11655,386 @@ class _PostlamState extends State<Postlam> {
                                                                             .textFieldInputDecoration
                                                                             .copyWith(
                                                                           hintText:
-                                                                              "Not Acceptable",
+                                                                              "Tag should be read & write Content should comply MNRE guidlin",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Container(
+                                                                        margin: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                10.0),
+                                                                        child:
+                                                                            Divider(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          height:
+                                                                              2.0,
+                                                                          thickness:
+                                                                              2.0,
+                                                                        ),
+                                                                      ),
+                                                                      // Certification Date Verification
+                                                                      Text(
+                                                                        "Frequency",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidCertificationFrequencyController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Once a Shift ",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Text(
+                                                                        "Certification Date Verification",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidCertificationController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Please Enter Observation  ",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            MultiValidator(
+                                                                          [
+                                                                            RequiredValidator(
+                                                                              errorText: "Please Enter Observation ",
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Criteria",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidCertificationCrieteriaController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "As per IEC/UL REPORT(As applicable)",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Container(
+                                                                        margin: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                10.0),
+                                                                        child:
+                                                                            Divider(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          height:
+                                                                              2.0,
+                                                                          thickness:
+                                                                              2.0,
+                                                                        ),
+                                                                      ),
+
+                                                                      /// Cell Make &Manufacturing Month Verification
+                                                                      Text(
+                                                                        "Frequency",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidCellFrequencyController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Once a Shift ",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Text(
+                                                                        "Cell Make &Manufacturing Month Verification",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidCellController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Please Enter Observation  ",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            MultiValidator(
+                                                                          [
+                                                                            RequiredValidator(
+                                                                              errorText: "Please Enter Observation ",
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Criteria",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidCellCrieteriaController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "As per BOM",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Container(
+                                                                        margin: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                10.0),
+                                                                        child:
+                                                                            Divider(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          height:
+                                                                              2.0,
+                                                                          thickness:
+                                                                              2.0,
+                                                                        ),
+                                                                      ),
+                                                                      // Module Manufacturing Month Verification
+                                                                      Text(
+                                                                        "Frequency",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidModuleFrequencyController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Once a Shift ",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly:
+                                                                            true,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      Text(
+                                                                        "Module Manufacturing Month Verification",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidModuleController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Please Enter Observation  ",
+                                                                          counterText:
+                                                                              '',
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            MultiValidator(
+                                                                          [
+                                                                            RequiredValidator(
+                                                                              errorText: "Please Enter Observation ",
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+
+                                                                      Text(
+                                                                        "Criteria",
+                                                                        style: AppStyles
+                                                                            .textfieldCaptionTextStyle,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            15,
+                                                                      ),
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            rfidModuleCrieteriaController,
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        textInputAction:
+                                                                            TextInputAction.next,
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "As per process Card",
                                                                           counterText:
                                                                               '',
                                                                         ),
@@ -11644,6 +12071,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   });
                                                                                   createData();
                                                                                 }
+
                                                                                 //_registerFormKey.currentState!.save;
                                                                                 // if (_registerFormKey
                                                                                 //     .currentState!
@@ -11651,7 +12079,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 //   // createData();
                                                                                 // }
                                                                                 setState(() {
-                                                                                  setPage = 'finalvisual';
+                                                                                  setPage = 'backlabel';
                                                                                 });
                                                                               },
                                                                               label: "Next",
@@ -11699,7 +12127,7 @@ class _PostlamState extends State<Postlam> {
                                                                             onTap:
                                                                                 () {
                                                                               setState(() {
-                                                                                setPage = "rfid";
+                                                                                setPage = "finalel";
                                                                               });
                                                                               // Navigator.of(context).pushReplacement(
                                                                               //     MaterialPageRoute(
@@ -11750,9 +12178,8 @@ class _PostlamState extends State<Postlam> {
                                                               ),
                                                             ],
                                                           )
-                                                        /*******************************Final Visual Inspection */
-                                                        : setPage ==
-                                                                "finalvisual"
+                                                        /****************Back Label****************** */
+                                                        : setPage == "backlabel"
                                                             ? Stack(
                                                                 alignment:
                                                                     Alignment
@@ -11837,12 +12264,12 @@ class _PostlamState extends State<Postlam> {
                                                                                 15,
                                                                           ),
                                                                           const Center(
-                                                                              child: Text("Final Visual Inspection", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              child: Text("Back Label", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                           const SizedBox(
                                                                             height:
                                                                                 20,
                                                                           ),
-                                                                          // Visual inspection
+                                                                          // Back Label Data Verification
                                                                           Text(
                                                                             "Frequency",
                                                                             style:
@@ -11854,14 +12281,14 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalInspectionFrequencyController,
+                                                                                backLabelDataFrequencyController,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
                                                                                 TextInputAction.next,
                                                                             decoration:
                                                                                 AppStyles.textFieldInputDecoration.copyWith(
-                                                                              hintText: "5 Piece per Shift",
+                                                                              hintText: "5 Piece Per Shift",
                                                                               counterText: '',
                                                                             ),
                                                                             style:
@@ -11874,7 +12301,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 15,
                                                                           ),
                                                                           Text(
-                                                                            "Visual inspection ",
+                                                                            "Data Verification",
                                                                             style:
                                                                                 AppStyles.textfieldCaptionTextStyle,
                                                                           ),
@@ -11884,7 +12311,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalInspectionObs1Controller,
+                                                                                backLabelDataObs1Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -11903,7 +12330,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 MultiValidator(
                                                                               [
                                                                                 RequiredValidator(
-                                                                                  errorText: "Please Enter Obsevation 1 ",
+                                                                                  errorText: "Please Enter Obsevation 1",
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -11914,7 +12341,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalInspectionObs2Controller,
+                                                                                backLabelDataObs2Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -11933,7 +12360,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 MultiValidator(
                                                                               [
                                                                                 RequiredValidator(
-                                                                                  errorText: "Please Enter Obsevation 2 ",
+                                                                                  errorText: "Please Enter Obsevation 2",
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -11944,7 +12371,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalInspectionObs3Controller,
+                                                                                backLabelDataObs3Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -11963,7 +12390,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 MultiValidator(
                                                                               [
                                                                                 RequiredValidator(
-                                                                                  errorText: "Please Enter Obsevation 3 ",
+                                                                                  errorText: "Please Enter Obsevation 3",
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -11974,7 +12401,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalInspectionObs4Controller,
+                                                                                backLabelDataObs4Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -11993,7 +12420,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 MultiValidator(
                                                                               [
                                                                                 RequiredValidator(
-                                                                                  errorText: "Please Enter Obsevation 4 ",
+                                                                                  errorText: "Please Enter Obsevation 4",
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -12004,7 +12431,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalInspectionObs5Controller,
+                                                                                backLabelDataObs5Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -12023,7 +12450,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 MultiValidator(
                                                                               [
                                                                                 RequiredValidator(
-                                                                                  errorText: "Please Enter Obsevation 5 ",
+                                                                                  errorText: "Please Enter Obsevation 5",
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -12032,7 +12459,6 @@ class _PostlamState extends State<Postlam> {
                                                                             height:
                                                                                 15,
                                                                           ),
-
                                                                           Text(
                                                                             "Crieteria",
                                                                             style:
@@ -12044,14 +12470,14 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalInspectionCrieteriaController,
+                                                                                backLabelDataCrieteriaController,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
                                                                                 TextInputAction.next,
                                                                             decoration:
                                                                                 AppStyles.textFieldInputDecoration.copyWith(
-                                                                              hintText: "As per Visual Inspection criteria GSPl/IPQC/VI/021",
+                                                                              hintText: "As per Datasheet/process card",
                                                                               counterText: '',
                                                                             ),
                                                                             style:
@@ -12074,7 +12500,7 @@ class _PostlamState extends State<Postlam> {
                                                                             ),
                                                                           ),
 
-                                                                          // Fitment of JB cover
+                                                                          // Air Bubbles,Tilt & Misprint
                                                                           Text(
                                                                             "Frequency",
                                                                             style:
@@ -12086,7 +12512,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalFitmentFrequencyController,
+                                                                                backLabelAirFrequencyController,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -12106,7 +12532,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 15,
                                                                           ),
                                                                           Text(
-                                                                            "Fitment of JB cover",
+                                                                            "Air Bubbles,Tilt & Misprint",
                                                                             style:
                                                                                 AppStyles.textfieldCaptionTextStyle,
                                                                           ),
@@ -12116,7 +12542,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalFitmentObs1Controller,
+                                                                                backLabelAirObs1Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -12146,7 +12572,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalFitmentObs2Controller,
+                                                                                backLabelAirObs2Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -12176,7 +12602,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalFitmentObs3Controller,
+                                                                                backLabelAirObs3Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -12206,7 +12632,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalFitmentObs4Controller,
+                                                                                backLabelAirObs4Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -12236,7 +12662,7 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalFitmentObs5Controller,
+                                                                                backLabelAirObs5Controller,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
@@ -12276,124 +12702,14 @@ class _PostlamState extends State<Postlam> {
                                                                           ),
                                                                           TextFormField(
                                                                             controller:
-                                                                                finalFitmentCrieteriaController,
+                                                                                backLabelAirCrieteriaController,
                                                                             keyboardType:
                                                                                 TextInputType.text,
                                                                             textInputAction:
                                                                                 TextInputAction.next,
                                                                             decoration:
                                                                                 AppStyles.textFieldInputDecoration.copyWith(
-                                                                              hintText: "Partial fitment of JB cover not allowed",
-                                                                              counterText: '',
-                                                                            ),
-                                                                            style:
-                                                                                AppStyles.textInputTextStyle,
-                                                                            readOnly:
-                                                                                true,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                15,
-                                                                          ),
-                                                                          Container(
-                                                                            margin:
-                                                                                EdgeInsets.symmetric(vertical: 10.0),
-                                                                            child:
-                                                                                Divider(
-                                                                              color: Colors.black,
-                                                                              height: 2.0,
-                                                                              thickness: 2.0,
-                                                                            ),
-                                                                          ),
-                                                                          // Availability of acceptance Criteri &WI
-                                                                          Text(
-                                                                            "Frequency",
-                                                                            style:
-                                                                                AppStyles.textfieldCaptionTextStyle,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          TextFormField(
-                                                                            controller:
-                                                                                finalWiFrequencyController,
-                                                                            keyboardType:
-                                                                                TextInputType.text,
-                                                                            textInputAction:
-                                                                                TextInputAction.next,
-                                                                            decoration:
-                                                                                AppStyles.textFieldInputDecoration.copyWith(
-                                                                              hintText: "Once a Shift",
-                                                                              counterText: '',
-                                                                            ),
-                                                                            style:
-                                                                                AppStyles.textInputTextStyle,
-                                                                            readOnly:
-                                                                                true,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                15,
-                                                                          ),
-                                                                          Text(
-                                                                            "Availability of acceptance Criteri & WI ",
-                                                                            style:
-                                                                                AppStyles.textfieldCaptionTextStyle,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          TextFormField(
-                                                                            controller:
-                                                                                finalWiController,
-                                                                            keyboardType:
-                                                                                TextInputType.text,
-                                                                            textInputAction:
-                                                                                TextInputAction.next,
-                                                                            decoration:
-                                                                                AppStyles.textFieldInputDecoration.copyWith(
-                                                                              hintText: "Please Enter Obsevation",
-                                                                              counterText: '',
-                                                                            ),
-                                                                            style:
-                                                                                AppStyles.textInputTextStyle,
-                                                                            readOnly: status == 'Pending' && designation != "QC"
-                                                                                ? true
-                                                                                : false,
-                                                                            validator:
-                                                                                MultiValidator(
-                                                                              [
-                                                                                RequiredValidator(
-                                                                                  errorText: "Please Enter Obsevation ",
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                15,
-                                                                          ),
-                                                                          Text(
-                                                                            "Crieteria",
-                                                                            style:
-                                                                                AppStyles.textfieldCaptionTextStyle,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          TextFormField(
-                                                                            controller:
-                                                                                finalWiCrieteriaController,
-                                                                            keyboardType:
-                                                                                TextInputType.text,
-                                                                            textInputAction:
-                                                                                TextInputAction.next,
-                                                                            decoration:
-                                                                                AppStyles.textFieldInputDecoration.copyWith(
-                                                                              hintText: "Must be present",
+                                                                              hintText: "Not Acceptable",
                                                                               counterText: '',
                                                                             ),
                                                                             style:
@@ -12424,7 +12740,6 @@ class _PostlamState extends State<Postlam> {
                                                                                       });
                                                                                       createData();
                                                                                     }
-
                                                                                     //_registerFormKey.currentState!.save;
                                                                                     // if (_registerFormKey
                                                                                     //     .currentState!
@@ -12432,7 +12747,7 @@ class _PostlamState extends State<Postlam> {
                                                                                     //   // createData();
                                                                                     // }
                                                                                     setState(() {
-                                                                                      setPage = 'packaging';
+                                                                                      setPage = 'finalvisual';
                                                                                     });
                                                                                   },
                                                                                   label: "Next",
@@ -12476,7 +12791,7 @@ class _PostlamState extends State<Postlam> {
                                                                               child: InkWell(
                                                                                 onTap: () {
                                                                                   setState(() {
-                                                                                    setPage = "backlabel";
+                                                                                    setPage = "rfid";
                                                                                   });
                                                                                   // Navigator.of(context).pushReplacement(
                                                                                   //     MaterialPageRoute(
@@ -12524,9 +12839,9 @@ class _PostlamState extends State<Postlam> {
                                                                   ),
                                                                 ],
                                                               )
-                                                            /******************************Packaging************* */
+                                                            /*******************************Final Visual Inspection */
                                                             : setPage ==
-                                                                    "packaging"
+                                                                    "finalvisual"
                                                                 ? Stack(
                                                                     alignment:
                                                                         Alignment
@@ -12603,11 +12918,11 @@ class _PostlamState extends State<Postlam> {
                                                                               const SizedBox(
                                                                                 height: 15,
                                                                               ),
-                                                                              const Center(child: Text("Packaging", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                              const Center(child: Text("Final Visual Inspection", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
                                                                               const SizedBox(
                                                                                 height: 20,
                                                                               ),
-                                                                              // Packaaging Barcode Defects
+                                                                              // Visual inspection
                                                                               Text(
                                                                                 "Frequency",
                                                                                 style: AppStyles.textfieldCaptionTextStyle,
@@ -12616,7 +12931,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 5,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingBarcodeFrequencyController,
+                                                                                controller: finalInspectionFrequencyController,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12630,14 +12945,14 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               Text(
-                                                                                "Barcode Defects(unclear/duplication) ",
+                                                                                "Visual inspection ",
                                                                                 style: AppStyles.textfieldCaptionTextStyle,
                                                                               ),
                                                                               SizedBox(
                                                                                 height: 5,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingBarcodeObs1Controller,
+                                                                                controller: finalInspectionObs1Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12649,7 +12964,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
-                                                                                      errorText: "Please Enter Obsevation 1",
+                                                                                      errorText: "Please Enter Obsevation 1 ",
                                                                                     ),
                                                                                   ],
                                                                                 ),
@@ -12658,7 +12973,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingBarcodeObs2Controller,
+                                                                                controller: finalInspectionObs2Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12670,7 +12985,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
-                                                                                      errorText: "Please Enter Obsevation 2",
+                                                                                      errorText: "Please Enter Obsevation 2 ",
                                                                                     ),
                                                                                   ],
                                                                                 ),
@@ -12679,7 +12994,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingBarcodeObs3Controller,
+                                                                                controller: finalInspectionObs3Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12691,7 +13006,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
-                                                                                      errorText: "Please Enter Obsevation 3",
+                                                                                      errorText: "Please Enter Obsevation 3 ",
                                                                                     ),
                                                                                   ],
                                                                                 ),
@@ -12700,7 +13015,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingBarcodeObs4Controller,
+                                                                                controller: finalInspectionObs4Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12712,7 +13027,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
-                                                                                      errorText: "Please Enter Obsevation 4",
+                                                                                      errorText: "Please Enter Obsevation 4 ",
                                                                                     ),
                                                                                   ],
                                                                                 ),
@@ -12721,7 +13036,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingBarcodeObs5Controller,
+                                                                                controller: finalInspectionObs5Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12733,7 +13048,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 validator: MultiValidator(
                                                                                   [
                                                                                     RequiredValidator(
-                                                                                      errorText: "Please Enter Obsevation 5",
+                                                                                      errorText: "Please Enter Obsevation 5 ",
                                                                                     ),
                                                                                   ],
                                                                                 ),
@@ -12750,11 +13065,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 5,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingBarcodeCrieteriaController,
+                                                                                controller: finalInspectionCrieteriaController,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "As per GSPL/FQC/PV/001",
+                                                                                  hintText: "As per Visual Inspection criteria GSPl/IPQC/VI/021",
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
@@ -12772,7 +13087,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 ),
                                                                               ),
 
-                                                                              // Packing Label & Contents
+                                                                              // Fitment of JB cover
                                                                               Text(
                                                                                 "Frequency",
                                                                                 style: AppStyles.textfieldCaptionTextStyle,
@@ -12781,11 +13096,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingpackingFrequencyController,
+                                                                                controller: finalFitmentFrequencyController,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "5 Box  per Shift ",
+                                                                                  hintText: "5 Piece  per Shift ",
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
@@ -12795,14 +13110,14 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               Text(
-                                                                                "Packing Label & Contents",
+                                                                                "Fitment of JB cover",
                                                                                 style: AppStyles.textfieldCaptionTextStyle,
                                                                               ),
                                                                               SizedBox(
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingpackingObs1Controller,
+                                                                                controller: finalFitmentObs1Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12823,7 +13138,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingpackingObs2Controller,
+                                                                                controller: finalFitmentObs2Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12844,7 +13159,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingpackingObs3Controller,
+                                                                                controller: finalFitmentObs3Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12865,7 +13180,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingpackingObs4Controller,
+                                                                                controller: finalFitmentObs4Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12886,7 +13201,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingpackingObs5Controller,
+                                                                                controller: finalFitmentObs5Controller,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
@@ -12915,11 +13230,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 height: 15,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: packagingpackingCrieteriaController,
+                                                                                controller: finalFitmentCrieteriaController,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "As per GSPL/FQC/PV/001",
+                                                                                  hintText: "Partial fitment of JB cover not allowed",
                                                                                   counterText: '',
                                                                                 ),
                                                                                 style: AppStyles.textInputTextStyle,
@@ -12936,360 +13251,73 @@ class _PostlamState extends State<Postlam> {
                                                                                   thickness: 2.0,
                                                                                 ),
                                                                               ),
-                                                                              // Box Condition
+                                                                              // Availability of acceptance Criteri &WI
                                                                               Text(
                                                                                 "Frequency",
                                                                                 style: AppStyles.textfieldCaptionTextStyle,
                                                                               ),
                                                                               SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingBoxFrequencyController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "5 Box  per Shift ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: true,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              Text(
-                                                                                "Box Condition",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingBoxObs1Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 1 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 1",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingBoxObs2Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 2 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 2",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingBoxObs3Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 3 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 3",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingBoxObs4Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 4 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 4",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingBoxObs5Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 5 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 5",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-
-                                                                              Text(
-                                                                                "Criteria",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingBoxCrieteriaController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "No Damage/Dull printin",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: true,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              Container(
-                                                                                margin: EdgeInsets.symmetric(vertical: 10.0),
-                                                                                child: Divider(
-                                                                                  color: Colors.black,
-                                                                                  height: 2.0,
-                                                                                  thickness: 2.0,
-                                                                                ),
-                                                                              ),
-                                                                              //Stretch Wrapping
-                                                                              Text(
-                                                                                "Frequency",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingStretchFrequencyController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "5 Box  per Shift ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: true,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              Text(
-                                                                                "Stretch wrapping",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingStretchObs1Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 1 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 1",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingStretchObs2Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 2 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 2",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingStretchObs3Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 3 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 3",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingStretchObs4Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 4 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 4",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingStretchObs5Controller,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Please Enter Observation 5 ",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                validator: MultiValidator(
-                                                                                  [
-                                                                                    RequiredValidator(
-                                                                                      errorText: "Please Enter Observation 5",
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-
-                                                                              Text(
-                                                                                "Criteria",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              TextFormField(
-                                                                                controller: packagingStretchCrieteriaController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                textInputAction: TextInputAction.next,
-                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                  hintText: "Should be all around",
-                                                                                  counterText: '',
-                                                                                ),
-                                                                                style: AppStyles.textInputTextStyle,
-                                                                                readOnly: true,
-                                                                              ),
-                                                                              const SizedBox(
-                                                                                height: 15,
-                                                                              ),
-                                                                              Text(
-                                                                                "Reference PDF Document ",
-                                                                                style: AppStyles.textfieldCaptionTextStyle,
-                                                                              ),
-                                                                              const SizedBox(
                                                                                 height: 5,
                                                                               ),
                                                                               TextFormField(
-                                                                                controller: referencePdfController,
+                                                                                controller: finalWiFrequencyController,
                                                                                 keyboardType: TextInputType.text,
                                                                                 textInputAction: TextInputAction.next,
                                                                                 decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Select Reference Pdf",
-                                                                                    suffixIcon: IconButton(
-                                                                                      onPressed: () async {
-                                                                                        if (widget.id != null && widget.id != '' && referencePdfController.text != '') {
-                                                                                          UrlLauncher.launch(referencePdfController.text);
-                                                                                        } else if (status != 'Pending') {
-                                                                                          _pickReferencePDF();
-                                                                                        }
-                                                                                      },
-                                                                                      icon: widget.id != null && widget.id != '' && referencePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.upload_file),
-                                                                                    ),
-                                                                                    counterText: ''),
+                                                                                  hintText: "Once a Shift",
+                                                                                  counterText: '',
+                                                                                ),
                                                                                 style: AppStyles.textInputTextStyle,
-                                                                                maxLines: 1,
                                                                                 readOnly: true,
-                                                                                validator: (value) {
-                                                                                  if (value!.isEmpty) {
-                                                                                    return "Please Select Reference Pdf";
-                                                                                  } else {
-                                                                                    return null;
-                                                                                  }
-                                                                                },
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              Text(
+                                                                                "Availability of acceptance Criteri & WI ",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: finalWiController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Please Enter Obsevation",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Obsevation ",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 15,
+                                                                              ),
+                                                                              Text(
+                                                                                "Crieteria",
+                                                                                style: AppStyles.textfieldCaptionTextStyle,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                height: 5,
+                                                                              ),
+                                                                              TextFormField(
+                                                                                controller: finalWiCrieteriaController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Must be present",
+                                                                                  counterText: '',
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: true,
                                                                               ),
                                                                               const SizedBox(
                                                                                 height: 15,
@@ -13298,34 +13326,34 @@ class _PostlamState extends State<Postlam> {
                                                                               Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                                                                               _isLoading
                                                                                   ? Center(child: CircularProgressIndicator())
-                                                                                  : (widget.id == "" || widget.id == null) || (status == 'Inprogress' && widget.id != null)
-                                                                                      ? AppButton(
-                                                                                          textStyle: const TextStyle(
-                                                                                            fontWeight: FontWeight.w700,
-                                                                                            color: AppColors.white,
-                                                                                            fontSize: 16,
-                                                                                          ),
-                                                                                          onTap: () {
-                                                                                            AppHelper.hideKeyboard(context);
-                                                                                            //createData();
+                                                                                  : AppButton(
+                                                                                      textStyle: const TextStyle(
+                                                                                        fontWeight: FontWeight.w700,
+                                                                                        color: AppColors.white,
+                                                                                        fontSize: 16,
+                                                                                      ),
+                                                                                      onTap: () {
+                                                                                        AppHelper.hideKeyboard(context);
+                                                                                        if (status != 'Pending') {
+                                                                                          setState(() {
+                                                                                            sendStatus = 'Inprogress';
+                                                                                          });
+                                                                                          createData();
+                                                                                        }
 
-                                                                                            _postLamFormKey.currentState!.save;
-                                                                                            if (_postLamFormKey.currentState!.validate()) {
-                                                                                              if (status != 'Pending') {
-                                                                                                setState(() {
-                                                                                                  sendStatus = 'Pending';
-                                                                                                });
-                                                                                                createData();
-                                                                                              }
-                                                                                            }
-                                                                                            setState(() {
-                                                                                              setPage = 'backlabel';
-                                                                                            });
-                                                                                          },
-                                                                                          label: "Submit",
-                                                                                          organization: '',
-                                                                                        )
-                                                                                      : Container(),
+                                                                                        //_registerFormKey.currentState!.save;
+                                                                                        // if (_registerFormKey
+                                                                                        //     .currentState!
+                                                                                        //     .validate()) {
+                                                                                        //   // createData();
+                                                                                        // }
+                                                                                        setState(() {
+                                                                                          setPage = 'packaging';
+                                                                                        });
+                                                                                      },
+                                                                                      label: "Next",
+                                                                                      organization: '',
+                                                                                    ),
                                                                               const SizedBox(
                                                                                 height: 10,
                                                                               ),
@@ -13361,7 +13389,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   child: InkWell(
                                                                                     onTap: () {
                                                                                       setState(() {
-                                                                                        setPage = "finalel";
+                                                                                        setPage = "backlabel";
                                                                                       });
                                                                                       // Navigator.of(context).pushReplacement(
                                                                                       //     MaterialPageRoute(
@@ -13406,7 +13434,908 @@ class _PostlamState extends State<Postlam> {
                                                                       ),
                                                                     ],
                                                                   )
-                                                                : Container(),
+                                                                /******************************Packaging************* */
+                                                                : setPage ==
+                                                                        "packaging"
+                                                                    ? Stack(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        fit: StackFit
+                                                                            .expand,
+                                                                        children: [
+                                                                          SingleChildScrollView(
+                                                                            child:
+                                                                                Form(
+                                                                              key: _postLamFormKey,
+                                                                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                                                                              child: Column(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                children: <Widget>[
+                                                                                  Container(
+                                                                                    alignment: Alignment.center,
+                                                                                    child: Column(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                      children: [
+                                                                                        Image.asset(
+                                                                                          AppAssets.imgLogo,
+                                                                                          height: 100,
+                                                                                          width: 230,
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const Center(child: Padding(padding: EdgeInsets.only(top: 10), child: Text("Incoming Process Quality Control", style: TextStyle(fontSize: 27, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700)))),
+                                                                                  const Center(child: Text("(Post Lam IPQC Checklist)", style: TextStyle(fontSize: 20, color: AppColors.black, fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                  const SizedBox(
+                                                                                    height: 35,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Text(
+                                                                                        'Document No : ',
+                                                                                        style: AppStyles.textfieldCaptionTextStyle,
+                                                                                      ),
+                                                                                      const SizedBox(
+                                                                                        width: 8,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        'GSPL/IPQC/IPC/003',
+                                                                                        style: AppStyles.textfieldCaptionTextStyle,
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 8,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Text(
+                                                                                        'Rev.No. / Rev. Date : ',
+                                                                                        style: AppStyles.textfieldCaptionTextStyle,
+                                                                                      ),
+                                                                                      const SizedBox(
+                                                                                        width: 8,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        'Ver.2.0 / 20-03-2024',
+                                                                                        style: AppStyles.textfieldCaptionTextStyle,
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  const Center(child: Text("Packaging", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                  const SizedBox(
+                                                                                    height: 20,
+                                                                                  ),
+                                                                                  // Packaaging Barcode Defects
+                                                                                  Text(
+                                                                                    "Frequency",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 5,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBarcodeFrequencyController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "5 Piece per Shift",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Barcode Defects(unclear/duplication) ",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 5,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBarcodeObs1Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 1",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 1",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBarcodeObs2Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 2",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 2",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBarcodeObs3Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 3",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 3",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBarcodeObs4Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 4",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 4",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBarcodeObs5Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 5",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 5",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+
+                                                                                  Text(
+                                                                                    "Crieteria",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 5,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBarcodeCrieteriaController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "As per GSPL/FQC/PV/001",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Container(
+                                                                                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                                                                                    child: Divider(
+                                                                                      color: Colors.black,
+                                                                                      height: 2.0,
+                                                                                      thickness: 2.0,
+                                                                                    ),
+                                                                                  ),
+
+                                                                                  // Packing Label & Contents
+                                                                                  Text(
+                                                                                    "Frequency",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingpackingFrequencyController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "5 Box  per Shift ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Packing Label & Contents",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingpackingObs1Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 1 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 1",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingpackingObs2Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 2 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 2",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingpackingObs3Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 3 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 3",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingpackingObs4Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 4 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 4",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingpackingObs5Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 5 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 5",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+
+                                                                                  Text(
+                                                                                    "Criteria",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingpackingCrieteriaController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "As per GSPL/FQC/PV/001",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Container(
+                                                                                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                                                                                    child: Divider(
+                                                                                      color: Colors.black,
+                                                                                      height: 2.0,
+                                                                                      thickness: 2.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  // Box Condition
+                                                                                  Text(
+                                                                                    "Frequency",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBoxFrequencyController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "5 Box  per Shift ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Box Condition",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBoxObs1Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 1 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 1",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBoxObs2Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 2 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 2",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBoxObs3Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 3 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 3",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBoxObs4Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 4 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 4",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBoxObs5Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 5 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 5",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+
+                                                                                  Text(
+                                                                                    "Criteria",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingBoxCrieteriaController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "No Damage/Dull printin",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Container(
+                                                                                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                                                                                    child: Divider(
+                                                                                      color: Colors.black,
+                                                                                      height: 2.0,
+                                                                                      thickness: 2.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  //Stretch Wrapping
+                                                                                  Text(
+                                                                                    "Frequency",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingStretchFrequencyController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "5 Box  per Shift ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Stretch wrapping",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingStretchObs1Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 1 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 1",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingStretchObs2Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 2 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 2",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingStretchObs3Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 3 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 3",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingStretchObs4Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 4 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 4",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingStretchObs5Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Observation 5 ",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Observation 5",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+
+                                                                                  Text(
+                                                                                    "Criteria",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: packagingStretchCrieteriaController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Should be all around",
+                                                                                      counterText: '',
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: true,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Reference PDF Document ",
+                                                                                    style: AppStyles.textfieldCaptionTextStyle,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 5,
+                                                                                  ),
+                                                                                  TextFormField(
+                                                                                    controller: referencePdfController,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Please Select Reference Pdf",
+                                                                                        suffixIcon: IconButton(
+                                                                                          onPressed: () async {
+                                                                                            if (widget.id != null && widget.id != '' && referencePdfController.text != '') {
+                                                                                              UrlLauncher.launch(referencePdfController.text);
+                                                                                            } else if (status != 'Pending') {
+                                                                                              _pickReferencePDF();
+                                                                                            }
+                                                                                          },
+                                                                                          icon: widget.id != null && widget.id != '' && referencePdfController.text != '' ? const Icon(Icons.download) : const Icon(Icons.upload_file),
+                                                                                        ),
+                                                                                        counterText: ''),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    maxLines: 1,
+                                                                                    readOnly: true,
+                                                                                    validator: (value) {
+                                                                                      if (value!.isEmpty) {
+                                                                                        return "Please Select Reference Pdf";
+                                                                                      } else {
+                                                                                        return null;
+                                                                                      }
+                                                                                    },
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 15,
+                                                                                  ),
+
+                                                                                  Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                                                                  _isLoading
+                                                                                      ? Center(child: CircularProgressIndicator())
+                                                                                      : (widget.id == "" || widget.id == null) || (status == 'Inprogress' && widget.id != null)
+                                                                                          ? AppButton(
+                                                                                              textStyle: const TextStyle(
+                                                                                                fontWeight: FontWeight.w700,
+                                                                                                color: AppColors.white,
+                                                                                                fontSize: 16,
+                                                                                              ),
+                                                                                              onTap: () {
+                                                                                                AppHelper.hideKeyboard(context);
+                                                                                                //createData();
+
+                                                                                                _postLamFormKey.currentState!.save;
+                                                                                                if (_postLamFormKey.currentState!.validate()) {
+                                                                                                  if (status != 'Pending') {
+                                                                                                    setState(() {
+                                                                                                      sendStatus = 'Pending';
+                                                                                                    });
+                                                                                                    createData();
+                                                                                                  }
+                                                                                                }
+                                                                                                setState(() {
+                                                                                                  setPage = 'backlabel';
+                                                                                                });
+                                                                                              },
+                                                                                              label: "Submit",
+                                                                                              organization: '',
+                                                                                            )
+                                                                                          : Container(),
+                                                                                  const SizedBox(
+                                                                                    height: 10,
+                                                                                  ),
+                                                                                  if (widget.id != "" && widget.id != null && status == 'Pending')
+                                                                                    Container(
+                                                                                      color: Color.fromARGB(255, 191, 226, 187), // Change the background color to your desired color
+                                                                                      child: Column(
+                                                                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                                        children: [
+                                                                                          Divider(),
+                                                                                          SizedBox(height: 15),
+                                                                                          AppButton(
+                                                                                            textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                            onTap: () {
+                                                                                              AppHelper.hideKeyboard(context);
+                                                                                              setApprovalStatus();
+                                                                                            },
+                                                                                            label: "Approve",
+                                                                                            organization: '',
+                                                                                          ),
+                                                                                          const SizedBox(
+                                                                                            height: 10,
+                                                                                          ),
+                                                                                          Divider(),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+
+                                                                                  // Center(
+                                                                                  //   child: Padding(
+                                                                                  //     padding: const EdgeInsets.all(8.0),
+                                                                                  //     child: InkWell(
+                                                                                  //       onTap: () {
+                                                                                  //         // Navigator.of(context).pushReplacement(
+                                                                                  //         //     MaterialPageRoute(
+                                                                                  //         //         builder: (BuildContext context) =>
+                                                                                  //         //             LoginPage(
+                                                                                  //         //                 appName: widget.appName)));
+                                                                                  //       },
+                                                                                  //       child: Text(
+                                                                                  //         "BACK",
+                                                                                  //         style: TextStyle(
+                                                                                  //           fontFamily: appFontFamily,
+                                                                                  //           fontSize: 16,
+                                                                                  //           fontWeight: FontWeight.w500,
+                                                                                  //           color: AppColors.redColor,
+                                                                                  //         ),
+                                                                                  //       ),
+                                                                                  //     ),
+                                                                                  //   ),
+                                                                                  // ),
+                                                                                  const SizedBox(
+                                                                                    height: 25,
+                                                                                  ),
+                                                                                  Center(
+                                                                                    child: Padding(
+                                                                                      padding: const EdgeInsets.all(8.0),
+                                                                                      child: InkWell(
+                                                                                        onTap: () {
+                                                                                          setState(() {
+                                                                                            setPage = "finalel";
+                                                                                          });
+                                                                                          // Navigator.of(context).pushReplacement(
+                                                                                          //     MaterialPageRoute(
+                                                                                          //         builder: (BuildContext context) =>
+                                                                                          //             LoginPage(
+                                                                                          //                 appName: widget.appName)));
+                                                                                        },
+                                                                                        child: const Text(
+                                                                                          "BACK",
+                                                                                          style: TextStyle(fontFamily: appFontFamily, fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.redColor),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    height: 25,
+                                                                                  ),
+                                                                                  Container(
+                                                                                    alignment: Alignment.center,
+                                                                                    child: const Column(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                      children: [
+                                                                                        Text(
+                                                                                          "Powered By Gautam Solar Pvt. Ltd.",
+                                                                                          style: TextStyle(
+                                                                                            fontSize: 14,
+                                                                                            fontFamily: appFontFamily,
+                                                                                            color: AppColors.greyColor,
+                                                                                            fontWeight: FontWeight.w400,
+                                                                                          ),
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 10,
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )
+                                                                    : Container(),
           ),
           bottomNavigationBar: Container(
             height: 60,

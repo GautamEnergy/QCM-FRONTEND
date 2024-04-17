@@ -156,7 +156,7 @@ class _PreCardState extends State<PreCard> {
   TextEditingController CellLoadingnumberOfStringerController =
       TextEditingController();
   List<TextEditingController> cellLoaderVerificationControllers = [];
-  TextEditingController LoadstrinGapController = TextEditingController();
+  // TextEditingController LoadstrinGapController = TextEditingController();
   TextEditingController cellLoaderStringCriteriaController =
       TextEditingController();
   TextEditingController cellLoaderRemarkController = TextEditingController();
@@ -167,7 +167,7 @@ class _PreCardState extends State<PreCard> {
   TextEditingController TabberVisualnumberOfStringersController =
       TextEditingController();
   List<TextEditingController> TabberVisualStringerControllers = [];
-  TextEditingController TabberVisualCheckController = TextEditingController();
+  // TextEditingController TabberVisualCheckController = TextEditingController();
   TextEditingController TabberVisualCriteriaController =
       TextEditingController();
 
@@ -176,7 +176,7 @@ class _PreCardState extends State<PreCard> {
   TextEditingController tabberEIimagenumberOfStringersController =
       TextEditingController();
   List<TextEditingController> TabberEIimageofStringerControllers = [];
-  TextEditingController TabberEIimageCheckController = TextEditingController();
+  // TextEditingController TabberEIimageCheckController = TextEditingController();
   TextEditingController TabberEIimageCriteriaController =
       TextEditingController();
 
@@ -185,8 +185,8 @@ class _PreCardState extends State<PreCard> {
   TextEditingController TabberVerificationNumberofstringController =
       TextEditingController();
   List<TextEditingController> TabberVerificationofsilderingControllers = [];
-  TextEditingController TabberVerificationCheckController =
-      TextEditingController();
+  // TextEditingController TabberVerificationCheckController =
+  //     TextEditingController();
   TextEditingController TabberVerificationCriteriaController =
       TextEditingController();
 
@@ -300,8 +300,8 @@ class _PreCardState extends State<PreCard> {
   TextEditingController PreLaminationEInumberOfStringersController =
       TextEditingController();
   List<TextEditingController> PreLaminationEIinspectionrControllers = [];
-  TextEditingController PreLaminationEIinspectionController =
-      TextEditingController();
+  // TextEditingController PreLaminationEIinspectionController =
+  //     TextEditingController();
   TextEditingController PreLaminationEIinspectionCriteriaController =
       TextEditingController();
 
@@ -310,8 +310,8 @@ class _PreCardState extends State<PreCard> {
   TextEditingController PreLaminationVisualnumberOfStringersController =
       TextEditingController();
   List<TextEditingController> PreLaminationVisualinspectionrControllers = [];
-  TextEditingController PreLaminationVisualinspectionController =
-      TextEditingController();
+  // TextEditingController PreLaminationVisualinspectionController =
+  //     TextEditingController();
   TextEditingController PreLaminationVisualinspectionCriteriaController =
       TextEditingController();
 
@@ -429,39 +429,78 @@ class _PreCardState extends State<PreCard> {
   List sample5Controller = [];
   List sample6Controller = [];
 
+  List cellLoadingInputtext = [];
+  List tabberVisual = [];
+  List tabberEI = [];
+  List tabberVerification = [];
+  List preLaminationEi = [];
+  List preLaminationVisual = [];
+
   void addControllers(int count) {
     for (int i = 0; i < count; i++) {
       cellLoaderVerificationControllers.add(TextEditingController());
+
+      if (widget.id != "" &&
+          widget.id != null &&
+          cellLoadingInputtext.length > 0) {
+        cellLoaderVerificationControllers[i].text = cellLoadingInputtext[i]
+            ['cellLoaderVerificationControllers${i + 1}'];
+      }
     }
   }
 
   void addTabberVisualControllers(int count) {
     for (int i = 0; i < count; i++) {
       TabberVisualStringerControllers.add(TextEditingController());
+      if (widget.id != "" && widget.id != null && tabberVisual.length > 0) {
+        TabberVisualStringerControllers[i].text =
+            tabberVisual[i]['TabberVisualStringerControllers${i + 1}'];
+      }
     }
   }
 
   void addTabberEImageControllers(int count) {
     for (int i = 0; i < count; i++) {
       TabberEIimageofStringerControllers.add(TextEditingController());
+      if (widget.id != "" && widget.id != null && tabberEI.length > 0) {
+        TabberEIimageofStringerControllers[i].text =
+            tabberEI[i]['TabberEIimageofStringerControllers${i + 1}'];
+      }
     }
   }
 
   void addTabberVerificationControllers(int count) {
     for (int i = 0; i < count; i++) {
       TabberVerificationofsilderingControllers.add(TextEditingController());
+      if (widget.id != "" &&
+          widget.id != null &&
+          tabberVerification.length > 0) {
+        TabberVerificationofsilderingControllers[i].text = tabberVerification[i]
+            ['TabberVerificationofsilderingControllers${i + 1}'];
+      }
     }
   }
 
   void addPreLaminationEIControllers(int count) {
     for (int i = 0; i < count; i++) {
       PreLaminationEIinspectionrControllers.add(TextEditingController());
+      if (widget.id != "" && widget.id != null && preLaminationEi.length > 0) {
+        PreLaminationEIinspectionrControllers[i].text =
+            preLaminationEi[i]['PreLaminationEIinspectionrControllers${i + 1}'];
+      }
     }
   }
 
   void addPreLaminationVisualControllers(int count) {
     for (int i = 0; i < count; i++) {
       PreLaminationVisualinspectionrControllers.add(TextEditingController());
+      if (widget.id != "" &&
+          widget.id != null &&
+          preLaminationVisual.length > 0) {
+        PreLaminationVisualinspectionrControllers[i].text =
+            preLaminationVisual[i]
+                ['PreLaminationVisualinspectionrControllers${i + 1}'];
+      }
     }
   }
 
@@ -716,8 +755,8 @@ class _PreCardState extends State<PreCard> {
           print("Aaaaaaaaaaaaaaaaaaajajaaa");
           // print(resBody['response']['Status']);
           print(resBody);
-          // print(resBody['response']['Visual Inspection & Laminator Description']
-          //     ["Cycle_Time"]);
+          print(resBody['response']['Tabber&StringerFrequency']
+              ['Visual Check after stringer Number of Created Input text ']);
 
           print("saiffffffffffffffffffffffffffffffffffffffffff");
           print("kulllllllllllllllllllllllllllllllllllllllllll");
@@ -776,7 +815,7 @@ class _PreCardState extends State<PreCard> {
               '';
 
           // Cell Cutting machine
-          CellSizelengthController.text = resBody['response']
+          CellSizeFrequencyController.text = resBody['response']
                   ['CellcuttingmachineCheckPoint']['cell Size'] ??
               '';
           CellManufactureEffController.text = resBody['response']
@@ -793,60 +832,313 @@ class _PreCardState extends State<PreCard> {
               resBody['response']['CellcuttingmachineRemark'] ?? '';
 
           // Cell Loading
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          CellLoadingcellColorController.text =
+              resBody['response']['CellLoadingCheckPoint']['cellcolor'] ?? '';
+          CellLoadingCleanLinessController.text = resBody['response']
+                      ['CellLoadingCheckPoint']
+                  ['cleanlines of cell Loading Area '] ??
+              '';
+          CellLoadingWIController.text = resBody['response']
+                  ['CellLoadingCheckPoint']['Cell loading as per WI'] ??
+              '';
+          CellLoadingAvabilityController.text = resBody['response']
+                  ['CellLoadingCheckPoint']['Avability of WI '] ??
+              '';
+          CellLoadingVerificationController.text = resBody['response']
+                      ['CellLoadingCheckPoint']
+                  ['Verification of process parameter'] ??
+              '';
+
+          // ---Dynamic Field Byend Data          (cell loading)
+          CellLoadingnumberOfStringerController.text = resBody['response']
+                          ['CellLoadingFrequency']
+                      ['string length Number of String'] !=
+                  ""
+              ? resBody['response']['CellLoadingFrequency']
+                  ['string length Number of String']
+              : '';
+
+          cellLoadingInputtext = resBody['response']['CellLoadingFrequency'][
+                  'string length Number of String Number of Created Input text'] ??
+              [];
+          numberOfStringers =
+              int.tryParse(CellLoadingnumberOfStringerController.text) ?? 0;
+          addControllers(numberOfStringers * 5);
+          cellLoaderRemarkController.text =
+              resBody['response']['CellLoadingRemark'] ?? '';
+
           // Tabber and Stringer
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          TabberVisualnumberOfStringersController.text = resBody['response']
+                          ['Tabber&StringerFrequency']
+                      ['Visual Check after stringer Number of Stringer'] !=
+                  ""
+              ? resBody['response']['Tabber&StringerFrequency']
+                  ['Visual Check after stringer Number of Stringer']
+              : '';
+
+          tabberVisual = resBody['response']['Tabber&StringerFrequency'][
+                  'Visual Check after stringer Number of Created Input text '] ??
+              [];
+
+          numberOfStringers1 =
+              int.tryParse(TabberVisualnumberOfStringersController.text) ?? 0;
+          addTabberVisualControllers(numberOfStringers1 * 5);
+          // second Dynamic
+          tabberEIimagenumberOfStringersController.text = resBody['response']
+                          ['Tabber&StringerFrequency']
+                      ['EI image of string  Number of Stringer '] !=
+                  ""
+              ? resBody['response']['Tabber&StringerFrequency']
+                  ['EI image of string  Number of Stringer ']
+              : '';
+
+          tabberEI = resBody['response']['Tabber&StringerFrequency']
+                  ['EI image of string  Number of Created Input text '] ??
+              [];
+
+          numberOfStringers2 =
+              int.tryParse(tabberEIimagenumberOfStringersController.text) ?? 0;
+          addTabberEImageControllers(numberOfStringers2 * 5);
+          // 3rd dynamic
+          TabberVerificationNumberofstringController.text = resBody['response']
+                          ['Tabber&StringerFrequency'][
+                      'Verification of sildering peel strength  Number of Stringer '] !=
+                  ""
+              ? resBody['response']['Tabber&StringerFrequency'][
+                  'Verification of sildering peel strength  Number of Stringer ']
+              : '';
+
+          tabberVerification = resBody['response']['Tabber&StringerFrequency'][
+                  'Verification of sildering peel strength Created Inputtext'] ??
+              [];
+
+          numberOfStringers4 =
+              int.tryParse(TabberVerificationNumberofstringController.text) ??
+                  0;
+          addTabberVerificationControllers(numberOfStringers4 * 5);
+          TabberAvabilityofSpecificationController.text = resBody['response']
+                      ['Tabber&StringerCheckPoint']
+                  ['Avaibility os Specification & WI'] ??
+              '';
+          TabberstringerRemarkController.text =
+              resBody['response']['Tabber&StringerRemark'] ?? '';
+
           // Auto String Layup
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          AutoCellController.text = resBody['response']
+                  ['AutoStringLayupCheckPoint']['Cell to cell gap'] ??
+              '';
+          AutoStringController.text = resBody['response']
+                  ['AutoStringLayupCheckPoint']['String to string gap'] ??
+              '';
+          AutoCelledController.text = resBody['response']
+                      ['AutoStringLayupCheckPoint']
+                  ['cell edge to glass edge(Top,bottom & sides)'] ??
+              '';
+          AutoStringerRemarkController.text =
+              resBody['response']['AutoStringLayupRemark'] ?? '';
+
           // Auto Bushing And Tapping
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          AutoSolderingController.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Soldering Peel strength between Ribbon to bushbar interconnector'] ??
+              '';
+          AutoTerminalStringController.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint']
+                  ['Terminal busbar to edge of cell'] ??
+              '';
+          AutoSolderingQualityController.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint']
+                  ['soldering quality of Ribbon to busbar'] ??
+              '';
+          AutoClearanceController.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint']
+                  ['Clearance between RFID&Logo patch to cell in module'] ??
+              '';
+          AutoPositionController.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint']
+                  ['Position verification of RFID& Logo Patch on Module'] ??
+              '';
+          AutoTopController.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass'] ??
+              '';
+          AutoQualityController.text = resBody['response']
+                  ['AutoBussing&TappingCheckPoint']['quality of auto taping'] ??
+              '';
+          AutoAvaibilityController.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint']
+                  ['Avaibility of specification & WI'] ??
+              '';
+          AutoBussingRemarkController.text =
+              resBody['response']['AutoBussing&TappingRemark'] ?? '';
+
           // Eva BackSheet
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          EVARearController.text = resBody['response']
+                      ['EVA/BacksheetcuttingCheckPoint']
+                  ['Rear EVA dimension & sift cutting width(mm)'] ??
+              '';
+          EVABackController.text = resBody['response']
+                      ['EVA/BacksheetcuttingCheckPoint']
+                  ['Back-sheet dimension& slit cutting diameter'] ??
+              '';
+          EVAcuttingController.text = resBody['response']
+                      ['EVA/BacksheetcuttingCheckPoint']
+                  ['cutting Edge of Rear EVA & Backsheet on Glass'] ??
+              '';
+          EVAPositionController.text = resBody['response']
+                      ['EVA/BacksheetcuttingCheckPoint']
+                  ['Position of Back EVA & Backsheet on Glass'] ??
+              '';
+          EVAAvaibilityController.text = resBody['response']
+                      ['EVA/BacksheetcuttingCheckPoint']
+                  ['Avaibility of specification&wI.'] ??
+              '';
+          EVABacksheetRemarkController.text =
+              resBody['response']['EVA/BacksheetcuttingRemark'] ?? '';
+
           // Pre LAmination El And Visual
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          PreLaminationEInumberOfStringersController.text = resBody['response']
+                          ['PrelaminationEL&VisualFrequency']
+                      ['EI Inspection after stringer Number of Stringer'] !=
+                  ""
+              ? resBody['response']['PrelaminationEL&VisualFrequency']
+                  ['EI Inspection after stringer Number of Stringer']
+              : '';
+
+          preLaminationEi = resBody['response']
+                      ['PrelaminationEL&VisualFrequency'][
+                  'EI Inspection after stringer Number of Created Input text '] ??
+              [];
+
+          numberOfStringers5 =
+              int.tryParse(PreLaminationEInumberOfStringersController.text) ??
+                  0;
+          addPreLaminationEIControllers(numberOfStringers5 * 5);
+          // Second Dynamic
+          PreLaminationVisualnumberOfStringersController
+              .text = resBody['response']['PrelaminationEL&VisualFrequency']
+                      ['Visual inspection of string  Number of Stringer '] !=
+                  ""
+              ? resBody['response']['PrelaminationEL&VisualFrequency']
+                  ['Visual inspection of string  Number of Stringer ']
+              : '';
+
+          preLaminationVisual = resBody['response']
+                      ['PrelaminationEL&VisualFrequency'][
+                  'Visual inspection of string  Number of Created Input text '] ??
+              [];
+
+          numberOfStringers6 = int.tryParse(
+                  PreLaminationVisualnumberOfStringersController.text) ??
+              0;
+          addPreLaminationVisualControllers(numberOfStringers6 * 5);
+          PreLaminationAvaibilityController.text = resBody['response']
+                      ['PrelaminationEL&VisualFrequency']
+                  ['Avaibility of acceptance criteria & WI'] ??
+              '';
+          PreLaminationELRemarkController.text =
+              resBody['response']['PrelaminationEL&VisualRemark'] ?? '';
+
           // String Rework Station
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          StringAvaibilityController.text = resBody['response']
+                      ['StringReworkstationCheckPoint']
+                  ['Avaibility of work instruvtion(WI)'] ??
+              '';
+          StringCleaningController.text = resBody['response']
+                      ['StringReworkstationCheckPoint']
+                  ['Cleaning of Rework station/soldering iron sponge'] ??
+              '';
+          StringReworkRemarkController.text =
+              resBody['response']['StringReworkstationRemark'] ?? '';
+
           // Modal Rework
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          ModuleAvaibilityController.text = resBody['response']
+                      ['ModuleReworkStationCheckPoint']
+                  ['Avaibility of work instruvtion(WI)'] ??
+              '';
+          ModuleMethodCleaningController.text = resBody['response']
+                  ['ModuleReworkStationCheckPoint']['Method of Rework'] ??
+              '';
+          ModuleHandlingController.text = resBody['response']
+                  ['ModuleReworkStationCheckPoint']['Handling of Modules'] ??
+              '';
+          ModuleCleaningofReworkController.text = resBody['response']
+                      ['ModuleReworkStationCheckPoint']
+                  ['Cleaning of Rework station/soldering iron sponge'] ??
+              '';
+          ModuleCleaningRemarkController.text =
+              resBody['response']['ModuleReworkStationRemark'] ?? '';
+
           // Laminator
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
-          status = resBody['response']['Status'] ?? '';
+          LaminatorMonitoringController.text = resBody['response']
+                      ['LaminatorFrequency']
+                  ['Monitoring of Laminator Process parameter'] ??
+              '';
+          LaminatorAdhesiveController.text = resBody['response']
+                      ['LaminatorFrequency']
+                  ['Adhesive on backsheet of the module'] ??
+              '';
+          LaminatorPeelController.text = resBody['response']
+                  ['LaminatorFrequency']['Peel Adhesive Test'] ??
+              '';
+          LaminatorGelController.text = resBody['response']
+                  ['LaminatorFrequency']['Gel Content Test'] ??
+              '';
+          LaminatorRemarkController.text =
+              resBody['response']['LaminatorRemark'] ?? '';
+          referencePdfController.text = resBody['response']['PreLamPdf'] ?? '';
         }
       });
+    }
+  }
+
+  Future setApprovalStatus() async {
+    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    print(approvalStatus);
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
+
+    final url = (site! + "IPQC/UpdatePreLamStatus");
+
+    var params = {
+      "token": token,
+      "CurrentUser": personid,
+      "ApprovalStatus": approvalStatus,
+      "JobCardDetailId": widget.id ?? ""
+    };
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(params),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
+      var objData = json.decode(response.body);
+      if (objData['success'] == false) {
+        Toast.show("Please Try Again.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        Toast.show("Job Card Test $approvalStatus .",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
     }
   }
 
@@ -1051,7 +1343,7 @@ class _PreCardState extends State<PreCard> {
             "Avability of WI ": CellLoadingAvabilityController.text,
             "Verification of process parameter":
                 CellLoadingVerificationController.text,
-            "string length & cell to cell gap": LoadstrinGapController.text,
+            // "string length & cell to cell gap": LoadstrinGapController.text,
           },
           "AcceptanceCriteria": {
             "cell color": CellLoadingcellCriteriaController.text,
@@ -1077,17 +1369,17 @@ class _PreCardState extends State<PreCard> {
             "string length Number of String":
                 CellLoadingnumberOfStringerController.text,
             "string length Number of String Number of Created Input text":
-                '$sample1Controller',
+                sample1Controller,
           },
           "Remark": cellLoaderRemarkController.text
         },
         {
           "Stage": "Tabber & Stringer",
           "CheckPoint": {
-            "Visual Check after stringer": TabberVisualCheckController.text,
-            "EI image of string": TabberEIimageCheckController.text,
-            "Verification of sildering peel strength":
-                TabberVerificationCheckController.text,
+            // "Visual Check after stringer": TabberVisualCheckController.text,
+            // "EI image of string": TabberEIimageCheckController.text,
+            // "Verification of sildering peel strength":
+            //     TabberVerificationCheckController.text,
             "Avaibility os Specification & WI":
                 TabberAvabilityofSpecificationController.text,
           },
@@ -1104,18 +1396,18 @@ class _PreCardState extends State<PreCard> {
             "Visual Check after stringer Number of Stringer":
                 TabberVisualnumberOfStringersController.text,
             "Visual Check after stringer Number of Created Input text ":
-                '$sample2Controller',
+                sample2Controller,
             "EI image of string": TabberEIimageFrequencyController.text,
             "EI image of string  Number of Stringer ":
                 tabberEIimagenumberOfStringersController.text,
             "EI image of string  Number of Created Input text ":
-                '$sample3Controller',
+                sample3Controller,
             "Verification of sildering peel strength":
                 TabberVerificationFrequencyController.text,
             "Verification of sildering peel strength  Number of Stringer ":
                 TabberVerificationNumberofstringController.text,
             "Verification of sildering peel strength Created Inputtext":
-                '$sample4Controller',
+                sample4Controller,
             "Avaibility os Specification & WI":
                 TabberAvaibilityFrequencyController.text,
           },
@@ -1238,8 +1530,8 @@ class _PreCardState extends State<PreCard> {
         {
           "Stage": "Pre lamination EL &Visual",
           "CheckPoint": {
-            "EI Inspection": PreLaminationEIinspectionController.text,
-            "Visual inspection": PreLaminationVisualinspectionController.text,
+            // "EI Inspection": PreLaminationEIinspectionController.text,
+            // "Visual inspection": PreLaminationVisualinspectionController.text,
             "Avaibility of acceptance criteria & WI":
                 PreLaminationAvaibilityController.text,
           },
@@ -1256,13 +1548,13 @@ class _PreCardState extends State<PreCard> {
             "EI Inspection after stringer Number of Stringer":
                 PreLaminationEInumberOfStringersController.text,
             "EI Inspection after stringer Number of Created Input text ":
-                '$sample5Controller',
+                sample5Controller,
             "Visual inspection of string":
                 PreLaminationEIinspectionFrequencyController.text,
             "Visual inspection of string  Number of Stringer ":
                 PreLaminationVisualnumberOfStringersController.text,
             "Visual inspection of string  Number of Created Input text ":
-                '$sample6Controller',
+                sample6Controller,
             "Avaibility of acceptance criteria & WI":
                 PreLaminationAvaibilityFrequencyController.text,
           },
@@ -4358,6 +4650,14 @@ class _PreCardState extends State<PreCard> {
                                                 height: 20,
                                               ),
                                               Text(
+                                                "String length & cell to cell gap",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
                                                 "How many Stringers",
                                                 style: AppStyles
                                                     .textfieldCaptionTextStyle,
@@ -4456,43 +4756,36 @@ class _PreCardState extends State<PreCard> {
                                               const SizedBox(
                                                 height: 20,
                                               ),
-                                              Text(
-                                                "String length & cell to cell gap",
-                                                style: AppStyles
-                                                    .textfieldCaptionTextStyle,
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              TextFormField(
-                                                controller:
-                                                    LoadstrinGapController,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                textInputAction:
-                                                    TextInputAction.next,
-                                                decoration: AppStyles
-                                                    .textFieldInputDecoration
-                                                    .copyWith(
-                                                  hintText:
-                                                      "Enter the String length & cell to cell gap",
-                                                  counterText: '',
-                                                ),
-                                                style: AppStyles
-                                                    .textInputTextStyle,
-                                                readOnly: status == 'Pending' &&
-                                                        designation != "QC"
-                                                    ? true
-                                                    : false,
-                                                validator: MultiValidator(
-                                                  [
-                                                    RequiredValidator(
-                                                      errorText:
-                                                          "Please Enter Correct String length & cell to cell gap",
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+
+                                              // TextFormField(
+                                              //   controller:
+                                              //       LoadstrinGapController,
+                                              //   keyboardType:
+                                              //       TextInputType.text,
+                                              //   textInputAction:
+                                              //       TextInputAction.next,
+                                              //   decoration: AppStyles
+                                              //       .textFieldInputDecoration
+                                              //       .copyWith(
+                                              //     hintText:
+                                              //         "Enter the String length & cell to cell gap",
+                                              //     counterText: '',
+                                              //   ),
+                                              //   style: AppStyles
+                                              //       .textInputTextStyle,
+                                              //   readOnly: status == 'Pending' &&
+                                              //           designation != "QC"
+                                              //       ? true
+                                              //       : false,
+                                              //   validator: MultiValidator(
+                                              //     [
+                                              //       RequiredValidator(
+                                              //         errorText:
+                                              //             "Please Enter Correct String length & cell to cell gap",
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
 
                                               const SizedBox(
                                                 height: 15,
@@ -4878,6 +5171,17 @@ class _PreCardState extends State<PreCard> {
                                                     readOnly: true,
                                                   ),
 
+// 990099
+
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Text(
+                                                    "Visual Check after stringer",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
@@ -4979,47 +5283,39 @@ class _PreCardState extends State<PreCard> {
                                                     },
                                                   ),
 
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Text(
-                                                    "Visual Check after stringer",
-                                                    style: AppStyles
-                                                        .textfieldCaptionTextStyle,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  TextFormField(
-                                                    controller:
-                                                        TabberVisualCheckController,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    decoration: AppStyles
-                                                        .textFieldInputDecoration
-                                                        .copyWith(
-                                                      hintText:
-                                                          "Enter the Visual Check after stringer",
-                                                      counterText: '',
-                                                    ),
-                                                    style: AppStyles
-                                                        .textInputTextStyle,
-                                                    readOnly: status ==
-                                                                'Pending' &&
-                                                            designation != "QC"
-                                                        ? true
-                                                        : false,
-                                                    validator: MultiValidator(
-                                                      [
-                                                        RequiredValidator(
-                                                          errorText:
-                                                              "Please Enter Correct Visual Check after stringer",
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                  // SizedBox(
+                                                  //   height: 5,
+                                                  // ),
+                                                  // TextFormField(
+                                                  //   controller:
+                                                  //       TabberVisualCheckController,
+                                                  //   keyboardType:
+                                                  //       TextInputType.text,
+                                                  //   textInputAction:
+                                                  //       TextInputAction.next,
+                                                  //   decoration: AppStyles
+                                                  //       .textFieldInputDecoration
+                                                  //       .copyWith(
+                                                  //     hintText:
+                                                  //         "Enter the Visual Check after stringer",
+                                                  //     counterText: '',
+                                                  //   ),
+                                                  //   style: AppStyles
+                                                  //       .textInputTextStyle,
+                                                  //   readOnly: status ==
+                                                  //               'Pending' &&
+                                                  //           designation != "QC"
+                                                  //       ? true
+                                                  //       : false,
+                                                  //   validator: MultiValidator(
+                                                  //     [
+                                                  //       RequiredValidator(
+                                                  //         errorText:
+                                                  //             "Please Enter Correct Visual Check after stringer",
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
 
                                                   const SizedBox(
                                                     height: 15,
@@ -5096,6 +5392,14 @@ class _PreCardState extends State<PreCard> {
                                                     height: 20,
                                                   ),
                                                   Text(
+                                                    "EI image of String",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text(
                                                     "How many Stringers",
                                                     style: AppStyles
                                                         .textfieldCaptionTextStyle,
@@ -5170,7 +5474,7 @@ class _PreCardState extends State<PreCard> {
                                                                 .textFieldInputDecoration
                                                                 .copyWith(
                                                               hintText:
-                                                                  "Please Enter Remarks",
+                                                                  "Please Enter Stringers",
                                                               counterText: '',
                                                               contentPadding:
                                                                   EdgeInsets
@@ -5189,7 +5493,7 @@ class _PreCardState extends State<PreCard> {
                                                                       null ||
                                                                   value
                                                                       .isEmpty) {
-                                                                return 'Please Enter Remarks.';
+                                                                return 'Please Enter stringers.';
                                                               }
                                                               return null;
                                                             },
@@ -5202,44 +5506,37 @@ class _PreCardState extends State<PreCard> {
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
-                                                  Text(
-                                                    "EI image of String",
-                                                    style: AppStyles
-                                                        .textfieldCaptionTextStyle,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  TextFormField(
-                                                    controller:
-                                                        TabberEIimageCheckController,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    decoration: AppStyles
-                                                        .textFieldInputDecoration
-                                                        .copyWith(
-                                                      hintText:
-                                                          "Enter the EI image of String",
-                                                      counterText: '',
-                                                    ),
-                                                    style: AppStyles
-                                                        .textInputTextStyle,
-                                                    readOnly: status ==
-                                                                'Pending' &&
-                                                            designation != "QC"
-                                                        ? true
-                                                        : false,
-                                                    validator: MultiValidator(
-                                                      [
-                                                        RequiredValidator(
-                                                          errorText:
-                                                              "Please Enter Correct EI image of String",
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+
+                                                  // TextFormField(
+                                                  //   controller:
+                                                  //       TabberEIimageCheckController,
+                                                  //   keyboardType:
+                                                  //       TextInputType.text,
+                                                  //   textInputAction:
+                                                  //       TextInputAction.next,
+                                                  //   decoration: AppStyles
+                                                  //       .textFieldInputDecoration
+                                                  //       .copyWith(
+                                                  //     hintText:
+                                                  //         "Enter the EI image of String",
+                                                  //     counterText: '',
+                                                  //   ),
+                                                  //   style: AppStyles
+                                                  //       .textInputTextStyle,
+                                                  //   readOnly: status ==
+                                                  //               'Pending' &&
+                                                  //           designation != "QC"
+                                                  //       ? true
+                                                  //       : false,
+                                                  //   validator: MultiValidator(
+                                                  //     [
+                                                  //       RequiredValidator(
+                                                  //         errorText:
+                                                  //             "Please Enter Correct EI image of String",
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
 
                                                   const SizedBox(
                                                     height: 15,
@@ -5310,6 +5607,14 @@ class _PreCardState extends State<PreCard> {
 
                                                   const SizedBox(
                                                     height: 20,
+                                                  ),
+                                                  Text(
+                                                    "Verification of sildering peel strength",
+                                                    style: AppStyles
+                                                        .textfieldCaptionTextStyle,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 15,
                                                   ),
                                                   Text(
                                                     "How many Stringers",
@@ -5418,48 +5723,37 @@ class _PreCardState extends State<PreCard> {
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
-                                                  Text(
-                                                    "Verification of sildering peel strength",
-                                                    style: AppStyles
-                                                        .textfieldCaptionTextStyle,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  TextFormField(
-                                                    controller:
-                                                        TabberVerificationCheckController,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    decoration: AppStyles
-                                                        .textFieldInputDecoration
-                                                        .copyWith(
-                                                      hintText:
-                                                          "Enter the Verification of sildering peel strength",
-                                                      counterText: '',
-                                                    ),
-                                                    style: AppStyles
-                                                        .textInputTextStyle,
-                                                    readOnly: status ==
-                                                                'Pending' &&
-                                                            designation != "QC"
-                                                        ? true
-                                                        : false,
-                                                    validator: MultiValidator(
-                                                      [
-                                                        RequiredValidator(
-                                                          errorText:
-                                                              "Please Enter Correct Verification of sildering peel strength",
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
 
-                                                  const SizedBox(
-                                                    height: 15,
-                                                  ),
+                                                  // TextFormField(
+                                                  //   controller:
+                                                  //       TabberVerificationCheckController,
+                                                  //   keyboardType:
+                                                  //       TextInputType.text,
+                                                  //   textInputAction:
+                                                  //       TextInputAction.next,
+                                                  //   decoration: AppStyles
+                                                  //       .textFieldInputDecoration
+                                                  //       .copyWith(
+                                                  //     hintText:
+                                                  //         "Enter the Verification of sildering peel strength",
+                                                  //     counterText: '',
+                                                  //   ),
+                                                  //   style: AppStyles
+                                                  //       .textInputTextStyle,
+                                                  //   readOnly: status ==
+                                                  //               'Pending' &&
+                                                  //           designation != "QC"
+                                                  //       ? true
+                                                  //       : false,
+                                                  //   validator: MultiValidator(
+                                                  //     [
+                                                  //       RequiredValidator(
+                                                  //         errorText:
+                                                  //             "Please Enter Correct Verification of sildering peel strength",
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
 
                                                   Text(
                                                     "Acceptance Criteria",
@@ -8821,8 +9115,6 @@ class _PreCardState extends State<PreCard> {
                                                                               fontFamily: appFontFamily,
                                                                               fontWeight: FontWeight.w700))),
 
-                                                                  // **********  start Pre Lamination El & Visual inspection  ***********
-
                                                                   const SizedBox(
                                                                     height: 15,
                                                                   ),
@@ -8867,6 +9159,14 @@ class _PreCardState extends State<PreCard> {
 
                                                                   const SizedBox(
                                                                     height: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    "EI Inspection",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
                                                                   ),
                                                                   Text(
                                                                     "How many Stringers",
@@ -8968,43 +9268,36 @@ class _PreCardState extends State<PreCard> {
                                                                   const SizedBox(
                                                                     height: 20,
                                                                   ),
-                                                                  Text(
-                                                                    "EI Inspection",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        PreLaminationEIinspectionController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Enter the EI Inspection",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Correct EI Inspection",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
+
+                                                                  // TextFormField(
+                                                                  //   controller:
+                                                                  //       PreLaminationEIinspectionController,
+                                                                  //   keyboardType:
+                                                                  //       TextInputType
+                                                                  //           .text,
+                                                                  //   textInputAction:
+                                                                  //       TextInputAction
+                                                                  //           .next,
+                                                                  //   decoration: AppStyles
+                                                                  //       .textFieldInputDecoration
+                                                                  //       .copyWith(
+                                                                  //     hintText:
+                                                                  //         "Enter the EI Inspection",
+                                                                  //     counterText:
+                                                                  //         '',
+                                                                  //   ),
+                                                                  //   style: AppStyles
+                                                                  //       .textInputTextStyle,
+                                                                  //   validator:
+                                                                  //       MultiValidator(
+                                                                  //     [
+                                                                  //       RequiredValidator(
+                                                                  //         errorText:
+                                                                  //             "Please Enter Correct EI Inspection",
+                                                                  //       ),
+                                                                  //     ],
+                                                                  //   ),
+                                                                  // ),
 
                                                                   const SizedBox(
                                                                     height: 15,
@@ -9087,6 +9380,14 @@ class _PreCardState extends State<PreCard> {
 
                                                                   const SizedBox(
                                                                     height: 20,
+                                                                  ),
+                                                                  Text(
+                                                                    "Visual Inspection",
+                                                                    style: AppStyles
+                                                                        .textfieldCaptionTextStyle,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
                                                                   ),
                                                                   Text(
                                                                     "How many Stringers",
@@ -9188,43 +9489,36 @@ class _PreCardState extends State<PreCard> {
                                                                   const SizedBox(
                                                                     height: 20,
                                                                   ),
-                                                                  Text(
-                                                                    "Visual Inspection",
-                                                                    style: AppStyles
-                                                                        .textfieldCaptionTextStyle,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  TextFormField(
-                                                                    controller:
-                                                                        PreLaminationVisualinspectionController,
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .text,
-                                                                    textInputAction:
-                                                                        TextInputAction
-                                                                            .next,
-                                                                    decoration: AppStyles
-                                                                        .textFieldInputDecoration
-                                                                        .copyWith(
-                                                                      hintText:
-                                                                          "Enter the Visual Inspection",
-                                                                      counterText:
-                                                                          '',
-                                                                    ),
-                                                                    style: AppStyles
-                                                                        .textInputTextStyle,
-                                                                    validator:
-                                                                        MultiValidator(
-                                                                      [
-                                                                        RequiredValidator(
-                                                                          errorText:
-                                                                              "Please Enter Correct Visual Inspection",
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
+
+                                                                  // TextFormField(
+                                                                  //   controller:
+                                                                  //       PreLaminationVisualinspectionController,
+                                                                  //   keyboardType:
+                                                                  //       TextInputType
+                                                                  //           .text,
+                                                                  //   textInputAction:
+                                                                  //       TextInputAction
+                                                                  //           .next,
+                                                                  //   decoration: AppStyles
+                                                                  //       .textFieldInputDecoration
+                                                                  //       .copyWith(
+                                                                  //     hintText:
+                                                                  //         "Enter the Visual Inspection",
+                                                                  //     counterText:
+                                                                  //         '',
+                                                                  //   ),
+                                                                  //   style: AppStyles
+                                                                  //       .textInputTextStyle,
+                                                                  //   validator:
+                                                                  //       MultiValidator(
+                                                                  //     [
+                                                                  //       RequiredValidator(
+                                                                  //         errorText:
+                                                                  //             "Please Enter Correct Visual Inspection",
+                                                                  //       ),
+                                                                  //     ],
+                                                                  //   ),
+                                                                  // ),
 
                                                                   const SizedBox(
                                                                     height: 15,
@@ -11267,34 +11561,61 @@ class _PreCardState extends State<PreCard> {
                                                                               Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                                                                               _isLoading
                                                                                   ? Center(child: CircularProgressIndicator())
-                                                                                  : AppButton(
-                                                                                      textStyle: const TextStyle(
-                                                                                        fontWeight: FontWeight.w700,
-                                                                                        color: AppColors.white,
-                                                                                        fontSize: 16,
-                                                                                      ),
-                                                                                      onTap: () {
-                                                                                        AppHelper.hideKeyboard(context);
-                                                                                        //sendDataToBackend(); //300
+                                                                                  : (widget.id == "" || widget.id == null) || (status == 'Inprogress' && widget.id != null)
+                                                                                      ? AppButton(
+                                                                                          textStyle: const TextStyle(
+                                                                                            fontWeight: FontWeight.w700,
+                                                                                            color: AppColors.white,
+                                                                                            fontSize: 16,
+                                                                                          ),
+                                                                                          onTap: () {
+                                                                                            AppHelper.hideKeyboard(context);
+                                                                                            //sendDataToBackend(); //300
 
-                                                                                        _preLamFormKey.currentState!.save;
-                                                                                        if (_preLamFormKey.currentState!.validate()) {
-                                                                                          setState(() {
-                                                                                            // setPage = "Cell Cutting Machine";
-                                                                                            sendStatus = "Pending";
-                                                                                          });
-                                                                                          sendDataToBackend();
-                                                                                        }
-                                                                                      },
-                                                                                      label: "Save",
-                                                                                      organization: '',
-                                                                                    ),
+                                                                                            _preLamFormKey.currentState!.save;
+                                                                                            if (_preLamFormKey.currentState!.validate()) {
+                                                                                              setState(() {
+                                                                                                // setPage = "Cell Cutting Machine";
+                                                                                                sendStatus = "Pending";
+                                                                                              });
+                                                                                              sendDataToBackend();
+                                                                                            }
+                                                                                          },
+                                                                                          label: "Save",
+                                                                                          organization: '',
+                                                                                        )
+                                                                                      : Container(),
 
                                                                               const SizedBox(
                                                                                 height: 10,
                                                                               ),
+                                                                              if (widget.id != "" && widget.id != null && status == 'Pending')
+                                                                                Container(
+                                                                                  color: Color.fromARGB(255, 191, 226, 187), // Change the background color to your desired color
+                                                                                  child: Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                                    children: [
+                                                                                      Divider(),
+                                                                                      SizedBox(height: 15),
+                                                                                      AppButton(
+                                                                                        textStyle: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.white, fontSize: 16),
+                                                                                        onTap: () {
+                                                                                          AppHelper.hideKeyboard(context);
+                                                                                          setApprovalStatus();
+                                                                                        },
+                                                                                        label: "Approve",
+                                                                                        organization: '',
+                                                                                      ),
+                                                                                      const SizedBox(
+                                                                                        height: 10,
+                                                                                      ),
+                                                                                      Divider(),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+
                                                                               // Back button
-                                                                              // Back button
+
                                                                               Center(
                                                                                 child: Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
