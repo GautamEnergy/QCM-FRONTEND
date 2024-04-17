@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/FqcAddEdit.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
@@ -193,10 +194,10 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                   Expanded(
                       child: tabDashboard('FQC', AppAssets.fqc, () {
-                    // Navigator.of(context).pushAndRemoveUntil(
-                    //     MaterialPageRoute(
-                    //         builder: (BuildContext context) => EmployeeList()),
-                    //     (Route<dynamic> route) => false);
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => FqcAddEdit()),
+                        (Route<dynamic> route) => false);
                   })),
                   const SizedBox(
                     width: 10,

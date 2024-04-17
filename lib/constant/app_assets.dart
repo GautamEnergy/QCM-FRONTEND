@@ -93,6 +93,7 @@ class AppAssets {
   static String icLocationSquare = 'assets/icons/location.png';
   static String icRenewal = 'assets/icons/location.png';
   static String icPlusBlue = 'assets/icons/ic_plus_blue.png';
+  static String save = 'assets/icons/save.png';
   static String icCalenderBlue = 'assets/icons/ic_calender_blue.png';
 
   static String icApproved = 'assets/icons/approved.png';
