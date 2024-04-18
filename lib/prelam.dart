@@ -7044,7 +7044,15 @@ class _PreCardState extends State<PreCard> {
                                                                       AppHelper
                                                                           .hideKeyboard(
                                                                               context);
-                                                                      sendDataToBackend(); //100
+                                                                      if (status !=
+                                                                          'Pending') {
+                                                                        setState(
+                                                                            () {
+                                                                          sendStatus =
+                                                                              'Inprogress';
+                                                                        });
+                                                                        sendDataToBackend();
+                                                                      } //100
 
                                                                       // _autoStringFormKey
                                                                       //     .currentState!
@@ -7056,8 +7064,6 @@ class _PreCardState extends State<PreCard> {
                                                                           () {
                                                                         setPage =
                                                                             "Auto Bussing & Tapping";
-                                                                        sendStatus =
-                                                                            "Inprogress";
                                                                       });
                                                                       // createData();
                                                                       print(
