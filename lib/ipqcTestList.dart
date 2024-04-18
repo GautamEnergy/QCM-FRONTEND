@@ -673,9 +673,26 @@ class _IpqcTestListState extends State<IpqcTestList> {
                         errorWidget: (context, url, error) {
                           return ClipOval(
                             child: Image.asset(
-                              type == 'BOM Verification'
-                                  ? AppAssets.postlam
-                                  : AppAssets.jobcard,
+                              type == "Job Card"
+                                  ? AppAssets.jobcard
+                                  : type == "Bom Card"
+                                      ? AppAssets.postlam
+                                      : type == "PreLam"
+                                          ? AppAssets.prelam
+                                          // : type == "Junction Box"
+                                          //     ? AppAssets.imgAttendanceReport
+                                          //     : type ==
+                                          //             "Aluminium Frame"
+                                          //         ? AppAssets.imgSalaryReport
+                                          //         : type == "Flux"
+                                          //             ? AppAssets.flux
+                                          //             : type ==
+                                          //                     "Backsheet"
+                                          //                 ? AppAssets
+                                          //                     .imgAttendanceList
+                                          : type == "PostLam"
+                                              ? AppAssets.postlam
+                                              : AppAssets.jobcard,
                               height: 60,
                               width: 60,
                             ),

@@ -1,4 +1,5 @@
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Fqc.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Jobcard.dart';
@@ -291,7 +292,7 @@ class _WelcomePageState extends State<IpqcPage> {
                                   ? IpqcPage()
                                   : (department == 'FQC' &&
                                           designation != 'Super Admin')
-                                      ? IqcpPage()
+                                      ? FqcPage()
                                       : WelcomePage()));
                 },
                 child: Image.asset(

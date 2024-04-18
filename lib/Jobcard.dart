@@ -5,6 +5,7 @@ import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
+import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/dialogs/all_member_list_model.dart';
 import 'package:QCM/ipqcTestList.dart';
 import 'package:dio/dio.dart';
@@ -560,6 +561,29 @@ class _JobcardState extends State<Jobcard> {
     }
   }
 
+  Widget _getFAB() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 70),
+      child: FloatingActionButton(
+        onPressed: () {
+          if (status != 'Pending') {
+            setState(() {
+              sendStatus = 'Inprogress';
+            });
+            createData();
+          }
+        },
+        child: ClipOval(
+          child: Image.asset(
+            AppAssets.save,
+            height: 70,
+            width: 60,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
@@ -592,36 +616,1772 @@ class _JobcardState extends State<Jobcard> {
               }));
             },
           ),
-          body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Stack(
-              alignment: Alignment.center,
-              fit: StackFit.expand,
-              children: [
-                SingleChildScrollView(
-                  child: Form(
-                    key: _jobcardFormKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.center,
+          body: _isLoading
+              ? AppLoader()
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    fit: StackFit.expand,
+                    children: [
+                      SingleChildScrollView(
+                        child: Form(
+                          key: _jobcardFormKey,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
                               Container(
                                 alignment: Alignment.center,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Image.asset(
-                                      AppAssets.imgLogo,
-                                      height: 100,
-                                      width: 230,
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            AppAssets.imgLogo,
+                                            height: 100,
+                                            width: 230,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Center(
+                                  child: Padding(
+                                      padding: EdgeInsets.only(top: 10),
+                                      child: Text("Inprocess Quality Controll",
+                                          style: TextStyle(
+                                              fontSize: 27,
+                                              color: AppColors.black,
+                                              fontFamily: appFontFamily,
+                                              fontWeight: FontWeight.w700)))),
+                              const Center(
+                                  child: Text("(Job Card)",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: AppColors.black,
+                                          fontFamily: appFontFamily,
+                                          fontWeight: FontWeight.w700))),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Document No : ',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    'GSPL/IPQC/BM/024',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Rev.No. / Rev. Date : ',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    'Ver.1.0 / 12-08-2024',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Date",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              TextFormField(
+                                  controller: dateController,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: AppStyles.textFieldInputDecoration
+                                      .copyWith(
+                                          hintText: "Please Enter Date",
+                                          counterText: '',
+                                          suffixIcon: Image.asset(
+                                            AppAssets.icCalenderBlue,
+                                            color: AppColors.primaryColor,
+                                          )),
+                                  style: AppStyles.textInputTextStyle,
+                                  readOnly:
+                                      status == 'Pending' && designation != "QC"
+                                          ? true
+                                          : false,
+                                  onTap: () async {
+                                    if (status != 'Pending') {
+                                      DateTime date = DateTime(2021);
+                                      FocusScope.of(context)
+                                          .requestFocus(new FocusNode());
+                                      date = (await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()))!;
+                                      dateController.text =
+                                          DateFormat("EEE MMM dd, yyyy").format(
+                                              DateTime.parse(date.toString()));
+                                      setState(() {
+                                        jobCardDate = DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                date.toString()));
+                                      });
+                                    }
+                                  },
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText: "Please Enter Date")
+                                  ])),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Module Type",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              TextFormField(
+                                controller: moduleTypeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Module Type",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Please Enter Module Type";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Matrix Size",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: matrixSizeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Matrix Size",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Matrix Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Module No.",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: moduleNoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Module No.",
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Module No.",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              const Center(
+                                child: Text(
+                                  "Glass Washing",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "Lot No",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: lotNoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Lot No",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Lot No",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Size",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: lotSizeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Size",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: glassCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              // Foil Cutter
+                              const Center(
+                                child: Text(
+                                  "Foil Cutter",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "EVA Lot No",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: evaLotNoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter EVA Lot No",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter EVA Lot No",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "EVA Size",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: evaSizeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter EVA Size",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter EVA Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Backsheet Lot",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: backsheetLotController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Backsheet Lot",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Backsheet Lot",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Backsheet Size",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: backsheetSizeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Backsheet Size",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Backsheet Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: foilCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              // Tabbing and stringing
+                              const Center(
+                                child: Text(
+                                  "Tabbing and stringing",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "Cell Lot No",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: cellLotNoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Cell Lot No",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Cell Lot No",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Cell Type",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: cellTypeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Cell Type",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Cell Type",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Cell Size",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: cellSyzeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Cell Size",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Cell Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Cell Eff./wattage",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: cellEffController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Cell Eff./wattage",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please Enter Cell Eff./wattage",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Interconnect Ribbon Size",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: interconnectRibbonSizeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText:
+                                      "Please Enter Interconnect Ribbon Size",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please Enter Interconnect Ribbon Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Busbar",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: busbarSizeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Busbar",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Busbar",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Flux",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: fluxController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Flux",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Flux",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: tabbingCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              // Bussing Inter Connection
+                              const Center(
+                                child: Text(
+                                  "Bussing/Inter Connection",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "Cell to Cell Gap",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: cellToCellGapController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Cell to Cell Gap",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please Enter Cell to Cell Gap",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "String to String Gap",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: stringToStringGapController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter String to String Gap",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please Enter String to String Gap",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Soldering Temp",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: solderingTempController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Soldering Temp",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Soldering Temp",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: bussingCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              // Visual Inspection And Laminator
+                              const Center(
+                                child: Text(
+                                  "Visual Inspection And Laminator",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "Tempreture",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: tempreatureController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Tempreture",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Tempreture",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Cycle Time",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: cycleTimeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Cycle Time",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Cycle Time",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Laminate Quality",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Radio<bool>(
+                                    value: true,
+                                    groupValue:
+                                        isCycleTimeTrue, // You need to define isCycleTimeTrue in your State class
+                                    onChanged: (bool? value) {
+                                      if (status != "Pending") {
+                                        setState(() {
+                                          isCycleTimeTrue = value;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    'Yes',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                      width: 20), // Adjust spacing as needed
+                                  Radio<bool>(
+                                    value: false,
+                                    groupValue:
+                                        isCycleTimeTrue, // You need to define isCycleTimeTrue in your State class
+                                    onChanged: (bool? value) {
+                                      if (status != "Pending") {
+                                        setState(() {
+                                          isCycleTimeTrue = value;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    'No',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: visualCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              // Edge Trimming
+                              const Center(
+                                child: Text(
+                                  "Edge Trimming",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "Backsheet Cutting",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Radio<bool>(
+                                    value: true,
+                                    groupValue:
+                                        isBacksheetCuttingTrue, // You need to define isCycleTimeTrue in your State class
+                                    onChanged: (bool? value) {
+                                      if (status != "Pending") {
+                                        setState(() {
+                                          isBacksheetCuttingTrue = value;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    'Yes',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                  SizedBox(
+                                      width: 20), // Adjust spacing as needed
+                                  Radio<bool>(
+                                    value: false,
+                                    groupValue:
+                                        isBacksheetCuttingTrue, // You need to define isCycleTimeTrue in your State class
+                                    onChanged: (bool? value) {
+                                      if (status != "Pending") {
+                                        setState(() {
+                                          isBacksheetCuttingTrue = value;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                  Text(
+                                    'No',
+                                    style: AppStyles.textfieldCaptionTextStyle,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: edgeCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              //Framing
+                              const Center(
+                                child: Text(
+                                  "Framing",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "Frame Type",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: frameTypeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Frame Type",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Frame Type",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              Text(
+                                "Frame Size",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: frameSizeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Frame Size",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Frame Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Silicon Glue Lot No",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: sliconGlueLotController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText:
+                                      "Please Enter Frame Silicon Glue Lot No",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please Enter Frame Silicon Glue Lot No",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: framingCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              // J/B Assembly
+                              const Center(
+                                child: Text(
+                                  "J/B Assembly",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "J/B Lot No",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: jBLotNoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter J/B Lot No",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter J/B Lot No",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "J/B Type",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: jBTypeController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter J/B Type",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter J/B Type",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Silicon Glue Lot No",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: siliconGlueLotNoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter Silicon Glue Lot No",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please Enter Silicon Glue Lot No",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: jbCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              // Sun Simulator
+                              const Center(
+                                child: Text(
+                                  "Sun Simulator",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor,
+                                    fontFamily: appFontFamily,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Text(
+                                "pmax(Wattage)",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: pmaxController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Enter pmax(Wattage)",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter pmax(Wattage)",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Comments",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                controller: sunCommentController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Add your comments here",
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
+                                maxLines: 3,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Enter Comment",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Reference PDF Document ",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: referencePdfController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                        hintText: "Please Select Reference Pdf",
+                                        suffixIcon: IconButton(
+                                          onPressed: () async {
+                                            if (widget.id != null &&
+                                                widget.id != '' &&
+                                                referencePdfController.text !=
+                                                    '') {
+                                              UrlLauncher.launch(
+                                                  referencePdfController.text);
+                                            } else if (status != 'Pending') {
+                                              _pickReferencePDF();
+                                            }
+                                          },
+                                          icon: widget.id != null &&
+                                                  widget.id != '' &&
+                                                  referencePdfController.text !=
+                                                      ''
+                                              ? const Icon(Icons.download)
+                                              : const Icon(Icons.upload_file),
+                                        ),
+                                        counterText: ''),
+                                style: AppStyles.textInputTextStyle,
+                                maxLines: 1,
+                                readOnly: true,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Please Select Reference Pdf";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                              _isLoading
+                                  ? Center(child: CircularProgressIndicator())
+                                  : (widget.id == "" || widget.id == null) ||
+                                          (status == 'Inprogress' &&
+                                              widget.id != null)
+                                      ? AppButton(
+                                          textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.white,
+                                            fontSize: 16,
+                                          ),
+                                          onTap: () {
+                                            AppHelper.hideKeyboard(context);
+                                            setState(() {
+                                              sendStatus = "Inprogress";
+                                            });
+                                            createData();
+                                            // sendDataToBackend();
+
+                                            // _jobcardFormKey.currentState!.save;
+                                            // if (_jobcardFormKey.currentState!
+                                            //     .validate()) {
+
+                                            // }
+                                          },
+                                          label: "Save",
+                                          organization: '',
+                                        )
+                                      : Container(),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              (widget.id == "" || widget.id == null) ||
+                                      (status == 'Inprogress' &&
+                                          widget.id != null)
+                                  ? AppButton(
+                                      textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.white,
+                                        fontSize: 16,
+                                      ),
+                                      onTap: () {
+                                        AppHelper.hideKeyboard(context);
+
+                                        _jobcardFormKey.currentState!.save;
+                                        if (_jobcardFormKey.currentState!
+                                            .validate()) {
+                                          setState(() {
+                                            sendStatus = "Pending";
+                                          });
+                                          createData();
+                                        }
+                                      },
+                                      label: "Submit",
+                                      organization: '',
+                                    )
+                                  : Container(),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              if (widget.id != "" &&
+                                  widget.id != null &&
+                                  status == 'Pending')
+                                Container(
+                                  color: Color.fromARGB(255, 191, 226,
+                                      187), // Change the background color to your desired color
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Divider(),
+                                      SizedBox(height: 15),
+                                      AppButton(
+                                        textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.white,
+                                            fontSize: 16),
+                                        onTap: () {
+                                          AppHelper.hideKeyboard(context);
+                                          setApprovalStatus();
+                                        },
+                                        label: "Approve",
+                                        organization: '',
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Divider(),
+                                    ],
+                                  ),
+                                ),
+
+                              // Center(
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.all(8.0),
+                              //     child: InkWell(
+                              //       onTap: () {
+                              //         // Navigator.of(context).pushReplacement(
+                              //         //     MaterialPageRoute(
+                              //         //         builder: (BuildContext context) =>
+                              //         //             LoginPage(
+                              //         //                 appName: widget.appName)));
+                              //       },
+                              //       child: Text(
+                              //         "BACK",
+                              //         style: TextStyle(
+                              //           fontFamily: appFontFamily,
+                              //           fontSize: 16,
+                              //           fontWeight: FontWeight.w500,
+                              //           color: AppColors.redColor,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Powered By Gautam Solar Pvt. Ltd.",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: appFontFamily,
+                                        color: AppColors.greyColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
                                     ),
                                   ],
                                 ),
@@ -629,1734 +2389,11 @@ class _JobcardState extends State<Jobcard> {
                             ],
                           ),
                         ),
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                if (designation == "QC")
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        AppHelper.hideKeyboard(context);
-                                        setState(() {
-                                          sendStatus = "Inprogress";
-                                        });
-                                        createData();
-                                        // sendDataToBackend();
-
-                                        // _jobcardFormKey.currentState!.save;
-                                        // if (_jobcardFormKey.currentState!
-                                        //     .validate()) {
-
-                                        // }
-                                      },
-                                      child: const Icon(
-                                        Icons
-                                            .save_rounded, // Replace 'your_icon' with the icon you want to use
-                                        size: 40,
-                                        color: Color.fromARGB(255, 57, 54,
-                                            185), // Customize the color as needed
-                                      ),
-                                    ),
-                                  ),
-                                SizedBox(
-                                    width:
-                                        10), // Adjust the spacing between icon and text as needed
-                                Text(
-                                  "JOB CARD",
-                                  style: TextStyle(
-                                    fontSize: 27,
-                                    color: AppColors.black,
-                                    fontFamily: appFontFamily,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // const Center(
-                        //   child: Text(
-                        //     "(Solar Cell)",
-                        //     style: TextStyle(
-                        //       fontSize: 20,
-                        //       color: AppColors.black,
-                        //       fontFamily: appFontFamily,
-                        //       fontWeight: FontWeight.w700,
-                        //     ),
-                        //   ),
-                        // ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Document No : ',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'GSPL/IPQC/BM/024',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Rev.No. / Rev. Date : ',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'Ver.1.0 / 12-08-2024',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Date",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        TextFormField(
-                            controller: dateController,
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.next,
-                            decoration:
-                                AppStyles.textFieldInputDecoration.copyWith(
-                                    hintText: "Please Enter Date",
-                                    counterText: '',
-                                    suffixIcon: Image.asset(
-                                      AppAssets.icCalenderBlue,
-                                      color: AppColors.primaryColor,
-                                    )),
-                            style: AppStyles.textInputTextStyle,
-                            readOnly: status == 'Pending' && designation != "QC"
-                                ? true
-                                : false,
-                            onTap: () async {
-                              if (status != 'Pending') {
-                                DateTime date = DateTime(2021);
-                                FocusScope.of(context)
-                                    .requestFocus(new FocusNode());
-                                date = (await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime.now()))!;
-                                dateController.text =
-                                    DateFormat("EEE MMM dd, yyyy").format(
-                                        DateTime.parse(date.toString()));
-                                setState(() {
-                                  jobCardDate = DateFormat("yyyy-MM-dd")
-                                      .format(DateTime.parse(date.toString()));
-                                });
-                              }
-                            },
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: "Please Enter Date")
-                            ])),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Module Type",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        TextFormField(
-                          controller: moduleTypeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Module Type",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please Enter Module Type";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Matrix Size",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: matrixSizeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Matrix Size",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Matrix Size",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Module No.",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: moduleNoController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Module No.",
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Module No.",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        const Center(
-                          child: Text(
-                            "Glass Washing",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "Lot No",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: lotNoController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Lot No",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Lot No",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Size",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: lotSizeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Size",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Size",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: glassCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        // Foil Cutter
-                        const Center(
-                          child: Text(
-                            "Foil Cutter",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "EVA Lot No",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: evaLotNoController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter EVA Lot No",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter EVA Lot No",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "EVA Size",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: evaSizeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter EVA Size",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter EVA Size",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Backsheet Lot",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: backsheetLotController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Backsheet Lot",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Backsheet Lot",
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Backsheet Size",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: backsheetSizeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Backsheet Size",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Backsheet Size",
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: foilCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        // Tabbing and stringing
-                        const Center(
-                          child: Text(
-                            "Tabbing and stringing",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "Cell Lot No",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: cellLotNoController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Cell Lot No",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Cell Lot No",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Cell Type",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: cellTypeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Cell Type",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Cell Type",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Cell Size",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: cellSyzeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Cell Size",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Cell Size",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Cell Eff./wattage",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: cellEffController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Cell Eff./wattage",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Cell Eff./wattage",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Interconnect Ribbon Size",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: interconnectRibbonSizeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Interconnect Ribbon Size",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Interconnect Ribbon Size",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Busbar",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: busbarSizeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Busbar",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Busbar",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Flux",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: fluxController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Flux",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Flux",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: tabbingCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        // Bussing Inter Connection
-                        const Center(
-                          child: Text(
-                            "Bussing/Inter Connection",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "Cell to Cell Gap",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: cellToCellGapController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Cell to Cell Gap",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Cell to Cell Gap",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "String to String Gap",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: stringToStringGapController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter String to String Gap",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter String to String Gap",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Soldering Temp",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: solderingTempController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Soldering Temp",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Soldering Temp",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: bussingCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        // Visual Inspection And Laminator
-                        const Center(
-                          child: Text(
-                            "Visual Inspection And Laminator",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "Tempreture",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: tempreatureController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Tempreture",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Tempreture",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Cycle Time",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: cycleTimeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Cycle Time",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Cycle Time",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Laminate Quality",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: [
-                            Radio<bool>(
-                              value: true,
-                              groupValue:
-                                  isCycleTimeTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (bool? value) {
-                                if (status != "Pending") {
-                                  setState(() {
-                                    isCycleTimeTrue = value;
-                                  });
-                                }
-                              },
-                            ),
-                            Text(
-                              'Yes',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                            SizedBox(width: 20), // Adjust spacing as needed
-                            Radio<bool>(
-                              value: false,
-                              groupValue:
-                                  isCycleTimeTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (bool? value) {
-                                if (status != "Pending") {
-                                  setState(() {
-                                    isCycleTimeTrue = value;
-                                  });
-                                }
-                              },
-                            ),
-                            Text(
-                              'No',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                          ],
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: visualCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        // Edge Trimming
-                        const Center(
-                          child: Text(
-                            "Edge Trimming",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "Backsheet Cutting",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: [
-                            Radio<bool>(
-                              value: true,
-                              groupValue:
-                                  isBacksheetCuttingTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (bool? value) {
-                                if (status != "Pending") {
-                                  setState(() {
-                                    isBacksheetCuttingTrue = value;
-                                  });
-                                }
-                              },
-                            ),
-                            Text(
-                              'Yes',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                            SizedBox(width: 20), // Adjust spacing as needed
-                            Radio<bool>(
-                              value: false,
-                              groupValue:
-                                  isBacksheetCuttingTrue, // You need to define isCycleTimeTrue in your State class
-                              onChanged: (bool? value) {
-                                if (status != "Pending") {
-                                  setState(() {
-                                    isBacksheetCuttingTrue = value;
-                                  });
-                                }
-                              },
-                            ),
-                            Text(
-                              'No',
-                              style: AppStyles.textfieldCaptionTextStyle,
-                            ),
-                          ],
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: edgeCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        //Framing
-                        const Center(
-                          child: Text(
-                            "Framing",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "Frame Type",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: frameTypeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Frame Type",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Frame Type",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        Text(
-                          "Frame Size",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: frameSizeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Frame Size",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Frame Size",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Silicon Glue Lot No",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: sliconGlueLotController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Frame Silicon Glue Lot No",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText:
-                                    "Please Enter Frame Silicon Glue Lot No",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: framingCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        // J/B Assembly
-                        const Center(
-                          child: Text(
-                            "J/B Assembly",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "J/B Lot No",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: jBLotNoController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter J/B Lot No",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter J/B Lot No",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "J/B Type",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: jBTypeController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter J/B Type",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter J/B Type",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Silicon Glue Lot No",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: siliconGlueLotNoController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter Silicon Glue Lot No",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Silicon Glue Lot No",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: jbCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        // Sun Simulator
-                        const Center(
-                          child: Text(
-                            "Sun Simulator",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: AppColors.primaryColor,
-                              fontFamily: appFontFamily,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        Text(
-                          "pmax(Wattage)",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: pmaxController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Please Enter pmax(Wattage)",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter pmax(Wattage)",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Comments",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        TextFormField(
-                          controller: sunCommentController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                            hintText: "Add your comments here",
-                            counterText: '',
-                          ),
-                          style: AppStyles.textInputTextStyle,
-                          readOnly: status == 'Pending' && designation != "QC"
-                              ? true
-                              : false,
-                          maxLines: 3,
-                          validator: MultiValidator(
-                            [
-                              RequiredValidator(
-                                errorText: "Please Enter Comment",
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          "Reference PDF Document ",
-                          style: AppStyles.textfieldCaptionTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        TextFormField(
-                          controller: referencePdfController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          decoration:
-                              AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Select Reference Pdf",
-                                  suffixIcon: IconButton(
-                                    onPressed: () async {
-                                      if (widget.id != null &&
-                                          widget.id != '' &&
-                                          referencePdfController.text != '') {
-                                        UrlLauncher.launch(
-                                            referencePdfController.text);
-                                      } else if (status != 'Pending') {
-                                        _pickReferencePDF();
-                                      }
-                                    },
-                                    icon: widget.id != null &&
-                                            widget.id != '' &&
-                                            referencePdfController.text != ''
-                                        ? const Icon(Icons.download)
-                                        : const Icon(Icons.upload_file),
-                                  ),
-                                  counterText: ''),
-                          style: AppStyles.textInputTextStyle,
-                          maxLines: 1,
-                          readOnly: true,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please Select Reference Pdf";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-
-                        Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                        _isLoading
-                            ? Center(child: CircularProgressIndicator())
-                            : (widget.id == "" || widget.id == null) ||
-                                    (status == 'Inprogress' &&
-                                        widget.id != null)
-                                ? AppButton(
-                                    textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.white,
-                                      fontSize: 16,
-                                    ),
-                                    onTap: () {
-                                      AppHelper.hideKeyboard(context);
-                                      setState(() {
-                                        sendStatus = "Inprogress";
-                                      });
-                                      createData();
-                                      // sendDataToBackend();
-
-                                      // _jobcardFormKey.currentState!.save;
-                                      // if (_jobcardFormKey.currentState!
-                                      //     .validate()) {
-
-                                      // }
-                                    },
-                                    label: "Save",
-                                    organization: '',
-                                  )
-                                : Container(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        (widget.id == "" || widget.id == null) ||
-                                (status == 'Inprogress' && widget.id != null)
-                            ? AppButton(
-                                textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.white,
-                                  fontSize: 16,
-                                ),
-                                onTap: () {
-                                  AppHelper.hideKeyboard(context);
-
-                                  _jobcardFormKey.currentState!.save;
-                                  if (_jobcardFormKey.currentState!
-                                      .validate()) {
-                                    setState(() {
-                                      sendStatus = "Pending";
-                                    });
-                                    createData();
-                                  }
-                                },
-                                label: "Submit",
-                                organization: '',
-                              )
-                            : Container(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        if (widget.id != "" &&
-                            widget.id != null &&
-                            status == 'Pending')
-                          Container(
-                            color: Color.fromARGB(255, 191, 226,
-                                187), // Change the background color to your desired color
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Divider(),
-                                SizedBox(height: 15),
-                                AppButton(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.white,
-                                      fontSize: 16),
-                                  onTap: () {
-                                    AppHelper.hideKeyboard(context);
-                                    setApprovalStatus();
-                                  },
-                                  label: "Approve",
-                                  organization: '',
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Divider(),
-                              ],
-                            ),
-                          ),
-
-                        // Center(
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: InkWell(
-                        //       onTap: () {
-                        //         // Navigator.of(context).pushReplacement(
-                        //         //     MaterialPageRoute(
-                        //         //         builder: (BuildContext context) =>
-                        //         //             LoginPage(
-                        //         //                 appName: widget.appName)));
-                        //       },
-                        //       child: Text(
-                        //         "BACK",
-                        //         style: TextStyle(
-                        //           fontFamily: appFontFamily,
-                        //           fontSize: 16,
-                        //           fontWeight: FontWeight.w500,
-                        //           color: AppColors.redColor,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Powered By Gautam Solar Pvt. Ltd.",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: appFontFamily,
-                                  color: AppColors.greyColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
+          floatingActionButton: _getFAB(),
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(
