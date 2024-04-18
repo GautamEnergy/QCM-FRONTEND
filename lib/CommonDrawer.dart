@@ -1,3 +1,4 @@
+import 'package:QCM/Fqc.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
@@ -97,7 +98,7 @@ class _PublicDrawerState extends State<PublicDrawer> {
                     : (department == 'IPQC' && designation != 'Super Admin')
                         ? IpqcPage()
                         : (department == 'FQC' && designation != 'Super Admin')
-                            ? IqcpPage()
+                            ? FqcPage()
                             : WelcomePage()),
         (Route<dynamic> route) => false);
     return true;
@@ -121,7 +122,7 @@ class _PublicDrawerState extends State<PublicDrawer> {
                 : (department == 'IPQC' && designation != 'Super Admin')
                     ? IpqcPage()
                     : (department == 'FQC' && designation != 'Super Admin')
-                        ? IqcpPage()
+                        ? FqcPage()
                         : WelcomePage();
           }));
         },
@@ -157,7 +158,7 @@ class _PublicDrawerState extends State<PublicDrawer> {
                                       ? IpqcPage()
                                       : (department == 'FQC' &&
                                               designation != 'Super Admin')
-                                          ? IqcpPage()
+                                          ? FqcPage()
                                           : WelcomePage()),
                       (Route<dynamic> route) => false);
                 })),
@@ -317,7 +318,7 @@ class _PublicDrawerState extends State<PublicDrawer> {
                                   ? IpqcPage()
                                   : (department == 'FQC' &&
                                           designation != 'Super Admin')
-                                      ? IqcpPage()
+                                      ? FqcPage()
                                       : WelcomePage()));
                 },
                 child: Image.asset(

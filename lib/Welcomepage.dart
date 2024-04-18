@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Fqc.dart';
 import 'package:QCM/FqcAddEdit.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
@@ -196,7 +197,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       child: tabDashboard('FQC', AppAssets.fqc, () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                            builder: (BuildContext context) => FqcAddEdit()),
+                            builder: (BuildContext context) => FqcPage()),
                         (Route<dynamic> route) => false);
                   })),
                   const SizedBox(

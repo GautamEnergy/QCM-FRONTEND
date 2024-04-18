@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -45,10 +46,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    print(path);
-    setState(() {
-      // employeeIdController.text = "G";
-    });
     super.initState();
   }
 
@@ -128,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                     : (department == 'IPQC' && designation != 'Super Admin')
                         ? IpqcPage()
                         : (department == 'FQC' && designation != 'Super Admin')
-                            ? IqcpPage()
+                            ? FqcPage()
                             : WelcomePage()));
           });
           print(prefs.getString('site'));

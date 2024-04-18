@@ -3,9 +3,10 @@ import 'package:QCM/Backsheet.dart';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Encapsulant.dart';
 import 'package:QCM/Flux.dart';
-import 'package:QCM/Fqc.dart';
+import 'package:QCM/FqcAddEdit.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
+import 'package:QCM/Iqcp.dart';
 import 'package:QCM/JunctionBox.dart';
 import 'package:QCM/Ribbon.dart';
 import 'package:QCM/Sealant.dart';
@@ -32,14 +33,14 @@ import '../constant/app_assets.dart';
 
 import '../main.dart';
 
-class IqcpPage extends StatefulWidget {
-  IqcpPage({Key? key}) : super(key: key);
+class FqcPage extends StatefulWidget {
+  FqcPage({Key? key}) : super(key: key);
 
   @override
-  _WelcomePageState createState() => _WelcomePageState();
+  _FqcPageState createState() => _FqcPageState();
 }
 
-class _WelcomePageState extends State<IqcpPage> {
+class _FqcPageState extends State<FqcPage> {
   String? firstname,
       designation,
       department,
@@ -141,151 +142,11 @@ class _WelcomePageState extends State<IqcpPage> {
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard('Solar Cell', AppAssets.solarcell, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => SolarCell(id: "")),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('Solar Glass', AppAssets.planet, () {
+                    child: tabDashboard('FQC', AppAssets.fqcadd, () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              SolarGlass(id: "")),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
-            const SizedBox(
-              height: 10,
-            ),
-            //1st row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('Encapsulant/EVA', AppAssets.eva, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              Encapsulant(id: "")),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('Ribbon', AppAssets.icDirectory, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Ribbon(id: "")),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
-            const SizedBox(
-              height: 10,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard(
-                        'Junction Box', AppAssets.imgAttendanceReport, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => JunctionBox()),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard(
-                        'Aluminium Frame', AppAssets.imgSalaryReport, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => AluminiumFrame()),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
-            const SizedBox(
-              height: 10,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('Flux', AppAssets.flux, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Flux()),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard(
-                        'Backsheet', AppAssets.imgAttendanceList, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Backsheet()),
-                      (Route<dynamic> route) => false);
-                })),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child:
-                        tabDashboard('Sealant/Poating', AppAssets.Poating, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => Sealant()),
+                              FqcAddEdit(id: "")),
                       (Route<dynamic> route) => false);
                 })),
                 const SizedBox(

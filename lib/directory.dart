@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:QCM/CommonDrawer.dart';
+import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/LoginPage.dart';
@@ -349,7 +350,7 @@ class _DirectoryState extends State<EmployeeList> {
                                                 : (department == 'FQC' &&
                                                         designation !=
                                                             'Super Admin')
-                                                    ? IqcpPage()
+                                                    ? FqcPage()
                                                     : WelcomePage()));
                           },
                           child: Image.asset(
