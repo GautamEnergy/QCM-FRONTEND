@@ -839,7 +839,9 @@ class _BomCardState extends State<BomCard> {
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return IpqcPage();
+                return widget.id != "" && widget.id != null
+                    ? IpqcTestList()
+                    : IpqcPage();
               }));
             },
           ),

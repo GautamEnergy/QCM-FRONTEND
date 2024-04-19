@@ -2319,7 +2319,9 @@ class _PostlamState extends State<Postlam> {
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return IpqcPage();
+                return widget.id != "" && widget.id != null
+                    ? IpqcTestList()
+                    : IpqcPage();
               }));
             },
           ),
@@ -2454,6 +2456,8 @@ class _PostlamState extends State<Postlam> {
                                             .copyWith(
                                                 hintText: "Please Enter Date",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                                 suffixIcon: Image.asset(
                                                   AppAssets.icCalenderBlue,
                                                   color: AppColors.primaryColor,
@@ -2510,6 +2514,8 @@ class _PostlamState extends State<Postlam> {
                                           .copyWith(
                                         hintText: "Please Enter Shift",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2545,6 +2551,8 @@ class _PostlamState extends State<Postlam> {
                                           .copyWith(
                                         hintText: "Please Enter Line",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2578,6 +2586,8 @@ class _PostlamState extends State<Postlam> {
                                           .textFieldInputDecoration
                                           .copyWith(
                                         hintText: "Please Enter Po.No",
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2653,6 +2663,8 @@ class _PostlamState extends State<Postlam> {
                                         hintText:
                                             "Please Enter Avaibility of Wi",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2749,6 +2761,8 @@ class _PostlamState extends State<Postlam> {
                                           .copyWith(
                                         hintText: "Please Enter Observatiom 1 ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2777,6 +2791,8 @@ class _PostlamState extends State<Postlam> {
                                           .copyWith(
                                         hintText: "Please Enter Observatiom 2 ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2805,6 +2821,8 @@ class _PostlamState extends State<Postlam> {
                                           .copyWith(
                                         hintText: "Please Enter Observatiom 3 ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2833,6 +2851,8 @@ class _PostlamState extends State<Postlam> {
                                           .copyWith(
                                         hintText: "Please Enter Observatiom 4 ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2861,6 +2881,8 @@ class _PostlamState extends State<Postlam> {
                                           .copyWith(
                                         hintText: "Please Enter Observatiom 5 ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -3152,6 +3174,8 @@ class _PostlamState extends State<Postlam> {
                                             hintText:
                                                 "Please Enter Avaibility of Wi & Crieteria",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -3249,6 +3273,8 @@ class _PostlamState extends State<Postlam> {
                                             hintText:
                                                 "Please Enter Observation 1 ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -3278,6 +3304,8 @@ class _PostlamState extends State<Postlam> {
                                             hintText:
                                                 "Please Enter Observation 2 ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -3307,6 +3335,8 @@ class _PostlamState extends State<Postlam> {
                                             hintText:
                                                 "Please Enter Observation 3 ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -3336,6 +3366,8 @@ class _PostlamState extends State<Postlam> {
                                             hintText:
                                                 "Please Enter Observation 4 ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -3365,6 +3397,8 @@ class _PostlamState extends State<Postlam> {
                                             hintText:
                                                 "Please Enter Observation 5 ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -3694,6 +3728,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3798,6 +3834,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Observation 1 ",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3829,6 +3867,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Observation 2 ",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3860,6 +3900,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Observation 3 ",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3891,6 +3933,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Observation 4",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3922,6 +3966,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Observation 5 ",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4028,6 +4074,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4133,6 +4181,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation 1",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4164,6 +4214,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation 2",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4195,6 +4247,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation 3",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4226,6 +4280,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation 4",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4257,6 +4313,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation 5",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4362,6 +4420,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4468,6 +4528,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4573,6 +4635,8 @@ class _PostlamState extends State<Postlam> {
                                                 hintText:
                                                     "Please Enter Obsevation",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -4927,6 +4991,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5036,6 +5102,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Observation 1 ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5069,6 +5137,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Observation 2 ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5102,6 +5172,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Observation 3 ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5135,6 +5207,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Observation 4",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5168,6 +5242,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Observation 5 ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5279,6 +5355,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation1",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5312,6 +5390,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation 2",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5345,6 +5425,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation 3",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5378,6 +5460,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation 4",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5411,6 +5495,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation 5",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5519,6 +5605,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5630,6 +5718,8 @@ class _PostlamState extends State<Postlam> {
                                                     hintText:
                                                         "Please Enter Obsevation",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -5998,6 +6088,9 @@ class _PostlamState extends State<Postlam> {
                                                         hintText:
                                                             "Please Enter Obsevation",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -6110,6 +6203,9 @@ class _PostlamState extends State<Postlam> {
                                                         hintText:
                                                             "Please Enter Observation",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -6223,6 +6319,9 @@ class _PostlamState extends State<Postlam> {
                                                         hintText:
                                                             "Please Enter Obsevation",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -6609,6 +6708,12 @@ class _PostlamState extends State<Postlam> {
                                                             hintText:
                                                                 "Please Enter Obsevation",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -6729,6 +6834,12 @@ class _PostlamState extends State<Postlam> {
                                                             hintText:
                                                                 "Please Enter Observation 1 ",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -6766,6 +6877,12 @@ class _PostlamState extends State<Postlam> {
                                                             hintText:
                                                                 "Please Enter Observation 2 ",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -6803,6 +6920,12 @@ class _PostlamState extends State<Postlam> {
                                                             hintText:
                                                                 "Please Enter Observation 3 ",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -6840,6 +6963,12 @@ class _PostlamState extends State<Postlam> {
                                                             hintText:
                                                                 "Please Enter Observation 4 ",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -6877,6 +7006,12 @@ class _PostlamState extends State<Postlam> {
                                                             hintText:
                                                                 "Please Enter Observation 5 ",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -7270,6 +7405,12 @@ class _PostlamState extends State<Postlam> {
                                                                 hintText:
                                                                     "Please Enter Obsevation",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -7391,6 +7532,12 @@ class _PostlamState extends State<Postlam> {
                                                                 hintText:
                                                                     "Please Enter Observation 1 ",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -7428,6 +7575,12 @@ class _PostlamState extends State<Postlam> {
                                                                 hintText:
                                                                     "Please Enter Observation 2 ",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -7465,6 +7618,12 @@ class _PostlamState extends State<Postlam> {
                                                                 hintText:
                                                                     "Please Enter Observation 3 ",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -7502,6 +7661,12 @@ class _PostlamState extends State<Postlam> {
                                                                 hintText:
                                                                     "Please Enter Observation 4 ",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -7539,6 +7704,12 @@ class _PostlamState extends State<Postlam> {
                                                                 hintText:
                                                                     "Please Enter Observation 5 ",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -11517,6 +11688,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Obsevation",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11596,6 +11768,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Obsevation 1",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11617,6 +11790,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Obsevation 2",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11638,6 +11812,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Obsevation 3",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11659,6 +11834,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Obsevation 4",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11680,6 +11856,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Obsevation 5",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11759,6 +11936,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Observation  ",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11840,6 +12018,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Observation  ",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11922,6 +12101,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Observation  ",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12003,6 +12183,7 @@ class _PostlamState extends State<Postlam> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Please Enter Observation  ",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12268,6 +12449,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Obsevation 1",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12289,6 +12471,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Obsevation 2",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12310,6 +12493,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Obsevation 3",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12331,6 +12515,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Obsevation 4",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12352,6 +12537,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Obsevation 5",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12432,6 +12618,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Observation 1 ",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12453,6 +12640,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Observation 2 ",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12474,6 +12662,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Observation 3 ",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12495,6 +12684,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Observation 4 ",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12516,6 +12706,7 @@ class _PostlamState extends State<Postlam> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter Observation 5 ",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12775,6 +12966,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Obsevation 1",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12796,6 +12988,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Obsevation 2",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12817,6 +13010,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Obsevation 3",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12838,6 +13032,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Obsevation 4",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12859,6 +13054,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Obsevation 5",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12940,6 +13136,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Observation 1 ",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12961,6 +13158,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Observation 2 ",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -12982,6 +13180,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Observation 3 ",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13003,6 +13202,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Observation 4 ",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13024,6 +13224,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Observation 5 ",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13104,6 +13305,7 @@ class _PostlamState extends State<Postlam> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Please Enter Obsevation",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13361,6 +13563,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Obsevation 1",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13382,6 +13585,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Obsevation 2",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13403,6 +13607,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Obsevation 3",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13424,6 +13629,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Obsevation 4",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13445,6 +13651,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Obsevation 5",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13526,6 +13733,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 1 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13547,6 +13755,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 2 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13568,6 +13777,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 3 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13589,6 +13799,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 4 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13610,6 +13821,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 5 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13690,6 +13902,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 1 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13711,6 +13924,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 2 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13732,6 +13946,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 3 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13753,6 +13968,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 4 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13774,6 +13990,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 5 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13854,6 +14071,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 1 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13875,6 +14093,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 2 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13896,6 +14115,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 3 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13917,6 +14137,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 4 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -13938,6 +14159,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                             hintText: "Please Enter Observation 5 ",
                                                                                             counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           readOnly: status == 'Pending' && designation != "QC" ? true : false,

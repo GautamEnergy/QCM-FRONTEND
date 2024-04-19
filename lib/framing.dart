@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/constant/app_assets.dart';
@@ -11,9 +15,12 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_helper.dart';
 import 'package:QCM/constant/app_styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class framing extends StatefulWidget {
+  final String? id;
+  framing({this.id});
   @override
   _framingState createState() => _framingState();
 }
@@ -86,27 +93,144 @@ class _framingState extends State<framing> {
   bool menu = false, user = false, face = false, home = false;
   int numberOfStringers = 0;
   bool _isLoading = false;
-  String setPage = '', pic = '';
+  String setPage = '', pic = '', site = '', personid = '';
   String invoiceDate = '';
   String date = '';
+  String sendStatus = '';
   String dateOfQualityCheck = '';
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
   String? selectedShift;
+  String status = '',
+      framingId = '',
+      approvalStatus = "Approved",
+      designation = '',
+      token = '',
+      department = '';
+  // final _dio = Dio();
+  //List data = [];
+
+  //Response.Response? _response;
 
   @override
   void initState() {
     super.initState();
-    isCycleTimeTrue = true; // Set initial value
+    store(); // Set initial value
   }
 
   // ****************************************  Send the Data where will be Used ro Backend **************************
-  Future<void> sendDataToBackend() async {
-    final url =
-        'your-backend-url'; // Replace 'your-backend-url' with your actual backend URL
+  // Future<void> sendDataToBackend() async {
+  //   final url =
+  //       'your-backend-url'; // Replace 'your-backend-url' with your actual backend URL
 
-    // Gather data from text controllers
-    final data = {
+  //   // Gather data from text controllers
+  //   final data = {
+  //     'DocNo': 'GSPL/IPQC/AF/011',
+  //     'RevNo': '1.0/12.08.2023',
+  //     'Date': dateController.text,
+  //     'Shift': shiftController.text,
+  //     'samples': [
+  //       {
+  //         'Sample': Sample1Controller.text,
+  //         'FramingObservation': Sample1GlueController.text,
+  //         'FramingDimension': {
+  //           'x1': Sample1x1Controller.text,
+  //           'x2': Sample1x2Controller.text,
+  //           'y1': Sample1y1Controller.text,
+  //           'y2': Sample1y2Controller.text,
+  //           'l1': Sample1L1Controller.text,
+  //           'l2': Sample1L2Controller.text,
+  //           'w1': Sample1W1Controller.text,
+  //           'w2': Sample1W2Controller.text
+  //         }
+  //       },
+  //       {
+  //         'Sample': Sample2Controller.text,
+  //         'FramingObservation': Sample2GlueController.text,
+  //         'FramingDimension': {
+  //           'x1': Sample2x1Controller.text,
+  //           'x2': Sample2x2Controller.text,
+  //           'y1': Sample2y1Controller.text,
+  //           'y2': Sample2y2Controller.text,
+  //           'l1': Sample2L1Controller.text,
+  //           'l2': Sample2L2Controller.text,
+  //           'w1': Sample2W1Controller.text,
+  //           'w2': Sample2W2Controller.text
+  //         }
+  //       },
+  //       {
+  //         'Sample': Sample3Controller.text,
+  //         'FramingObservation': Sample3GlueController.text,
+  //         'FramingDimension': {
+  //           'x1': Sample3x1Controller.text,
+  //           'x2': Sample3x2Controller.text,
+  //           'y1': Sample3y1Controller.text,
+  //           'y2': Sample3y2Controller.text,
+  //           'l1': Sample3L1Controller.text,
+  //           'l2': Sample3L2Controller.text,
+  //           'w1': Sample3W1Controller.text,
+  //           'w2': Sample3W2Controller.text
+  //         }
+  //       },
+  //       {
+  //         'Sample': Sample4Controller.text,
+  //         'FramingObservation': Sample4GlueController.text,
+  //         'FramingDimension': {
+  //           'x1': Sample4x1Controller.text,
+  //           'x2': Sample4x2Controller.text,
+  //           'y1': Sample4y1Controller.text,
+  //           'y2': Sample4y2Controller.text,
+  //           'l1': Sample4L1Controller.text,
+  //           'l2': Sample4L2Controller.text,
+  //           'w1': Sample4W1Controller.text,
+  //           'w2': Sample4W2Controller.text
+  //         }
+  //       },
+  //       {
+  //         'Sample': Sample5Controller.text,
+  //         'FramingObservation': Sample5GlueController.text,
+  //         'FramingDimension': {
+  //           'x1': Sample5x1Controller.text,
+  //           'x2': Sample5x2Controller.text,
+  //           'y1': Sample5y1Controller.text,
+  //           'y2': Sample5y2Controller.text,
+  //           'l1': Sample5L1Controller.text,
+  //           'l2': Sample5L2Controller.text,
+  //           'w1': Sample5W1Controller.text,
+  //           'w2': Sample5W2Controller.text
+  //         }
+  //       },
+  //     ],
+  //   };
+  //   print('$data');
+  //   print('Kulbhushan Singh');
+  // }
+  void store() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pic = prefs.getString('pic')!;
+      personid = prefs.getString('personid')!;
+      site = prefs.getString('site')!;
+      designation = prefs.getString('designation')!;
+      department = prefs.getString('department')!;
+      token = prefs.getString('token')!;
+    });
+    //_get();
+  }
+
+  Future createData() async {
+    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
+    //print(jobCardDate);
+    var data = {
+      "Type": "Job Card",
+      "PreLamDetailId": framingId != '' && framingId != null
+          ? framingId
+          : widget.id != '' && widget.id != null
+              ? widget.id
+              : '',
+      "Type": "Framing",
+      "CurrentUser": personid,
+      "Status": sendStatus,
       'DocNo': 'GSPL/IPQC/AF/011',
       'RevNo': '1.0/12.08.2023',
       'Date': dateController.text,
@@ -186,8 +310,81 @@ class _framingState extends State<framing> {
     };
     print('$data');
     print('Kulbhushan Singh');
+
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+
+    final url = (site! + "IPQC/AddFraming");
+
+    final prefs = await SharedPreferences.getInstance();
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print("Bhanuu bhai");
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var objData = json.decode(response.body);
+      setState(() {
+        framingId = objData['UUID'];
+
+        _isLoading = false;
+      });
+
+      print(
+          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      print(objData['UUID']);
+      if (objData['success'] == false) {
+        Toast.show(objData['message'],
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        if (sendStatus == 'Pending') {
+          // uploadPDF((referencePdfFileBytes ?? []));
+        } else {
+          Toast.show("Data has been saved.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+        }
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
+    }
   }
+
 // ***************** Done Send the Data *******************************
+  Widget _getFAB() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 70),
+      child: FloatingActionButton(
+        onPressed: () {
+          if (status != 'Pending') {
+            setState(() {
+              sendStatus = 'Inprogress';
+            });
+            createData();
+          }
+        },
+        child: ClipOval(
+          child: Image.asset(
+            AppAssets.save,
+            height: 70,
+            width: 60,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -799,7 +996,7 @@ class _framingState extends State<framing> {
                                       ),
                                       onTap: () {
                                         AppHelper.hideKeyboard(context);
-                                        sendDataToBackend(); //500
+                                        createData(); //500
 
                                         // _registerFormKey.currentState!.save;
                                         // if (_registerFormKey.currentState!
@@ -1360,7 +1557,7 @@ class _framingState extends State<framing> {
                                           ),
                                           onTap: () {
                                             AppHelper.hideKeyboard(context);
-                                            sendDataToBackend(); //100
+                                            createData(); //100
 
                                             // _registerFormKey.currentState!.save;
                                             // if (_registerFormKey.currentState!
@@ -1979,7 +2176,7 @@ class _framingState extends State<framing> {
                                               ),
                                               onTap: () {
                                                 AppHelper.hideKeyboard(context);
-                                                sendDataToBackend(); //200
+                                                createData(); //200
 
                                                 // _registerFormKey.currentState!.save;
                                                 // if (_registerFormKey.currentState!
@@ -2612,7 +2809,7 @@ class _framingState extends State<framing> {
                                                   onTap: () {
                                                     AppHelper.hideKeyboard(
                                                         context);
-                                                    sendDataToBackend(); //300
+                                                    createData(); //300
 
                                                     // _registerFormKey.currentState!.save;
                                                     // if (_registerFormKey.currentState!
@@ -3302,7 +3499,7 @@ class _framingState extends State<framing> {
                                                       onTap: () {
                                                         AppHelper.hideKeyboard(
                                                             context);
-                                                        sendDataToBackend(); //400
+                                                        createData(); //400
 
                                                         // _registerFormKey.currentState!.save;
                                                         // if (_registerFormKey.currentState!
@@ -3411,6 +3608,7 @@ class _framingState extends State<framing> {
                                   )
                                 : Container(),
           ),
+          floatingActionButton: _getFAB(),
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(
