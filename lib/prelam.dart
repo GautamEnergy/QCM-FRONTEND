@@ -916,7 +916,7 @@ class _PreCardState extends State<PreCard> {
           numberOfStringers4 =
               int.tryParse(TabberVerificationNumberofstringController.text) ??
                   0;
-          addTabberVerificationControllers(numberOfStringers4 * 5);
+          addTabberVerificationControllers(numberOfStringers4 * 2);
           TabberAvabilityofSpecificationController.text = resBody['response']
                       ['Tabber&StringerCheckPoint']
                   ['Avaibility os Specification & WI'] ??
@@ -1733,7 +1733,7 @@ class _PreCardState extends State<PreCard> {
           }
 
           sample4Controller = [];
-          for (int i = 0; i < numberOfStringers4 * 5; i++) {
+          for (int i = 0; i < numberOfStringers4 * 2; i++) {
             sample4Controller.add({
               "TabberVerificationofsilderingControllers${i + 1}":
                   TabberVerificationofsilderingControllers[i].text,
@@ -6112,7 +6112,7 @@ class _PreCardState extends State<PreCard> {
                                                               NeverScrollableScrollPhysics(),
                                                           itemCount:
                                                               numberOfStringers4 *
-                                                                  5,
+                                                                  2,
                                                           itemBuilder:
                                                               (context, index) {
                                                             int stringerIndex =
@@ -6496,7 +6496,7 @@ class _PreCardState extends State<PreCard> {
                                                                           0;
                                                                       i <
                                                                           numberOfStringers4 *
-                                                                              5;
+                                                                              2;
                                                                       i++) {
                                                                     sample4Controller
                                                                         .add({
@@ -12054,7 +12054,11 @@ class _PreCardState extends State<PreCard> {
                 InkWell(
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomePage()));
+                          builder: (BuildContext context) =>
+                              department == 'IPQC' &&
+                                      designation != 'Super Admin'
+                                  ? IpqcPage()
+                                  : WelcomePage()));
                     },
                     child: Image.asset(
                         home

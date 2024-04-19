@@ -3450,7 +3450,11 @@ class _BomCardState extends State<BomCard> {
                 InkWell(
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomePage()));
+                          builder: (BuildContext context) =>
+                              department == 'IPQC' &&
+                                      designation != 'Super Admin'
+                                  ? IpqcPage()
+                                  : WelcomePage()));
                     },
                     child: Image.asset(
                         home

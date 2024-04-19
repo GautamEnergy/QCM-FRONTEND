@@ -2759,7 +2759,7 @@ class _PostlamState extends State<Postlam> {
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Please Enter Observatiom 1 ",
+                                        hintText: "Please Enter Observation 1 ",
                                         counterText: '',
                                         fillColor:
                                             Color.fromARGB(255, 215, 243, 207),
@@ -2773,7 +2773,7 @@ class _PostlamState extends State<Postlam> {
                                         [
                                           RequiredValidator(
                                             errorText:
-                                                "Please Enter Observatiom 1",
+                                                "Please Enter Observation 1",
                                           ),
                                         ],
                                       ),
@@ -2789,7 +2789,7 @@ class _PostlamState extends State<Postlam> {
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Please Enter Observatiom 2 ",
+                                        hintText: "Please Enter Observation 2 ",
                                         counterText: '',
                                         fillColor:
                                             Color.fromARGB(255, 215, 243, 207),
@@ -2803,7 +2803,7 @@ class _PostlamState extends State<Postlam> {
                                         [
                                           RequiredValidator(
                                             errorText:
-                                                "Please Enter Observatiom 2 ",
+                                                "Please Enter Observation 2 ",
                                           ),
                                         ],
                                       ),
@@ -2819,7 +2819,7 @@ class _PostlamState extends State<Postlam> {
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Please Enter Observatiom 3 ",
+                                        hintText: "Please Enter Observation 3 ",
                                         counterText: '',
                                         fillColor:
                                             Color.fromARGB(255, 215, 243, 207),
@@ -2833,7 +2833,7 @@ class _PostlamState extends State<Postlam> {
                                         [
                                           RequiredValidator(
                                             errorText:
-                                                "Please Enter Observatiom 3",
+                                                "Please Enter Observation 3",
                                           ),
                                         ],
                                       ),
@@ -2849,7 +2849,7 @@ class _PostlamState extends State<Postlam> {
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Please Enter Observatiom 4 ",
+                                        hintText: "Please Enter Observation 4 ",
                                         counterText: '',
                                         fillColor:
                                             Color.fromARGB(255, 215, 243, 207),
@@ -2863,7 +2863,7 @@ class _PostlamState extends State<Postlam> {
                                         [
                                           RequiredValidator(
                                             errorText:
-                                                "Please Enter Observatiom 4",
+                                                "Please Enter Observation 4",
                                           ),
                                         ],
                                       ),
@@ -2879,7 +2879,7 @@ class _PostlamState extends State<Postlam> {
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Please Enter Observatiom 5 ",
+                                        hintText: "Please Enter Observation 5 ",
                                         counterText: '',
                                         fillColor:
                                             Color.fromARGB(255, 215, 243, 207),
@@ -2893,7 +2893,7 @@ class _PostlamState extends State<Postlam> {
                                         [
                                           RequiredValidator(
                                             errorText:
-                                                "Please Enter Observatiom 5",
+                                                "Please Enter Observation 5",
                                           ),
                                         ],
                                       ),
@@ -8120,6 +8120,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Please Enter Obsevation",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8247,6 +8253,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Please Enter Observation  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8376,6 +8388,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Please Enter Observation  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8513,6 +8531,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Time  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8551,6 +8575,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Room Temp",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8589,6 +8619,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Module Temp  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8627,6 +8663,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Module Id  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8674,6 +8716,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Time  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8712,6 +8760,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Room Temp",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8750,6 +8804,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Module Temp  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8788,6 +8848,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Module Id  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8835,6 +8901,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Time  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8873,6 +8945,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Room Temp",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8911,6 +8989,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Module Temp  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8949,6 +9033,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Module Id  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -9078,6 +9168,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "First Inspection  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -9116,6 +9212,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Second Inspection  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -9154,6 +9256,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Third Inspection  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -9283,6 +9391,12 @@ class _PostlamState extends State<Postlam> {
                                                                         "Please Enter Observation  ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -14258,9 +14372,6 @@ class _PostlamState extends State<Postlam> {
                                                                                                           createData();
                                                                                                         }
                                                                                                       }
-                                                                                                      setState(() {
-                                                                                                        setPage = 'backlabel';
-                                                                                                      });
                                                                                                     },
                                                                                                     label: "Submit",
                                                                                                     organization: '',
@@ -14389,7 +14500,11 @@ class _PostlamState extends State<Postlam> {
                 InkWell(
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomePage()));
+                          builder: (BuildContext context) =>
+                              department == 'IPQC' &&
+                                      designation != 'Super Admin'
+                                  ? IpqcPage()
+                                  : WelcomePage()));
                     },
                     child: Image.asset(
                         home

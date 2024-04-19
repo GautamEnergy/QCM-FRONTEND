@@ -245,10 +245,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'Frame Measurement', AppAssets.framemeasurement, () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => framing()),
-                      (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(
+                  //         builder: (BuildContext context) => framing()),
+                  //     (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
