@@ -2393,7 +2393,7 @@ class _JobcardState extends State<Jobcard> {
                     ],
                   ),
                 ),
-          floatingActionButton: _getFAB(),
+          floatingActionButton: (status == "Pending") ? null : _getFAB(),
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(

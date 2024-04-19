@@ -23,7 +23,7 @@ class _busbarState extends State<busbar> {
   TextEditingController dateController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
   TextEditingController LineController = TextEditingController();
-  TextEditingController sampleController = TextEditingController();
+  TextEditingController ribbonController = TextEditingController();
 
   List<TextEditingController> LoaderControllers = [];
   List<TextEditingController> VerificationControllers = [];
@@ -38,6 +38,7 @@ class _busbarState extends State<busbar> {
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
   String? selectedShift;
+  String? selectedtype;
   List Sample1Controllers = [];
   List Sample2Controllers = [];
 
@@ -75,7 +76,7 @@ class _busbarState extends State<busbar> {
       'date': dateController.text,
       'shift': shiftController.text,
       'line': LineController.text,
-      'Sample': sampleController.text,
+      'Sample': ribbonController.text,
     };
 
     print('$data');
@@ -331,8 +332,146 @@ class _busbarState extends State<busbar> {
                                 ),
                               ),
 
+                              //***************   Details   ********************
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                "Operator Name",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                // controller: LongAController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Enter the Operator Name",
+                                  counterText: '',
+                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please fill the required Operator Name",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              //***************   Bussing Stage  ********************
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Bussing Stage",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              DropdownButtonFormField<String>(
+                                value: selectedtype,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedtype = newValue!;
+                                    // bussingStageController.text = selectedtype!;
+                                  });
+                                },
+                                items: <String>[
+                                  'Auto',
+                                  'Manual'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Select type",
+                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                  counterText: '',
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please Select type";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              //***************   Ribbon Width  ********************
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                "Ribbon Width",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                // controller: LongAController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Enter the Ribbon Width",
+                                  counterText: '',
+                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please fill the required Ribbon Width",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              //***************   Busbar Width  ********************
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                "Busbar Width",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                // controller: LongAController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Enter the Busbar Width",
+                                  counterText: '',
+                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please fill the required Busbar Width",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
                               //***************   Ribbon  ********************
-                              SizedBox(height: 40),
+                              SizedBox(height: 25),
                               const SizedBox(
                                 height: 15,
                               ),
@@ -342,7 +481,7 @@ class _busbarState extends State<busbar> {
                               ),
                               SizedBox(height: 5),
                               TextFormField(
-                                controller: sampleController,
+                                controller: ribbonController,
                                 keyboardType: TextInputType.number,
                                 onChanged: (value) {
                                   setState(() {

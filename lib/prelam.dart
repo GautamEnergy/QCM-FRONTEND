@@ -1797,7 +1797,9 @@ class _PreCardState extends State<PreCard> {
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return IpqcPage();
+                return widget.id != "" && widget.id != null
+                    ? IpqcTestList()
+                    : IpqcPage();
               }));
             },
           ),
@@ -1847,8 +1849,7 @@ class _PreCardState extends State<PreCard> {
                                                     fontWeight:
                                                         FontWeight.w700)))),
                                     const Center(
-                                        child: Text(
-                                            "(Pre Lam prelam Checklist)",
+                                        child: Text("(Pre Lam Checklist)",
                                             style: TextStyle(
                                                 fontSize: 20,
                                                 color: AppColors.black,
@@ -1914,6 +1915,8 @@ class _PreCardState extends State<PreCard> {
                                           .copyWith(
                                         hintText: "Please Enter Date",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                         suffixIcon: Icon(Icons.calendar_month),
                                       ),
                                       style: AppStyles.textInputTextStyle,
@@ -1976,6 +1979,8 @@ class _PreCardState extends State<PreCard> {
                                           .copyWith(
                                         hintText: "Please Enter Shift",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2012,6 +2017,8 @@ class _PreCardState extends State<PreCard> {
                                           .textFieldInputDecoration
                                           .copyWith(
                                         hintText: "Please Enter Line.",
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2050,6 +2057,8 @@ class _PreCardState extends State<PreCard> {
                                           .copyWith(
                                         hintText: "Please Po Number",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2080,7 +2089,6 @@ class _PreCardState extends State<PreCard> {
                                                 fontWeight: FontWeight.w700))),
 
                                     // **********  step process ***********
-                                    // *** first      111
                                     const SizedBox(
                                       height: 15,
                                     ),
@@ -2129,6 +2137,8 @@ class _PreCardState extends State<PreCard> {
                                           .copyWith(
                                         hintText: "Enter the Glass Dimension ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2226,6 +2236,8 @@ class _PreCardState extends State<PreCard> {
                                           .copyWith(
                                         hintText: "Enter the Avaibility of WI ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2269,9 +2281,6 @@ class _PreCardState extends State<PreCard> {
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: true,
                                     ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
 
                                     // *** Remark
                                     const SizedBox(
@@ -2296,6 +2305,8 @@ class _PreCardState extends State<PreCard> {
                                           .copyWith(
                                         hintText: "Remark ",
                                         counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
                                       readOnly: status == 'Pending' &&
@@ -2431,8 +2442,7 @@ class _PreCardState extends State<PreCard> {
                                                         fontWeight:
                                                             FontWeight.w700)))),
                                         const Center(
-                                            child: Text(
-                                                "(Pre Lam prelam Checklist)",
+                                            child: Text("(Pre Lam  Checklist)",
                                                 style: TextStyle(
                                                     fontSize: 20,
                                                     color: AppColors.black,
@@ -2543,6 +2553,8 @@ class _PreCardState extends State<PreCard> {
                                             hintText:
                                                 "Enter the EVA Dimension ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -2639,6 +2651,8 @@ class _PreCardState extends State<PreCard> {
                                             hintText:
                                                 "Enter the Cutting  of Front EVA.. ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -2739,6 +2753,8 @@ class _PreCardState extends State<PreCard> {
                                             hintText:
                                                 "Enter the Position of front Eva.. ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -2836,6 +2852,8 @@ class _PreCardState extends State<PreCard> {
                                             hintText:
                                                 "Enter the Avability of Specification & WI ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -2884,9 +2902,6 @@ class _PreCardState extends State<PreCard> {
                                         ),
 
                                         // *** Remark
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
 
                                         Text(
                                           "Remark",
@@ -2906,6 +2921,8 @@ class _PreCardState extends State<PreCard> {
                                               .copyWith(
                                             hintText: "Remark ",
                                             counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
                                           readOnly: status == 'Pending' &&
@@ -3074,7 +3091,7 @@ class _PreCardState extends State<PreCard> {
                                                                     .w700)))),
                                             const Center(
                                                 child: Text(
-                                                    "(Pre Lam prelam Checklist)",
+                                                    "(Pre Lam Checklist)",
                                                     style: TextStyle(
                                                         fontSize: 20,
                                                         color: AppColors.black,
@@ -3190,6 +3207,8 @@ class _PreCardState extends State<PreCard> {
                                                 hintText:
                                                     "Enter the Shop floor Temperature condition",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3293,6 +3312,8 @@ class _PreCardState extends State<PreCard> {
                                                 hintText:
                                                     "Enter the Relative humadity.... ",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3343,9 +3364,6 @@ class _PreCardState extends State<PreCard> {
                                             ),
 
                                             // *** Remark
-                                            const SizedBox(
-                                              height: 15,
-                                            ),
 
                                             Text(
                                               "Remark",
@@ -3367,6 +3385,8 @@ class _PreCardState extends State<PreCard> {
                                                   .copyWith(
                                                 hintText: "Remark ",
                                                 counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
@@ -3551,7 +3571,7 @@ class _PreCardState extends State<PreCard> {
                                                                         .w700)))),
                                                 const Center(
                                                     child: Text(
-                                                        "(Pre Lam prelam Checklist)",
+                                                        "(Pre Lam Checklist)",
                                                         style: TextStyle(
                                                             fontSize: 20,
                                                             color:
@@ -3601,7 +3621,7 @@ class _PreCardState extends State<PreCard> {
                                                     ),
                                                   ],
                                                 ),
-// **************  Cell Cutting Machine *****************
+                                                // **************  Cell Cutting Machine *****************
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
@@ -3676,6 +3696,8 @@ class _PreCardState extends State<PreCard> {
                                                     hintText:
                                                         "Enter the Cell Size(Lengthxwidth)",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -3784,6 +3806,8 @@ class _PreCardState extends State<PreCard> {
                                                     hintText:
                                                         "Enter the Cell Menufacturer & Eff.  ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -3892,6 +3916,8 @@ class _PreCardState extends State<PreCard> {
                                                     hintText:
                                                         "Enter the Cell Color ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -3999,6 +4025,8 @@ class _PreCardState extends State<PreCard> {
                                                     hintText:
                                                         "Enter the Avability of specification & WI.",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -4052,9 +4080,6 @@ class _PreCardState extends State<PreCard> {
                                                 ),
 
                                                 // *** Remark
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
 
                                                 Text(
                                                   "Remark",
@@ -4077,6 +4102,8 @@ class _PreCardState extends State<PreCard> {
                                                       .copyWith(
                                                     hintText: "Remark ",
                                                     counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
@@ -4275,7 +4302,7 @@ class _PreCardState extends State<PreCard> {
                                                                             .w700)))),
                                                     const Center(
                                                         child: Text(
-                                                            "(Pre Lam prelam Checklist)",
+                                                            "(Pre Lam Checklist)",
                                                             style: TextStyle(
                                                                 fontSize: 20,
                                                                 color: AppColors
@@ -4401,6 +4428,9 @@ class _PreCardState extends State<PreCard> {
                                                         hintText:
                                                             "Enter the Cell Color",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -4510,6 +4540,9 @@ class _PreCardState extends State<PreCard> {
                                                         hintText:
                                                             "Enter the Cleanliness of cell Loading Area ",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -4619,6 +4652,9 @@ class _PreCardState extends State<PreCard> {
                                                         hintText:
                                                             "Enter the Cell loading as per WI ",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -4727,6 +4763,9 @@ class _PreCardState extends State<PreCard> {
                                                         hintText:
                                                             "Enter the Avability WI.",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -4836,6 +4875,9 @@ class _PreCardState extends State<PreCard> {
                                                         hintText:
                                                             "Enter the Verification of process parameter",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -4959,6 +5001,9 @@ class _PreCardState extends State<PreCard> {
                                                           .copyWith(
                                                         hintText:
                                                             "Enter the number of Stringers",
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -4968,6 +5013,14 @@ class _PreCardState extends State<PreCard> {
                                                                       "QC"
                                                               ? true
                                                               : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Enter the number of Stringers",
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                     SizedBox(height: 20),
                                                     ListView.builder(
@@ -5009,8 +5062,14 @@ class _PreCardState extends State<PreCard> {
                                                                   .textFieldInputDecoration
                                                                   .copyWith(
                                                                 hintText:
-                                                                    "Please Enter Remarks",
+                                                                    "Please Enter stringer data",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                                 contentPadding:
                                                                     EdgeInsets
                                                                         .all(
@@ -5030,7 +5089,7 @@ class _PreCardState extends State<PreCard> {
                                                                         null ||
                                                                     value
                                                                         .isEmpty) {
-                                                                  return 'Please Enter Remarks.';
+                                                                  return 'Please Enter correcr stringer data';
                                                                 }
                                                                 return null;
                                                               },
@@ -5104,9 +5163,6 @@ class _PreCardState extends State<PreCard> {
                                                           .textInputTextStyle,
                                                       readOnly: true,
                                                     ),
-                                                    const SizedBox(
-                                                      height: 15,
-                                                    ),
 
                                                     // *** Remark
                                                     const SizedBox(
@@ -5134,6 +5190,9 @@ class _PreCardState extends State<PreCard> {
                                                           .copyWith(
                                                         hintText: "Remark ",
                                                         counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
                                                       style: AppStyles
                                                           .textInputTextStyle,
@@ -5364,7 +5423,7 @@ class _PreCardState extends State<PreCard> {
                                                                             FontWeight.w700)))),
                                                         const Center(
                                                             child: Text(
-                                                                "(Pre Lam prelam Checklist)",
+                                                                "(Pre Lam Checklist)",
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         20,
@@ -5519,6 +5578,12 @@ class _PreCardState extends State<PreCard> {
                                                               .copyWith(
                                                             hintText:
                                                                 "Enter the number of Stringers",
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -5528,6 +5593,15 @@ class _PreCardState extends State<PreCard> {
                                                                       "QC"
                                                               ? true
                                                               : false,
+                                                          validator:
+                                                              MultiValidator(
+                                                            [
+                                                              RequiredValidator(
+                                                                errorText:
+                                                                    "Enter the number of Stringers",
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                         SizedBox(height: 20),
                                                         ListView.builder(
@@ -5571,22 +5645,34 @@ class _PreCardState extends State<PreCard> {
                                                                       .textFieldInputDecoration
                                                                       .copyWith(
                                                                     hintText:
-                                                                        "Please Enter Remarks",
+                                                                        "Please Enter stringer data",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                     contentPadding:
                                                                         EdgeInsets.all(
                                                                             10),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
+                                                                  readOnly: status ==
+                                                                              'Pending' &&
+                                                                          designation !=
+                                                                              "QC"
+                                                                      ? true
+                                                                      : false,
                                                                   validator:
                                                                       (value) {
                                                                     if (value ==
                                                                             null ||
                                                                         value
                                                                             .isEmpty) {
-                                                                      return 'Please Enter Remarks.';
+                                                                      return 'Please Enter correct stringer data .';
                                                                     }
                                                                     return null;
                                                                   },
@@ -5744,6 +5830,12 @@ class _PreCardState extends State<PreCard> {
                                                               .copyWith(
                                                             hintText:
                                                                 "Enter the number of Stringers",
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -5753,7 +5845,17 @@ class _PreCardState extends State<PreCard> {
                                                                       "QC"
                                                               ? true
                                                               : false,
+                                                          validator:
+                                                              MultiValidator(
+                                                            [
+                                                              RequiredValidator(
+                                                                errorText:
+                                                                    "Enter the number of Stringers",
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
+
                                                         SizedBox(height: 20),
                                                         ListView.builder(
                                                           shrinkWrap: true,
@@ -5799,6 +5901,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Please Enter Stringers",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                     contentPadding:
                                                                         EdgeInsets.all(
                                                                             10),
@@ -5964,7 +6072,7 @@ class _PreCardState extends State<PreCard> {
                                                                       0;
                                                               addTabberVerificationControllers(
                                                                   numberOfStringers4 *
-                                                                      5);
+                                                                      2);
                                                             });
                                                           },
                                                           decoration: AppStyles
@@ -5972,6 +6080,12 @@ class _PreCardState extends State<PreCard> {
                                                               .copyWith(
                                                             hintText:
                                                                 "Enter the number of Stringers",
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -5981,6 +6095,15 @@ class _PreCardState extends State<PreCard> {
                                                                       "QC"
                                                               ? true
                                                               : false,
+                                                          validator:
+                                                              MultiValidator(
+                                                            [
+                                                              RequiredValidator(
+                                                                errorText:
+                                                                    "Enter the number of Stringers",
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                         SizedBox(height: 20),
                                                         ListView.builder(
@@ -6027,6 +6150,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Please Enter Remarks",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                     contentPadding:
                                                                         EdgeInsets.all(
                                                                             10),
@@ -6183,6 +6312,12 @@ class _PreCardState extends State<PreCard> {
                                                             hintText:
                                                                 "Enter the Avability of specification & WI.",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
@@ -6235,9 +6370,6 @@ class _PreCardState extends State<PreCard> {
                                                               .textInputTextStyle,
                                                           readOnly: true,
                                                         ),
-                                                        const SizedBox(
-                                                          height: 15,
-                                                        ),
 
                                                         // *** Remark
                                                         const SizedBox(
@@ -6267,9 +6399,21 @@ class _PreCardState extends State<PreCard> {
                                                               .copyWith(
                                                             hintText: "Remark ",
                                                             counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
+                                                          readOnly: status ==
+                                                                      'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
                                                           validator:
                                                               MultiValidator(
                                                             [
@@ -6530,7 +6674,7 @@ class _PreCardState extends State<PreCard> {
                                                                                 FontWeight.w700)))),
                                                             const Center(
                                                                 child: Text(
-                                                                    "(Pre Lam prelam Checklist)",
+                                                                    "(Pre Lam Checklist)",
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             20,
@@ -6670,6 +6814,12 @@ class _PreCardState extends State<PreCard> {
                                                                 hintText:
                                                                     "Enter the Cell to cell gap.",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -6727,18 +6877,18 @@ class _PreCardState extends State<PreCard> {
                                                             ),
 
                                                             // *** Time
-                                                            const SizedBox(
-                                                              height: 15,
-                                                            ),
+                                                            // const SizedBox(
+                                                            //   height: 15,
+                                                            // ),
 
-                                                            Text(
-                                                              "Time",
-                                                              style: AppStyles
-                                                                  .textfieldCaptionTextStyle,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 5,
-                                                            ),
+                                                            // Text(
+                                                            //   "Time",
+                                                            //   style: AppStyles
+                                                            //       .textfieldCaptionTextStyle,
+                                                            // ),
+                                                            // SizedBox(
+                                                            //   height: 5,
+                                                            // ),
 
                                                             // TextFormField(
                                                             //   controller:
@@ -6833,6 +6983,12 @@ class _PreCardState extends State<PreCard> {
                                                                 hintText:
                                                                     "Enter the String to String Gap",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -6951,6 +7107,12 @@ class _PreCardState extends State<PreCard> {
                                                                 hintText:
                                                                     "Enter the Cell edge to glass edge(Top, bottom & sides)",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -7003,9 +7165,6 @@ class _PreCardState extends State<PreCard> {
                                                                   .textInputTextStyle,
                                                               readOnly: true,
                                                             ),
-                                                            const SizedBox(
-                                                              height: 15,
-                                                            ),
 
                                                             // *** Remark
                                                             const SizedBox(
@@ -7036,6 +7195,12 @@ class _PreCardState extends State<PreCard> {
                                                                 hintText:
                                                                     "Remark ",
                                                                 counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
                                                               ),
                                                               style: AppStyles
                                                                   .textInputTextStyle,
@@ -7262,7 +7427,7 @@ class _PreCardState extends State<PreCard> {
                                                                                 fontWeight: FontWeight.w700)))),
                                                                 const Center(
                                                                     child: Text(
-                                                                        "(Pre Lam prelam Checklist)",
+                                                                        "(Pre Lam Checklist)",
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                                 20,
@@ -7401,6 +7566,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the Soldering Peel strength between Ribbon to bushbar interconnector",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -7528,6 +7699,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the Terminal busbar to edge of cell",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -7651,6 +7828,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the soldering quality of Ribbon to busbar",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -7774,6 +7957,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the Clearance between RFID&Logo patch to cell in module",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -7897,6 +8086,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the Position verification of RFID& Logo Patch on Module",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8020,6 +8215,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8143,6 +8344,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the  Quality of auto taping",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8243,7 +8450,7 @@ class _PreCardState extends State<PreCard> {
                                                                   height: 20,
                                                                 ),
                                                                 Text(
-                                                                  "Avaibility of specification & WI",
+                                                                  "Avaibility of specificastion & WI",
                                                                   style: AppStyles
                                                                       .textfieldCaptionTextStyle,
                                                                 ),
@@ -8266,6 +8473,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Enter the Avaibility of specification & WI",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8320,9 +8533,6 @@ class _PreCardState extends State<PreCard> {
                                                                   readOnly:
                                                                       true,
                                                                 ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
 
                                                                 // *** Remark
                                                                 const SizedBox(
@@ -8354,6 +8564,12 @@ class _PreCardState extends State<PreCard> {
                                                                         "Remark ",
                                                                     counterText:
                                                                         '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
@@ -8706,6 +8922,11 @@ class _PreCardState extends State<PreCard> {
                                                                             "Enter the  Rear EVA dimension & sift cutting width(mm)",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -8837,6 +9058,11 @@ class _PreCardState extends State<PreCard> {
                                                                             "Enter the Back-sheet dimension& slit cutting diameter",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -8963,6 +9189,11 @@ class _PreCardState extends State<PreCard> {
                                                                             "Enter the cutting Edge of Rear EVA & Backsheet on Glass",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -9089,6 +9320,11 @@ class _PreCardState extends State<PreCard> {
                                                                             "Enter the Position of Back EVA & Backsheet on Glass",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -9212,12 +9448,21 @@ class _PreCardState extends State<PreCard> {
                                                                           .textFieldInputDecoration
                                                                           .copyWith(
                                                                         hintText:
-                                                                            "Enter the Avaibility of specification&wI.",
+                                                                            "Enter the Avaibility of specification & wI.",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
                                                                       validator:
                                                                           MultiValidator(
                                                                         [
@@ -9309,6 +9554,11 @@ class _PreCardState extends State<PreCard> {
                                                                             "Remark ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -9543,7 +9793,7 @@ class _PreCardState extends State<PreCard> {
                                                                           ],
                                                                         ),
 
-// **************  "Pre Lamination El & Visual inspection  *****************
+                                                                        // **************  "Pre Lamination El & Visual inspection  *****************
                                                                         const SizedBox(
                                                                           height:
                                                                               15,
@@ -9633,9 +9883,25 @@ class _PreCardState extends State<PreCard> {
                                                                               .copyWith(
                                                                             hintText:
                                                                                 "Enter the number of Stringers",
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
+                                                                          readOnly: status == 'Pending' && designation != "QC"
+                                                                              ? true
+                                                                              : false,
+                                                                          validator:
+                                                                              MultiValidator(
+                                                                            [
+                                                                              RequiredValidator(
+                                                                                errorText: "Enter the number of Stringers",
+                                                                              ),
+                                                                            ],
+                                                                          ),
                                                                         ),
                                                                         SizedBox(
                                                                             height:
@@ -9668,15 +9934,16 @@ class _PreCardState extends State<PreCard> {
                                                                                 TextFormField(
                                                                                   controller: PreLaminationEIinspectionrControllers[index],
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Remarks",
+                                                                                    hintText: "Please Enter stringer data",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                     contentPadding: EdgeInsets.all(10),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                   validator: (value) {
                                                                                     if (value == null || value.isEmpty) {
-                                                                                      return 'Please Enter Remarks.';
+                                                                                      return 'Please Enter correct string data.';
                                                                                     }
                                                                                     return null;
                                                                                   },
@@ -9840,9 +10107,25 @@ class _PreCardState extends State<PreCard> {
                                                                               .copyWith(
                                                                             hintText:
                                                                                 "Enter the number of Stringers",
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
+                                                                          readOnly: status == 'Pending' && designation != "QC"
+                                                                              ? true
+                                                                              : false,
+                                                                          validator:
+                                                                              MultiValidator(
+                                                                            [
+                                                                              RequiredValidator(
+                                                                                errorText: "Enter the number of Stringers",
+                                                                              ),
+                                                                            ],
+                                                                          ),
                                                                         ),
                                                                         SizedBox(
                                                                             height:
@@ -9877,13 +10160,14 @@ class _PreCardState extends State<PreCard> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Please Enter stringer",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                     contentPadding: EdgeInsets.all(10),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
                                                                                   validator: (value) {
                                                                                     if (value == null || value.isEmpty) {
-                                                                                      return 'Please Enter Stringer.';
+                                                                                      return 'Please Enter correct Stringer.';
                                                                                     }
                                                                                     return null;
                                                                                   },
@@ -10033,6 +10317,11 @@ class _PreCardState extends State<PreCard> {
                                                                                 "Enter the Avaibility of acceptance Criteria & wI.",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -10083,10 +10372,6 @@ class _PreCardState extends State<PreCard> {
                                                                           readOnly:
                                                                               true,
                                                                         ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
 
                                                                         //  *** Remark
                                                                         const SizedBox(
@@ -10118,6 +10403,11 @@ class _PreCardState extends State<PreCard> {
                                                                                 "Remark ",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -10242,7 +10532,7 @@ class _PreCardState extends State<PreCard> {
                                                                                 InkWell(
                                                                               onTap: () {
                                                                                 setState(() {
-                                                                                  // setPage = 'glassSide';
+                                                                                  setPage = 'EVA/Backsheet Cutting';
                                                                                 });
                                                                                 // Navigator.of(context).pushReplacement(
                                                                                 //     MaterialPageRoute(
@@ -10415,6 +10705,7 @@ class _PreCardState extends State<PreCard> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Enter the Avaibility of Work instruction(WI)",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -10494,6 +10785,7 @@ class _PreCardState extends State<PreCard> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Enter the Cleaning of Rework station/soldering iron sponge",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -10528,9 +10820,6 @@ class _PreCardState extends State<PreCard> {
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: true,
                                                                             ),
-                                                                            const SizedBox(
-                                                                              height: 15,
-                                                                            ),
 
                                                                             // *** Remark
                                                                             const SizedBox(
@@ -10552,6 +10841,7 @@ class _PreCardState extends State<PreCard> {
                                                                               decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                 hintText: "Remark ",
                                                                                 counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                               ),
                                                                               style: AppStyles.textInputTextStyle,
                                                                               readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -10607,7 +10897,7 @@ class _PreCardState extends State<PreCard> {
                                                                                 child: InkWell(
                                                                                   onTap: () {
                                                                                     setState(() {
-                                                                                      // setPage = 'glassSide';
+                                                                                      setPage = 'Pre Lamination El & Visual inspection';
                                                                                     });
                                                                                     // Navigator.of(context).pushReplacement(
                                                                                     //     MaterialPageRoute(
@@ -10727,7 +11017,7 @@ class _PreCardState extends State<PreCard> {
                                                                                   ],
                                                                                 ),
 
-// ************** Module Rework Station *****************
+                                                                                // ************** Module Rework Station *****************
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
@@ -10772,6 +11062,7 @@ class _PreCardState extends State<PreCard> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Enter the Avaibility of Work instruction(WI)",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -10851,6 +11142,7 @@ class _PreCardState extends State<PreCard> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Enter the Method of Rework",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -10930,6 +11222,7 @@ class _PreCardState extends State<PreCard> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Enter the Handling of Modules",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11009,6 +11302,7 @@ class _PreCardState extends State<PreCard> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Enter the Cleaning of Rework station/soldering iron sponge",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11048,9 +11342,6 @@ class _PreCardState extends State<PreCard> {
                                                                                 ),
 
                                                                                 // *** Remark
-                                                                                const SizedBox(
-                                                                                  height: 15,
-                                                                                ),
 
                                                                                 Text(
                                                                                   "Remark",
@@ -11067,6 +11358,7 @@ class _PreCardState extends State<PreCard> {
                                                                                   decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                     hintText: "Remark ",
                                                                                     counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                   ),
                                                                                   style: AppStyles.textInputTextStyle,
                                                                                   readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11115,14 +11407,14 @@ class _PreCardState extends State<PreCard> {
                                                                                   height: 10,
                                                                                 ),
                                                                                 // Back button
-                                                                                // Back button
+
                                                                                 Center(
                                                                                   child: Padding(
                                                                                     padding: const EdgeInsets.all(8.0),
                                                                                     child: InkWell(
                                                                                       onTap: () {
                                                                                         setState(() {
-                                                                                          // setPage = 'glassSide';
+                                                                                          setPage = 'String Rework Station';
                                                                                         });
                                                                                         // Navigator.of(context).pushReplacement(
                                                                                         //     MaterialPageRoute(
@@ -11237,7 +11529,7 @@ class _PreCardState extends State<PreCard> {
                                                                                       ],
                                                                                     ),
 
-// ************** Laminator  *****************
+                                                                                    // ************** Laminator  *****************
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
@@ -11282,6 +11574,7 @@ class _PreCardState extends State<PreCard> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Enter the Monitoring of Laminator Process Parameter",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11361,6 +11654,7 @@ class _PreCardState extends State<PreCard> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Enter the Adhesive on backsheet of the module",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11440,6 +11734,7 @@ class _PreCardState extends State<PreCard> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Enter the Peel Adhesive Test",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11519,6 +11814,7 @@ class _PreCardState extends State<PreCard> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Enter the Gel Content Test",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11558,9 +11854,6 @@ class _PreCardState extends State<PreCard> {
                                                                                     ),
 
                                                                                     // *** Remark
-                                                                                    const SizedBox(
-                                                                                      height: 15,
-                                                                                    ),
 
                                                                                     Text(
                                                                                       "Remark",
@@ -11577,6 +11870,7 @@ class _PreCardState extends State<PreCard> {
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                         hintText: "Remark ",
                                                                                         counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
                                                                                       style: AppStyles.textInputTextStyle,
                                                                                       readOnly: status == 'Pending' && designation != "QC" ? true : false,
@@ -11694,7 +11988,7 @@ class _PreCardState extends State<PreCard> {
                                                                                         child: InkWell(
                                                                                           onTap: () {
                                                                                             setState(() {
-                                                                                              // setPage = 'glassSide';
+                                                                                              setPage = 'Module Rework Station';
                                                                                             });
                                                                                             // Navigator.of(context).pushReplacement(
                                                                                             //     MaterialPageRoute(
@@ -11744,7 +12038,7 @@ class _PreCardState extends State<PreCard> {
                                                                         )
                                                                       : Container(),
                 ),
-          floatingActionButton: _getFAB(),
+          floatingActionButton: (status == "Pending") ? null : _getFAB(),
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(

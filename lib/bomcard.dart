@@ -3432,7 +3432,7 @@ class _BomCardState extends State<BomCard> {
                     ],
                   ),
                 ),
-          floatingActionButton: _getFAB(),
+          floatingActionButton: (status == "Pending") ? null : _getFAB(),
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(
