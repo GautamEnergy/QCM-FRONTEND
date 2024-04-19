@@ -1198,7 +1198,7 @@ class _PreCardState extends State<PreCard> {
           _isLoading = false;
         });
 
-        Toast.show("Job Card Test Completed.",
+        Toast.show("PreLam Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
