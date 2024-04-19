@@ -1219,10 +1219,9 @@ class _PreCardState extends State<PreCard> {
     print("Kya aayaa...?????");
     // print(PreLaminationEIinspectionrControllers);
     print('Problem are there');
-    print(sample1Controller);
+    print(sample6Controller);
     print(widget.id);
 
-    // print(sample1Controller)
     print(prelamId);
     var data = [
       {
@@ -1709,6 +1708,53 @@ class _PreCardState extends State<PreCard> {
       padding: const EdgeInsets.only(bottom: 70),
       child: FloatingActionButton(
         onPressed: () {
+          sample1Controller = [];
+          for (int i = 0; i < numberOfStringers * 5; i++) {
+            sample1Controller.add({
+              "cellLoaderVerificationControllers${i + 1}":
+                  cellLoaderVerificationControllers[i].text,
+            });
+          }
+
+          sample2Controller = [];
+          for (int i = 0; i < numberOfStringers1 * 5; i++) {
+            sample2Controller.add({
+              "TabberVisualStringerControllers${i + 1}":
+                  TabberVisualStringerControllers[i].text,
+            });
+          }
+
+          sample3Controller = [];
+          for (int i = 0; i < numberOfStringers2 * 5; i++) {
+            sample3Controller.add({
+              "TabberEIimageofStringerControllers${i + 1}":
+                  TabberEIimageofStringerControllers[i].text,
+            });
+          }
+
+          sample4Controller = [];
+          for (int i = 0; i < numberOfStringers4 * 5; i++) {
+            sample4Controller.add({
+              "TabberVerificationofsilderingControllers${i + 1}":
+                  TabberVerificationofsilderingControllers[i].text,
+            });
+          }
+
+          sample5Controller = [];
+          for (int i = 0; i < numberOfStringers5 * 5; i++) {
+            sample5Controller.add({
+              "PreLaminationEIinspectionrControllers${i + 1}":
+                  PreLaminationEIinspectionrControllers[i].text,
+            });
+          }
+
+          sample6Controller = [];
+          for (int i = 0; i < numberOfStringers6 * 5; i++) {
+            sample6Controller.add({
+              "PreLaminationVisualinspectionrControllers${i + 1}":
+                  PreLaminationVisualinspectionrControllers[i].text,
+            });
+          }
           if (status != 'Pending') {
             setState(() {
               sendStatus = 'Inprogress';
@@ -5167,9 +5213,6 @@ class _PreCardState extends State<PreCard> {
                                                               // if (_cellLoadingFormKey
                                                               //     .currentState!
                                                               //     .validate()) {}
-
-                                                              print(
-                                                                  sample1Controller);
 
                                                               setState(() {
                                                                 setPage =
