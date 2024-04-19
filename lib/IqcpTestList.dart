@@ -992,8 +992,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                         ),
                       ],
                     ),
-                  // if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
-                  if (_hasBeenPressed1 == 'Inprogress')
+                  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                    //  if (_hasBeenPressed1 == 'Inprogress')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

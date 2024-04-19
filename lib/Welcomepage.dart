@@ -195,10 +195,10 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                   Expanded(
                       child: tabDashboard('FQC', AppAssets.fqc, () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => FqcPage()),
-                        (Route<dynamic> route) => false);
+                    // Navigator.of(context).pushAndRemoveUntil(
+                    //     MaterialPageRoute(
+                    //         builder: (BuildContext context) => FqcPage()),
+                    //     (Route<dynamic> route) => false);
                   })),
                   const SizedBox(
                     width: 10,

@@ -786,7 +786,9 @@ class _RibbonState extends State<Ribbon> {
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return IqcpPage();
+                return widget.id != "" && widget.id != null
+                    ? IqcpTestList()
+                    : IqcpPage();
               }));
             },
           ),

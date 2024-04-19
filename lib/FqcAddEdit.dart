@@ -1119,12 +1119,13 @@ class _FqcAddEditState extends State<FqcAddEdit> {
   }
 
   Future createData() async {
+    print(FqcId);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
 
-    final url = (site! + "");
+    final url = (site! + "IQCSolarCell/AddFQC");
 
     var params = {
       "Product": "PV Module",
@@ -1559,10 +1560,13 @@ class _FqcAddEditState extends State<FqcAddEdit> {
       },
     );
 
+    print("resssssssssssssssss...........?????");
+    print(response.statusCode);
+    print(json.decode(response.body));
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
-        FqcId = objData['SolarDetailID'];
+        FqcId = objData['FQCDetailId'];
         _isLoading = false;
       });
 
@@ -1592,6 +1596,12 @@ class _FqcAddEditState extends State<FqcAddEdit> {
       padding: const EdgeInsets.only(bottom: 70),
       child: FloatingActionButton(
         onPressed: () {
+          if (status != 'Pending') {
+            setState(() {
+              sendStatus = 'Inprogress';
+            });
+            createData();
+          }
           createData();
         },
         child: ClipOval(
