@@ -5018,7 +5018,7 @@ class _PreCardState extends State<PreCard> {
                                                         ],
                                                       ),
                                                     ),
-                                                    SizedBox(height: 20),
+                                                    // SizedBox(height: 20),
                                                     ListView.builder(
                                                       shrinkWrap: true,
                                                       physics:
@@ -5094,40 +5094,6 @@ class _PreCardState extends State<PreCard> {
                                                         );
                                                       },
                                                     ),
-
-                                                    const SizedBox(
-                                                      height: 20,
-                                                    ),
-
-                                                    // TextFormField(
-                                                    //   controller:
-                                                    //       LoadstrinGapController,
-                                                    //   keyboardType:
-                                                    //       TextInputType.text,
-                                                    //   textInputAction:
-                                                    //       TextInputAction.next,
-                                                    //   decoration: AppStyles
-                                                    //       .textFieldInputDecoration
-                                                    //       .copyWith(
-                                                    //     hintText:
-                                                    //         "Enter the String length & cell to cell gap",
-                                                    //     counterText: '',
-                                                    //   ),
-                                                    //   style: AppStyles
-                                                    //       .textInputTextStyle,
-                                                    //   readOnly: status == 'Pending' &&
-                                                    //           designation != "QC"
-                                                    //       ? true
-                                                    //       : false,
-                                                    //   validator: MultiValidator(
-                                                    //     [
-                                                    //       RequiredValidator(
-                                                    //         errorText:
-                                                    //             "Please Enter Correct String length & cell to cell gap",
-                                                    //       ),
-                                                    //     ],
-                                                    //   ),
-                                                    // ),
 
                                                     const SizedBox(
                                                       height: 15,
@@ -5600,7 +5566,7 @@ class _PreCardState extends State<PreCard> {
                                                             ],
                                                           ),
                                                         ),
-                                                        SizedBox(height: 20),
+                                                        // SizedBox(height: 20),
                                                         ListView.builder(
                                                           shrinkWrap: true,
                                                           physics:
@@ -5678,43 +5644,8 @@ class _PreCardState extends State<PreCard> {
                                                             );
                                                           },
                                                         ),
-
-                                                        // SizedBox(
-                                                        //   height: 5,
-                                                        // ),
-                                                        // TextFormField(
-                                                        //   controller:
-                                                        //       TabberVisualCheckController,
-                                                        //   keyboardType:
-                                                        //       TextInputType.text,
-                                                        //   textInputAction:
-                                                        //       TextInputAction.next,
-                                                        //   decoration: AppStyles
-                                                        //       .textFieldInputDecoration
-                                                        //       .copyWith(
-                                                        //     hintText:
-                                                        //         "Enter the Visual Check after stringer",
-                                                        //     counterText: '',
-                                                        //   ),
-                                                        //   style: AppStyles
-                                                        //       .textInputTextStyle,
-                                                        //   readOnly: status ==
-                                                        //               'Pending' &&
-                                                        //           designation != "QC"
-                                                        //       ? true
-                                                        //       : false,
-                                                        //   validator: MultiValidator(
-                                                        //     [
-                                                        //       RequiredValidator(
-                                                        //         errorText:
-                                                        //             "Please Enter Correct Visual Check after stringer",
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
-
                                                         const SizedBox(
-                                                          height: 15,
+                                                          height: 2,
                                                         ),
 
                                                         Text(
@@ -5854,7 +5785,7 @@ class _PreCardState extends State<PreCard> {
                                                           ),
                                                         ),
 
-                                                        SizedBox(height: 20),
+                                                        // SizedBox(height: 20),
                                                         ListView.builder(
                                                           shrinkWrap: true,
                                                           physics:
@@ -5934,42 +5865,7 @@ class _PreCardState extends State<PreCard> {
                                                         ),
 
                                                         const SizedBox(
-                                                          height: 20,
-                                                        ),
-
-                                                        // TextFormField(
-                                                        //   controller:
-                                                        //       TabberEIimageCheckController,
-                                                        //   keyboardType:
-                                                        //       TextInputType.text,
-                                                        //   textInputAction:
-                                                        //       TextInputAction.next,
-                                                        //   decoration: AppStyles
-                                                        //       .textFieldInputDecoration
-                                                        //       .copyWith(
-                                                        //     hintText:
-                                                        //         "Enter the EI image of String",
-                                                        //     counterText: '',
-                                                        //   ),
-                                                        //   style: AppStyles
-                                                        //       .textInputTextStyle,
-                                                        //   readOnly: status ==
-                                                        //               'Pending' &&
-                                                        //           designation != "QC"
-                                                        //       ? true
-                                                        //       : false,
-                                                        //   validator: MultiValidator(
-                                                        //     [
-                                                        //       RequiredValidator(
-                                                        //         errorText:
-                                                        //             "Please Enter Correct EI image of String",
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
-
-                                                        const SizedBox(
-                                                          height: 15,
+                                                          height: 2,
                                                         ),
 
                                                         Text(
@@ -6104,7 +6000,7 @@ class _PreCardState extends State<PreCard> {
                                                             ],
                                                           ),
                                                         ),
-                                                        SizedBox(height: 20),
+                                                        // SizedBox(height: 20),
                                                         ListView.builder(
                                                           shrinkWrap: true,
                                                           physics:
@@ -6184,39 +6080,8 @@ class _PreCardState extends State<PreCard> {
                                                         ),
 
                                                         const SizedBox(
-                                                          height: 20,
+                                                          height: 2,
                                                         ),
-
-                                                        // TextFormField(
-                                                        //   controller:
-                                                        //       TabberVerificationCheckController,
-                                                        //   keyboardType:
-                                                        //       TextInputType.text,
-                                                        //   textInputAction:
-                                                        //       TextInputAction.next,
-                                                        //   decoration: AppStyles
-                                                        //       .textFieldInputDecoration
-                                                        //       .copyWith(
-                                                        //     hintText:
-                                                        //         "Enter the Verification of sildering peel strength",
-                                                        //     counterText: '',
-                                                        //   ),
-                                                        //   style: AppStyles
-                                                        //       .textInputTextStyle,
-                                                        //   readOnly: status ==
-                                                        //               'Pending' &&
-                                                        //           designation != "QC"
-                                                        //       ? true
-                                                        //       : false,
-                                                        //   validator: MultiValidator(
-                                                        //     [
-                                                        //       RequiredValidator(
-                                                        //         errorText:
-                                                        //             "Please Enter Correct Verification of sildering peel strength",
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
 
                                                         Text(
                                                           "Acceptance Criteria",
@@ -9864,7 +9729,7 @@ class _PreCardState extends State<PreCard> {
                                                                         ),
                                                                         SizedBox(
                                                                             height:
-                                                                                5),
+                                                                                2),
                                                                         TextFormField(
                                                                           controller:
                                                                               PreLaminationEInumberOfStringersController,
@@ -9904,9 +9769,9 @@ class _PreCardState extends State<PreCard> {
                                                                             ],
                                                                           ),
                                                                         ),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                20),
+                                                                        // SizedBox(
+                                                                        //     height:
+                                                                        //         20),
                                                                         ListView
                                                                             .builder(
                                                                           shrinkWrap:
@@ -9956,38 +9821,8 @@ class _PreCardState extends State<PreCard> {
 
                                                                         const SizedBox(
                                                                           height:
-                                                                              20,
+                                                                              2,
                                                                         ),
-
-                                                                        // TextFormField(
-                                                                        //   controller:
-                                                                        //       PreLaminationEIinspectionController,
-                                                                        //   keyboardType:
-                                                                        //       TextInputType
-                                                                        //           .text,
-                                                                        //   textInputAction:
-                                                                        //       TextInputAction
-                                                                        //           .next,
-                                                                        //   decoration: AppStyles
-                                                                        //       .textFieldInputDecoration
-                                                                        //       .copyWith(
-                                                                        //     hintText:
-                                                                        //         "Enter the EI Inspection",
-                                                                        //     counterText:
-                                                                        //         '',
-                                                                        //   ),
-                                                                        //   style: AppStyles
-                                                                        //       .textInputTextStyle,
-                                                                        //   validator:
-                                                                        //       MultiValidator(
-                                                                        //     [
-                                                                        //       RequiredValidator(
-                                                                        //         errorText:
-                                                                        //             "Please Enter Correct EI Inspection",
-                                                                        //       ),
-                                                                        //     ],
-                                                                        //   ),
-                                                                        // ),
 
                                                                         Text(
                                                                           "Acceptance Criteria",
@@ -10122,9 +9957,9 @@ class _PreCardState extends State<PreCard> {
                                                                             ],
                                                                           ),
                                                                         ),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                20),
+                                                                        // SizedBox(
+                                                                        //     height:
+                                                                        //         20),
                                                                         ListView
                                                                             .builder(
                                                                           shrinkWrap:
@@ -10174,38 +10009,8 @@ class _PreCardState extends State<PreCard> {
 
                                                                         const SizedBox(
                                                                           height:
-                                                                              20,
+                                                                              2,
                                                                         ),
-
-                                                                        // TextFormField(
-                                                                        //   controller:
-                                                                        //       PreLaminationVisualinspectionController,
-                                                                        //   keyboardType:
-                                                                        //       TextInputType
-                                                                        //           .text,
-                                                                        //   textInputAction:
-                                                                        //       TextInputAction
-                                                                        //           .next,
-                                                                        //   decoration: AppStyles
-                                                                        //       .textFieldInputDecoration
-                                                                        //       .copyWith(
-                                                                        //     hintText:
-                                                                        //         "Enter the Visual Inspection",
-                                                                        //     counterText:
-                                                                        //         '',
-                                                                        //   ),
-                                                                        //   style: AppStyles
-                                                                        //       .textInputTextStyle,
-                                                                        //   validator:
-                                                                        //       MultiValidator(
-                                                                        //     [
-                                                                        //       RequiredValidator(
-                                                                        //         errorText:
-                                                                        //             "Please Enter Correct Visual Inspection",
-                                                                        //       ),
-                                                                        //     ],
-                                                                        //   ),
-                                                                        // ),
 
                                                                         Text(
                                                                           "Acceptance Criteria",
