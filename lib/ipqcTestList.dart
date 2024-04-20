@@ -258,9 +258,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        department == 'IQCP' &&
-                                                designation == 'QC'
-                                            ? IqcpPage()
+                                        designation != 'Super Admin'
+                                            ? IpqcPage()
                                             : WelcomePage()));
                           },
                           child: Image.asset(

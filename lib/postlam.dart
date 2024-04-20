@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -14600,10 +14601,10 @@ class _PostlamState extends State<Postlam> {
                   width: 8,
                 ),
                 InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => PublicDrawer()));
-                    // },
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => PublicDrawer()));
+                    },
                     child: Image.asset(
                         menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                         height: 25)),

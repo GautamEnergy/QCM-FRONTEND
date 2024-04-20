@@ -2,6 +2,7 @@ import 'dart:convert';
 //import 'dart:html';
 import 'dart:io';
 
+import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -147,7 +148,7 @@ class _BomCardState extends State<BomCard> {
       department = '';
   String invoiceDate = '';
   late String dateOfQualityCheck;
-  String date = '';
+
   List<int>? referencePdfFileBytes;
   late String sendStatus;
   bool? isCycleTimeTrue;
@@ -209,8 +210,9 @@ class _BomCardState extends State<BomCard> {
       setState(() {
         if (resBody != '') {
           print(resBody);
+          print("LAllallallallalallalal");
           print(resBody['data']['Date'] ?? '');
-          print(resBody['data']['SolarCell Supplier'] ?? '');
+          print(resBody['data']['PONo'] ?? '');
           // print(resBody['response']['Visual Inspection & Laminator Description']
           //     ["Cycle_Time"]);
 
@@ -219,9 +221,10 @@ class _BomCardState extends State<BomCard> {
           // dateController.text = resBody['data'][0]['Date'] ?? '';
           status = resBody['data']['Status'] ?? '';
           bomCardDate = resBody['data']['Date'] ?? '';
-          dateController.text = DateFormat("EEE MMM dd, yyyy")
-                  .format(DateTime.parse(resBody['data']['Date'].toString())) ??
-              '';
+          dateController.text = resBody['data']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
           shiftController.text = resBody['data']['Shift'] ?? '';
           LineController.text = resBody['data']['Line'] ?? '';
           poController.text = resBody['data']['PONo'] ?? '';
@@ -953,56 +956,52 @@ class _BomCardState extends State<BomCard> {
                                 style: AppStyles.textfieldCaptionTextStyle,
                               ),
                               const SizedBox(
-                                height: 5,
+                                height: 4,
                               ),
                               TextFormField(
-                                controller: dateController,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Date",
-                                  counterText: '',
-                                  suffixIcon: const Icon(Icons.calendar_month),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly:
-                                    status == 'Pending' && designation != "QC",
-                                onTap: () async {
-                                  if (status != 'Pending') {
-                                    DateTime date = DateTime(2021);
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-                                    date = (await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime.now(),
-                                    ))!;
-                                    dateController.text =
-                                        DateFormat("EEE MMM dd, yyyy").format(
-                                      DateTime.parse(date.toString()),
-                                    );
-                                    setState(() {
-                                      bomCardDate =
-                                          DateFormat("yyyy-MM-dd").format(
-                                        DateTime.parse(date.toString()),
-                                      );
-                                    });
-                                  }
-                                },
-                                validator: MultiValidator(
-                                  [
+                                  controller: dateController,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: AppStyles.textFieldInputDecoration
+                                      .copyWith(
+                                          hintText: "Please Enter Date",
+                                          counterText: '',
+                                          suffixIcon: Image.asset(
+                                            AppAssets.icCalenderBlue,
+                                            color: AppColors.primaryColor,
+                                          )),
+                                  style: AppStyles.textInputTextStyle,
+                                  readOnly:
+                                      status == 'Pending' && designation != "QC"
+                                          ? true
+                                          : false,
+                                  onTap: () async {
+                                    if (status != 'Pending') {
+                                      DateTime date = DateTime(2021);
+                                      FocusScope.of(context)
+                                          .requestFocus(new FocusNode());
+                                      date = (await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()))!;
+                                      dateController.text =
+                                          DateFormat("EEE MMM dd, yyyy").format(
+                                              DateTime.parse(date.toString()));
+                                      setState(() {
+                                        bomCardDate = DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                date.toString()));
+                                      });
+                                    }
+                                  },
+                                  validator: MultiValidator([
                                     RequiredValidator(
-                                      errorText: "Please Enter Date",
-                                    ),
-                                  ],
-                                ),
-                              ),
-
+                                        errorText: "Please Enter Date")
+                                  ])),
                               const SizedBox(
                                 height: 15,
                               ),
-
                               // ************************************* Shift *********************
                               Text(
                                 "Shift",
@@ -3491,10 +3490,10 @@ class _BomCardState extends State<BomCard> {
                   width: 8,
                 ),
                 InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => PublicDrawer()));
-                    // },
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => PublicDrawer()));
+                    },
                     child: Image.asset(
                         menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                         height: 25)),
