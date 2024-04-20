@@ -2099,6 +2099,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -2845,6 +2846,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
+                                                          maxLength: 2,
                                                           readOnly: status ==
                                                                   'Pending'
                                                               ? true
@@ -3638,6 +3640,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
+                                                                  maxLength: 2,
                                                                   readOnly: status ==
                                                                           'Pending'
                                                                       ? true
@@ -4395,6 +4398,8 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,
@@ -4963,6 +4968,8 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                                   ),
                                                                                   style: AppStyles
                                                                                       .textInputTextStyle,
+                                                                                  maxLength:
+                                                                                      2,
                                                                                   readOnly: status == 'Pending'
                                                                                       ? true
                                                                                       : false,

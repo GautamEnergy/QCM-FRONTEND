@@ -2098,6 +2098,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -2843,6 +2844,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
+                                                          maxLength: 2,
                                                           readOnly: status ==
                                                                   'Pending'
                                                               ? true
@@ -3636,6 +3638,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
+                                                                  maxLength: 2,
                                                                   readOnly: status ==
                                                                           'Pending'
                                                                       ? true
@@ -4393,6 +4396,8 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,
@@ -4961,6 +4966,8 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                   ),
                                                                                   style: AppStyles
                                                                                       .textInputTextStyle,
+                                                                                  maxLength:
+                                                                                      2,
                                                                                   readOnly: status == 'Pending'
                                                                                       ? true
                                                                                       : false,

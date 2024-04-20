@@ -2102,6 +2102,7 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -2848,6 +2849,7 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
+                                                          maxLength: 2,
                                                           readOnly: status ==
                                                                   'Pending'
                                                               ? true
@@ -3641,6 +3643,7 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
+                                                                  maxLength: 2,
                                                                   readOnly: status ==
                                                                           'Pending'
                                                                       ? true
@@ -4398,6 +4401,8 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,
@@ -4966,6 +4971,8 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                                                   ),
                                                                                   style: AppStyles
                                                                                       .textInputTextStyle,
+                                                                                  maxLength:
+                                                                                      2,
                                                                                   readOnly: status == 'Pending'
                                                                                       ? true
                                                                                       : false,

@@ -2101,6 +2101,7 @@ class _EncapsulantState extends State<Encapsulant> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -4392,6 +4393,8 @@ class _EncapsulantState extends State<Encapsulant> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,

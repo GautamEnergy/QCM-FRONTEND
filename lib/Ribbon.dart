@@ -2106,6 +2106,7 @@ class _RibbonState extends State<Ribbon> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -2852,6 +2853,7 @@ class _RibbonState extends State<Ribbon> {
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
+                                                          maxLength: 2,
                                                           readOnly: status ==
                                                                   'Pending'
                                                               ? true
@@ -4400,6 +4402,8 @@ class _RibbonState extends State<Ribbon> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,
@@ -4968,6 +4972,8 @@ class _RibbonState extends State<Ribbon> {
                                                                                   ),
                                                                                   style: AppStyles
                                                                                       .textInputTextStyle,
+                                                                                  maxLength:
+                                                                                      2,
                                                                                   readOnly: status == 'Pending'
                                                                                       ? true
                                                                                       : false,
@@ -5450,6 +5456,7 @@ class _RibbonState extends State<Ribbon> {
                                                                                             hintText: "Please Enter Sample Size",
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
+                                                                                          maxLength: 2,
                                                                                           readOnly: status == 'Pending' ? true : false,
                                                                                           validator: MultiValidator([RequiredValidator(errorText: "Please Enter Sample Size.")])
                                                                                           // bikki

@@ -2099,6 +2099,7 @@ class _BacksheetState extends State<Backsheet> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -3635,6 +3636,7 @@ class _BacksheetState extends State<Backsheet> {
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
+                                                                  maxLength: 2,
                                                                   readOnly: status ==
                                                                           'Pending'
                                                                       ? true
@@ -4392,6 +4394,8 @@ class _BacksheetState extends State<Backsheet> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,

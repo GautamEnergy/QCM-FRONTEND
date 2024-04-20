@@ -2111,6 +2111,7 @@ class _SolarCellState extends State<SolarCell> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -2857,6 +2858,7 @@ class _SolarCellState extends State<SolarCell> {
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
+                                                          maxLength: 2,
                                                           readOnly: status ==
                                                                   'Pending'
                                                               ? true
@@ -4405,6 +4407,8 @@ class _SolarCellState extends State<SolarCell> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,
@@ -4973,6 +4977,8 @@ class _SolarCellState extends State<SolarCell> {
                                                                                   ),
                                                                                   style: AppStyles
                                                                                       .textInputTextStyle,
+                                                                                  maxLength:
+                                                                                      2,
                                                                                   readOnly: status == 'Pending'
                                                                                       ? true
                                                                                       : false,
@@ -5455,6 +5461,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                             hintText: "Please Enter Sample Size",
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
+                                                                                          maxLength: 2,
                                                                                           readOnly: status == 'Pending' ? true : false,
                                                                                           validator: MultiValidator([RequiredValidator(errorText: "Please Enter Sample Size.")])
                                                                                           // bikki

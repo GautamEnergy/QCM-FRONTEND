@@ -2856,6 +2856,7 @@ class _FluxState extends State<Flux> {
                                                           ),
                                                           style: AppStyles
                                                               .textInputTextStyle,
+                                                          maxLength: 2,
                                                           readOnly: status !=
                                                                   'Pending'
                                                               ? false
@@ -3649,6 +3650,7 @@ class _FluxState extends State<Flux> {
                                                                   ),
                                                                   style: AppStyles
                                                                       .textInputTextStyle,
+                                                                  maxLength: 2,
                                                                   readOnly: status !=
                                                                           'Pending'
                                                                       ? false
@@ -4406,6 +4408,8 @@ class _FluxState extends State<Flux> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,

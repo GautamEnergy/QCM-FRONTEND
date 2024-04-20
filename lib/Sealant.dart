@@ -2153,6 +2153,7 @@ class _SealantState extends State<Sealant> {
                                                   ),
                                                   style: AppStyles
                                                       .textInputTextStyle,
+                                                  maxLength: 2,
                                                   readOnly: status == 'Pending'
                                                       ? true
                                                       : false,
@@ -4444,6 +4445,8 @@ class _SealantState extends State<Sealant> {
                                                                           ),
                                                                           style: AppStyles
                                                                               .textInputTextStyle,
+                                                                          maxLength:
+                                                                              2,
                                                                           readOnly: status == 'Pending'
                                                                               ? true
                                                                               : false,
@@ -5012,6 +5015,8 @@ class _SealantState extends State<Sealant> {
                                                                                   ),
                                                                                   style: AppStyles
                                                                                       .textInputTextStyle,
+                                                                                  maxLength:
+                                                                                      2,
                                                                                   readOnly: status == 'Pending'
                                                                                       ? true
                                                                                       : false,
@@ -5494,6 +5499,7 @@ class _SealantState extends State<Sealant> {
                                                                                             hintText: "Please Enter Sample Size",
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
+                                                                                          maxLength: 2,
                                                                                           readOnly: status == 'Pending' ? true : false,
                                                                                           validator: MultiValidator([RequiredValidator(errorText: "Please Enter Sample Size.")])
                                                                                           // bikki
@@ -5963,6 +5969,7 @@ class _SealantState extends State<Sealant> {
                                                                                                     hintText: "Please Enter Sample Size",
                                                                                                   ),
                                                                                                   style: AppStyles.textInputTextStyle,
+                                                                                                  maxLength: 2,
                                                                                                   readOnly: status == 'Pending' ? true : false,
                                                                                                   validator: MultiValidator([RequiredValidator(errorText: "Please Enter Sample Size.")])
                                                                                                   // bikki
