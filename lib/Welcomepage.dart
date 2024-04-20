@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/FqcAddEdit.dart';
+import 'package:QCM/FqcTestList.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
@@ -194,11 +195,18 @@ class _WelcomePageState extends State<WelcomePage> {
                     width: 10,
                   ),
                   Expanded(
-                      child: tabDashboard('FQC', AppAssets.fqc, () {
-                    // Navigator.of(context).pushAndRemoveUntil(
-                    //     MaterialPageRoute(
-                    //         builder: (BuildContext context) => FqcPage()),
-                    //     (Route<dynamic> route) => false);
+                      child: tabDashboard(
+                          'FQC',
+                          designation != 'Super Admin'
+                              ? AppAssets.fqcadd
+                              : AppAssets.fqc, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                designation != 'Super Admin'
+                                    ? FqcPage()
+                                    : FqcTestList()),
+                        (Route<dynamic> route) => false);
                   })),
                   const SizedBox(
                     width: 10,

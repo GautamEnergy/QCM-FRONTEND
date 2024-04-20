@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
+import 'package:QCM/FqcTestList.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -1577,12 +1578,24 @@ class _FqcAddEditState extends State<FqcAddEdit> {
             backgroundColor: AppColors.redColor);
       } else {
         if (sendStatus == 'Pending') {
-          uploadPDF((invoicePdfFileBytes ?? []), (cocPdfFileBytes ?? []));
+          setState(() {
+            _isLoading = false;
+          });
+
+          Toast.show("FQC Test Completed.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => FqcTestList()));
+          // uploadPDF((invoicePdfFileBytes ?? []), (cocPdfFileBytes ?? []));
         } else {
           Toast.show("Data has been saved.",
               duration: Toast.lengthLong,
               gravity: Toast.center,
               backgroundColor: AppColors.blueColor);
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => FqcTestList()));
         }
       }
     } else {
@@ -1602,7 +1615,6 @@ class _FqcAddEditState extends State<FqcAddEdit> {
             });
             createData();
           }
-          createData();
         },
         child: ClipOval(
           child: Image.asset(

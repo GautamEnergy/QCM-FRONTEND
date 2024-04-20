@@ -1,4 +1,5 @@
 import 'package:QCM/Fqc.dart';
+import 'package:QCM/FqcTestList.dart';
 import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
@@ -236,6 +237,48 @@ class _PublicDrawerState extends State<PublicDrawer> {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) => IpqcPage()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+
+            SizedBox(
+              height: 10,
+            ),
+
+            if ((designation != 'Super Admin' && department == 'FQC') ||
+                (designation == 'Super Admin'))
+              SizedBox(
+                height: 10,
+              ),
+            // IQCP
+            if ((designation != 'Super Admin' && department == 'FQC') ||
+                (designation == 'Super Admin'))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard('FQC Test List', AppAssets.fqc, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => FqcTestList()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard('FQC', AppAssets.fqcadd, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => FqcPage()),
                         (Route<dynamic> route) => false);
                   })),
                   SizedBox(
