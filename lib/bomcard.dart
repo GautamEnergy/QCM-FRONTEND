@@ -212,7 +212,7 @@ class _BomCardState extends State<BomCard> {
           print(resBody);
           print("LAllallallallalallalal");
           print(resBody['data']['Date'] ?? '');
-          print(resBody['data']['PONo'] ?? '');
+          print(resBody['data']['Status']);
           // print(resBody['response']['Visual Inspection & Laminator Description']
           //     ["Cycle_Time"]);
 
@@ -222,8 +222,8 @@ class _BomCardState extends State<BomCard> {
           status = resBody['data']['Status'] ?? '';
           bomCardDate = resBody['data']['Date'] ?? '';
           dateController.text = resBody['data']['Date'] != ''
-              ? DateFormat("EEE MMM dd, yyyy").format(
-                  DateTime.parse(resBody['response']['Date'].toString()))
+              ? DateFormat("EEE MMM dd, yyyy")
+                  .format(DateTime.parse(resBody['data']['Date'].toString()))
               : '';
           shiftController.text = resBody['data']['Shift'] ?? '';
           LineController.text = resBody['data']['Line'] ?? '';
@@ -490,7 +490,7 @@ class _BomCardState extends State<BomCard> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Job Card Test $approvalStatus .",
+        Toast.show("BOM Verification Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);

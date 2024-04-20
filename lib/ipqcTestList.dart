@@ -674,7 +674,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             child: Image.asset(
                               type == "Job Card"
                                   ? AppAssets.jobcard
-                                  : type == "Bom Card"
+                                  : type == "BOM Verification"
                                       ? AppAssets.postlam
                                       : type == "PreLam"
                                           ? AppAssets.prelam
@@ -861,7 +861,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                     builder: (BuildContext context) =>
                                         type == "Job Card"
                                             ? Jobcard(id: id)
-                                            : type == "Bom Card"
+                                            : type == "BOM Verification"
                                                 ? BomCard(id: id)
                                                 : type == "PreLam"
                                                     ? PreCard(id: id)
@@ -890,7 +890,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                     builder: (BuildContext context) =>
                                         type == "Job Card"
                                             ? Jobcard(id: id)
-                                            : type == "Bom Card"
+                                            : type == "BOM Verification"
                                                 ? BomCard(id: id)
                                                 : type == "PreLam"
                                                     ? PreCard(id: id)

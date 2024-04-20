@@ -1131,7 +1131,7 @@ class _PreCardState extends State<PreCard> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Job Card Test $approvalStatus .",
+        Toast.show("Pre Lam Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -1788,7 +1788,7 @@ class _PreCardState extends State<PreCard> {
             isBackRequired: true,
             memberId: "personid",
             imgPath: "ImagePath",
-            memberPic: "pic",
+            memberPic: pic,
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -6055,7 +6055,7 @@ class _PreCardState extends State<PreCard> {
                                                           style: AppStyles
                                                               .textfieldCaptionTextStyle,
                                                         ),
-                                                        SizedBox(height: 5),
+                                                        SizedBox(height: 10),
                                                         TextFormField(
                                                           controller:
                                                               TabberVerificationNumberofstringController,
@@ -6146,7 +6146,7 @@ class _PreCardState extends State<PreCard> {
                                                                       .textFieldInputDecoration
                                                                       .copyWith(
                                                                     hintText:
-                                                                        "Please Enter Remarks",
+                                                                        "Please Enter stringer",
                                                                     counterText:
                                                                         '',
                                                                     fillColor: Color
@@ -6173,7 +6173,7 @@ class _PreCardState extends State<PreCard> {
                                                                             null ||
                                                                         value
                                                                             .isEmpty) {
-                                                                      return 'Please Enter Remarks.';
+                                                                      return 'Please Enter correct stringer.';
                                                                     }
                                                                     return null;
                                                                   },
@@ -9989,11 +9989,6 @@ class _PreCardState extends State<PreCard> {
                                                                         //   ),
                                                                         // ),
 
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
-
                                                                         Text(
                                                                           "Acceptance Criteria",
                                                                           style:
@@ -10027,10 +10022,7 @@ class _PreCardState extends State<PreCard> {
                                                                           height:
                                                                               15,
                                                                         ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
+
                                                                         Divider(
                                                                           color:
                                                                               Colors.black,
@@ -10214,11 +10206,6 @@ class _PreCardState extends State<PreCard> {
                                                                         //     ],
                                                                         //   ),
                                                                         // ),
-
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              15,
-                                                                        ),
 
                                                                         Text(
                                                                           "Acceptance Criteria",

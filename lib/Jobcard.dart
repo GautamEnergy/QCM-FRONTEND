@@ -659,7 +659,7 @@ class _JobcardState extends State<Jobcard> {
                               const Center(
                                   child: Padding(
                                       padding: EdgeInsets.only(top: 10),
-                                      child: Text("Inprocess Quality Controll",
+                                      child: Text("Inprocess Quality Control",
                                           style: TextStyle(
                                               fontSize: 27,
                                               color: AppColors.black,

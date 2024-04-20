@@ -2187,7 +2187,7 @@ class _PostlamState extends State<Postlam> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Job Card Test $approvalStatus .",
+        Toast.show("Post Lam Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -14497,7 +14497,7 @@ class _PostlamState extends State<Postlam> {
                                                                                             child: InkWell(
                                                                                               onTap: () {
                                                                                                 setState(() {
-                                                                                                  setPage = "finalel";
+                                                                                                  setPage = "finalvisual";
                                                                                                 });
                                                                                                 // Navigator.of(context).pushReplacement(
                                                                                                 //     MaterialPageRoute(
