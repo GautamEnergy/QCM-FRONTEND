@@ -8,6 +8,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
+import 'package:QCM/solderingPeel.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -156,10 +157,10 @@ class _WelcomePageState extends State<TestingCard> {
                 ),
                 Expanded(
                     child: tabDashboard('Soldering Peel', AppAssets.peel, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => stringer2()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => solderingPeel()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,

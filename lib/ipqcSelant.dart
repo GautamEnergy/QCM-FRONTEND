@@ -264,7 +264,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                 ],
                               ),
 
-// ****************** Date *****************************************
+                              // ****************** Date *****************************************
                               const SizedBox(
                                 height: 15,
                               ),
@@ -359,7 +359,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                 },
                               ),
 
-//  *******************************************   Sealant Weight Measurement  ********************
+                              //  *******************************************   Sealant Weight Measurement  ********************
 
                               const SizedBox(
                                 height: 25,
@@ -632,7 +632,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                     ],
                                   ),
 
-//  *******************************************   Sealant Weight Measurement  ********************
+                                  //  *******************************************   Sealant Weight Measurement  ********************
 
                                   const SizedBox(
                                     height: 25,
@@ -946,7 +946,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                         ],
                                       ),
 
-//  *******************************************   Sealant Weight Measurement  ********************
+                                      //  *******************************************   Sealant Weight Measurement  ********************
 
                                       const SizedBox(
                                         height: 25,
@@ -1267,7 +1267,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                             ],
                                           ),
 
-//  *******************************************   Sealant Weight Measurement  ********************
+                                          //  ************************   Sealant Weight Measurement  ********************
 
                                           const SizedBox(
                                             height: 25,

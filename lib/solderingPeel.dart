@@ -13,16 +13,17 @@ import 'package:QCM/constant/app_helper.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:toast/toast.dart';
 
-class busbar extends StatefulWidget {
+class solderingPeel extends StatefulWidget {
   @override
-  _busbarState createState() => _busbarState();
+  _solderingPeelState createState() => _solderingPeelState();
 }
 
-class _busbarState extends State<busbar> {
+class _solderingPeelState extends State<solderingPeel> {
   final _registerFormKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
   TextEditingController LineController = TextEditingController();
+  TextEditingController PoController = TextEditingController();
   TextEditingController ribbonController = TextEditingController();
 
   List<TextEditingController> LoaderControllers = [];
@@ -40,7 +41,7 @@ class _busbarState extends State<busbar> {
   String? selectedShift;
   String? selectedtype;
   List Sample1Controllers = [];
-  List Sample2Controllers = [];
+  // List Sample2Controllers = [];
 
   void addControllers(int count) {
     for (int i = 0; i < count; i++) {
@@ -48,11 +49,11 @@ class _busbarState extends State<busbar> {
     }
   }
 
-  void addsampleControllers(int count) {
-    for (int i = 0; i < count; i++) {
-      VerificationControllers.add(TextEditingController());
-    }
-  }
+  // void addsampleControllers(int count) {
+  //   for (int i = 0; i < count; i++) {
+  //     VerificationControllers.add(TextEditingController());
+  //   }
+  // }
 
   @override
   void initState() {
@@ -156,7 +157,7 @@ class _busbarState extends State<busbar> {
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: Text(
-                                    "Ribbon To Busbar Peel Test Report",
+                                    "Soldering Peel Test Report",
                                     style: TextStyle(
                                       fontSize: 27,
                                       color: Color.fromARGB(255, 56, 57, 56),
@@ -181,7 +182,7 @@ class _busbarState extends State<busbar> {
                                     width: 8,
                                   ),
                                   Text(
-                                    'GSPL/IPQC/ST/004',
+                                    'GSPL/IPQC/SP/006',
                                     style: AppStyles.textfieldCaptionTextStyle,
                                   ),
                                 ],
@@ -347,7 +348,7 @@ class _busbarState extends State<busbar> {
                                 ),
                               ),
 
-                              //***************   Details   ********************
+                              //***************   Operator Name   ********************
                               const SizedBox(
                                 height: 25,
                               ),
@@ -383,59 +384,12 @@ class _busbarState extends State<busbar> {
                                 ),
                               ),
 
-                              //***************   Bussing Stage  ********************
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Text(
-                                "Bussing Stage",
-                                style: AppStyles.textfieldCaptionTextStyle,
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              DropdownButtonFormField<String>(
-                                value: selectedtype,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedtype = newValue!;
-                                    // bussingStageController.text = selectedtype!;
-                                  });
-                                },
-                                items: <String>[
-                                  'Auto',
-                                  'Manual'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Select type",
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                // readOnly: status == 'Pending' &&
-                                //         designation != "QC"
-                                //     ? true
-                                //     : false,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please Select type";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              //***************   Ribbon Width  ********************
+                              //***************   Ribbon Size  ********************
                               const SizedBox(
                                 height: 25,
                               ),
                               Text(
-                                "Ribbon Width",
+                                "Ribbon Size",
                                 style: AppStyles.textfieldCaptionTextStyle,
                               ),
                               SizedBox(
@@ -447,7 +401,7 @@ class _busbarState extends State<busbar> {
                                 textInputAction: TextInputAction.next,
                                 decoration:
                                     AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Enter the Ribbon Width",
+                                  hintText: "Enter the Ribbon Size",
                                   counterText: '',
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
@@ -460,17 +414,17 @@ class _busbarState extends State<busbar> {
                                   [
                                     RequiredValidator(
                                       errorText:
-                                          "Please fill the required Ribbon Width",
+                                          "Please fill the required Ribbon Size",
                                     ),
                                   ],
                                 ),
                               ),
-                              //***************   Busbar Width  ********************
+                              //***************   Cell Size  ********************
                               const SizedBox(
                                 height: 25,
                               ),
                               Text(
-                                "Busbar Width",
+                                "Cell Size",
                                 style: AppStyles.textfieldCaptionTextStyle,
                               ),
                               SizedBox(
@@ -482,7 +436,7 @@ class _busbarState extends State<busbar> {
                                 textInputAction: TextInputAction.next,
                                 decoration:
                                     AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Enter the Busbar Width",
+                                  hintText: "Enter the Cell Size",
                                   counterText: '',
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
@@ -495,12 +449,118 @@ class _busbarState extends State<busbar> {
                                   [
                                     RequiredValidator(
                                       errorText:
-                                          "Please fill the required Busbar Width",
+                                          "Please fill the required Cell Size",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              //***************   Ribbon Make  ********************
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                "Ribbon Make",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                // controller: LongAController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Enter the Ribbon Make",
+                                  counterText: '',
+                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                // readOnly: status == 'Pending' &&
+                                //         designation != "QC"
+                                //     ? true
+                                //     : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please fill the required Ribbon Make",
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              //***************   Cell Make  ********************
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                "Cell Make",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                // controller: LongAController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Enter the Cell Make",
+                                  counterText: '',
+                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                // readOnly: status == 'Pending' &&
+                                //         designation != "QC"
+                                //     ? true
+                                //     : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText:
+                                          "Please fill the required Cell Make",
                                     ),
                                   ],
                                 ),
                               ),
 
+                              // *  PO Number ***********************
+
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Po Number",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+
+                              SizedBox(
+                                height: 5,
+                              ),
+                              TextFormField(
+                                controller: PoController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                decoration:
+                                    AppStyles.textFieldInputDecoration.copyWith(
+                                  hintText: "Please Po Number",
+                                  counterText: '',
+                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                ),
+                                style: AppStyles.textInputTextStyle,
+                                // readOnly: status == 'Pending' &&
+                                //         designation != "QC"
+                                //     ? true
+                                //     : false,
+                                validator: MultiValidator(
+                                  [
+                                    RequiredValidator(
+                                      errorText: "Please Po Number",
+                                    ),
+                                  ],
+                                ),
+                              ),
                               //***************   Ribbon  ********************
                               SizedBox(height: 25),
                               const SizedBox(
@@ -519,7 +579,7 @@ class _busbarState extends State<busbar> {
                                     numberOfStringers =
                                         int.tryParse(value) ?? 0;
                                     addControllers(numberOfStringers * 5);
-                                    addsampleControllers(numberOfStringers * 5);
+                                    // addsampleControllers(numberOfStringers * 5);
                                   });
                                 },
                                 decoration:
@@ -537,18 +597,6 @@ class _busbarState extends State<busbar> {
                               const SizedBox(
                                 height: 10,
                               ),
-
-                              // Center(
-                              //   child: Text(
-                              //     "Sample 1",
-                              //     style: TextStyle(
-                              //       fontSize: 20,
-                              //       color: Color.fromARGB(255, 250, 4, 4),
-                              //       fontFamily: appFontFamily,
-                              //       fontWeight: FontWeight.w700,
-                              //     ),
-                              //   ),
-                              // ),
 
                               Visibility(
                                 visible: numberOfStringers > 0,
@@ -578,6 +626,10 @@ class _busbarState extends State<busbar> {
                                       Text(
                                         "Ribbon ${index + 1}",
                                         style: AppStyles.textInputTextStyle
+                                            // readOnly: status == 'Pending' &&
+                                            //         designation != "QC"
+                                            //     ? true
+                                            //     : false,
                                             .copyWith(
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -594,71 +646,7 @@ class _busbarState extends State<busbar> {
                                               255, 215, 243, 207),
                                           contentPadding: EdgeInsets.all(10),
                                         ),
-                                        style: AppStyles.textInputTextStyle,
-                                        // readOnly: status == 'Pending' &&
-                                        //         designation != "QC"
-                                        //     ? true
-                                        //     : false,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please Enter Correct Ribbon';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
 
-                              Visibility(
-                                visible: numberOfStringers > 0,
-                                child: const Center(
-                                  child: Text(
-                                    "Sample 2",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Color.fromARGB(255, 250, 4, 4),
-                                      fontFamily: appFontFamily,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(height: 10),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: numberOfStringers,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Ribbon ${index + 1}",
-                                        style: AppStyles.textInputTextStyle
-                                            .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 15),
-                                      TextFormField(
-                                        controller:
-                                            VerificationControllers[index],
-                                        decoration: AppStyles
-                                            .textFieldInputDecoration
-                                            .copyWith(
-                                          hintText: "Enter Ribbon",
-                                          counterText: '',
-                                          fillColor: Color.fromARGB(
-                                              255, 215, 243, 207),
-                                          contentPadding: EdgeInsets.all(10),
-                                        ),
                                         style: AppStyles.textInputTextStyle,
                                         // readOnly: status == 'Pending' &&
                                         //         designation != "QC"
@@ -681,9 +669,6 @@ class _busbarState extends State<busbar> {
 
                               // *********************  Temperature's  ************************
 
-                              const SizedBox(
-                                height: 15,
-                              ),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                               _isLoading
@@ -708,18 +693,7 @@ class _busbarState extends State<busbar> {
                                           });
                                         }
 
-                                        Sample2Controllers = [];
-
-                                        for (int i = 0;
-                                            i < numberOfStringers;
-                                            i++) {
-                                          Sample2Controllers.add({
-                                            "VerificationControllers${i + 1}":
-                                                VerificationControllers[i].text,
-                                          });
-                                        }
-
-                                        sendDataToBackend(); //400
+                                        sendDataToBackend();
 
                                         // _registerFormKey.currentState!.save;
                                         // if (_registerFormKey.currentState!
@@ -762,9 +736,8 @@ class _busbarState extends State<busbar> {
                               //   height: 10,
                               // ),
 
-                              // ^^^^^^^
                               const SizedBox(
-                                height: 25,
+                                height: 15,
                               ),
                               Container(
                                 alignment: Alignment.center,
