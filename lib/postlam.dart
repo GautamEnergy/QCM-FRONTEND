@@ -49,6 +49,7 @@ class _PostlamState extends State<Postlam> {
 
   /******Trimming **********/
   final _postLamFormKey = GlobalKey<FormState>();
+
   TextEditingController trimmingWiCrieteriaController = TextEditingController();
   TextEditingController trimmingWiFrequencyController = TextEditingController();
   TextEditingController trimmingWiController = TextEditingController();
@@ -1424,6 +1425,8 @@ class _PostlamState extends State<Postlam> {
     //     "Crieteria": packagingStretchCrieteriaController.text,
     //   },
     // };
+    print("cahahhahahhahhahahahahah");
+    print(site);
     setState(() {
       _isLoading = true;
     });
@@ -1461,12 +1464,6 @@ class _PostlamState extends State<Postlam> {
             backgroundColor: AppColors.redColor);
       } else {
         if (sendStatus == 'Pending') {
-          Toast.show("PreLam Test Completed.",
-              duration: Toast.lengthLong,
-              gravity: Toast.center,
-              backgroundColor: AppColors.blueColor);
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (BuildContext context) => IpqcPage()));
           uploadPDF((referencePdfFileBytes ?? []));
         } else {
           Toast.show("Data has been saved.",
@@ -2950,9 +2947,10 @@ class _PostlamState extends State<Postlam> {
                                               }
                                               // createData();
 
-                                              // _registerFormKey.currentState!.save;
-                                              // if (_registerFormKey.currentState!
-                                              //  .validate()) {}
+                                              //_trimmingFormKey
+                                              // .currentState!.save;
+                                              // if (_postLamFormKey.currentState!
+                                              //     .validate())
                                               setState(() {
                                                 setPage =
                                                     'postlamvisualinspection';
@@ -2961,9 +2959,7 @@ class _PostlamState extends State<Postlam> {
                                             label: "Next",
                                             organization: '',
                                           ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
+
                                     // Center(
                                     //   child: Padding(
                                     //     padding: const EdgeInsets.all(8.0),
@@ -2988,7 +2984,7 @@ class _PostlamState extends State<Postlam> {
                                     //   ),
                                     // ),
                                     const SizedBox(
-                                      height: 25,
+                                      height: 18,
                                     ),
                                     Container(
                                       alignment: Alignment.center,
@@ -3467,11 +3463,12 @@ class _PostlamState extends State<Postlam> {
                                                   }
                                                   // createData();
 
-                                                  // _registerFormKey.currentState!.save;
-                                                  // if (_registerFormKey.currentState!
-                                                  //     .validate()) {
-                                                  //   createData();
-                                                  // }
+                                                  _postLamFormKey
+                                                      .currentState!.save;
+                                                  // if (_postLamFormKey
+                                                  //     .currentState!
+                                                  //     .validate()) {}
+
                                                   setState(() {
                                                     setPage = "framing";
                                                   });
@@ -3481,9 +3478,7 @@ class _PostlamState extends State<Postlam> {
                                                 label: "Next",
                                                 organization: '',
                                               ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
+
                                         // Center(
                                         //   child: Padding(
                                         //     padding: const EdgeInsets.all(8.0),
@@ -3508,7 +3503,7 @@ class _PostlamState extends State<Postlam> {
                                         //   ),
                                         // ),
                                         const SizedBox(
-                                          height: 25,
+                                          height: 18,
                                         ),
                                         Center(
                                           child: Padding(
@@ -4709,13 +4704,12 @@ class _PostlamState extends State<Postlam> {
                                                         createData();
                                                       }
 
-                                                      // _registerFormKey
-                                                      //     .currentState!.save;
-                                                      // if (_registerFormKey
+                                                      _postLamFormKey
+                                                          .currentState!.save;
+                                                      // if (_postLamFormKey
                                                       //     .currentState!
-                                                      //     .validate()) {
-                                                      //   // createData();
-                                                      // }
+                                                      //     .validate()) {}
+
                                                       setState(() {
                                                         setPage = 'junctionbox';
                                                       });
@@ -4723,9 +4717,7 @@ class _PostlamState extends State<Postlam> {
                                                     label: "Next",
                                                     organization: '',
                                                   ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
+
                                             // Center(
                                             //   child: Padding(
                                             //     padding: const EdgeInsets.all(8.0),
@@ -4750,7 +4742,7 @@ class _PostlamState extends State<Postlam> {
                                             //   ),
                                             // ),
                                             const SizedBox(
-                                              height: 25,
+                                              height: 18,
                                             ),
                                             Center(
                                               child: Padding(
@@ -5800,13 +5792,12 @@ class _PostlamState extends State<Postlam> {
                                                             createData();
                                                           }
 
-                                                          // _registerFormKey
-                                                          //     .currentState!.save;
-                                                          // if (_registerFormKey
+                                                          _postLamFormKey
+                                                              .currentState!
+                                                              .save;
+                                                          // if (_postLamFormKey
                                                           //     .currentState!
-                                                          //     .validate()) {
-                                                          //   // createData();
-                                                          // }
+                                                          //     .validate()) {}
                                                           setState(() {
                                                             setPage = 'curing';
                                                           });
@@ -5814,9 +5805,7 @@ class _PostlamState extends State<Postlam> {
                                                         label: "Next",
                                                         organization: '',
                                                       ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
+
                                                 // Center(
                                                 //   child: Padding(
                                                 //     padding: const EdgeInsets.all(8.0),
@@ -5841,7 +5830,7 @@ class _PostlamState extends State<Postlam> {
                                                 //   ),
                                                 // ),
                                                 const SizedBox(
-                                                  height: 25,
+                                                  height: 18,
                                                 ),
                                                 Center(
                                                   child: Padding(
@@ -6405,13 +6394,12 @@ class _PostlamState extends State<Postlam> {
                                                                 createData();
                                                               }
 
-                                                              // _registerFormKey
-                                                              //     .currentState!.save;
-                                                              // if (_registerFormKey
+                                                              _postLamFormKey
+                                                                  .currentState!
+                                                                  .save;
+                                                              // if (_postLamFormKey
                                                               //     .currentState!
-                                                              //     .validate()) {
-                                                              //   // createData();
-                                                              // }
+                                                              //     .validate()) {}
                                                               setState(() {
                                                                 setPage =
                                                                     'buffing';
@@ -6420,9 +6408,7 @@ class _PostlamState extends State<Postlam> {
                                                             label: "Next",
                                                             organization: '',
                                                           ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
+
                                                     // Center(
                                                     //   child: Padding(
                                                     //     padding: const EdgeInsets.all(8.0),
@@ -6447,7 +6433,7 @@ class _PostlamState extends State<Postlam> {
                                                     //   ),
                                                     // ),
                                                     const SizedBox(
-                                                      height: 25,
+                                                      height: 18,
                                                     ),
                                                     Center(
                                                       child: Padding(
@@ -7100,14 +7086,12 @@ class _PostlamState extends State<Postlam> {
                                                                     createData();
                                                                   }
 
-                                                                  // _registerFormKey
+                                                                  _postLamFormKey
+                                                                      .currentState!
+                                                                      .save;
+                                                                  // if (_postLamFormKey
                                                                   //     .currentState!
-                                                                  //     .save;
-                                                                  // if (_registerFormKey
-                                                                  //     .currentState!
-                                                                  //     .validate()) {
-                                                                  //   // createData();
-                                                                  // }
+                                                                  //     .validate()) {}
                                                                   setState(() {
                                                                     setPage =
                                                                         'cleaning';
@@ -7117,9 +7101,7 @@ class _PostlamState extends State<Postlam> {
                                                                 organization:
                                                                     '',
                                                               ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
+
                                                         // Center(
                                                         //   child: Padding(
                                                         //     padding: const EdgeInsets.all(8.0),
@@ -7144,7 +7126,7 @@ class _PostlamState extends State<Postlam> {
                                                         //   ),
                                                         // ),
                                                         const SizedBox(
-                                                          height: 25,
+                                                          height: 18,
                                                         ),
                                                         Center(
                                                           child: Padding(
@@ -7802,14 +7784,12 @@ class _PostlamState extends State<Postlam> {
                                                                         createData();
                                                                       }
 
-                                                                      // _registerFormKey
+                                                                      _postLamFormKey
+                                                                          .currentState!
+                                                                          .save;
+                                                                      // if (_postLamFormKey
                                                                       //     .currentState!
-                                                                      //     .save;
-                                                                      // if (_registerFormKey
-                                                                      //     .currentState!
-                                                                      //     .validate()) {
-                                                                      //   // createData();
-                                                                      // }
+                                                                      //     .validate()) {}
                                                                       setState(
                                                                           () {
                                                                         setPage =
@@ -7821,9 +7801,7 @@ class _PostlamState extends State<Postlam> {
                                                                     organization:
                                                                         '',
                                                                   ),
-                                                            const SizedBox(
-                                                              height: 10,
-                                                            ),
+
                                                             // Center(
                                                             //   child: Padding(
                                                             //     padding: const EdgeInsets.all(8.0),
@@ -7848,7 +7826,7 @@ class _PostlamState extends State<Postlam> {
                                                             //   ),
                                                             // ),
                                                             const SizedBox(
-                                                              height: 25,
+                                                              height: 18,
                                                             ),
                                                             Center(
                                                               child: Padding(
@@ -9487,14 +9465,12 @@ class _PostlamState extends State<Postlam> {
                                                                             createData();
                                                                           }
 
-                                                                          // _registerFormKey
+                                                                          _postLamFormKey
+                                                                              .currentState!
+                                                                              .save;
+                                                                          // if (_postLamFormKey
                                                                           //     .currentState!
-                                                                          //     .save;
-                                                                          // if (_registerFormKey
-                                                                          //     .currentState!
-                                                                          //     .validate()) {
-                                                                          //   // createData();
-                                                                          // }
+                                                                          //     .validate()) {}
                                                                           setState(
                                                                               () {
                                                                             setPage =
@@ -9506,9 +9482,7 @@ class _PostlamState extends State<Postlam> {
                                                                         organization:
                                                                             '',
                                                                       ),
-                                                                const SizedBox(
-                                                                  height: 10,
-                                                                ),
+
                                                                 // Center(
                                                                 //   child: Padding(
                                                                 //     padding: const EdgeInsets.all(8.0),
@@ -9533,7 +9507,7 @@ class _PostlamState extends State<Postlam> {
                                                                 //   ),
                                                                 // ),
                                                                 const SizedBox(
-                                                                  height: 25,
+                                                                  height: 18,
                                                                 ),
                                                                 Center(
                                                                   child:
@@ -9791,6 +9765,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Obsevation",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -9922,6 +9901,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10056,6 +10040,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 1  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10093,6 +10082,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 2  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10130,6 +10124,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 3  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10167,6 +10166,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 4  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10204,6 +10208,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 5  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10338,6 +10347,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 1  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10375,6 +10389,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 2  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10412,6 +10431,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 3  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10449,6 +10473,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 4  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10486,6 +10515,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 5  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10620,6 +10654,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 1  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10657,6 +10696,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 2  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10694,6 +10738,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 3  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10731,6 +10780,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 4  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10768,6 +10822,11 @@ class _PostlamState extends State<Postlam> {
                                                                             "Please Enter Observation 5  ",
                                                                         counterText:
                                                                             '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
                                                                       ),
                                                                       style: AppStyles
                                                                           .textInputTextStyle,
@@ -10853,14 +10912,8 @@ class _PostlamState extends State<Postlam> {
                                                                                 createData();
                                                                               }
 
-                                                                              // _registerFormKey
-                                                                              //     .currentState!
-                                                                              //     .save;
-                                                                              // if (_registerFormKey
-                                                                              //     .currentState!
-                                                                              //     .validate()) {
-                                                                              //   // createData();
-                                                                              // }
+                                                                              _postLamFormKey.currentState!.save;
+                                                                              // if (_postLamFormKey.currentState!.validate())
                                                                               setState(() {
                                                                                 setPage = 'finalel';
                                                                               });
@@ -10870,10 +10923,7 @@ class _PostlamState extends State<Postlam> {
                                                                             organization:
                                                                                 '',
                                                                           ),
-                                                                    const SizedBox(
-                                                                      height:
-                                                                          10,
-                                                                    ),
+
                                                                     // Center(
                                                                     //   child: Padding(
                                                                     //     padding: const EdgeInsets.all(8.0),
@@ -10899,7 +10949,7 @@ class _PostlamState extends State<Postlam> {
                                                                     // ),
                                                                     const SizedBox(
                                                                       height:
-                                                                          25,
+                                                                          18,
                                                                     ),
                                                                     Center(
                                                                       child:
@@ -11126,6 +11176,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 "Please Enter Obsevation",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -11248,6 +11303,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 "Please Enter Obsevation",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -11370,6 +11430,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 "Please Enter Observation 1 ",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -11403,6 +11468,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 "Please Enter Observation 2 ",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -11436,6 +11506,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 "Please Enter Observation 3 ",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -11469,6 +11544,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 "Please Enter Observation 4 ",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -11502,6 +11582,11 @@ class _PostlamState extends State<Postlam> {
                                                                                 "Please Enter Observation 5 ",
                                                                             counterText:
                                                                                 '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
                                                                           style:
                                                                               AppStyles.textInputTextStyle,
@@ -11579,14 +11664,8 @@ class _PostlamState extends State<Postlam> {
                                                                                     createData();
                                                                                   }
 
-                                                                                  // _registerFormKey
-                                                                                  //     .currentState!
-                                                                                  //     .save;
-                                                                                  // if (_registerFormKey
-                                                                                  //     .currentState!
-                                                                                  //     .validate()) {
-                                                                                  //   // createData();
-                                                                                  // }
+                                                                                  _postLamFormKey.currentState!.save;
+                                                                                  // if (_postLamFormKey.currentState!.validate()) {}
                                                                                   setState(() {
                                                                                     setPage = 'rfid';
                                                                                   });
@@ -11594,10 +11673,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 label: "Next",
                                                                                 organization: '',
                                                                               ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              10,
-                                                                        ),
+
                                                                         // Center(
                                                                         //   child: Padding(
                                                                         //     padding: const EdgeInsets.all(8.0),
@@ -11623,7 +11699,7 @@ class _PostlamState extends State<Postlam> {
                                                                         // ),
                                                                         const SizedBox(
                                                                           height:
-                                                                              25,
+                                                                              18,
                                                                         ),
                                                                         Center(
                                                                           child:
@@ -12353,12 +12429,8 @@ class _PostlamState extends State<Postlam> {
                                                                                         createData();
                                                                                       }
 
-                                                                                      //_registerFormKey.currentState!.save;
-                                                                                      // if (_registerFormKey
-                                                                                      //     .currentState!
-                                                                                      //     .validate()) {
-                                                                                      //   // createData();
-                                                                                      // }
+                                                                                      _postLamFormKey.currentState!.save;
+                                                                                      // if (_postLamFormKey.currentState!.validate()) {}
                                                                                       setState(() {
                                                                                         setPage = 'backlabel';
                                                                                       });
@@ -12366,9 +12438,7 @@ class _PostlamState extends State<Postlam> {
                                                                                     label: "Next",
                                                                                     organization: '',
                                                                                   ),
-                                                                            const SizedBox(
-                                                                              height: 10,
-                                                                            ),
+
                                                                             // Center(
                                                                             //   child: Padding(
                                                                             //     padding: const EdgeInsets.all(8.0),
@@ -12393,7 +12463,7 @@ class _PostlamState extends State<Postlam> {
                                                                             //   ),
                                                                             // ),
                                                                             const SizedBox(
-                                                                              height: 25,
+                                                                              height: 18,
                                                                             ),
                                                                             Center(
                                                                               child: Padding(
@@ -12875,12 +12945,8 @@ class _PostlamState extends State<Postlam> {
                                                                                             });
                                                                                             createData();
                                                                                           }
-                                                                                          //_registerFormKey.currentState!.save;
-                                                                                          // if (_registerFormKey
-                                                                                          //     .currentState!
-                                                                                          //     .validate()) {
-                                                                                          //   // createData();
-                                                                                          // }
+                                                                                          _postLamFormKey.currentState!.save;
+                                                                                          // if (_postLamFormKey.currentState!.validate()) {}
                                                                                           setState(() {
                                                                                             setPage = 'finalvisual';
                                                                                           });
@@ -12888,9 +12954,7 @@ class _PostlamState extends State<Postlam> {
                                                                                         label: "Next",
                                                                                         organization: '',
                                                                                       ),
-                                                                                const SizedBox(
-                                                                                  height: 10,
-                                                                                ),
+
                                                                                 // Center(
                                                                                 //   child: Padding(
                                                                                 //     padding: const EdgeInsets.all(8.0),
@@ -12915,7 +12979,7 @@ class _PostlamState extends State<Postlam> {
                                                                                 //   ),
                                                                                 // ),
                                                                                 const SizedBox(
-                                                                                  height: 25,
+                                                                                  height: 18,
                                                                                 ),
                                                                                 Center(
                                                                                   child: Padding(
@@ -13474,12 +13538,8 @@ class _PostlamState extends State<Postlam> {
                                                                                                 createData();
                                                                                               }
 
-                                                                                              //_registerFormKey.currentState!.save;
-                                                                                              // if (_registerFormKey
-                                                                                              //     .currentState!
-                                                                                              //     .validate()) {
-                                                                                              //   // createData();
-                                                                                              // }
+                                                                                              _postLamFormKey.currentState!.save;
+                                                                                              // if (_postLamFormKey.currentState!.validate()) {}
                                                                                               setState(() {
                                                                                                 setPage = 'packaging';
                                                                                               });
@@ -13487,9 +13547,7 @@ class _PostlamState extends State<Postlam> {
                                                                                             label: "Next",
                                                                                             organization: '',
                                                                                           ),
-                                                                                    const SizedBox(
-                                                                                      height: 10,
-                                                                                    ),
+
                                                                                     // Center(
                                                                                     //   child: Padding(
                                                                                     //     padding: const EdgeInsets.all(8.0),
@@ -13514,7 +13572,7 @@ class _PostlamState extends State<Postlam> {
                                                                                     //   ),
                                                                                     // ),
                                                                                     const SizedBox(
-                                                                                      height: 25,
+                                                                                      height: 18,
                                                                                     ),
                                                                                     Center(
                                                                                       child: Padding(
@@ -14323,6 +14381,7 @@ class _PostlamState extends State<Postlam> {
                                                                                           textInputAction: TextInputAction.next,
                                                                                           decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                               hintText: "Please Select Reference Pdf",
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                               suffixIcon: IconButton(
                                                                                                 onPressed: () async {
                                                                                                   if (widget.id != null && widget.id != '' && referencePdfController.text != '') {
@@ -14361,9 +14420,9 @@ class _PostlamState extends State<Postlam> {
                                                                                                     ),
                                                                                                     onTap: () {
                                                                                                       AppHelper.hideKeyboard(context);
-                                                                                                      //createData();
 
                                                                                                       _postLamFormKey.currentState!.save;
+
                                                                                                       if (_postLamFormKey.currentState!.validate()) {
                                                                                                         if (status != 'Pending') {
                                                                                                           setState(() {
@@ -14429,7 +14488,7 @@ class _PostlamState extends State<Postlam> {
                                                                                         //   ),
                                                                                         // ),
                                                                                         const SizedBox(
-                                                                                          height: 25,
+                                                                                          height: 18,
                                                                                         ),
                                                                                         Center(
                                                                                           child: Padding(
@@ -14484,7 +14543,7 @@ class _PostlamState extends State<Postlam> {
                                                                             )
                                                                           : Container(),
                 ),
-          floatingActionButton: _getFAB(),
+          floatingActionButton: (status == "Pending") ? null : _getFAB(),
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(

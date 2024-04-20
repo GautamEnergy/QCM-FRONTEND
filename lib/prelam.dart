@@ -1680,12 +1680,6 @@ class _PreCardState extends State<PreCard> {
             backgroundColor: AppColors.redColor);
       } else {
         if (sendStatus == 'Pending') {
-          Toast.show("PreLam Test Completed.",
-              duration: Toast.lengthLong,
-              gravity: Toast.center,
-              backgroundColor: AppColors.blueColor);
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (BuildContext context) => IpqcPage()));
           uploadPDF((referencePdfFileBytes ?? []));
         } else {
           Toast.show("Data has been saved.",
@@ -2496,7 +2490,7 @@ class _PreCardState extends State<PreCard> {
                                         ),
                                         const Center(
                                             child: Text(
-                                                "Glass side EVA cutting machine ",
+                                                "Glass Side EVA Cutting Machine",
                                                 style: TextStyle(
                                                     fontSize: 20,
                                                     color: Color.fromARGB(
@@ -3146,7 +3140,7 @@ class _PreCardState extends State<PreCard> {
                                             ),
                                             const Center(
                                                 child: Text(
-                                                    "Temperature & Relative humidity(%RH) monitoring ",
+                                                    "Temperature & Relative Humidity(%RH) Monitoring ",
                                                     style: TextStyle(
                                                         fontSize: 20,
                                                         color: Color.fromARGB(
@@ -4359,7 +4353,7 @@ class _PreCardState extends State<PreCard> {
                                                     ),
                                                     const Center(
                                                         child: Text(
-                                                            "Cell Loading..",
+                                                            "Cell Loading",
                                                             style: TextStyle(
                                                                 fontSize: 20,
                                                                 color: Color
@@ -4985,6 +4979,7 @@ class _PreCardState extends State<PreCard> {
                                                           CellLoadingnumberOfStringerController,
                                                       keyboardType:
                                                           TextInputType.number,
+                                                      maxLength: 1,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           numberOfStringers =
@@ -5562,6 +5557,7 @@ class _PreCardState extends State<PreCard> {
                                                           keyboardType:
                                                               TextInputType
                                                                   .number,
+                                                          maxLength: 1,
                                                           onChanged: (value) {
                                                             setState(() {
                                                               numberOfStringers1 =
@@ -5814,6 +5810,7 @@ class _PreCardState extends State<PreCard> {
                                                           keyboardType:
                                                               TextInputType
                                                                   .number,
+                                                          maxLength: 1,
                                                           onChanged: (value) {
                                                             setState(() {
                                                               numberOfStringers2 =
@@ -6064,6 +6061,7 @@ class _PreCardState extends State<PreCard> {
                                                           keyboardType:
                                                               TextInputType
                                                                   .number,
+                                                          maxLength: 1,
                                                           onChanged: (value) {
                                                             setState(() {
                                                               numberOfStringers4 =
@@ -6116,10 +6114,10 @@ class _PreCardState extends State<PreCard> {
                                                           itemBuilder:
                                                               (context, index) {
                                                             int stringerIndex =
-                                                                (index ~/ 5) +
+                                                                (index ~/ 2) +
                                                                     1;
                                                             int textFieldIndex =
-                                                                index % 5;
+                                                                index % 2;
                                                             return Column(
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
@@ -9800,7 +9798,7 @@ class _PreCardState extends State<PreCard> {
                                                                         ),
                                                                         const Center(
                                                                             child:
-                                                                                Text("Pre Lamination El & Visual inspection ", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
+                                                                                Text("Pre Lamination El & Visual Inspection ", style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 13, 160, 0), fontFamily: appFontFamily, fontWeight: FontWeight.w700))),
 
                                                                         const SizedBox(
                                                                           height:
@@ -9871,6 +9869,8 @@ class _PreCardState extends State<PreCard> {
                                                                               PreLaminationEInumberOfStringersController,
                                                                           keyboardType:
                                                                               TextInputType.number,
+                                                                          maxLength:
+                                                                              1,
                                                                           onChanged:
                                                                               (value) {
                                                                             setState(() {
@@ -10095,6 +10095,8 @@ class _PreCardState extends State<PreCard> {
                                                                               PreLaminationVisualnumberOfStringersController,
                                                                           keyboardType:
                                                                               TextInputType.number,
+                                                                          maxLength:
+                                                                              1,
                                                                           onChanged:
                                                                               (value) {
                                                                             setState(() {
@@ -11898,6 +11900,7 @@ class _PreCardState extends State<PreCard> {
                                                                                       textInputAction: TextInputAction.next,
                                                                                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                                                                                           hintText: "Please Select Reference Pdf",
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                           suffixIcon: IconButton(
                                                                                             onPressed: () async {
                                                                                               if (widget.id != null && widget.id != '' && referencePdfController.text != '') {
