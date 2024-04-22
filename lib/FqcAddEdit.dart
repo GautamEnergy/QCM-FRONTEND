@@ -921,11 +921,11 @@ class _FqcAddEditState extends State<FqcAddEdit> {
       }
       site = prefs.getString('site');
     });
-    final AllSolarData = ((site!) + 'IQCSolarCell/GetSpecificTest');
+    final AllSolarData = ((site!) + 'IQCSolarCell/GetSpecificFQC');
     final allSolarData = await http.post(
       Uri.parse(AllSolarData),
       body: jsonEncode(
-          <String, String>{"SolarDetailID": widget.id ?? '', "token": token!}),
+          <String, String>{"FQCDetailId": widget.id ?? '', "token": token!}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -935,84 +935,463 @@ class _FqcAddEditState extends State<FqcAddEdit> {
 
     if (mounted) {
       setState(() {
-        data = resBody;
-        print(data);
-
+        _isLoading = false;
+        data = resBody['data'];
         if (data != null && data.length > 0) {
-          _isLoading = false;
           final dataMap = data.asMap();
           print("Datata........??");
-          print(dataMap[0]['SampleSizePhysical']);
+          print(dataMap[0]);
 
-          productSpecsController.text = dataMap[0]['LotSize'] ?? '';
-          productBatchNoController.text = dataMap[0]['SupplierName'] ?? '';
-          partyNameController.text = dataMap[0]['InvoiceNo'] ?? '';
+          productSpecsController.text = dataMap[0]['ProductSpecs'] ?? '';
+          productBatchNoController.text = dataMap[0]['ProductBatchNo'] ?? '';
+          partyNameController.text = dataMap[0]['PartyName'] ?? '';
           packingDateController.text = DateFormat("EEE MMM dd, yyyy").format(
-                  DateTime.parse(dataMap[0]['InvoiceDate'].toString())) ??
+                  DateTime.parse(dataMap[0]['PackingDate'].toString())) ??
               '';
-          packingDate = dataMap[0]['InvoiceDate'] ?? '';
-          reportNumberController.text = dataMap[0]['RawMaterialSpecs'] ?? '';
-          dateOfQualityCheckController
-              .text = DateFormat("EEE MMM dd, yyyy").format(
-                  DateTime.parse(dataMap[0]['QualityCheckDate'].toString())) ??
-              '';
-
-          dateOfQualityCheck = dataMap[0]['QualityCheckDate'] ?? '';
-
-          rMBatchNoController.text = dataMap[0]['SupplierRMBatchNo'] ?? '';
-          receiptDateController.text = DateFormat("EEE MMM dd, yyyy").format(
-                  DateTime.parse(dataMap[0]['ReceiptDate'].toString())) ??
+          packingDate = dataMap[0]['PackingDate'] ?? '';
+          reportNumberController.text = dataMap[0]['ReportNumber'] ?? '';
+          dateOfQualityCheckController.text = DateFormat("EEE MMM dd, yyyy")
+                  .format(DateTime.parse(
+                      dataMap[0]['DateOfQualityCheck'].toString())) ??
               '';
 
-          receiptDate = dataMap[0]['ReceiptDate'] ?? '';
+          dateOfQualityCheck = dataMap[0]['DateOfQualityCheck'] ?? '';
+          status = dataMap[0]['Status'] ?? '';
+          // S1
+          visualParameterS1Controller930.text =
+              dataMap[0]['Sample1']['visualParameterS1Controller930'] ?? '';
+          visualParameterS1TestValue930 =
+              dataMap[0]['Sample1']['visualParameterS1TestValue930'] ?? false;
 
-          numberOfPackagingSampleFields =
-              (dataMap[0]['SampleSizePackaging'] != 0
-                  ? dataMap[0]['SampleSizePackaging']
-                  : 1);
-          Packaging = dataMap[0]['Packaging'] ?? [];
+          visualParameterS1RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['visualParameterS1RemarksControllers930'] ??
+              '';
 
-          visualSampleSizeController.text = (dataMap[0]['SampleSizeVisual'] != 0
-                  ? dataMap[0]['SampleSizeVisual']
-                  : "")
-              .toString();
-          Visual = dataMap[0]['Visual'] ?? [];
+          visualParameterS2Controller930.text =
+              dataMap[0]['Sample1']['visualParameterS2Controller930'] ?? '';
+          visualParameterS2TestValue930 =
+              dataMap[0]['Sample1']['visualParameterS2TestValue930'] ?? false;
+          visualParameterS2RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['visualParameterS2RemarksControllers930'] ??
+              '';
 
-          physicalSampleSizeController.text =
-              (dataMap[0]['SampleSizePhysical'] != 0
-                      ? dataMap[0]['SampleSizePhysical']
-                      : '1')
-                  .toString();
-          Physical = dataMap[0]['Physical'] ?? [];
+          visualParameterS3Controller930.text =
+              dataMap[0]['Sample1']['visualParameterS3Controller930'] ?? '';
+          visualParameterS3TestValue930 =
+              dataMap[0]['Sample1']['visualParameterS3TestValue930'] ?? false;
+          visualParameterS3RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['visualParameterS3RemarksControllers930'] ??
+              '';
 
-          frontbusSampleSizeController.text =
-              (dataMap[0]['SampleSizeFrontBus'] != 0
-                      ? dataMap[0]['SampleSizeFrontBus']
-                      : "")
-                  .toString();
-          FrontBus = dataMap[0]['FrontBus'] ?? [];
+          visualParameterS4Controller930.text =
+              dataMap[0]['Sample1']['visualParameterS4Controller930'] ?? '';
+          visualParameterS4TestValue930 =
+              dataMap[0]['Sample1']['visualParameterS4TestValue930'] ?? false;
+          visualParameterS4RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['visualParameterS4RemarksControllers930'] ??
+              '';
 
-          verificationSampleSizeController.text =
-              (dataMap[0]['SampleSizeVerification'] != 0
-                      ? dataMap[0]['SampleSizeVerification']
-                      : "")
-                  .toString();
-          Verification = dataMap[0]['Verification'] ?? [];
+          // Module Rating
+
+          moduleRatingParameterS1Controller930.text = dataMap[0]['Sample1']
+                  ['moduleRatingParameterS1Controller930'] ??
+              '';
+          moduleRatingParameterS1TestValue930 = dataMap[0]['Sample1']
+                  ['moduleRatingParameterS1TestValue930'] ??
+              false;
+          moduleRatingParameterS1RemarksControllers930.text = dataMap[0]
+                  ['Sample1']['moduleRatingParameterS1RemarksControllers930'] ??
+              '';
+
+          moduleRatingParameterS2Controller930.text = dataMap[0]['Sample1']
+                  ['moduleRatingParameterS2Controller930'] ??
+              '';
+          moduleRatingParameterS2TestValue930 = dataMap[0]['Sample1']
+                  ['moduleRatingParameterS2TestValue930'] ??
+              false;
+          moduleRatingParameterS2RemarksControllers930.text = dataMap[0]
+                  ['Sample1']['moduleRatingParameterS2RemarksControllers930'] ??
+              '';
+          // Others
+
+          otherParameterS1Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS1Controller930'] ?? '';
+          otherParameterS1TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS1TestValue930'] ?? false;
+          otherParameterS1RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS1RemarksControllers930'] ??
+              '';
+
+          otherParameterS2Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS2Controller930'] ?? '';
+          otherParameterS2TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS2TestValue930'] ?? false;
+          otherParameterS2RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS2RemarksControllers930'] ??
+              '';
+
+          otherParameterS3Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS3Controller930'] ?? '';
+          otherParameterS3TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS3TestValue930'] ?? false;
+          otherParameterS3RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS3RemarksControllers930'] ??
+              '';
+
+          otherParameterS4Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS4Controller930'] ?? '';
+          otherParameterS4TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS4TestValue930'] ?? false;
+          otherParameterS4RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS4RemarksControllers930'] ??
+              '';
+
+          otherParameterS5Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS5Controller930'] ?? '';
+          otherParameterS5TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS5TestValue930'] ?? false;
+          otherParameterS5RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS5RemarksControllers930'] ??
+              '';
+
+          otherParameterS6Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS6Controller930'] ?? '';
+          otherParameterS6TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS6TestValue930'] ?? false;
+          otherParameterS6RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS6RemarksControllers930'] ??
+              '';
+
+          otherParameterS7Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS7Controller930'] ?? '';
+          otherParameterS7TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS7TestValue930'] ?? false;
+          otherParameterS7RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS7RemarksControllers930'] ??
+              '';
+
+          otherParameterS8Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS8Controller930'] ?? '';
+          otherParameterS8TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS8TestValue930'] ?? false;
+          otherParameterS8RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS8RemarksControllers930'] ??
+              '';
+
+          otherParameterS9Controller930.text =
+              dataMap[0]['Sample1']['otherParameterS9Controller930'] ?? '';
+          otherParameterS9TestValue930 =
+              dataMap[0]['Sample1']['otherParameterS9TestValue930'] ?? false;
+          otherParameterS9RemarksControllers930.text = dataMap[0]['Sample1']
+                  ['otherParameterS9RemarksControllers930'] ??
+              '';
+
+          // S2
+
+          visualParameterS1Controller230.text =
+              dataMap[0]['Sample2']['visualParameterS1Controller230'] ?? '';
+          visualParameterS1TestValue230 =
+              dataMap[0]['Sample2']['visualParameterS1TestValue230'] ?? false;
+
+          visualParameterS1RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['visualParameterS1RemarksControllers230'] ??
+              '';
+
+          visualParameterS2Controller230.text =
+              dataMap[0]['Sample2']['visualParameterS2Controller230'] ?? '';
+          visualParameterS2TestValue230 =
+              dataMap[0]['Sample2']['visualParameterS2TestValue230'] ?? false;
+          visualParameterS2RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['visualParameterS2RemarksControllers230'] ??
+              '';
+
+          visualParameterS3Controller230.text =
+              dataMap[0]['Sample2']['visualParameterS3Controller230'] ?? '';
+          visualParameterS3TestValue230 =
+              dataMap[0]['Sample2']['visualParameterS3TestValue230'] ?? false;
+          visualParameterS3RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['visualParameterS3RemarksControllers230'] ??
+              '';
+
+          visualParameterS4Controller230.text =
+              dataMap[0]['Sample2']['visualParameterS4Controller230'] ?? '';
+          visualParameterS4TestValue230 =
+              dataMap[0]['Sample2']['visualParameterS4TestValue230'] ?? false;
+          visualParameterS4RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['visualParameterS4RemarksControllers230'] ??
+              '';
+
+          // Module Rating
+
+          moduleRatingParameterS1Controller230.text = dataMap[0]['Sample2']
+                  ['moduleRatingParameterS1Controller230'] ??
+              '';
+          moduleRatingParameterS1TestValue230 = dataMap[0]['Sample2']
+                  ['moduleRatingParameterS1TestValue230'] ??
+              false;
+          moduleRatingParameterS1RemarksControllers230.text = dataMap[0]
+                  ['Sample2']['moduleRatingParameterS1RemarksControllers230'] ??
+              '';
+
+          moduleRatingParameterS2Controller230.text = dataMap[0]['Sample2']
+                  ['moduleRatingParameterS2Controller230'] ??
+              '';
+          moduleRatingParameterS2TestValue230 = dataMap[0]['Sample2']
+                  ['moduleRatingParameterS2TestValue230'] ??
+              false;
+          moduleRatingParameterS2RemarksControllers230.text = dataMap[0]
+                  ['Sample2']['moduleRatingParameterS2RemarksControllers230'] ??
+              '';
+          // Others
+
+          otherParameterS1Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS1Controller230'] ?? '';
+          otherParameterS1TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS1TestValue230'] ?? false;
+          otherParameterS1RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS1RemarksControllers230'] ??
+              '';
+
+          otherParameterS2Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS2Controller230'] ?? '';
+          otherParameterS2TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS2TestValue230'] ?? false;
+          otherParameterS2RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS2RemarksControllers230'] ??
+              '';
+
+          otherParameterS3Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS3Controller230'] ?? '';
+          otherParameterS3TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS3TestValue230'] ?? false;
+          otherParameterS3RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS3RemarksControllers230'] ??
+              '';
+
+          otherParameterS4Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS4Controller230'] ?? '';
+          otherParameterS4TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS4TestValue230'] ?? false;
+          otherParameterS4RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS4RemarksControllers230'] ??
+              '';
+
+          otherParameterS5Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS5Controller230'] ?? '';
+          otherParameterS5TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS5TestValue230'] ?? false;
+          otherParameterS5RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS5RemarksControllers230'] ??
+              '';
+
+          otherParameterS6Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS6Controller230'] ?? '';
+          otherParameterS6TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS6TestValue230'] ?? false;
+          otherParameterS6RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS6RemarksControllers230'] ??
+              '';
+
+          otherParameterS7Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS7Controller230'] ?? '';
+          otherParameterS7TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS7TestValue230'] ?? false;
+          otherParameterS7RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS7RemarksControllers230'] ??
+              '';
+
+          otherParameterS8Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS8Controller230'] ?? '';
+          otherParameterS8TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS8TestValue230'] ?? false;
+          otherParameterS8RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS8RemarksControllers230'] ??
+              '';
+
+          otherParameterS9Controller230.text =
+              dataMap[0]['Sample2']['otherParameterS9Controller230'] ?? '';
+          otherParameterS9TestValue230 =
+              dataMap[0]['Sample2']['otherParameterS9TestValue230'] ?? false;
+          otherParameterS9RemarksControllers230.text = dataMap[0]['Sample2']
+                  ['otherParameterS9RemarksControllers230'] ??
+              '';
+
+          // S3
+
+          visualParameterS1Controller645.text =
+              dataMap[0]['Sample3']['visualParameterS1Controller645'] ?? '';
+          visualParameterS1TestValue645 =
+              dataMap[0]['Sample3']['visualParameterS1TestValue645'] ?? false;
+
+          visualParameterS1RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['visualParameterS1RemarksControllers645'] ??
+              '';
+
+          visualParameterS2Controller645.text =
+              dataMap[0]['Sample3']['visualParameterS2Controller645'] ?? '';
+          visualParameterS2TestValue645 =
+              dataMap[0]['Sample3']['visualParameterS2TestValue645'] ?? false;
+          visualParameterS2RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['visualParameterS2RemarksControllers645'] ??
+              '';
+
+          visualParameterS3Controller645.text =
+              dataMap[0]['Sample3']['visualParameterS3Controller645'] ?? '';
+          visualParameterS3TestValue645 =
+              dataMap[0]['Sample3']['visualParameterS3TestValue645'] ?? false;
+          visualParameterS3RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['visualParameterS3RemarksControllers645'] ??
+              '';
+
+          visualParameterS4Controller645.text =
+              dataMap[0]['Sample3']['visualParameterS4Controller645'] ?? '';
+          visualParameterS4TestValue645 =
+              dataMap[0]['Sample3']['visualParameterS4TestValue645'] ?? false;
+          visualParameterS4RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['visualParameterS4RemarksControllers645'] ??
+              '';
+
+          // Module Rating
+
+          moduleRatingParameterS1Controller645.text = dataMap[0]['Sample3']
+                  ['moduleRatingParameterS1Controller645'] ??
+              '';
+          moduleRatingParameterS1TestValue645 = dataMap[0]['Sample3']
+                  ['moduleRatingParameterS1TestValue645'] ??
+              false;
+          moduleRatingParameterS1RemarksControllers645.text = dataMap[0]
+                  ['Sample3']['moduleRatingParameterS1RemarksControllers645'] ??
+              '';
+
+          moduleRatingParameterS2Controller645.text = dataMap[0]['Sample3']
+                  ['moduleRatingParameterS2Controller645'] ??
+              '';
+          moduleRatingParameterS2TestValue645 = dataMap[0]['Sample3']
+                  ['moduleRatingParameterS2TestValue645'] ??
+              false;
+          moduleRatingParameterS2RemarksControllers645.text = dataMap[0]
+                  ['Sample3']['moduleRatingParameterS2RemarksControllers645'] ??
+              '';
+          // Others
+
+          otherParameterS1Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS1Controller645'] ?? '';
+          otherParameterS1TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS1TestValue645'] ?? false;
+          otherParameterS1RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS1RemarksControllers645'] ??
+              '';
+
+          otherParameterS2Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS2Controller645'] ?? '';
+          otherParameterS2TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS2TestValue645'] ?? false;
+          otherParameterS2RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS2RemarksControllers645'] ??
+              '';
+
+          otherParameterS3Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS3Controller645'] ?? '';
+          otherParameterS3TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS3TestValue645'] ?? false;
+          otherParameterS3RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS3RemarksControllers645'] ??
+              '';
+
+          otherParameterS4Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS4Controller645'] ?? '';
+          otherParameterS4TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS4TestValue645'] ?? false;
+          otherParameterS4RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS4RemarksControllers645'] ??
+              '';
+
+          otherParameterS5Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS5Controller645'] ?? '';
+          otherParameterS5TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS5TestValue645'] ?? false;
+          otherParameterS5RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS5RemarksControllers645'] ??
+              '';
+
+          otherParameterS6Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS6Controller645'] ?? '';
+          otherParameterS6TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS6TestValue645'] ?? false;
+          otherParameterS6RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS6RemarksControllers645'] ??
+              '';
+
+          otherParameterS7Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS7Controller645'] ?? '';
+          otherParameterS7TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS7TestValue645'] ?? false;
+          otherParameterS7RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS7RemarksControllers645'] ??
+              '';
+
+          otherParameterS8Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS8Controller645'] ?? '';
+          otherParameterS8TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS8TestValue645'] ?? false;
+          otherParameterS8RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS8RemarksControllers645'] ??
+              '';
+
+          otherParameterS9Controller645.text =
+              dataMap[0]['Sample3']['otherParameterS9Controller645'] ?? '';
+          otherParameterS9TestValue645 =
+              dataMap[0]['Sample3']['otherParameterS9TestValue645'] ?? false;
+          otherParameterS9RemarksControllers645.text = dataMap[0]['Sample3']
+                  ['otherParameterS9RemarksControllers645'] ??
+              '';
+
+          // numberOfPackagingSampleFields =
+          //     (dataMap[0]['SampleSizePackaging'] != 0
+          //         ? dataMap[0]['SampleSizePackaging']
+          //         : 1);
+          // Packaging = dataMap[0]['Packaging'] ?? [];
+
+          // visualSampleSizeController.text = (dataMap[0]['SampleSizeVisual'] != 0
+          //         ? dataMap[0]['SampleSizeVisual']
+          //         : "")
+          //     .toString();
+          // Visual = dataMap[0]['Visual'] ?? [];
+
+          // physicalSampleSizeController.text =
+          //     (dataMap[0]['SampleSizePhysical'] != 0
+          //             ? dataMap[0]['SampleSizePhysical']
+          //             : '1')
+          //         .toString();
+          // Physical = dataMap[0]['Physical'] ?? [];
+
+          // frontbusSampleSizeController.text =
+          //     (dataMap[0]['SampleSizeFrontBus'] != 0
+          //             ? dataMap[0]['SampleSizeFrontBus']
+          //             : "")
+          //         .toString();
+          // FrontBus = dataMap[0]['FrontBus'] ?? [];
+
+          // verificationSampleSizeController.text =
+          //     (dataMap[0]['SampleSizeVerification'] != 0
+          //             ? dataMap[0]['SampleSizeVerification']
+          //             : "")
+          //         .toString();
+          // Verification = dataMap[0]['Verification'] ?? [];
 
           result = dataMap[0]['Result'] ?? 'Fail';
-          status = dataMap[0]['Status'] ?? '';
 
-          packagingRejection = dataMap[0]['RejectPackaging'] ?? false;
-          visualRejection = dataMap[0]['RejectVisual'] ?? false;
-          physicalRejection = dataMap[0]['RejectPhysical'] ?? false;
-          frontbusRejection = dataMap[0]['RejectFrontBus'] ?? false;
-          verificationRejection = dataMap[0]['RejectVerification'] ?? false;
-          electricalRejection = dataMap[0]['RejectElectrical'] ?? false;
-          performanceRejection = dataMap[0]['RejectPerformance'] ?? false;
+          packagingRejection = dataMap[0]['CheckTypes'][0]['S1'] ?? false;
+          visualRejection = dataMap[0]['CheckTypes'][1]['S2'] ?? false;
+          physicalRejection = dataMap[0]['CheckTypes'][2]['S3'] ?? false;
+          // frontbusRejection = dataMap[0]['RejectFrontBus'] ?? false;
+          // verificationRejection = dataMap[0]['RejectVerification'] ?? false;
+          // electricalRejection = dataMap[0]['RejectElectrical'] ?? false;
+          // performanceRejection = dataMap[0]['RejectPerformance'] ?? false;
           rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
 
-          invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
-          cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
+          // invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
+          // cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
         }
       });
     }
@@ -1594,8 +1973,8 @@ class _FqcAddEditState extends State<FqcAddEdit> {
               duration: Toast.lengthLong,
               gravity: Toast.center,
               backgroundColor: AppColors.blueColor);
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => FqcTestList()));
+          // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //     builder: (BuildContext context) => FqcTestList()));
         }
       }
     } else {
@@ -1651,7 +2030,9 @@ class _FqcAddEditState extends State<FqcAddEdit> {
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return FqcPage();
+                return widget.id != "" && widget.id != null
+                    ? FqcTestList()
+                    : FqcPage();
               }));
             },
           ),
@@ -1987,19 +2368,19 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                               fontSize: 16),
                                           onTap: () {
                                             AppHelper.hideKeyboard(context);
-                                            // _registerFormKey.currentState!.save;
-                                            // if (_registerFormKey.currentState!
-                                            //     .validate()) {
-                                            setState(() {
-                                              setPage = 'S1';
-                                            });
-                                            // if (status != 'Pending') {
-                                            //   setState(() {
-                                            //     sendStatus = 'Inprogress';
-                                            //   });
-                                            //   createData();
-                                            // }
-                                            //  }
+                                            _registerFormKey.currentState!.save;
+                                            if (_registerFormKey.currentState!
+                                                .validate()) {
+                                              setState(() {
+                                                setPage = 'S1';
+                                              });
+                                              if (status != 'Pending') {
+                                                setState(() {
+                                                  sendStatus = 'Inprogress';
+                                                });
+                                                createData();
+                                              }
+                                            }
                                           },
                                           label: "Next",
                                           organization: '',
@@ -4581,7 +4962,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                       ),
                                       TextFormField(
                                         controller:
-                                            otherParameterS6Controller930,
+                                            otherParameterS8Controller930,
                                         decoration: AppStyles
                                             .textFieldInputDecoration
                                             .copyWith(
@@ -4907,26 +5288,26 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                                   fontSize: 16),
                                               onTap: () {
                                                 AppHelper.hideKeyboard(context);
-                                                // packagingFormkey
-                                                //     .currentState!.save;
-                                                // if (packagingFormkey
-                                                //     .currentState!
-                                                //     .validate()) {
-                                                setState(() {
-                                                  setPage = 'S2';
-                                                });
-
-                                                // Dynamic Start......
-
-                                                // Dynamic  End......
-
-                                                if (status != 'Pending') {
+                                                packagingFormkey
+                                                    .currentState!.save;
+                                                if (packagingFormkey
+                                                    .currentState!
+                                                    .validate()) {
                                                   setState(() {
-                                                    sendStatus = 'Inprogress';
+                                                    setPage = 'S2';
                                                   });
-                                                  // createData();
+
+                                                  // Dynamic Start......
+
+                                                  // Dynamic  End......
+
+                                                  if (status != 'Pending') {
+                                                    setState(() {
+                                                      sendStatus = 'Inprogress';
+                                                    });
+                                                    createData();
+                                                  }
                                                 }
-                                                // }
                                               },
                                               label: "Next",
                                               organization: '',
@@ -7663,7 +8044,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                           ),
                                           TextFormField(
                                             controller:
-                                                otherParameterS6Controller230,
+                                                otherParameterS8Controller230,
                                             decoration: AppStyles
                                                 .textFieldInputDecoration
                                                 .copyWith(
@@ -8011,27 +8392,27 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                                   onTap: () {
                                                     AppHelper.hideKeyboard(
                                                         context);
-                                                    // _visualFormKey
-                                                    //     .currentState!.save;
-                                                    // if (_visualFormKey
-                                                    //     .currentState!
-                                                    //     .validate()) {
-                                                    setState(() {
-                                                      setPage = 'S3';
-                                                    });
-
-                                                    // Dynamic Start......
-
-                                                    // Dynamic  End......
-
-                                                    if (status != 'Pending') {
+                                                    _visualFormKey
+                                                        .currentState!.save;
+                                                    if (_visualFormKey
+                                                        .currentState!
+                                                        .validate()) {
                                                       setState(() {
-                                                        sendStatus =
-                                                            'Inprogress';
+                                                        setPage = 'S3';
                                                       });
-                                                      // createData();
+
+                                                      // Dynamic Start......
+
+                                                      // Dynamic  End......
+
+                                                      if (status != 'Pending') {
+                                                        setState(() {
+                                                          sendStatus =
+                                                              'Inprogress';
+                                                        });
+                                                        createData();
+                                                      }
                                                     }
-                                                    // }
                                                   },
                                                   label: "Next",
                                                   organization: '',
@@ -10856,7 +11237,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                               ),
                                               TextFormField(
                                                 controller:
-                                                    otherParameterS6Controller645,
+                                                    otherParameterS8Controller645,
                                                 decoration: AppStyles
                                                     .textFieldInputDecoration
                                                     .copyWith(
@@ -11215,28 +11596,28 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                                       onTap: () {
                                                         AppHelper.hideKeyboard(
                                                             context);
-                                                        // _physicalFormKey
-                                                        //     .currentState!.save;
-                                                        // if (_physicalFormKey
-                                                        //     .currentState!
-                                                        //     .validate()) {
-                                                        setState(() {
-                                                          setPage = 'result';
-                                                        });
-
-                                                        // Dynamic Start......
-
-                                                        // Dynamic  End......
-
-                                                        if (status !=
-                                                            'Pending') {
+                                                        _physicalFormKey
+                                                            .currentState!.save;
+                                                        if (_physicalFormKey
+                                                            .currentState!
+                                                            .validate()) {
                                                           setState(() {
-                                                            sendStatus =
-                                                                'Inprogress';
+                                                            setPage = 'result';
                                                           });
-                                                          // createData();
+
+                                                          // Dynamic Start......
+
+                                                          // Dynamic  End......
+
+                                                          if (status !=
+                                                              'Pending') {
+                                                            setState(() {
+                                                              sendStatus =
+                                                                  'Inprogress';
+                                                            });
+                                                            createData();
+                                                          }
                                                         }
-                                                        // }
                                                       },
                                                       label: "Next",
                                                       organization: '',
@@ -11608,74 +11989,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                                     height: 15,
                                                   ),
                                                   Text(
-                                                    "Upload Invoice Pdf*",
-                                                    style: AppStyles
-                                                        .textfieldCaptionTextStyle,
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  TextFormField(
-                                                    controller:
-                                                        invoicePdfController,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    decoration: AppStyles
-                                                        .textFieldInputDecoration
-                                                        .copyWith(
-                                                            hintText:
-                                                                "Please Select Invoice Pdf",
-                                                            suffixIcon:
-                                                                IconButton(
-                                                              onPressed:
-                                                                  () async {
-                                                                if (widget.id !=
-                                                                        null &&
-                                                                    widget.id !=
-                                                                        '' &&
-                                                                    invoicePdfController
-                                                                            .text !=
-                                                                        '') {
-                                                                  UrlLauncher.launch(
-                                                                      invoicePdfController
-                                                                          .text);
-                                                                } else if (status !=
-                                                                    'Pending') {
-                                                                  _pickInvoicePDF();
-                                                                }
-                                                              },
-                                                              icon: widget.id !=
-                                                                          null &&
-                                                                      widget.id !=
-                                                                          '' &&
-                                                                      invoicePdfController
-                                                                              .text !=
-                                                                          ''
-                                                                  ? const Icon(Icons
-                                                                      .download)
-                                                                  : const Icon(Icons
-                                                                      .open_in_browser),
-                                                            ),
-                                                            counterText: ''),
-                                                    style: AppStyles
-                                                        .textInputTextStyle,
-                                                    maxLines: 1,
-                                                    readOnly: true,
-                                                    validator: (value) {
-                                                      if (value!.isEmpty) {
-                                                        return "Please Select Invoice Pdf";
-                                                      } else {
-                                                        return null;
-                                                      }
-                                                    },
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 15,
-                                                  ),
-                                                  Text(
-                                                    "Upload Coc Pdf*",
+                                                    "Upload Po Pdf*",
                                                     style: AppStyles
                                                         .textfieldCaptionTextStyle,
                                                   ),
@@ -11693,7 +12007,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                                         .textFieldInputDecoration
                                                         .copyWith(
                                                             hintText:
-                                                                "Please Select Coc Pdf",
+                                                                "Please Select Po Pdf",
                                                             suffixIcon:
                                                                 IconButton(
                                                               onPressed:
@@ -11732,7 +12046,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                                     readOnly: true,
                                                     validator: (value) {
                                                       if (value!.isEmpty) {
-                                                        return "Please Select Coc Pdf";
+                                                        return "Please Select Po Pdf";
                                                       } else {
                                                         return null;
                                                       }
@@ -12036,7 +12350,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                         )
                                       : Container(),
                 ),
-          floatingActionButton: _getFAB(),
+          floatingActionButton: status != 'Pending' ? _getFAB() : null,
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(
