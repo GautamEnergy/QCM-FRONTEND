@@ -23,11 +23,16 @@ class _solderingPeelState extends State<solderingPeel> {
   TextEditingController dateController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
   TextEditingController LineController = TextEditingController();
-  TextEditingController PoController = TextEditingController();
+  TextEditingController operatorController = TextEditingController();
+  TextEditingController ribbonSizeController = TextEditingController();
+  TextEditingController cellSizeController = TextEditingController();
+  TextEditingController ribbonMakeController = TextEditingController();
+  TextEditingController cellMakeController = TextEditingController();
+  TextEditingController machineController = TextEditingController();
   TextEditingController ribbonController = TextEditingController();
 
-  List<TextEditingController> LoaderControllers = [];
-  List<TextEditingController> VerificationControllers = [];
+  List<TextEditingController> frontControllers = [];
+  List<TextEditingController> backControllers = [];
 
   bool menu = false, user = false, face = false, home = false;
   int numberOfStringers = 0;
@@ -41,19 +46,19 @@ class _solderingPeelState extends State<solderingPeel> {
   String? selectedShift;
   String? selectedtype;
   List Sample1Controllers = [];
-  // List Sample2Controllers = [];
+  List Sample2Controllers = [];
 
-  void addControllers(int count) {
+  void addfrontControllers(int count) {
     for (int i = 0; i < count; i++) {
-      LoaderControllers.add(TextEditingController());
+      frontControllers.add(TextEditingController());
     }
   }
 
-  // void addsampleControllers(int count) {
-  //   for (int i = 0; i < count; i++) {
-  //     VerificationControllers.add(TextEditingController());
-  //   }
-  // }
+  void addbackControllers(int count) {
+    for (int i = 0; i < count; i++) {
+      backControllers.add(TextEditingController());
+    }
+  }
 
   @override
   void initState() {
@@ -64,26 +69,28 @@ class _solderingPeelState extends State<solderingPeel> {
     // });
   }
 
-  // ****************************************  Send the Data where will be Used to Backend **************************
   Future<void> sendDataToBackend() async {
-    // print(Sample1Controllers);
-    // print("kuch bhi");
-    // print(Sample2Controllers);
+    print(Sample1Controllers);
+    print("kuch bhi");
+    print(Sample2Controllers);
 
-    final url =
-        'your-backend-url'; // Replace 'your-backend-url' with your actual backend URL
-    // Gather data from text controllers
     final data = {
       'date': dateController.text,
       'shift': shiftController.text,
       'line': LineController.text,
-      'Sample': ribbonController.text,
+      'operator': operatorController.text,
+      'ribbonSize': ribbonSizeController.text,
+      'cellSize': cellSizeController.text,
+      'ribbonMake': ribbonMakeController.text,
+      'cellMake': cellMakeController.text,
+      'machine': machineController.text,
+      'ribbon': ribbonController.text,
     };
 
     print('$data');
   }
 
-// ***************** Done Send the Data *******************************
+  // *********** Done Send the Data ***************
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +215,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 ],
                               ),
 
-// ****************** Date *****************************************
+                              // ****************** Date ***********************
                               const SizedBox(
                                 height: 15,
                               ),
@@ -360,7 +367,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: operatorController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -396,7 +403,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: ribbonSizeController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -431,7 +438,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: cellSizeController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -466,7 +473,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: ribbonMakeController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -501,7 +508,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: cellMakeController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -525,13 +532,13 @@ class _solderingPeelState extends State<solderingPeel> {
                                 ),
                               ),
 
-                              // *  PO Number ***********************
+                              // *  Machine Number ***********************
 
                               SizedBox(
                                 height: 15,
                               ),
                               Text(
-                                "Po Number",
+                                "Machine Number",
                                 style: AppStyles.textfieldCaptionTextStyle,
                               ),
 
@@ -539,12 +546,12 @@ class _solderingPeelState extends State<solderingPeel> {
                                 height: 5,
                               ),
                               TextFormField(
-                                controller: PoController,
+                                controller: machineController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
                                     AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Po Number",
+                                  hintText: "Please Machine Number",
                                   counterText: '',
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
@@ -556,11 +563,12 @@ class _solderingPeelState extends State<solderingPeel> {
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
-                                      errorText: "Please Po Number",
+                                      errorText: "Please Machine Number",
                                     ),
                                   ],
                                 ),
                               ),
+
                               //***************   Ribbon  ********************
                               SizedBox(height: 25),
                               const SizedBox(
@@ -578,14 +586,14 @@ class _solderingPeelState extends State<solderingPeel> {
                                   setState(() {
                                     numberOfStringers =
                                         int.tryParse(value) ?? 0;
-                                    addControllers(numberOfStringers * 5);
-                                    // addsampleControllers(numberOfStringers * 5);
+                                    addfrontControllers(numberOfStringers * 5);
+                                    addbackControllers(numberOfStringers * 5);
                                   });
                                 },
                                 decoration:
                                     AppStyles.textFieldInputDecoration.copyWith(
                                   hintText: "Enter the number of Ribbon",
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                  fillColor: Color.fromARGB(255, 248, 226, 217),
                                 ),
                                 style: AppStyles.textInputTextStyle,
                                 // readOnly: status == 'Pending' &&
@@ -602,7 +610,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 visible: numberOfStringers > 0,
                                 child: Center(
                                   child: Text(
-                                    "Sample 1",
+                                    "Stringer Track",
                                     style: TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 250, 4, 4),
@@ -624,7 +632,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Ribbon ${index + 1}",
+                                        "Ribbon${index + 1}",
                                         style: AppStyles.textInputTextStyle
                                             // readOnly: status == 'Pending' &&
                                             //         designation != "QC"
@@ -636,17 +644,16 @@ class _solderingPeelState extends State<solderingPeel> {
                                       ),
                                       SizedBox(height: 20),
                                       TextFormField(
-                                        controller: LoaderControllers[index],
+                                        controller: frontControllers[index],
                                         decoration: AppStyles
                                             .textFieldInputDecoration
                                             .copyWith(
-                                          hintText: "Enter Ribbon",
+                                          hintText: "Front Peel ",
                                           counterText: '',
                                           fillColor: Color.fromARGB(
                                               255, 215, 243, 207),
                                           contentPadding: EdgeInsets.all(10),
                                         ),
-
                                         style: AppStyles.textInputTextStyle,
                                         // readOnly: status == 'Pending' &&
                                         //         designation != "QC"
@@ -654,7 +661,33 @@ class _solderingPeelState extends State<solderingPeel> {
                                         //     : false,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'Please Enter Correct Ribbon';
+                                            return 'Please Enter Correct Stringer';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextFormField(
+                                        controller: backControllers[index],
+                                        decoration: AppStyles
+                                            .textFieldInputDecoration
+                                            .copyWith(
+                                          hintText: "Back Peel ",
+                                          counterText: '',
+                                          fillColor: Color.fromARGB(
+                                              255, 215, 243, 207),
+                                          contentPadding: EdgeInsets.all(10),
+                                        ),
+                                        style: AppStyles.textInputTextStyle,
+                                        // readOnly: status == 'Pending' &&
+                                        //         designation != "QC"
+                                        //     ? true
+                                        //     : false,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please Enter Correct Stringer';
                                           }
                                           return null;
                                         },
@@ -667,7 +700,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                 height: 15,
                               ),
 
-                              // *********************  Temperature's  ************************
+                              // *********************  Functionality  ************************
 
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
@@ -688,8 +721,18 @@ class _solderingPeelState extends State<solderingPeel> {
                                             i < numberOfStringers;
                                             i++) {
                                           Sample1Controllers.add({
-                                            "LoaderControllers${i + 1}":
-                                                LoaderControllers[i].text,
+                                            "frontControllers${i + 1}":
+                                                frontControllers[i].text,
+                                          });
+                                        }
+                                        Sample2Controllers = [];
+
+                                        for (int i = 0;
+                                            i < numberOfStringers;
+                                            i++) {
+                                          Sample2Controllers.add({
+                                            "backControllers${i + 1}":
+                                                backControllers[i].text,
                                           });
                                         }
 

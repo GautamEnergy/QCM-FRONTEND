@@ -7,6 +7,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
+import 'package:QCM/laminator1.dart';
 import 'package:flutter/material.dart';
 import 'package:QCM/stringerCards.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -219,10 +220,10 @@ class _WelcomePageState extends State<MachineCard> {
                 Expanded(
                     child:
                         tabDashboard('Laminator 1', AppAssets.Laminator1, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => laminator1()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => laminator1()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,

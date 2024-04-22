@@ -23,10 +23,15 @@ class _busbarState extends State<busbar> {
   TextEditingController dateController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
   TextEditingController LineController = TextEditingController();
+  TextEditingController operatornameController = TextEditingController();
+  TextEditingController bussingStageController = TextEditingController();
+  TextEditingController ribbonWidthController = TextEditingController();
+  TextEditingController busbarWidthController = TextEditingController();
+
   TextEditingController ribbonController = TextEditingController();
 
-  List<TextEditingController> LoaderControllers = [];
-  List<TextEditingController> VerificationControllers = [];
+  List<TextEditingController> sampleAControllers = [];
+  List<TextEditingController> sampleBControllers = [];
 
   bool menu = false, user = false, face = false, home = false;
   int numberOfStringers = 0;
@@ -44,13 +49,13 @@ class _busbarState extends State<busbar> {
 
   void addControllers(int count) {
     for (int i = 0; i < count; i++) {
-      LoaderControllers.add(TextEditingController());
+      sampleAControllers.add(TextEditingController());
     }
   }
 
   void addsampleControllers(int count) {
     for (int i = 0; i < count; i++) {
-      VerificationControllers.add(TextEditingController());
+      sampleBControllers.add(TextEditingController());
     }
   }
 
@@ -65,18 +70,20 @@ class _busbarState extends State<busbar> {
 
   // ****************************************  Send the Data where will be Used to Backend **************************
   Future<void> sendDataToBackend() async {
-    // print(Sample1Controllers);
+    print(Sample1Controllers);
+    print(Sample2Controllers);
     // print("kuch bhi");
     // print(Sample2Controllers);
 
-    final url =
-        'your-backend-url'; // Replace 'your-backend-url' with your actual backend URL
-    // Gather data from text controllers
     final data = {
       'date': dateController.text,
       'shift': shiftController.text,
       'line': LineController.text,
-      'Sample': ribbonController.text,
+      'operator': operatornameController.text,
+      'bussingStage': bussingStageController.text,
+      'ribbonWidth': ribbonWidthController.text,
+      'busbarWidth': busbarWidthController.text,
+      'ribbon': ribbonController.text,
     };
 
     print('$data');
@@ -359,7 +366,7 @@ class _busbarState extends State<busbar> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: operatornameController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -399,7 +406,7 @@ class _busbarState extends State<busbar> {
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     selectedtype = newValue!;
-                                    // bussingStageController.text = selectedtype!;
+                                    bussingStageController.text = selectedtype!;
                                   });
                                 },
                                 items: <String>[
@@ -442,7 +449,7 @@ class _busbarState extends State<busbar> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: ribbonWidthController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -477,7 +484,7 @@ class _busbarState extends State<busbar> {
                                 height: 5,
                               ),
                               TextFormField(
-                                // controller: LongAController,
+                                controller: busbarWidthController,
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration:
@@ -568,7 +575,6 @@ class _busbarState extends State<busbar> {
                               SizedBox(height: 5),
                               ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
                                 itemCount: numberOfStringers,
                                 itemBuilder: (context, index) {
                                   return Column(
@@ -584,7 +590,7 @@ class _busbarState extends State<busbar> {
                                       ),
                                       SizedBox(height: 20),
                                       TextFormField(
-                                        controller: LoaderControllers[index],
+                                        controller: sampleAControllers[index],
                                         decoration: AppStyles
                                             .textFieldInputDecoration
                                             .copyWith(
@@ -648,8 +654,7 @@ class _busbarState extends State<busbar> {
                                       ),
                                       SizedBox(height: 15),
                                       TextFormField(
-                                        controller:
-                                            VerificationControllers[index],
+                                        controller: sampleBControllers[index],
                                         decoration: AppStyles
                                             .textFieldInputDecoration
                                             .copyWith(
@@ -703,8 +708,8 @@ class _busbarState extends State<busbar> {
                                             i < numberOfStringers;
                                             i++) {
                                           Sample1Controllers.add({
-                                            "LoaderControllers${i + 1}":
-                                                LoaderControllers[i].text,
+                                            "sampleAControllers${i + 1}":
+                                                sampleAControllers[i].text,
                                           });
                                         }
 
@@ -714,8 +719,8 @@ class _busbarState extends State<busbar> {
                                             i < numberOfStringers;
                                             i++) {
                                           Sample2Controllers.add({
-                                            "VerificationControllers${i + 1}":
-                                                VerificationControllers[i].text,
+                                            "sampleBControllers${i + 1}":
+                                                sampleBControllers[i].text,
                                           });
                                         }
 

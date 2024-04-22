@@ -215,8 +215,132 @@ class _framingState extends State<framing> {
       department = prefs.getString('department')!;
       token = prefs.getString('token')!;
     });
-    //_get();
+    _get();
   }
+
+  Future _get() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Kullllllllllllllllllllllllllllllllllllll");
+    print(widget.id);
+    setState(() {
+      if (widget.id != '' && widget.id != null) {
+        _isLoading = true;
+      }
+      site = prefs.getString('site')!;
+    });
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificeJobCard');
+    final allSolarData = await http.post(
+      Uri.parse(AllSolarData),
+      body: jsonEncode(<String, String>{
+        "JobCardDetailId": widget.id ?? '',
+        "token": token!
+      }),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+    print("hhhhhhhhhhhhhhhh");
+    var resBody = json.decode(allSolarData.body);
+
+    if (mounted) {
+      setState(() {
+        if (resBody != '') {
+          print(resBody['response']);
+          print(resBody['response']['Date']);
+          // print(resBody['response']['Visual Inspection & Laminator Description']
+          //     ["Cycle_Time"]);
+
+          print("saiffffffffffffffffffffffffffffffffffffffffff");
+          print("kulllllllllllllllllllllllllllllllllllllllllll");
+          // dateController.text = resBody['response']['Date'] ?? '';
+          // status = resBody['response']['Status'] ?? '';
+          // jobCardDate = resBody['response']['Date'] ?? '';
+          // dateController.text = resBody['response']['Date'] != ''
+          //     ? DateFormat("EEE MMM dd, yyyy").format(
+          //         DateTime.parse(resBody['response']['Date'].toString()))
+          //     : '';
+          // moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
+
+          // matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
+          // moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
+          // lotNoController.text =
+          //     resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
+        }
+      });
+    }
+  }
+
+  // Future setApprovalStatus() async {
+  //   print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  //   print(approvalStatus);
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   FocusScope.of(context).unfocus();
+  //   print("goooooooooooooooooooooooooooooooooooooooooooooooo");
+
+  //   final url = (site! + "IPQC/UpdateJobCardStatus");
+
+  //   var params = {
+  //     "token": token,
+  //     "CurrentUser": personid,
+  //     "ApprovalStatus": approvalStatus,
+  //     "JobCardDetailId": widget.id ?? ""
+  //   };
+
+  //   var response = await http.post(
+  //     Uri.parse(url),
+  //     body: json.encode(params),
+  //     headers: {
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //     var objData = json.decode(response.body);
+  //     if (objData['success'] == false) {
+  //       Toast.show("Please Try Again.",
+  //           duration: Toast.lengthLong,
+  //           gravity: Toast.center,
+  //           backgroundColor: AppColors.redColor);
+  //     } else {
+  //       Toast.show("Job Card Test $approvalStatus .",
+  //           duration: Toast.lengthLong,
+  //           gravity: Toast.center,
+  //           backgroundColor: AppColors.blueColor);
+  //       Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //           builder: (BuildContext context) => IpqcTestList()));
+  //     }
+  //   } else {
+  //     Toast.show("Error In Server",
+  //         duration: Toast.lengthLong, gravity: Toast.center);
+  //   }
+  // }
+
+  // Future<void> _pickReferencePDF() async {
+  //   print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.custom,
+  //     allowedExtensions: ['pdf'],
+  //   );
+
+  //   if (result != null) {
+  //     File pdffile = File(result.files.single.path!);
+  //     setState(() {
+  //       referencePdfFileBytes = pdffile.readAsBytesSync();
+  //       referencePdfController.text = result.files.single.name;
+  //     });
+  //   } else {
+  //     // User canceled the file picker
+  //   }
+  // }
 
   Future createData() async {
     print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
@@ -327,7 +451,7 @@ class _framingState extends State<framing> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Bhanuu bhai");
+    print("Saif bhai");
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200) {
@@ -362,7 +486,7 @@ class _framingState extends State<framing> {
     }
   }
 
-// ***************** Done Send the Data *******************************
+  // ***************** Done Send the Data *******************************
   Widget _getFAB() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 70),
@@ -551,6 +675,10 @@ class _framingState extends State<framing> {
                                     );
                                   });
                                 },
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -595,6 +723,10 @@ class _framingState extends State<framing> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                // readOnly:
+                                //     status == 'Pending' && designation != "QC"
+                                //         ? true
+                                //         : false,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "Please Select Shift";
@@ -633,6 +765,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -683,6 +819,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -731,6 +871,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -760,6 +904,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -792,6 +940,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -822,6 +974,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -855,6 +1011,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -885,6 +1045,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -915,6 +1079,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -944,6 +1112,10 @@ class _framingState extends State<framing> {
                                   fillColor: Color.fromARGB(255, 215, 243, 207),
                                 ),
                                 style: AppStyles.textInputTextStyle,
+                                readOnly:
+                                    status == 'Pending' && designation != "QC"
+                                        ? true
+                                        : false,
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -1174,6 +1346,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1226,6 +1402,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1276,6 +1456,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1307,6 +1491,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1341,6 +1529,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1373,6 +1565,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1408,6 +1604,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1440,6 +1640,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1472,6 +1676,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1503,6 +1711,10 @@ class _framingState extends State<framing> {
                                           Color.fromARGB(255, 215, 243, 207),
                                     ),
                                     style: AppStyles.textInputTextStyle,
+                                    readOnly: status == 'Pending' &&
+                                            designation != "QC"
+                                        ? true
+                                        : false,
                                     validator: MultiValidator(
                                       [
                                         RequiredValidator(
@@ -1771,6 +1983,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -1826,6 +2042,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -1879,6 +2099,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -1912,6 +2136,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -1948,6 +2176,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -1982,6 +2214,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2019,6 +2255,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2053,6 +2293,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2087,6 +2331,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2120,6 +2368,10 @@ class _framingState extends State<framing> {
                                               255, 215, 243, 207),
                                         ),
                                         style: AppStyles.textInputTextStyle,
+                                        readOnly: status == 'Pending' &&
+                                                designation != "QC"
+                                            ? true
+                                            : false,
                                         validator: MultiValidator(
                                           [
                                             RequiredValidator(
@@ -2394,6 +2646,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2450,6 +2706,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2504,6 +2764,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2538,6 +2802,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2575,6 +2843,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2610,6 +2882,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2648,6 +2924,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2683,6 +2963,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2718,6 +3002,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(
@@ -2752,6 +3040,10 @@ class _framingState extends State<framing> {
                                                   255, 215, 243, 207),
                                             ),
                                             style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
                                             validator: MultiValidator(
                                               [
                                                 RequiredValidator(

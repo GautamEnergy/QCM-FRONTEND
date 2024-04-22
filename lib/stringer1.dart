@@ -495,7 +495,7 @@ class _stringer1State extends State<stringer1> {
                                 height: 5,
                               ),
 
-// *********************  Temperature's  ************************
+                              // ***************  Temperature's  ****************
 
                               TextFormField(
                                 controller: ASet1Controller,
@@ -1097,32 +1097,6 @@ class _stringer1State extends State<stringer1> {
                                 height: 20,
                               ),
 
-// -------------------------  It's Working End point's -----------------------------
-                              // Center(
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.all(8.0),
-                              //     child: InkWell(
-                              //       onTap: () {
-                              //         // Navigator.of(context).pushReplacement(
-                              //         //     MaterialPageRoute(
-                              //         //         builder: (BuildContext context) =>
-                              //         //             LoginPage(
-                              //         //                 appName: widget.appName)));
-                              //       },
-                              //       child: Text(
-                              //         "BACK",
-                              //         style: TextStyle(
-                              //           fontFamily: appFontFamily,
-                              //           fontSize: 16,
-                              //           fontWeight: FontWeight.w500,
-                              //           color: AppColors.redColor,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-
-                              // ^^^^^^^
                               const SizedBox(
                                 height: 15,
                               ),
@@ -1181,7 +1155,6 @@ class _stringer1State extends State<stringer1> {
                               //   height: 10,
                               // ),
 
-                              // ^^^^^^^
                               const SizedBox(
                                 height: 25,
                               ),
@@ -1212,8 +1185,6 @@ class _stringer1State extends State<stringer1> {
                       ),
                     ],
                   )
-
-                // 999999999999999999999999999999999999999999
                 : setPage == "TrackB"
                     ? Stack(
                         alignment: Alignment.center,
@@ -1315,7 +1286,7 @@ class _stringer1State extends State<stringer1> {
                                     ],
                                   ),
 
-//  *******************************************   Monitoring For tabber & Stringer Machine ********************
+                                  //  ***************   Monitoring For tabber & Stringer Machine ****************
 
                                   const SizedBox(
                                     height: 15,
@@ -1352,7 +1323,7 @@ class _stringer1State extends State<stringer1> {
                                     height: 5,
                                   ),
 
-// *********************  Temperature's  ************************
+                                  // *********************  Temperature's  ************************
 
                                   TextFormField(
                                     controller: BSet1Controller,
@@ -2015,7 +1986,7 @@ class _stringer1State extends State<stringer1> {
                                     height: 20,
                                   ),
 
-// -------------------------  It's Working End point's -----------------------------
+                                  // -------------------------  It's Working End point's -----------------------------
 
                                   const SizedBox(
                                     height: 15,
