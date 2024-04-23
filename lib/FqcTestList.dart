@@ -509,7 +509,11 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].productBatchNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].partyName ?? '',
+                            data.data![index].dateOfQualityCheck.toString() ??
+                                '',
+                            data.data![index].pdf ?? ''));
                   } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
@@ -525,7 +529,11 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].productBatchNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].partyName ?? '',
+                            data.data![index].dateOfQualityCheck.toString() ??
+                                '',
+                            data.data![index].pdf ?? ''));
                   } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -538,7 +546,11 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].productBatchNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].partyName ?? '',
+                            data.data![index].dateOfQualityCheck.toString() ??
+                                '',
+                            data.data![index].pdf ?? ''));
                   } else if (data.data![index].employeeID!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -551,7 +563,11 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].productBatchNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].partyName ?? '',
+                            data.data![index].dateOfQualityCheck.toString() ??
+                                '',
+                            data.data![index].pdf ?? ''));
                   } else if ((data.data![index].employeeID!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -564,7 +580,11 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].productBatchNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].partyName ?? '',
+                            data.data![index].dateOfQualityCheck.toString() ??
+                                '',
+                            data.data![index].pdf ?? ''));
                   } else if (data.data![index].fQCDetailId!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -577,7 +597,11 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].name ?? '',
                             data.data![index].location ?? '',
                             data.data![index].productBatchNo ?? '',
-                            data.data![index].employeeID ?? ''));
+                            data.data![index].employeeID ?? '',
+                            data.data![index].partyName ?? '',
+                            data.data![index].dateOfQualityCheck.toString() ??
+                                '',
+                            data.data![index].pdf ?? ''));
                   } else {
                     return Container();
                   }
@@ -597,6 +621,9 @@ class _FqcTestListState extends State<FqcTestList> {
     String location,
     String invoiceno,
     String employeeid,
+    String partyname,
+    String dateOfQualityCheck,
+    String pdf,
   ) {
     return InkWell(
       onTap: () {},
@@ -747,134 +774,94 @@ class _FqcTestListState extends State<FqcTestList> {
                           height: 5,
                         ),
                         //Occupication
-                        // Row(children: <Widget>[
-                        //   Container(
-                        //     padding: const EdgeInsets.symmetric(
-                        //         horizontal: 10, vertical: 5),
-                        //     decoration: BoxDecoration(
-                        //       color: Color.fromARGB(
-                        //           255, 0, 0, 0), // Background color
-                        //       borderRadius: BorderRadius.circular(
-                        //           10), // Optional: Add border radius for rounded corners
-                        //     ),
-                        //     child: Text(
-                        //       DateFormat("dd MMM yyyy").format(
-                        //           DateTime.parse(qualityCheckDate.toString())),
-                        //       style: const TextStyle(
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 11,
-                        //         color: Color.fromARGB(255, 255, 255,
-                        //             255), // Optional: Set text color
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   const SizedBox(
-                        //     width: 10,
-                        //   ),
-                        //   Container(
-                        //     padding: const EdgeInsets.symmetric(
-                        //         horizontal: 10, vertical: 5),
-                        //     decoration: BoxDecoration(
-                        //       color: Color.fromARGB(
-                        //           255, 4, 68, 243), // Background color
-                        //       borderRadius: BorderRadius.circular(
-                        //           10), // Optional: Add border radius for rounded corners
-                        //     ),
-                        //     child: Text(
-                        //       supplierName,
-                        //       style: const TextStyle(
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 11,
-                        //         color: Color.fromARGB(255, 255, 255,
-                        //             255), // Optional: Set text color
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ]),
-                        // if (_hasBeenPressed1 == 'Approved')
-                        //   const SizedBox(
-                        //     height: 5,
-                        //   ),
-                        // if (_hasBeenPressed1 == 'Approved')
-                        //   Row(children: <Widget>[
-                        //     if (invoicePdf != null && invoicePdf != '')
-                        //       Container(
-                        //         padding: const EdgeInsets.symmetric(
-                        //             horizontal: 10, vertical: 5),
-                        //         decoration: BoxDecoration(
-                        //           color: Color.fromARGB(
-                        //               255, 4, 68, 243), // Background color
-                        //           borderRadius: BorderRadius.circular(
-                        //               10), // Optional: Add border radius for rounded corners
-                        //         ),
-                        //         child: const Text(
-                        //           "Invoice :",
-                        //           style: TextStyle(
-                        //             fontWeight: FontWeight.bold,
-                        //             fontSize: 11,
-                        //             color: Color.fromARGB(255, 255, 255,
-                        //                 255), // Optional: Set text color
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     if (invoicePdf != null && invoicePdf != '')
-                        //       const SizedBox(
-                        //         width: 5,
-                        //       ),
-                        //     if (invoicePdf != null && invoicePdf != '')
-                        //       GestureDetector(
-                        //         onTap: () {
-                        //           UrlLauncher.launch(invoicePdf);
-                        //         },
-                        //         child: ClipRRect(
-                        //           child: Image.asset(
-                        //             AppAssets.icPdf,
-                        //             width: 30,
-                        //             height: 30,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     const SizedBox(
-                        //       width: 20,
-                        //     ),
-                        //     if (cOCPdf != null && cOCPdf != '')
-                        //       Container(
-                        //         padding: const EdgeInsets.symmetric(
-                        //             horizontal: 10, vertical: 5),
-                        //         decoration: BoxDecoration(
-                        //           color: Color.fromARGB(
-                        //               255, 100, 243, 4), // Background color
-                        //           borderRadius: BorderRadius.circular(
-                        //               10), // Optional: Add border radius for rounded corners
-                        //         ),
-                        //         child: const Text(
-                        //           "COC :",
-                        //           style: TextStyle(
-                        //             fontWeight: FontWeight.bold,
-                        //             fontSize: 11,
-                        //             color: Color.fromARGB(255, 0, 0,
-                        //                 0), // Optional: Set text color
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     if (cOCPdf != null && cOCPdf != '')
-                        //       const SizedBox(
-                        //         width: 5,
-                        //       ),
-                        //     if (cOCPdf != null && cOCPdf != '')
-                        //       GestureDetector(
-                        //         onTap: () {
-                        //           UrlLauncher.launch(cOCPdf);
-                        //         },
-                        //         child: ClipRRect(
-                        //           child: Image.asset(
-                        //             AppAssets.icPdf,
-                        //             width: 30,
-                        //             height: 30,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //   ]),
+                        Row(children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 0, 0, 0), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              DateFormat("dd MMM yyyy").format(DateTime.parse(
+                                  dateOfQualityCheck.toString())),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 4, 68, 243), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              partyname,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                        ]),
+                        if (_hasBeenPressed1 == 'Approved')
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        if (_hasBeenPressed1 == 'Approved')
+                          Row(children: <Widget>[
+                            if (pdf != null && pdf != '')
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(
+                                      255, 100, 243, 4), // Background color
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Optional: Add border radius for rounded corners
+                                ),
+                                child: const Text(
+                                  "PO :",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Color.fromARGB(255, 0, 0,
+                                        0), // Optional: Set text color
+                                  ),
+                                ),
+                              ),
+                            if (pdf != null && pdf != '')
+                              const SizedBox(
+                                width: 5,
+                              ),
+                            if (pdf != null && pdf != '')
+                              GestureDetector(
+                                onTap: () {
+                                  UrlLauncher.launch(pdf);
+                                },
+                                child: ClipRRect(
+                                  child: Image.asset(
+                                    AppAssets.icPdf,
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ),
+                              ),
+                          ]),
 
                         const SizedBox(
                           height: 2,

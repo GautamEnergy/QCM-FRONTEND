@@ -877,23 +877,6 @@ class _FqcAddEditState extends State<FqcAddEdit> {
     _get();
   }
 
-  Future<void> _pickInvoicePDF() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-
-    if (result != null) {
-      File pdffile = File(result.files.single.path!);
-      setState(() {
-        invoicePdfFileBytes = pdffile.readAsBytesSync();
-        invoicePdfController.text = result.files.single.name;
-      });
-    } else {
-      // User canceled the file picker
-    }
-  }
-
   Future<void> _pickcocPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -1390,8 +1373,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
           // performanceRejection = dataMap[0]['RejectPerformance'] ?? false;
           rejectionReasonController.text = dataMap[0]['Reason'] ?? '';
 
-          // invoicePdfController.text = dataMap[0]['InvoicePdf'] ?? '';
-          // cocPdfController.text = dataMap[0]['COCPdf'] ?? '';
+          cocPdfController.text = dataMap[0]['Pdf'] ?? '';
         }
       });
     }
@@ -1403,7 +1385,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
     });
     FocusScope.of(context).unfocus();
 
-    final url = (site! + "IQCSolarCell/UpdateStatus");
+    final url = (site! + "IQCSolarCell/FQCUpdateStatus");
 
     var params = {
       "token": token,
@@ -1432,12 +1414,12 @@ class _FqcAddEditState extends State<FqcAddEdit> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Backsheet Test $approvalStatus .",
+        Toast.show("FQC Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => IqcpTestList()));
+            builder: (BuildContext context) => FqcTestList()));
       }
     } else {
       Toast.show("Error In Server",
@@ -1445,7 +1427,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
     }
   }
 
-  uploadPDF(List<int> invoiceBytes, List<int> cocBytes) async {
+  uploadPDF(List<int> cocBytes) async {
     setState(() {
       _isLoading = true;
     });
@@ -1454,21 +1436,15 @@ class _FqcAddEditState extends State<FqcAddEdit> {
 
     var currentdate = DateTime.now().microsecondsSinceEpoch;
     var formData = FormData.fromMap({
-      "FqcId": FqcId,
-      "InvoicePdf": MultipartFile.fromBytes(
-        invoiceBytes,
-        filename:
-            (invoicePdfController.text + (currentdate.toString()) + '.pdf'),
-        contentType: MediaType("application", 'pdf'),
-      ),
-      "COCPdf": MultipartFile.fromBytes(
+      "FQCDetailId": FqcId,
+      "FQCPdf": MultipartFile.fromBytes(
         cocBytes,
         filename: (cocPdfController.text + (currentdate.toString()) + '.pdf'),
         contentType: MediaType("application", 'pdf'),
       ),
     });
 
-    _response = await _dio.post((site! + 'IQCSolarCell//UploadPdf'), // Prod
+    _response = await _dio.post((site! + 'IQCSolarCell/UploadFQCPdf'), // Prod
 
         options: Options(
           contentType: 'multipart/form-data',
@@ -1483,12 +1459,12 @@ class _FqcAddEditState extends State<FqcAddEdit> {
           _isLoading = false;
         });
 
-        Toast.show("Backsheet Test Completed.",
+        Toast.show("FQC Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => IqcpTestList()));
+            builder: (BuildContext context) => FqcTestList()));
       } else {
         Toast.show("Error In Server",
             duration: Toast.lengthLong, gravity: Toast.center);
@@ -1960,14 +1936,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
           setState(() {
             _isLoading = false;
           });
-
-          Toast.show("FQC Test Completed.",
-              duration: Toast.lengthLong,
-              gravity: Toast.center,
-              backgroundColor: AppColors.blueColor);
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => FqcTestList()));
-          // uploadPDF((invoicePdfFileBytes ?? []), (cocPdfFileBytes ?? []));
+          uploadPDF((cocPdfFileBytes ?? []));
         } else {
           Toast.show("Data has been saved.",
               duration: Toast.lengthLong,

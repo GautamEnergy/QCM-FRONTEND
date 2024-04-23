@@ -37,6 +37,9 @@ class UserData {
   String? fQCDetailId;
   String? product;
   String? productBatchNo;
+  String? partyName;
+  DateTime? dateOfQualityCheck;
+  String? pdf;
 
   UserData(
       {this.employeeID,
@@ -45,7 +48,10 @@ class UserData {
       this.location,
       this.fQCDetailId,
       this.product,
-      this.productBatchNo});
+      this.productBatchNo,
+      this.partyName,
+      this.dateOfQualityCheck,
+      this.pdf});
 
   UserData.fromJson(Map<String, dynamic> json) {
     employeeID = json['EmployeeID'];
@@ -55,6 +61,9 @@ class UserData {
     fQCDetailId = json['FQCDetailId'];
     product = json['Product'];
     productBatchNo = json['ProductBatchNo'];
+    partyName = json['PartyName'];
+    dateOfQualityCheck = DateTime.parse(json['DateOfQualityCheck']);
+    pdf = json['Pdf'];
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +75,9 @@ class UserData {
     data['FQCDetailId'] = this.fQCDetailId;
     data['Product'] = this.product;
     data['ProductBatchNo'] = this.productBatchNo;
+    data['PartyName'] = this.partyName;
+    data['DateOfQualityCheck'] = this.dateOfQualityCheck;
+    data['Pdf'] = this.pdf;
     return data;
   }
 }
