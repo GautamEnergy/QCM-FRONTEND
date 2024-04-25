@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, must_call_super, annotate_overrides
 import 'package:QCM/user_list_model.dart';
 import 'package:flutter/material.dart';
-
 import '../constant/app_color.dart';
 import '../constant/app_fonts.dart';
-import '../constant/app_strings.dart';
 import '../constant/app_styles.dart';
 
 class DialogAllMembers extends StatefulWidget {
@@ -90,13 +88,13 @@ class _DialogAllMembersState extends State<DialogAllMembers> {
                         } else {
                           List<UserData> filterCountryList = [];
                           personList.forEach((Person) {
-                            if ((Person.fullname!
+                            if ((Person.name!
                                     .toLowerCase()
                                     .contains(value.toLowerCase())) ||
-                                (Person.fullname!
+                                (Person.name!
                                     .toLowerCase()
                                     .contains(value.toLowerCase())) ||
-                                (Person.fullname!
+                                (Person.name!
                                     .toLowerCase()
                                     .contains(value.toLowerCase()))) {
                               filterCountryList.add(Person);
@@ -112,7 +110,7 @@ class _DialogAllMembersState extends State<DialogAllMembers> {
                       textInputAction: TextInputAction.next,
                       decoration: AppStyles.textFieldInputDecoration.copyWith(
                           hintText: "Search by Name",
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.search,
                             size: 25,
                             color: AppColors.lightBlackColor,
@@ -128,26 +126,24 @@ class _DialogAllMembersState extends State<DialogAllMembers> {
                 itemCount: personList.length,
                 itemBuilder: (context, index) {
                   String imgUrl =
-                      widget.ImagePath! + widget.data!.data![index].profilepic!;
+                      widget.ImagePath! + widget.data!.data![index].profileImg!;
                   return InkWell(
                     onTap: () {
                       var Dialogdata = {
-                        "PersonId": personList[index].personid,
-                        "FullName": personList[index].fullname! +
+                        "PersonId": personList[index].personID,
+                        "FullName": personList[index].name! +
                             " " +
-                            personList[index].fullname!,
-                        "Email": personList[index].officialemail,
-                        "Phone": personList[index].officialcontactno
+                            personList[index].name!,
+                        // "Email": personList[index].officialemail,
+                        // "Phone": personList[index].officialcontactno
                       };
                       Navigator.of(context).pop(Dialogdata);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10.0, top: 10),
                       child: Text(
-                        personList[index].fullname! +
-                            " " +
-                            personList[index].fullname!,
-                        style: TextStyle(
+                        personList[index].name! + " " + personList[index].name!,
+                        style: const TextStyle(
                             color: AppColors.black,
                             fontSize: 14.0,
                             fontFamily: appFontFamily,
@@ -157,7 +153,7 @@ class _DialogAllMembersState extends State<DialogAllMembers> {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return Divider(
+                  return const Divider(
                     color: Colors.grey,
                   );
                 },
