@@ -1,3 +1,4 @@
+import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/constant/app_assets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -79,14 +80,11 @@ class GautamAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             InkWell(
                 onTap: () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => EditProfile(
-                  //               id: memberId,
-                  //               isAdd: 0,
-                  //               isSelf: 1,
-                  //             )),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              AddEditProfile(id: memberId)),
+                      (Route<dynamic> route) => false);
                 },
                 child: Container(
                   width: 35,

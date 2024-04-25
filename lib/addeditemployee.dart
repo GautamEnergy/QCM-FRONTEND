@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -162,7 +163,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
   void initState() {
     store();
     getLocationData();
-    getReportingManagerData();
+
     getDepartmentData();
     getDsignationData();
 
@@ -256,7 +257,14 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 logo: "logo",
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return EmployeeList();
+                    return designation != "Super Admin" && department == "IQCP"
+                        ? IqcpPage()
+                        : designation != "Super Admin" && department == "IPQC"
+                            ? IpqcPage()
+                            : designation != "Super Admin" &&
+                                    department == "FQC"
+                                ? FqcPage()
+                                : EmployeeList();
                   }));
                 },
               ),
@@ -311,80 +319,6 @@ class _ScoreDetailsState extends State<AddEditProfile> {
     );
   }
 
-  TextFormField textJobLocation() {
-    return TextFormField(
-      controller: joblocationController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Work Location",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter work location';
-        }
-        return null;
-      },
-    );
-  }
-
-  getReportingManagerData() async {
-    final prefs = await SharedPreferences.getInstance();
-    site = prefs.getString('site');
-    final url = (site! + 'getReportingManagers');
-    print(url);
-    http.get(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    ).then((response) {
-      if (mounted) {
-        var departmentBody = jsonDecode(response.body);
-        setState(() {
-          reportingManagerList = departmentBody['data'];
-        });
-        print(reportingManagerList);
-      }
-    });
-  }
-
-  DropdownButtonFormField textReportingManager() {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        hintText: 'Please Select Reporting Manager', // Add hint text here
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      borderRadius: BorderRadius.circular(20),
-      items: reportingManagerList
-          .map((label) => DropdownMenuItem(
-                child: Text(label['fullname'],
-                    style: AppStyles.textInputTextStyle),
-                value: label['personid'].toString(),
-              ))
-          .toList(),
-      onChanged: (val) {
-        setState(() {
-          reportingManagerController = val!;
-        });
-      },
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please select a reporting manager';
-        }
-        return null; // Return null if validation succeeds
-      },
-      value:
-          reportingManagerController != '' ? reportingManagerController : null,
-    );
-  }
-
   TextFormField textFullName() {
     return TextFormField(
       controller: fullnameController,
@@ -397,6 +331,10 @@ class _ScoreDetailsState extends State<AddEditProfile> {
           counterText: '',
           contentPadding: EdgeInsets.all(10)),
       style: AppStyles.textInputTextStyle,
+      readOnly:
+          widget.id != '' && widget.id != null && designation != "Super Admin"
+              ? true
+              : false,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter full name';
@@ -508,11 +446,14 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 value: label['LocationID'].toString(),
               ))
           .toList(),
-      onChanged: (val) {
-        setState(() {
-          locationController = val!;
-        });
-      },
+      onChanged:
+          widget.id != '' && widget.id != null && designation != "Super Admin"
+              ? null
+              : (val) {
+                  setState(() {
+                    locationController = val!;
+                  });
+                },
       value: locationController != '' ? locationController : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -537,11 +478,14 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 value: label['DepartmentID'].toString(),
               ))
           .toList(),
-      onChanged: (val) {
-        setState(() {
-          departmentController = val!;
-        });
-      },
+      onChanged:
+          widget.id != '' && widget.id != null && designation != "Super Admin"
+              ? null
+              : (val) {
+                  setState(() {
+                    departmentController = val!;
+                  });
+                },
       value: departmentController != '' ? departmentController : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -566,11 +510,14 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 value: label['DesignationID'].toString(),
               ))
           .toList(),
-      onChanged: (val) {
-        setState(() {
-          designationController = val!;
-        });
-      },
+      onChanged:
+          widget.id != '' && widget.id != null && designation != "Super Admin"
+              ? null
+              : (val) {
+                  setState(() {
+                    designationController = val!;
+                  });
+                },
       value: designationController != '' ? designationController : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -973,67 +920,69 @@ class _ScoreDetailsState extends State<AddEditProfile> {
             const SizedBox(
               height: 15,
             ),
+            if (designation == "Super Admin") const SizedBox(height: 30),
+            if (designation == "Super Admin")
+              AppButton(
+                organization: (organizationtype ?? ''),
+                textStyle: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.white,
+                    fontSize: 16),
+                onTap: () async {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
 
-            const SizedBox(height: 30),
-            AppButton(
-              organization: (organizationtype ?? ''),
-              textStyle: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.white,
-                  fontSize: 16),
-              onTap: () async {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
-
-                  if ((widget.id == '' || widget.id == null) &&
-                      (personlogoBytes != null && personlogoBytes != '')) {
-                    createData(
-                        employeeIdController.text,
-                        loginIdController.text,
-                        locationController ?? "",
-                        fullnameController.text,
-                        departmentController ?? "",
-                        designationController ?? "");
-                  } else if ((widget.id != '' && widget.id != null)) {
-                    createData(
-                        employeeIdController.text,
-                        loginIdController.text,
-                        locationController ?? "",
-                        fullnameController.text,
-                        departmentController ?? "",
-                        designationController ?? "");
-                  } else {
-                    Toast.show("Please Upload Profile Picture.",
-                        duration: Toast.lengthLong,
-                        gravity: Toast.center,
-                        backgroundColor: Colors.redAccent);
+                    if ((widget.id == '' || widget.id == null) &&
+                        (personlogoBytes != null && personlogoBytes != '')) {
+                      createData(
+                          employeeIdController.text,
+                          loginIdController.text,
+                          locationController ?? "",
+                          fullnameController.text,
+                          departmentController ?? "",
+                          designationController ?? "");
+                    } else if ((widget.id != '' && widget.id != null)) {
+                      createData(
+                          employeeIdController.text,
+                          loginIdController.text,
+                          locationController ?? "",
+                          fullnameController.text,
+                          departmentController ?? "",
+                          designationController ?? "");
+                    } else {
+                      Toast.show("Please Upload Profile Picture.",
+                          duration: Toast.lengthLong,
+                          gravity: Toast.center,
+                          backgroundColor: Colors.redAccent);
+                    }
                   }
-                }
-              },
-              label: AppStrings.SAVE,
-            ),
-            SizedBox(height: 10),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => EmployeeList()),
-                        (Route<dynamic> route) => false);
-                  },
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(
-                        fontFamily: appFontFamily,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.redColor),
+                },
+                label: AppStrings.SAVE,
+              ),
+            if (designation == "Super Admin") SizedBox(height: 10),
+            if (designation == "Super Admin")
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  EmployeeList()),
+                          (Route<dynamic> route) => false);
+                    },
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                          fontFamily: appFontFamily,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.redColor),
+                    ),
                   ),
                 ),
               ),
-            ),
             const Divider(),
           ],
         ));
