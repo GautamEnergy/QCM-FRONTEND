@@ -1,15 +1,26 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/appbar.dart';
+import 'package:QCM/ipqcTestList.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:QCM/components/app_button_widget.dart';
+import 'package:dio/src/response.dart' as Response;
 import 'package:QCM/constant/app_assets.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
@@ -89,6 +100,7 @@ class _framingState extends State<framing> {
   TextEditingController Sample5L2Controller = TextEditingController();
   TextEditingController Sample5W1Controller = TextEditingController();
   TextEditingController Sample5W2Controller = TextEditingController();
+  TextEditingController referencePdfController = new TextEditingController();
 
   bool menu = false, user = false, face = false, home = false;
   int numberOfStringers = 0;
@@ -96,10 +108,11 @@ class _framingState extends State<framing> {
   String setPage = '', pic = '', site = '', personid = '';
   String invoiceDate = '';
   String date = '';
-  String sendStatus = '';
+  late String sendStatus;
   String dateOfQualityCheck = '';
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
+  List<int>? referencePdfFileBytes;
   String? selectedShift;
   String status = '',
       framingId = '',
@@ -107,15 +120,17 @@ class _framingState extends State<framing> {
       designation = '',
       token = '',
       department = '';
-  // final _dio = Dio();
-  //List data = [];
+  final _dio = Dio();
+  List data = [];
 
-  //Response.Response? _response;
+  Response.Response? _response;
 
   @override
   void initState() {
     super.initState();
-    store(); // Set initial value
+    store();
+    print("nananananannananananna");
+    print(widget.id);
   }
 
   // ****************************************  Send the Data where will be Used ro Backend **************************
@@ -220,7 +235,7 @@ class _framingState extends State<framing> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Kullllllllllllllllllllllllllllllllllllll");
+    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
     print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
@@ -228,7 +243,7 @@ class _framingState extends State<framing> {
       }
       site = prefs.getString('site')!;
     });
-    final AllSolarData = ((site!) + 'IPQC/GetSpecificeJobCard');
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificFraming');
     final allSolarData = await http.post(
       Uri.parse(AllSolarData),
       body: jsonEncode(<String, String>{
@@ -245,102 +260,182 @@ class _framingState extends State<framing> {
     });
     print("hhhhhhhhhhhhhhhh");
     var resBody = json.decode(allSolarData.body);
+    print(resBody);
 
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print(resBody['response']);
-          print(resBody['response']['Date']);
+          print(resBody['response']['Shift']);
+          print(resBody['response']['Status']);
           // print(resBody['response']['Visual Inspection & Laminator Description']
           //     ["Cycle_Time"]);
 
           print("saiffffffffffffffffffffffffffffffffffffffffff");
           print("kulllllllllllllllllllllllllllllllllllllllllll");
           // dateController.text = resBody['response']['Date'] ?? '';
-          // status = resBody['response']['Status'] ?? '';
-          // jobCardDate = resBody['response']['Date'] ?? '';
-          // dateController.text = resBody['response']['Date'] != ''
-          //     ? DateFormat("EEE MMM dd, yyyy").format(
-          //         DateTime.parse(resBody['response']['Date'].toString()))
-          //     : '';
-          // moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          dateOfQualityCheck = resBody['response']['Date'] ?? '';
+          dateController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          selectedShift = resBody['response']['Shift'] ?? '';
+          Sample1Controller.text = resBody['response']['Sample1'] ?? '';
+          Sample1GlueController.text =
+              resBody['response']['1FramingObservation'] ?? '';
+          Sample1x1Controller.text =
+              resBody['response']['1FramingDimension']['x1'] ?? '';
+          Sample1x2Controller.text =
+              resBody['response']['1FramingDimension']['x2'] ?? '';
+          Sample1y1Controller.text =
+              resBody['response']['1FramingDimension']['y1'] ?? '';
+          Sample1y2Controller.text =
+              resBody['response']['1FramingDimension']['y2'] ?? '';
+          Sample1L1Controller.text =
+              resBody['response']['1FramingDimension']['l1'] ?? '';
+          Sample1L2Controller.text =
+              resBody['response']['1FramingDimension']['l2'] ?? '';
+          Sample1W1Controller.text =
+              resBody['response']['1FramingDimension']['w1'] ?? '';
+          Sample1W2Controller.text =
+              resBody['response']['1FramingDimension']['w2'] ?? '';
+          // Sample 2
+          Sample2Controller.text = resBody['response']['Sample2'] ?? '';
+          Sample2GlueController.text =
+              resBody['response']['2FramingObservation'] ?? '';
+          Sample2x1Controller.text =
+              resBody['response']['2FramingDimension']['x1'] ?? '';
+          Sample2x2Controller.text =
+              resBody['response']['2FramingDimension']['x2'] ?? '';
+          Sample2y1Controller.text =
+              resBody['response']['2FramingDimension']['y1'] ?? '';
+          Sample2y2Controller.text =
+              resBody['response']['2FramingDimension']['y2'] ?? '';
+          Sample2L1Controller.text =
+              resBody['response']['2FramingDimension']['l1'] ?? '';
+          Sample2L2Controller.text =
+              resBody['response']['2FramingDimension']['l2'] ?? '';
+          Sample2W1Controller.text =
+              resBody['response']['2FramingDimension']['w1'] ?? '';
+          Sample2W2Controller.text =
+              resBody['response']['2FramingDimension']['w2'] ?? '';
+          // Sample 3
+          Sample3Controller.text = resBody['response']['Sample3'] ?? '';
+          Sample3GlueController.text =
+              resBody['response']['3FramingObservation'] ?? '';
+          Sample3x1Controller.text =
+              resBody['response']['3FramingDimension']['x1'] ?? '';
+          Sample3x2Controller.text =
+              resBody['response']['3FramingDimension']['x2'] ?? '';
+          Sample3y1Controller.text =
+              resBody['response']['3FramingDimension']['y1'] ?? '';
+          Sample3y2Controller.text =
+              resBody['response']['3FramingDimension']['y2'] ?? '';
+          Sample3L1Controller.text =
+              resBody['response']['3FramingDimension']['l1'] ?? '';
+          Sample3L2Controller.text =
+              resBody['response']['3FramingDimension']['l2'] ?? '';
+          Sample3W1Controller.text =
+              resBody['response']['3FramingDimension']['w1'] ?? '';
+          Sample3W2Controller.text =
+              resBody['response']['3FramingDimension']['w2'] ?? '';
+          // Sample 4
+          Sample4Controller.text = resBody['response']['Sample4'] ?? '';
+          Sample4GlueController.text =
+              resBody['response']['4FramingObservation'] ?? '';
+          Sample4x1Controller.text =
+              resBody['response']['4FramingDimension']['x1'] ?? '';
+          Sample4x2Controller.text =
+              resBody['response']['4FramingDimension']['x2'] ?? '';
+          Sample4y1Controller.text =
+              resBody['response']['4FramingDimension']['y1'] ?? '';
+          Sample4y2Controller.text =
+              resBody['response']['4FramingDimension']['y2'] ?? '';
+          Sample4L1Controller.text =
+              resBody['response']['4FramingDimension']['l1'] ?? '';
+          Sample4L2Controller.text =
+              resBody['response']['4FramingDimension']['l2'] ?? '';
+          Sample4W1Controller.text =
+              resBody['response']['4FramingDimension']['w1'] ?? '';
+          Sample4W2Controller.text =
+              resBody['response']['4FramingDimension']['w2'] ?? '';
+          //Sample 5
+          Sample5Controller.text = resBody['response']['Sample5'] ?? '';
+          Sample5GlueController.text =
+              resBody['response']['5FramingObservation'] ?? '';
+          Sample5x1Controller.text =
+              resBody['response']['5FramingDimension']['x1'] ?? '';
+          Sample5x2Controller.text =
+              resBody['response']['5FramingDimension']['x2'] ?? '';
+          Sample5y1Controller.text =
+              resBody['response']['5FramingDimension']['y1'] ?? '';
+          Sample5y2Controller.text =
+              resBody['response']['5FramingDimension']['y2'] ?? '';
+          Sample1L1Controller.text =
+              resBody['response']['5FramingDimension']['l1'] ?? '';
+          Sample5L2Controller.text =
+              resBody['response']['1FramingDimension']['l2'] ?? '';
+          Sample5W1Controller.text =
+              resBody['response']['5FramingDimension']['w1'] ?? '';
+          Sample5W2Controller.text =
+              resBody['response']['5FramingDimension']['w2'] ?? '';
 
-          // matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
-          // moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
-          // lotNoController.text =
-          //     resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
+          referencePdfController.text =
+              resBody['response']['ReferencePdf'] ?? '';
         }
       });
     }
   }
 
-  // Future setApprovalStatus() async {
-  //   print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-  //   print(approvalStatus);
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   FocusScope.of(context).unfocus();
-  //   print("goooooooooooooooooooooooooooooooooooooooooooooooo");
+  Future setApprovalStatus() async {
+    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    print(approvalStatus);
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
 
-  //   final url = (site! + "IPQC/UpdateJobCardStatus");
+    final url = (site! + "IPQC/UpdateFramingStatus");
 
-  //   var params = {
-  //     "token": token,
-  //     "CurrentUser": personid,
-  //     "ApprovalStatus": approvalStatus,
-  //     "JobCardDetailId": widget.id ?? ""
-  //   };
+    var params = {
+      "token": token,
+      "CurrentUser": personid,
+      "ApprovalStatus": approvalStatus,
+      "JobCardDetailId": widget.id ?? ""
+    };
 
-  //   var response = await http.post(
-  //     Uri.parse(url),
-  //     body: json.encode(params),
-  //     headers: {
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //   );
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(params),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //     var objData = json.decode(response.body);
-  //     if (objData['success'] == false) {
-  //       Toast.show("Please Try Again.",
-  //           duration: Toast.lengthLong,
-  //           gravity: Toast.center,
-  //           backgroundColor: AppColors.redColor);
-  //     } else {
-  //       Toast.show("Job Card Test $approvalStatus .",
-  //           duration: Toast.lengthLong,
-  //           gravity: Toast.center,
-  //           backgroundColor: AppColors.blueColor);
-  //       Navigator.of(context).pushReplacement(MaterialPageRoute(
-  //           builder: (BuildContext context) => IpqcTestList()));
-  //     }
-  //   } else {
-  //     Toast.show("Error In Server",
-  //         duration: Toast.lengthLong, gravity: Toast.center);
-  //   }
-  // }
-
-  // Future<void> _pickReferencePDF() async {
-  //   print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
-  //     type: FileType.custom,
-  //     allowedExtensions: ['pdf'],
-  //   );
-
-  //   if (result != null) {
-  //     File pdffile = File(result.files.single.path!);
-  //     setState(() {
-  //       referencePdfFileBytes = pdffile.readAsBytesSync();
-  //       referencePdfController.text = result.files.single.name;
-  //     });
-  //   } else {
-  //     // User canceled the file picker
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
+      var objData = json.decode(response.body);
+      if (objData['success'] == false) {
+        Toast.show("Please Try Again.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        Toast.show("Job Card Test $approvalStatus .",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
+    }
+  }
 
   Future createData() async {
     print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
@@ -357,10 +452,12 @@ class _framingState extends State<framing> {
       "Status": sendStatus,
       'DocNo': 'GSPL/IPQC/AF/011',
       'RevNo': '1.0/12.08.2023',
-      'Date': dateController.text,
+      'Date': dateOfQualityCheck,
       'Shift': shiftController.text,
+      'Line': Sample1Controller.text,
       'samples': [
         {
+          "Stage": "1",
           'Sample': Sample1Controller.text,
           'FramingObservation': Sample1GlueController.text,
           'FramingDimension': {
@@ -375,6 +472,7 @@ class _framingState extends State<framing> {
           }
         },
         {
+          "Stage": "2",
           'Sample': Sample2Controller.text,
           'FramingObservation': Sample2GlueController.text,
           'FramingDimension': {
@@ -389,6 +487,7 @@ class _framingState extends State<framing> {
           }
         },
         {
+          "Stage": "3",
           'Sample': Sample3Controller.text,
           'FramingObservation': Sample3GlueController.text,
           'FramingDimension': {
@@ -403,6 +502,7 @@ class _framingState extends State<framing> {
           }
         },
         {
+          "Stage": "4",
           'Sample': Sample4Controller.text,
           'FramingObservation': Sample4GlueController.text,
           'FramingDimension': {
@@ -417,6 +517,7 @@ class _framingState extends State<framing> {
           }
         },
         {
+          "Stage": "5",
           'Sample': Sample5Controller.text,
           'FramingObservation': Sample5GlueController.text,
           'FramingDimension': {
@@ -451,7 +552,7 @@ class _framingState extends State<framing> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Saif bhai");
+    print("Bhanuu bhai");
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200) {
@@ -472,7 +573,7 @@ class _framingState extends State<framing> {
             backgroundColor: AppColors.redColor);
       } else {
         if (sendStatus == 'Pending') {
-          // uploadPDF((referencePdfFileBytes ?? []));
+          uploadPDF((referencePdfFileBytes ?? []));
         } else {
           Toast.show("Data has been saved.",
               duration: Toast.lengthLong,
@@ -486,7 +587,79 @@ class _framingState extends State<framing> {
     }
   }
 
-  // ***************** Done Send the Data *******************************
+  Future<void> _pickReferencePDF() async {
+    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        referencePdfFileBytes = pdffile.readAsBytesSync();
+        referencePdfController.text = result.files.single.name;
+      });
+      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
+      print(referencePdfFileBytes);
+    } else {
+      // User canceled the file picker
+    }
+  }
+
+  uploadPDF(List<int> referenceBytes) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+
+    var currentdate = DateTime.now().microsecondsSinceEpoch;
+    var formData = FormData.fromMap({
+      "JobCardDetailId": framingId,
+      "FramingPdf": MultipartFile.fromBytes(
+        referenceBytes,
+        filename:
+            (referencePdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+    });
+    print("Hoiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    print(formData.files);
+
+    _response = await _dio.post((site! + 'IPQC/UploadFramingPdf'), // Prod
+
+        options: Options(
+          contentType: 'multipart/form-data',
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+        data: formData);
+
+    try {
+      print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      print(_response?.statusCode);
+      if (_response?.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Toast.show("Framing Test Completed.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      } else {
+        Toast.show("Error In Server",
+            duration: Toast.lengthLong, gravity: Toast.center);
+      }
+    } catch (err) {
+      print("Error");
+    }
+  }
+
+// ***************** Done Send the Data *******************************
   Widget _getFAB() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 70),
@@ -534,7 +707,9 @@ class _framingState extends State<framing> {
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return IpqcPage();
+                return widget.id != "" && widget.id != null
+                    ? IpqcTestList()
+                    : IpqcPage();
               }));
             },
           ),
@@ -654,31 +829,33 @@ class _framingState extends State<framing> {
                                   suffixIcon: Icon(Icons.calendar_month),
                                 ),
                                 style: AppStyles.textInputTextStyle,
-                                onTap: () async {
-                                  DateTime date = DateTime(2021);
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
-                                  date = (await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime.now(),
-                                  ))!;
-                                  dateController.text =
-                                      DateFormat("EEE MMM dd, yyyy").format(
-                                    DateTime.parse(date.toString()),
-                                  );
-                                  setState(() {
-                                    dateOfQualityCheck =
-                                        DateFormat("yyyy-MM-dd").format(
-                                      DateTime.parse(date.toString()),
-                                    );
-                                  });
-                                },
                                 readOnly:
                                     status == 'Pending' && designation != "QC"
                                         ? true
                                         : false,
+                                onTap: () async {
+                                  if (status != 'Pending') {
+                                    DateTime date = DateTime(2021);
+                                    FocusScope.of(context)
+                                        .requestFocus(new FocusNode());
+                                    date = (await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now(),
+                                    ))!;
+                                    dateController.text =
+                                        DateFormat("EEE MMM dd, yyyy").format(
+                                      DateTime.parse(date.toString()),
+                                    );
+                                    setState(() {
+                                      dateOfQualityCheck =
+                                          DateFormat("yyyy-MM-dd").format(
+                                        DateTime.parse(date.toString()),
+                                      );
+                                    });
+                                  }
+                                },
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
@@ -702,12 +879,15 @@ class _framingState extends State<framing> {
                               ),
                               DropdownButtonFormField<String>(
                                 value: selectedShift,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedShift = newValue!;
-                                    shiftController.text = selectedShift!;
-                                  });
-                                },
+                                onChanged: designation != "QC" &&
+                                        status == "Pending"
+                                    ? null
+                                    : (String? newValue) {
+                                        setState(() {
+                                          selectedShift = newValue!;
+                                          shiftController.text = selectedShift!;
+                                        });
+                                      },
                                 items: <String>[
                                   'Night Shift',
                                   'Day Shift'
@@ -723,10 +903,6 @@ class _framingState extends State<framing> {
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
-                                // readOnly:
-                                //     status == 'Pending' && designation != "QC"
-                                //         ? true
-                                //         : false,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "Please Select Shift";
@@ -1168,8 +1344,10 @@ class _framingState extends State<framing> {
                                       ),
                                       onTap: () {
                                         AppHelper.hideKeyboard(context);
-                                        createData(); //500
-
+                                        setState(() {
+                                          sendStatus = "Inprogress";
+                                        });
+                                        createData();
                                         // _registerFormKey.currentState!.save;
                                         // if (_registerFormKey.currentState!
                                         //     .validate()) {
@@ -1769,6 +1947,12 @@ class _framingState extends State<framing> {
                                           ),
                                           onTap: () {
                                             AppHelper.hideKeyboard(context);
+                                            setState(() {
+                                              sendStatus = "Inprogress";
+                                            });
+                                            setState(() {
+                                              sendStatus = "Inprogress";
+                                            });
                                             createData(); //100
 
                                             // _registerFormKey.currentState!.save;
@@ -2428,6 +2612,9 @@ class _framingState extends State<framing> {
                                               ),
                                               onTap: () {
                                                 AppHelper.hideKeyboard(context);
+                                                setState(() {
+                                                  sendStatus = "Inprogress";
+                                                });
                                                 createData(); //200
 
                                                 // _registerFormKey.currentState!.save;
@@ -3101,6 +3288,9 @@ class _framingState extends State<framing> {
                                                   onTap: () {
                                                     AppHelper.hideKeyboard(
                                                         context);
+                                                    setState(() {
+                                                      sendStatus = "Inprogress";
+                                                    });
                                                     createData(); //300
 
                                                     // _registerFormKey.currentState!.save;
@@ -3346,6 +3536,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3406,6 +3600,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3463,6 +3661,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3500,6 +3702,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3540,6 +3746,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3578,6 +3788,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3619,6 +3833,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3657,6 +3875,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3695,6 +3917,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3732,6 +3958,10 @@ class _framingState extends State<framing> {
                                                 ),
                                                 style: AppStyles
                                                     .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
                                                 validator: MultiValidator(
                                                   [
                                                     RequiredValidator(
@@ -3773,6 +4003,70 @@ class _framingState extends State<framing> {
                                               const SizedBox(
                                                 height: 15,
                                               ),
+                                              Text(
+                                                "Reference PDF Document ",
+                                                style: AppStyles
+                                                    .textfieldCaptionTextStyle,
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              TextFormField(
+                                                controller:
+                                                    referencePdfController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                        hintText:
+                                                            "Please Select Reference Pdf",
+                                                        suffixIcon: IconButton(
+                                                          onPressed: () async {
+                                                            if (widget.id !=
+                                                                    null &&
+                                                                widget.id !=
+                                                                    '' &&
+                                                                referencePdfController
+                                                                        .text !=
+                                                                    '') {
+                                                              UrlLauncher.launch(
+                                                                  referencePdfController
+                                                                      .text);
+                                                            } else if (status !=
+                                                                'Pending') {
+                                                              _pickReferencePDF();
+                                                            }
+                                                          },
+                                                          icon: widget.id != null &&
+                                                                  widget.id !=
+                                                                      '' &&
+                                                                  referencePdfController
+                                                                          .text !=
+                                                                      ''
+                                                              ? const Icon(Icons
+                                                                  .download)
+                                                              : const Icon(Icons
+                                                                  .upload_file),
+                                                        ),
+                                                        counterText: ''),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                maxLines: 1,
+                                                readOnly: true,
+                                                validator: (value) {
+                                                  if (value!.isEmpty) {
+                                                    return "Please Select Reference Pdf";
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
                                               Padding(
                                                   padding: EdgeInsets.fromLTRB(
                                                       0, 10, 0, 0)),
@@ -3780,37 +4074,99 @@ class _framingState extends State<framing> {
                                                   ? Center(
                                                       child:
                                                           CircularProgressIndicator())
-                                                  : AppButton(
-                                                      textStyle:
-                                                          const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: AppColors.white,
-                                                        fontSize: 16,
-                                                      ),
-                                                      onTap: () {
-                                                        AppHelper.hideKeyboard(
-                                                            context);
-                                                        createData(); //400
+                                                  : (widget.id == "" ||
+                                                              widget.id ==
+                                                                  null) ||
+                                                          (status ==
+                                                                  'Inprogress' &&
+                                                              widget.id != null)
+                                                      ? AppButton(
+                                                          textStyle:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                AppColors.white,
+                                                            fontSize: 16,
+                                                          ),
+                                                          onTap: () {
+                                                            AppHelper
+                                                                .hideKeyboard(
+                                                                    context);
+                                                            _registerFormKey
+                                                                .currentState!
+                                                                .save;
+                                                            if (_registerFormKey
+                                                                .currentState!
+                                                                .validate()) {
+                                                              setState(() {
+                                                                // setPage = "Cell Cutting Machine";
+                                                                sendStatus =
+                                                                    "Pending";
+                                                              });
+                                                              createData();
+                                                            }
 
-                                                        // _registerFormKey.currentState!.save;
-                                                        // if (_registerFormKey.currentState!
-                                                        //     .validate()) {
-                                                        //   sendDataToBackend();
-                                                        // }
-                                                        setState(() {
-                                                          setPage =
-                                                              "Done All Page's";
-                                                        });
-                                                        // print("Page set");
-                                                        print(setPage);
-                                                      },
-                                                      label: "Save",
-                                                      organization: '',
-                                                    ),
+                                                            // _registerFormKey.currentState!.save;
+                                                            // if (_registerFormKey.currentState!
+                                                            //     .validate()) {
+                                                            //   sendDataToBackend();
+                                                            // }
+                                                            setState(() {
+                                                              setPage =
+                                                                  "Done All Page's";
+                                                            });
+                                                            // print("Page set");
+                                                            print(setPage);
+                                                          },
+                                                          label: "Submit",
+                                                          organization: '',
+                                                        )
+                                                      : Container(),
                                               const SizedBox(
                                                 height: 25,
                                               ),
+                                              if (widget.id != "" &&
+                                                  widget.id != null &&
+                                                  status == 'Pending')
+                                                Container(
+                                                  color: Color.fromARGB(
+                                                      255,
+                                                      191,
+                                                      226,
+                                                      187), // Change the background color to your desired color
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
+                                                    children: [
+                                                      Divider(),
+                                                      SizedBox(height: 15),
+                                                      AppButton(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: AppColors
+                                                                    .white,
+                                                                fontSize: 16),
+                                                        onTap: () {
+                                                          AppHelper
+                                                              .hideKeyboard(
+                                                                  context);
+                                                          setApprovalStatus();
+                                                        },
+                                                        label: "Approve",
+                                                        organization: '',
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Divider(),
+                                                    ],
+                                                  ),
+                                                ),
                                               // Back button
                                               // const SizedBox(
                                               //   height: 15,
@@ -3916,7 +4272,11 @@ class _framingState extends State<framing> {
                 InkWell(
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomePage()));
+                          builder: (BuildContext context) =>
+                              department == 'IPQC' &&
+                                      designation != 'Super Admin'
+                                  ? IpqcPage()
+                                  : WelcomePage()));
                     },
                     child: Image.asset(
                         home
@@ -3953,10 +4313,10 @@ class _framingState extends State<framing> {
                   width: 8,
                 ),
                 InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => PublicDrawer()));
-                    // },
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => PublicDrawer()));
+                    },
                     child: Image.asset(
                         menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                         height: 25)),
