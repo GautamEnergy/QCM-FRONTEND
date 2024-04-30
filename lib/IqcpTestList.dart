@@ -179,7 +179,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
                 appBar: GautamAppBar(
                   organization: "organizationtype",
                   isBackRequired: true,
-                  memberId: "personid",
+                  memberId: personid,
                   imgPath: "ImagePath",
                   memberPic: pic,
                   logo: "logo",
@@ -858,11 +858,13 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             ),
                           ),
                         ]),
-                        if (_hasBeenPressed1 == 'Approved')
+                        if (_hasBeenPressed1 == 'Approved' ||
+                            _hasBeenPressed1 == 'Pending')
                           const SizedBox(
                             height: 5,
                           ),
-                        if (_hasBeenPressed1 == 'Approved')
+                        if (_hasBeenPressed1 == 'Approved' ||
+                            _hasBeenPressed1 == 'Pending')
                           Row(children: <Widget>[
                             if (invoicePdf != null && invoicePdf != '')
                               Container(

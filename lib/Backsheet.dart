@@ -773,7 +773,7 @@ class _BacksheetState extends State<Backsheet> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -4894,6 +4894,7 @@ class _BacksheetState extends State<Backsheet> {
                                                                                           visualRejection = false;
                                                                                           physicalRejection = false;
                                                                                           frontbusRejection = false;
+                                                                                          verificationRejection = false;
                                                                                           // electricalRejection = false;
                                                                                           //  performanceRejection = false;
                                                                                         });

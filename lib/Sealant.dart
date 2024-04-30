@@ -826,7 +826,7 @@ class _SealantState extends State<Sealant> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -6377,6 +6377,7 @@ class _SealantState extends State<Sealant> {
                                                                                                                   electricalRejection = false;
                                                                                                                   performanceRejection = false;
                                                                                                                   sealantRejection = false;
+                                                                                                                  verificationRejection = false;
                                                                                                                 });
                                                                                                               }
                                                                                                             },

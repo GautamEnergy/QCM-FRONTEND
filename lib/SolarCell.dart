@@ -785,7 +785,7 @@ class _SolarCellState extends State<SolarCell> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -4979,9 +4979,8 @@ class _SolarCellState extends State<SolarCell> {
                                                                                       .textInputTextStyle,
                                                                                   maxLength:
                                                                                       2,
-                                                                                  readOnly: status == 'Pending'
-                                                                                      ? true
-                                                                                      : false,
+                                                                                  readOnly:
+                                                                                      true,
                                                                                   validator: MultiValidator([
                                                                                     RequiredValidator(errorText: "Please Enter Sample Size.")
                                                                                   ])
@@ -5462,7 +5461,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                           ),
                                                                                           style: AppStyles.textInputTextStyle,
                                                                                           maxLength: 2,
-                                                                                          readOnly: status == 'Pending' ? true : false,
+                                                                                          readOnly: true,
                                                                                           validator: MultiValidator([RequiredValidator(errorText: "Please Enter Sample Size.")])
                                                                                           // bikki
                                                                                           ),

@@ -8,6 +8,7 @@ import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
+import 'package:QCM/QualityPage.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/attendance.dart';
@@ -110,7 +111,7 @@ class _WelcomePageState extends State<WelcomePage> {
       appBar: GautamAppBar(
         organization: "organizationtype",
         isBackRequired: false,
-        memberId: "personid",
+        memberId: personid,
         imgPath: "ImagePath",
         memberPic: pic,
         logo: "logo",
@@ -206,6 +207,35 @@ class _WelcomePageState extends State<WelcomePage> {
                                 designation != 'Super Admin'
                                     ? FqcPage()
                                     : FqcTestList()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard(
+                          'QUALITY',
+                          designation != 'Super Admin'
+                              ? AppAssets.quality
+                              : AppAssets.qualityadd, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                designation != 'Super Admin'
+                                    ? QualityPage()
+                                    : QualityPage()),
                         (Route<dynamic> route) => false);
                   })),
                   const SizedBox(

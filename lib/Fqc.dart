@@ -113,9 +113,8 @@ class _FqcPageState extends State<FqcPage> {
       backgroundColor: AppColors.lightBlack,
       appBar: GautamAppBar(
         organization: "organizationtype",
-        isBackRequired:
-            department == 'IQCP' && designation != 'Super Admin' ? false : true,
-        memberId: "personid",
+        isBackRequired: designation != 'Super Admin' ? false : true,
+        memberId: personid,
         imgPath: "ImagePath",
         memberPic: pic,
         logo: "logo",

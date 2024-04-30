@@ -181,7 +181,7 @@ class _FqcTestListState extends State<FqcTestList> {
                 appBar: GautamAppBar(
                   organization: "organizationtype",
                   isBackRequired: true,
-                  memberId: "personid",
+                  memberId: personid,
                   imgPath: "ImagePath",
                   memberPic: pic,
                   logo: "logo",
@@ -890,8 +890,8 @@ class _FqcTestListState extends State<FqcTestList> {
                         ),
                       ],
                     ),
-                  //  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
-                  if (_hasBeenPressed1 == 'Inprogress')
+                  if (_hasBeenPressed1 == 'Inprogress' && designation == "QC")
+                    // if (_hasBeenPressed1 == 'Inprogress')
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

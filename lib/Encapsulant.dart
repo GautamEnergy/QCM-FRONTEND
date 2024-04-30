@@ -774,7 +774,7 @@ class _EncapsulantState extends State<Encapsulant> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",

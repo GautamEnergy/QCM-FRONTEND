@@ -772,7 +772,7 @@ class _JunctionBoxState extends State<JunctionBox> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -5386,6 +5386,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                                                                                   physicalRejection = false;
                                                                                                   frontbusRejection = false;
                                                                                                   electricalRejection = false;
+                                                                                                  verificationRejection = false;
                                                                                                   //  performanceRejection = false;
                                                                                                 });
                                                                                               }

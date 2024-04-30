@@ -1993,7 +1993,7 @@ class _FqcAddEditState extends State<FqcAddEdit> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",

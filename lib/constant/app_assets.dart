@@ -47,6 +47,8 @@ class AppAssets {
   static String home = 'assets/icons/ic_home_selected.png';
   static String solarcell = 'assets/icons/solar-cell.png';
   static String fqcadd = 'assets/icons/fqcadd.png';
+  static String qualityadd = 'assets/icons/qualityadd.png';
+  static String quality = 'assets/icons/quality.png';
   static String jobcard = 'assets/icons/jobcard.png';
   static String IQCP = 'assets/icons/iqcp.png';
   static String search = 'assets/icons/attendance_icon.png';

@@ -166,7 +166,8 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
     getDepartmentData();
     getDsignationData();
-
+    print("ProfilePicccc");
+    print(profilepicture);
     super.initState();
   }
 
@@ -187,7 +188,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
   Future _get() async {
     print("Id.....AddEditProfile");
-    print(widget.id);
+    print(personid);
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       if (widget.id != '' && widget.id != null) {
@@ -251,7 +252,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
               appBar: GautamAppBar(
                 organization: "organizationtype",
                 isBackRequired: true,
-                memberId: "personid",
+                memberId: personid,
                 imgPath: "ImagePath",
                 memberPic: pic,
                 logo: "logo",
@@ -727,7 +728,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                                 fit: BoxFit.cover,
                               ))),
                         )
-                      : profilepicture != ''
+                      : profilepicture != ""
                           ? InkWell(
                               onTap: () async {
                                 FilePickerResult? result =
@@ -743,7 +744,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                                         aspectRatio: const CropAspectRatio(
                                             ratioX: 9, ratioY: 9));
                                 if (result != null) {
-                                  var name = personalMobileController.text;
+                                  var name = fullnameController.text;
                                   setState(() {
                                     personPreview =
                                         File(croppedprofilepicture!.path);
@@ -761,8 +762,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                                     //     await croppedprofilepicture!
                                     //         .readAsBytes();
 
-                                    personLogoname =
-                                        personalMobileController.text;
+                                    personLogoname = fullnameController.text;
                                   }
                                 }
                               },
@@ -818,15 +818,21 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                                             ratioX: 9, ratioY: 9));
 
                                 if (result != null) {
-                                  var name = personalMobileController.text;
+                                  var name = fullnameController.text;
                                   setState(() {
                                     personPreview =
                                         File(croppedprofilepicture!.path);
                                   });
                                   if (result != null) {
                                     await croppedprofilepicture!.readAsBytes();
-                                    personLogoname =
-                                        personalMobileController.text;
+                                    var _imageBytesOriginal =
+                                        personPreview!.readAsBytesSync();
+                                    personlogoBytes = await FlutterImageCompress
+                                        .compressWithList(
+                                      _imageBytesOriginal!,
+                                      quality: 20,
+                                    );
+                                    personLogoname = fullnameController.text;
                                   }
                                 }
                               },
@@ -840,7 +846,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                                   ),
                                   child: const Center(
                                     child: Text(
-                                      "Upload Profile Picture",
+                                      "Upload Profile PictureQQQ",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontFamily: appFontFamily,
@@ -929,6 +935,8 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                     color: AppColors.white,
                     fontSize: 16),
                 onTap: () async {
+                  print("personlogoBytes ??????");
+                  print(personlogoBytes);
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
 

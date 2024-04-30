@@ -114,7 +114,7 @@ class _WelcomePageState extends State<IqcpPage> {
         organization: "organizationtype",
         isBackRequired:
             department == 'IQCP' && designation != 'Super Admin' ? false : true,
-        memberId: "personid",
+        memberId: personid,
         imgPath: "ImagePath",
         memberPic: pic,
         logo: "logo",
