@@ -14,10 +14,13 @@ import 'package:QCM/constant/app_assets.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
+import 'package:QCM/framing.dart';
+import 'package:QCM/ipqcSelant.dart';
 import 'package:QCM/ipqc_list_model.dart';
 import 'package:QCM/postlam.dart';
 import 'package:QCM/prelam.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -97,6 +100,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
     setState(() {
       _isLoading = true;
     });
+    print("Lalalalallallalala");
+    print(site);
 
     final url = (site! + 'IPQC/GetJobCardList');
 
@@ -108,6 +113,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     ).then((response) {
+      print("Kya aaya..???");
+      print(response);
+      print(response.body);
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -119,7 +127,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
       }
     });
 
-    return null;
+    print("error,,,,,,,");
   }
 
   void setMemberStatus(id) async {
@@ -208,7 +216,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                 appBar: GautamAppBar(
                   organization: "organizationtype",
                   isBackRequired: true,
-                  memberId: "personid",
+                  memberId: personid,
                   imgPath: "ImagePath",
                   memberPic: pic,
                   logo: "logo",
@@ -675,23 +683,26 @@ class _IpqcTestListState extends State<IpqcTestList> {
                               type == "Job Card"
                                   ? AppAssets.jobcard
                                   : type == "BOM Verification"
-                                      ? AppAssets.postlam
+                                      ? AppAssets.bom
                                       : type == "PreLam"
                                           ? AppAssets.prelam
-                                          // : type == "Junction Box"
-                                          //     ? AppAssets.imgAttendanceReport
-                                          //     : type ==
-                                          //             "Aluminium Frame"
-                                          //         ? AppAssets.imgSalaryReport
-                                          //         : type == "Flux"
-                                          //             ? AppAssets.flux
-                                          //             : type ==
-                                          //                     "Backsheet"
-                                          //                 ? AppAssets
-                                          //                     .imgAttendanceList
-                                          : type == "PostLam"
-                                              ? AppAssets.postlam
-                                              : AppAssets.jobcard,
+                                          : type == "Framing"
+                                              ? AppAssets.framemeasurement
+                                              : type == "Sealent"
+                                                  ? AppAssets.sealantmeasurement
+
+                                                  //     : type ==
+                                                  //             "Aluminium Frame"
+                                                  //         ? AppAssets.imgSalaryReport
+                                                  //         : type == "Flux"
+                                                  //             ? AppAssets.flux
+                                                  //             : type ==
+                                                  //                     "Backsheet"
+                                                  //                 ? AppAssets
+                                                  //                     .imgAttendanceList
+                                                  : type == "PostLam"
+                                                      ? AppAssets.postlam
+                                                      : AppAssets.jobcard,
                               height: 60,
                               width: 60,
                             ),
@@ -856,18 +867,24 @@ class _IpqcTestListState extends State<IpqcTestList> {
                       children: [
                         InkWell(
                           onTap: () {
+                            print("Ham......??");
+                            print(id);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        type == "Job Card"
-                                            ? Jobcard(id: id)
-                                            : type == "BOM Verification"
-                                                ? BomCard(id: id)
-                                                : type == "PreLam"
-                                                    ? PreCard(id: id)
-                                                    : type == "PostLam"
-                                                        ? Postlam(id: id)
-                                                        : BomCard(id: id)),
+                                    builder: (BuildContext context) => type ==
+                                            "Job Card"
+                                        ? Jobcard(id: id)
+                                        : type == "BOM Verification"
+                                            ? BomCard(id: id)
+                                            : type == "PreLam"
+                                                ? PreCard(id: id)
+                                                : type == "PostLam"
+                                                    ? Postlam(id: id)
+                                                    : type == "Framing"
+                                                        ? framing(id: id)
+                                                        : type == "Sealent"
+                                                            ? ipqcSelant(id: id)
+                                                            : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -885,18 +902,24 @@ class _IpqcTestListState extends State<IpqcTestList> {
                       children: [
                         InkWell(
                           onTap: () {
+                            print("Ham......??");
+                            print(id);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        type == "Job Card"
-                                            ? Jobcard(id: id)
-                                            : type == "BOM Verification"
-                                                ? BomCard(id: id)
-                                                : type == "PreLam"
-                                                    ? PreCard(id: id)
-                                                    : type == "PostLam"
-                                                        ? Postlam(id: id)
-                                                        : BomCard(id: id)),
+                                    builder: (BuildContext context) => type ==
+                                            "Job Card"
+                                        ? Jobcard(id: id)
+                                        : type == "BOM Verification"
+                                            ? BomCard(id: id)
+                                            : type == "PreLam"
+                                                ? PreCard(id: id)
+                                                : type == "PostLam"
+                                                    ? Postlam(id: id)
+                                                    : type == "Framing"
+                                                        ? framing(id: id)
+                                                        : type == "Sealent"
+                                                            ? ipqcSelant(id: id)
+                                                            : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

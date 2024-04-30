@@ -1786,7 +1786,7 @@ class _PreCardState extends State<PreCard> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -5220,6 +5220,10 @@ class _PreCardState extends State<PreCard> {
                                                                           .text,
                                                                 });
                                                               }
+                                                              print(
+                                                                  "NAnanananannananpyaaa");
+                                                              print(
+                                                                  sample1Controller);
 
                                                               if (status !=
                                                                   'Pending') {

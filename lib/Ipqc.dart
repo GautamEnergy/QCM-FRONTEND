@@ -14,10 +14,15 @@ import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
 import 'package:QCM/dynamicfield.dart';
 import 'package:QCM/framing.dart';
+import 'package:QCM/ipqcSelant.dart';
+import 'package:QCM/machineCard.dart';
 import 'package:QCM/postlam.dart';
 import 'package:QCM/bomcard.dart';
 import 'package:QCM/prelam.dart';
 import 'package:QCM/salaryreports.dart';
+import 'package:QCM/stringer1.dart';
+import 'package:QCM/stringerCards.dart';
+import 'package:QCM/testingCard.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,7 +114,7 @@ class _WelcomePageState extends State<IpqcPage> {
       appBar: GautamAppBar(
         organization: "organizationtype",
         isBackRequired: designation != 'Super Admin' ? false : true,
-        memberId: "personid",
+        memberId: personid,
         imgPath: "ImagePath",
         memberPic: pic,
         logo: "logo",
@@ -147,7 +152,7 @@ class _WelcomePageState extends State<IpqcPage> {
                 ),
                 Expanded(
                     child: tabDashboard(
-                        'BOM Verification Checksheet', AppAssets.postlam, () {
+                        'BOM Verification Checksheet', AppAssets.bom, () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (BuildContext context) => BomCard()),
@@ -208,21 +213,20 @@ class _WelcomePageState extends State<IpqcPage> {
                 ),
                 Expanded(
                     child: tabDashboard('Testing', AppAssets.testing, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => InOut()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => TestingCard()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
                 ),
                 Expanded(
-                    child: tabDashboard('Machine Monitering', AppAssets.machine,
-                        () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => SalaryReport()),
-                  //     (Route<dynamic> route) => false);
+                    child: tabDashboard('Machine ', AppAssets.machine, () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MachineCard()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
@@ -245,10 +249,10 @@ class _WelcomePageState extends State<IpqcPage> {
                 Expanded(
                     child: tabDashboard(
                         'Frame Measurement', AppAssets.framemeasurement, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => framing()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => framing()),
+                      (Route<dynamic> route) => false);
                 })),
                 SizedBox(
                   width: 10,
@@ -257,10 +261,10 @@ class _WelcomePageState extends State<IpqcPage> {
                     child: tabDashboard(
                         'Sealant Measurement', AppAssets.sealantmeasurement,
                         () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => SalaryReport()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => ipqcSelant()),
+                      (Route<dynamic> route) => false);
                 })),
               ],
             ),

@@ -107,6 +107,7 @@ class _JobcardState extends State<Jobcard> {
 
   void store() async {
     final prefs = await SharedPreferences.getInstance();
+
     setState(() {
       pic = prefs.getString('pic')!;
       personid = prefs.getString('personid')!;
@@ -349,7 +350,7 @@ class _JobcardState extends State<Jobcard> {
 
   Future createData() async {
     print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
-    print(jobCardDate);
+    print(personid);
     var data = [
       {
         "JobCardDetails": {
@@ -603,7 +604,7 @@ class _JobcardState extends State<Jobcard> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",

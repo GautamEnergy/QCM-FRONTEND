@@ -66,7 +66,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
   bool? isBacksheetCuttingTrue;
   List<int>? referencePdfFileBytes;
   String? selectedShift;
-  late String sendStatus;
+  String sendStatus = "";
   String status = '',
       jobCarId = '',
       approvalStatus = "Approved",
@@ -80,6 +80,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
   @override
   void initState() {
     super.initState();
+    store();
     isCycleTimeTrue = true;
 
     LongAController.addListener(calculateDifference);
@@ -132,44 +133,11 @@ class _ipqcSelantState extends State<ipqcSelant> {
   }
 
   // ************  Send the Data where will be Used to Backend *****************
-  void createData1() async {
-    var data = {
-      'date': dateController.text,
-      'shift': shiftController.text,
-      'Long Frame': [
-        {
-          'LongA': LongAController.text,
-          'LongB': LongBController.text,
-          'LongD': LongDController.text,
-        }
-      ],
-      'Short Frame': [
-        {
-          'ShortA': ShortAController.text,
-          'ShortB': ShortBController.text,
-          'ShortD': ShortDController.text,
-        }
-      ],
-      'junction Box': [
-        {
-          'JunctionA': JunctionAController.text,
-          'JunctionB': JunctionBController.text,
-          'JunctionD': JunctionDController.text,
-        }
-      ],
-      'Total Potting ': [
-        {
-          'BaseA': BaseAController.text,
-          'CatalystB': CatalystBController.text,
-          'Ratio': RatioController.text,
-        }
-      ]
-    };
-    print('$data');
-  }
 
   void store() async {
     final prefs = await SharedPreferences.getInstance();
+    print("Hoooooooooooooooooo");
+    print(prefs);
     setState(() {
       pic = prefs.getString('pic')!;
       personid = prefs.getString('personid')!;
@@ -191,7 +159,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
       }
       site = prefs.getString('site')!;
     });
-    final AllSolarData = ((site!) + 'IPQC/GetSpecificeJobCard');
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificSealentWeight');
     final allSolarData = await http.post(
       Uri.parse(AllSolarData),
       body: jsonEncode(<String, String>{
@@ -221,122 +189,40 @@ class _ipqcSelantState extends State<ipqcSelant> {
           print("kulllllllllllllllllllllllllllllllllllllllllll");
           // dateController.text = resBody['response']['Date'] ?? '';
           status = resBody['response']['Status'] ?? '';
-          // jobCardDate = resBody['response']['Date'] ?? '';
-          // dateController.text = resBody['response']['Date'] != ''
-          //     ? DateFormat("EEE MMM dd, yyyy").format(
-          //         DateTime.parse(resBody['response']['Date'].toString()))
-          //     : '';
-          // moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
+          dateOfQualityCheck = resBody['response']['Date'] ?? '';
+          dateController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          selectedShift = resBody['response']['Shift'] ?? '';
+          // Long Frame
+          LongAController.text =
+              resBody['response']['LongFrame_WithoutSealant'] ?? '';
+          LongBController.text =
+              resBody['response']['LongFrame_WithSealant'] ?? '';
+          LongDController.text =
+              resBody['response']['LongFrame_DiffWeight'] ?? '';
+          // Short Frame
+          ShortAController.text =
+              resBody['response']['ShortFrame_WithoutSealant'] ?? '';
+          ShortBController.text =
+              resBody['response']['ShortFrame_WithSealant'] ?? '';
+          ShortDController.text =
+              resBody['response']['ShortFrame_DiffWeight'] ?? '';
+          // Junction Frame
+          JunctionAController.text =
+              resBody['response']['JunctionBox_WithoutSealant'] ?? '';
+          JunctionBController.text =
+              resBody['response']['JunctionBox_WithSealant'] ?? '';
+          JunctionDController.text =
+              resBody['response']['JunctionBox_DiffWeight'] ?? '';
+          // Potting
+          BaseAController.text = resBody['response']['BaseWeight'] ?? '';
+          CatalystBController.text =
+              resBody['response']['CatalystWeight'] ?? '';
+          RatioController.text = resBody['response']['Ratio'] ?? '';
 
-          // // invoiceDateController.text = DateFormat("EEE MMM dd, yyyy").format(
-          // //         DateTime.parse(dataMap[0]['InvoiceDate'].toString())) ??
-          // //     '';
-          // matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
-          // moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
-          // lotNoController.text =
-          //     resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
-          // lotSizeController.text =
-          //     resBody['response']['Glass Washing Description']["size"] ?? '';
-          // glassCommentController.text =
-          //     resBody['response']['Glass Washing Comments'] ?? '';
-          // evaLotNoController.text = resBody['response']
-          //         ['Foil cutterr Description']["EVA_Lot_No"] ??
-          //     '';
-          // evaSizeController.text =
-          //     resBody['response']['Foil cutterr Description']["EVA_Size"] ?? '';
-          // backsheetLotController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_Lot"] ??
-          //     '';
-
-          // backsheetSizeController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_size"] ??
-          //     '';
-          // foilCommentController.text =
-          //     resBody['response']['Foil cutterr Comments'] ?? '';
-          // cellLotNoController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Lot_No"] ??
-          //     '';
-          // cellTypeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Type"] ??
-          //     '';
-          // cellSyzeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Size"] ??
-          //     '';
-          // cellEffController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Eff"] ??
-          //     '';
-          // interconnectRibbonSizeController.text = resBody['response']
-          //             ['Tabbing & Stringing Description']
-          //         ["Interconnect_Ribbon_Size"] ??
-          //     '';
-          // busbarSizeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Busbar_Size"] ??
-          //     '';
-          // fluxController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Flux"] ??
-          //     '';
-          // tabbingCommentController.text =
-          //     resBody['response']['Tabbing & Stringing Comments'] ?? '';
-          // cellToCellGapController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Cell_To_Cell_Gap"] ??
-          //     '';
-          // stringToStringGapController.text = resBody['response']
-          //             ['Bussing/InterConnection Description']
-          //         ["String_To_String_Gap"] ??
-          //     '';
-          // solderingTempController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Soldering_Temp"] ??
-          //     '';
-          // bussingCommentController.text =
-          //     resBody['response']['Bussing/InterConnection Comments'] ?? '';
-          // tempreatureController.text = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Temperature"] ??
-          //     '';
-          // cycleTimeController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Description']["Cycle_Time"] ??
-          //     '';
-          // isCycleTimeTrue = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Laminate_Quality"] ??
-          //     '';
-          // visualCommentController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Comments'] ??
-          //     '';
-          // isBacksheetCuttingTrue = resBody['response']
-          //         ['Edge Triming Description']["BackSheet_Cutting"] ??
-          //     '';
-
-          // edgeCommentController.text =
-          //     resBody['response']['Edge Triming Comments'] ?? '';
-          // frameTypeController.text =
-          //     resBody['response']['Framing Description']["Frame_Type"] ?? '';
-          // frameSizeController.text =
-          //     resBody['response']['Framing Description']["Frame_Size"] ?? '';
-          // sliconGlueLotController.text = resBody['response']
-          //         ['Framing Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
-
-          // framingCommentController.text =
-          //     resBody['response']['Framing Comments'] ?? '';
-          // jBLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["JB_Lot_No"] ??
-          //     '';
-          // jBTypeController.text =
-          //     resBody['response']['J/B Assembly Description']["JB_Type"] ?? '';
-          // siliconGlueLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
-
-          // jbCommentController.text =
-          //     resBody['response']['J/B Assembly Comments'] ?? '';
-          // pmaxController.text =
-          //     resBody['response']['Sun Simulator Description']["Pmax"] ?? '';
-
-          // sunCommentController.text =
-          //     resBody['response']['Sun Simulator Comments'] ?? '';
-          referencePdfController.text =
-              resBody['response']['ReferencePdf'] ?? '';
+          referencePdfController.text = resBody['response']['PreLamPdf'] ?? '';
         }
       });
     }
@@ -351,7 +237,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
     FocusScope.of(context).unfocus();
     print("goooooooooooooooooooooooooooooooooooooooooooooooo");
 
-    final url = (site! + "IPQC/UpdateJobCardStatus");
+    final url = (site! + "IPQC/UpdateSealentStatus");
 
     var params = {
       "token": token,
@@ -405,6 +291,8 @@ class _ipqcSelantState extends State<ipqcSelant> {
         referencePdfFileBytes = pdffile.readAsBytesSync();
         referencePdfController.text = result.files.single.name;
       });
+      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
+      print(referencePdfFileBytes);
     } else {
       // User canceled the file picker
     }
@@ -413,127 +301,65 @@ class _ipqcSelantState extends State<ipqcSelant> {
   Future createData() async {
     print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
     // print(jobCardDate);
-    // var data = [
-    //   {
-    //     "JobCardDetails": {
-    //       "Type": "Job Card",
-    //       "JobCardDetailId": jobCarId != '' && jobCarId != null
-    //           ? jobCarId
-    //           : widget.id != '' && widget.id != null
-    //               ? widget.id
-    //               : '',
-    //       "date": jobCardDate,
-    //       "moduleType": moduleTypeController.text,
-    //       "matrixSize": matrixSizeController.text,
-    //       "moduleNo": moduleNoController.text,
-    //       "DocNo": "GSPL/IPQC/BM/024",
-    //       "RevisionNo": "1.0",
-    //       "RevisionDate": "12.08.2023",
-    //       "Status": sendStatus,
-    //       "CreatedBy": personid
-    //     }
-    //   },
-    //   {
-    //     "JobCard": [
-    //       {
-    //         "Process": 'Glass Washing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Lot_No": lotNoController.text,
-    //           "size": lotSizeController.text
-    //         },
-    //         "Comment": glassCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Foil cutterr',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "EVA_Lot_No": evaLotNoController.text,
-    //           "EVA_Size": evaSizeController.text,
-    //           "Backsheet_Lot": backsheetLotController.text,
-    //           "Backsheet_size": backsheetSizeController.text
-    //         },
-    //         "Comment": foilCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Tabbing & Stringing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Cell_Lot_No": cellLotNoController.text,
-    //           "Cell_Type": cellTypeController.text,
-    //           "Cell_Size": cellSyzeController.text,
-    //           "Cell_Eff": cellEffController.text,
-    //           "Interconnect_Ribbon_Size": interconnectRibbonSizeController.text,
-    //           "Busbar_Size": busbarSizeController.text,
-    //           "Flux": fluxController.text
-    //         },
-    //         "Comment": tabbingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Bussing/InterConnection',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Cell_To_Cell_Gap": cellToCellGapController.text,
-    //           "String_To_String_Gap": stringToStringGapController.text,
-    //           "Soldering_Temp": solderingTempController.text
-    //         },
-    //         "Comment": bussingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Visual Inspection & Laminator',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Temperature": tempreatureController.text,
-    //           "Cycle_Time": cycleTimeController.text,
-    //           "Laminate_Quality": isCycleTimeTrue
-    //         },
-    //         "Comment": visualCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Edge Triming',
-    //         "EmployeeID": personid,
-    //         "Description": {"BackSheet_Cutting": isBacksheetCuttingTrue},
-    //         "Comment": edgeCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Framing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Frame_Type": frameTypeController.text,
-    //           "Frame_Size": frameSizeController.text,
-    //           "Silicon_Glue_Lot_No": sliconGlueLotController.text
-    //         },
-    //         "Comment": framingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'J/B Assembly',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "JB_Lot_No": jBLotNoController.text,
-    //           "JB_Type": jBTypeController.text,
-    //           "Silicon_Glue_Lot_No": siliconGlueLotNoController.text
-    //         },
-    //         "Comment": jbCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Sun Simulator',
-    //         "EmployeeID": personid,
-    //         "Description": {"Pmax": pmaxController.text},
-    //         "Comment": sunCommentController.text
-    //       }
-    //     ]
-    //   }
-    // ];
-    // print('Sending data to backend: $data');
+    print(personid);
 
+    var data = {
+      "Type": "Sealent",
+      "JobCardDetailId": jobCarId != '' && jobCarId != null
+          ? jobCarId
+          : widget.id != '' && widget.id != null
+              ? widget.id
+              : '',
+      "Status": sendStatus,
+      "CreatedBy": personid,
+      "DocNo": "GSPL/IPQC/SP/012",
+      "RevNo": "1.0/12.08.2023",
+      "Date": dateOfQualityCheck,
+      "Shift": selectedShift,
+      "Stages": [
+        {
+          "Stage": "Long Frame",
+          "WithoutSealant": LongAController.text,
+          "WithSealant": LongBController.text,
+          "DifferenceWeight": LongDController.text,
+          "BaseWeight": BaseAController.text,
+          "CatalystWeight": CatalystBController.text,
+          "Ratio": RatioController.text
+        },
+        {
+          "Stage": "Short Frame",
+          "WithoutSealant": ShortAController.text,
+          "WithSealant": ShortBController.text,
+          "DifferenceWeight": ShortDController.text,
+          "BaseWeight": BaseAController.text,
+          "CatalystWeight": CatalystBController.text,
+          "Ratio": RatioController.text
+        },
+        {
+          "Stage": "Junction Box",
+          "WithoutSealant": JunctionAController.text,
+          "WithSealant": JunctionBController.text,
+          "DifferenceWeight": JunctionDController.text,
+          "BaseWeight": BaseAController.text,
+          "CatalystWeight": CatalystBController.text,
+          "Ratio": RatioController.text
+        },
+      ]
+    };
+    print(data);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-
-    final url = (site! + "IPQC/AddJobCard");
-
+    print("LAlAlallalallalalallalalallal");
     final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+    print(site);
+
+    final url = (site! + "IPQC/AddSealentWeight");
+    print("LAlAlallalallalalallalalallal");
+
+    print("Muuuuuuuuuuu");
 
     var response = await http.post(
       Uri.parse(url),
@@ -587,7 +413,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
     var currentdate = DateTime.now().microsecondsSinceEpoch;
     var formData = FormData.fromMap({
       "JobCardDetailId": jobCarId,
-      "Reference": MultipartFile.fromBytes(
+      "SealentWeightPdf": MultipartFile.fromBytes(
         referenceBytes,
         filename:
             (referencePdfController.text + (currentdate.toString()) + '.pdf'),
@@ -595,7 +421,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
       ),
     });
 
-    _response = await _dio.post((site! + 'IPQC/UploadPdf'), // Prod
+    _response = await _dio.post((site! + 'IPQC/UploadSealentWeightPdf'), // Prod
 
         options: Options(
           contentType: 'multipart/form-data',
@@ -610,7 +436,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
           _isLoading = false;
         });
 
-        Toast.show("Job Card Test Completed.",
+        Toast.show("Sealent Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -667,7 +493,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -807,32 +633,34 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                         suffixIcon: Icon(Icons.calendar_month),
                                       ),
                                       style: AppStyles.textInputTextStyle,
-                                      onTap: () async {
-                                        DateTime date = DateTime(2021);
-                                        FocusScope.of(context)
-                                            .requestFocus(new FocusNode());
-                                        date = (await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
-                                          lastDate: DateTime.now(),
-                                        ))!;
-                                        dateController.text =
-                                            DateFormat("EEE MMM dd, yyyy")
-                                                .format(
-                                          DateTime.parse(date.toString()),
-                                        );
-                                        setState(() {
-                                          dateOfQualityCheck =
-                                              DateFormat("yyyy-MM-dd").format(
-                                            DateTime.parse(date.toString()),
-                                          );
-                                        });
-                                      },
                                       readOnly: status == 'Pending' &&
                                               designation != "QC"
                                           ? true
                                           : false,
+                                      onTap: () async {
+                                        if (status != 'Pending') {
+                                          DateTime date = DateTime(2021);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+                                          date = (await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime.now(),
+                                          ))!;
+                                          dateController.text =
+                                              DateFormat("EEE MMM dd, yyyy")
+                                                  .format(
+                                            DateTime.parse(date.toString()),
+                                          );
+                                          setState(() {
+                                            dateOfQualityCheck =
+                                                DateFormat("yyyy-MM-dd").format(
+                                              DateTime.parse(date.toString()),
+                                            );
+                                          });
+                                        }
+                                      },
                                       validator: MultiValidator(
                                         [
                                           RequiredValidator(
@@ -857,12 +685,16 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                     ),
                                     DropdownButtonFormField<String>(
                                       value: selectedShift,
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          selectedShift = newValue!;
-                                          shiftController.text = selectedShift!;
-                                        });
-                                      },
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (String? newValue) {
+                                              setState(() {
+                                                selectedShift = newValue!;
+                                                shiftController.text =
+                                                    selectedShift!;
+                                              });
+                                            },
                                       items: <String>[
                                         'Night Shift',
                                         'Day Shift'
