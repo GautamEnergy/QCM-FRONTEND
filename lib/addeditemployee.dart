@@ -697,16 +697,18 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: () {},
-                  child: Text(
-                    widget.id != '' && widget.id != null
-                        ? 'Edit Employee'
-                        : 'Register Employee',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 22,
-                        fontFamily: appFontFamily,
-                        color: AppColors.blueColor),
-                  ),
+                  child: designation == "Super Admin"
+                      ? Text(
+                          widget.id != '' && widget.id != null
+                              ? 'Edit Employee'
+                              : 'Register Employee',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 22,
+                              fontFamily: appFontFamily,
+                              color: AppColors.blueColor),
+                        )
+                      : Container(),
                 ),
               ),
             ),

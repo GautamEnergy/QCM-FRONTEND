@@ -858,13 +858,11 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             ),
                           ),
                         ]),
-                        if (_hasBeenPressed1 == 'Approved' ||
-                            _hasBeenPressed1 == 'Pending')
+                        if (_hasBeenPressed1 != 'Inprogress')
                           const SizedBox(
                             height: 5,
                           ),
-                        if (_hasBeenPressed1 == 'Approved' ||
-                            _hasBeenPressed1 == 'Pending')
+                        if (_hasBeenPressed1 != 'Inprogress')
                           Row(children: <Widget>[
                             if (invoicePdf != null && invoicePdf != '')
                               Container(

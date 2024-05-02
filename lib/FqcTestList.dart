@@ -819,11 +819,11 @@ class _FqcTestListState extends State<FqcTestList> {
                             ),
                           ),
                         ]),
-                        if (_hasBeenPressed1 == 'Approved')
+                        if (_hasBeenPressed1 != 'Inprogress')
                           const SizedBox(
                             height: 5,
                           ),
-                        if (_hasBeenPressed1 == 'Approved')
+                        if (_hasBeenPressed1 != 'Inprogress')
                           Row(children: <Widget>[
                             if (pdf != null && pdf != '')
                               Container(

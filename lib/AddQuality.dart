@@ -98,10 +98,11 @@ class _AddQualityState extends State<AddQuality> {
     {"label": 'O-', "value": 'O-'},
   ];
 
-  List departmentList = [
-        {"key": "Wire Frame", "value": "Wire Frame"},
-        {"key": "Breakdown", "value": "Breakdown"},
-      ],
+  // List departmentList = [
+  //       {"key": "Wire Frame", "value": "Wire Frame"},
+  //       {"key": "Breakdown", "value": "Breakdown"},
+  //     ],
+  List issueList = [],
       designationList = [],
       reportingManagerList = [],
       shiftList = [
@@ -149,7 +150,7 @@ class _AddQualityState extends State<AddQuality> {
     store();
     getLocationData();
 
-    getDepartmentData();
+    getIssueData();
     getDsignationData();
     print("ProfilePicccc");
     print(profilepicture);
@@ -535,11 +536,11 @@ class _AddQualityState extends State<AddQuality> {
     );
   }
 
-  getDepartmentData() async {
+  getIssueData() async {
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
 
-    final url = (site! + 'QCM//GetDepartmentList');
+    final url = (site! + 'Quality/GetIssues');
 
     http.get(
       Uri.parse(url),
@@ -548,9 +549,10 @@ class _AddQualityState extends State<AddQuality> {
       },
     ).then((response) {
       if (mounted) {
-        var departmentBody = jsonDecode(response.body);
+        var issueBody = jsonDecode(response.body);
         setState(() {
-          //  departmentList = departmentBody['data'];
+          issueList = issueBody['Issues'];
+          issueList.add({"IssueId": "Other", "Issue": "Other"});
         });
       }
     });
@@ -608,7 +610,7 @@ class _AddQualityState extends State<AddQuality> {
       borderRadius: BorderRadius.circular(20),
       items: shiftList
           .map((label) => DropdownMenuItem(
-                child: Text(label['key'], style: AppStyles.textInputTextStyle),
+                child: Text(label['key']!, style: AppStyles.textInputTextStyle),
                 value: label['value'].toString(),
               ))
           .toList(),
@@ -634,10 +636,11 @@ class _AddQualityState extends State<AddQuality> {
           counterText: '',
           contentPadding: EdgeInsets.all(10)),
       borderRadius: BorderRadius.circular(20),
-      items: departmentList
+      items: issueList
           .map((label) => DropdownMenuItem(
-                child: Text(label['key'], style: AppStyles.textInputTextStyle),
-                value: label['value'].toString(),
+                child:
+                    Text(label['Issue'], style: AppStyles.textInputTextStyle),
+                value: label['IssueId'].toString(),
               ))
           .toList(),
       onChanged: (val) {
