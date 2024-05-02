@@ -5867,6 +5867,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                                           frontbusRejection = false;
                                                                                                           electricalRejection = false;
                                                                                                           performanceRejection = false;
+                                                                                                          verificationRejection = false;
                                                                                                         });
                                                                                                       }
                                                                                                     },

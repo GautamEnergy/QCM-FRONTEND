@@ -4893,6 +4893,7 @@ class _EncapsulantState extends State<Encapsulant> {
                                                                                           visualRejection = false;
                                                                                           physicalRejection = false;
                                                                                           frontbusRejection = false;
+                                                                                          verificationRejection = false;
                                                                                           // electricalRejection = false;
                                                                                           //  performanceRejection = false;
                                                                                         });

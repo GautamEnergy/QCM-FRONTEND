@@ -49,6 +49,7 @@ class AppAssets {
   static String fqcadd = 'assets/icons/fqcadd.png';
   static String qualityadd = 'assets/icons/qualityadd.png';
   static String bom = 'assets/icons/bom.png';
+  static String camera = 'assets/icons/camera.png';
   static String quality = 'assets/icons/quality.png';
   static String jobcard = 'assets/icons/jobcard.png';
   static String IQCP = 'assets/icons/iqcp.png';

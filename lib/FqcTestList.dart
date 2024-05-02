@@ -112,6 +112,7 @@ class _FqcTestListState extends State<FqcTestList> {
     ).then((response) {
       if (mounted) {
         setState(() {
+          print(jsonDecode(response.body));
           _isLoading = false;
           // _enabled = false;
           decodedResult = jsonDecode(response.body);

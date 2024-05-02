@@ -12319,7 +12319,8 @@ class _FqcAddEditState extends State<FqcAddEdit> {
                                         )
                                       : Container(),
                 ),
-          floatingActionButton: status != 'Pending' ? _getFAB() : null,
+          floatingActionButton:
+              status != 'Pending' && setPage != "heading" ? _getFAB() : null,
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(

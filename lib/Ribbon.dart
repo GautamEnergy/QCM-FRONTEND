@@ -5863,6 +5863,7 @@ class _RibbonState extends State<Ribbon> {
                                                                                                           frontbusRejection = false;
                                                                                                           electricalRejection = false;
                                                                                                           performanceRejection = false;
+                                                                                                          verificationRejection = false;
                                                                                                         });
                                                                                                       }
                                                                                                     },

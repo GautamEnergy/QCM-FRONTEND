@@ -5388,6 +5388,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                                                                                   physicalRejection = false;
                                                                                                   frontbusRejection = false;
                                                                                                   electricalRejection = false;
+                                                                                                  verificationRejection = false;
                                                                                                   //  performanceRejection = false;
                                                                                                 });
                                                                                               }

@@ -6,6 +6,7 @@ import 'package:QCM/Iqcp.dart';
 import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:dio/src/response.dart' as Response;
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/dialogs/city_list_model.dart';
@@ -24,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,11 +46,12 @@ class AddQuality extends StatefulWidget {
 
 class _AddQualityState extends State<AddQuality> {
   File? _image, personPreview;
-  List<int>? personlogoBytes, pdfFileBytes;
+  List<int>? personlogoBytes, pdfFileBytes, _imageBytes;
   List data = [];
   List statedata1 = [];
   List citydata1 = [];
   bool sameAsPresentAddress = false;
+  final picker = ImagePicker();
 
   final _dio = Dio();
   // Response? _response;
@@ -107,11 +110,13 @@ class _AddQualityState extends State<AddQuality> {
       ];
 
   SharedPreferences? prefs;
-  TextEditingController inTimeController = new TextEditingController();
-  TextEditingController outTimeController = new TextEditingController();
+  TextEditingController shiftinchargeprelimeController =
+      new TextEditingController();
+  TextEditingController shiftinchargepostlimeController =
+      new TextEditingController();
   TextEditingController shiftinchargenameController = TextEditingController();
   TextEditingController productBarcodeController = new TextEditingController();
-  TextEditingController serialnumberController = new TextEditingController();
+  TextEditingController wattageController = new TextEditingController();
   TextEditingController modelnumberController = new TextEditingController();
   TextEditingController responsiblepersonController =
       new TextEditingController();
@@ -166,6 +171,32 @@ class _AddQualityState extends State<AddQuality> {
     print(widget.id);
   }
 
+  Future getImage() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      // cameraDevice: CameraDevice.rear,
+    );
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        _compressImage(_image!);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future _compressImage(File imageFile) async {
+    var _imageBytesOriginal = imageFile.readAsBytesSync();
+    _imageBytes = await FlutterImageCompress.compressWithList(
+      _imageBytesOriginal!,
+      quality: 60,
+    );
+    print("kya hai bytes??");
+    print(_imageBytes);
+  }
+
   Future _get() async {
     print("Id.....AddEditProfile");
     print(personid);
@@ -195,13 +226,13 @@ class _AddQualityState extends State<AddQuality> {
           _isLoading = false;
           final dataMap = data.asMap();
 
-          inTimeController.text = dataMap[0]['EmployeeID'] ?? '';
-          outTimeController.text = dataMap[0]['LoginID'] ?? '';
+          shiftinchargeprelimeController.text = dataMap[0]['EmployeeID'] ?? '';
+          shiftinchargepostlimeController.text = dataMap[0]['LoginID'] ?? '';
           shiftinchargenameController.text = dataMap[0]['Name'] ?? '';
           shiftController = dataMap[0]['WorkLocation'] ?? '';
           issuetypeController = dataMap[0]['Department'] ?? '';
-          designationController = dataMap[0]['Desgination'] ?? '';
-          profilepicture = dataMap[0]['ProfileImg'] ?? '';
+          //   designationController = dataMap[0]['Desgination'] ?? '';
+          //   profilepicture = dataMap[0]['ProfileImg'] ?? '';
         }
       });
     }
@@ -249,70 +280,44 @@ class _AddQualityState extends State<AddQuality> {
             )));
   }
 
-  String _validateInTime(String value) {
-    // Regular expression for Indian time format (hh:mm AM/PM)
-    RegExp regex =
-        RegExp(r'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\s(?:AM|PM|am|pm)?$');
-    if (!regex.hasMatch(value)) {
-      return 'Enter a valid time (hh:mm AM/PM)';
-    }
-    return "";
-  }
-
-  String _validateOutTime(String value) {
-    // Regular expression for Indian time format (hh:mm AM/PM)
-    RegExp regex =
-        RegExp(r'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]\s(?:AM|PM|am|pm)?$');
-    if (!regex.hasMatch(value)) {
-      return 'Enter a valid time (hh:mm AM/PM)';
-    }
-    return "";
-  }
-
-  TextFormField textInTime() {
+  TextFormField textShiftInchargePrelime() {
     return TextFormField(
-      controller: inTimeController,
+      controller: shiftinchargeprelimeController,
+      minLines: 1,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.next,
       decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter In Time Time (hh:mm AM/PM)",
+          hintText: "Please Enter Shift Incharge Prelime",
           counterText: '',
-          errorText: _errorMessage,
-          contentPadding: const EdgeInsets.all(10)),
+          contentPadding: EdgeInsets.all(10)),
       style: AppStyles.textInputTextStyle,
-      onChanged: (value) {
-        setState(() {
-          _errorMessage = _validateInTime(value);
-        });
-      },
+      readOnly: false,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter in time';
-        } else if (_errorMessage != "") {
-          return _errorMessage;
+          return 'Please enter shift incharge prelime';
         }
         return null;
       },
     );
   }
 
-  TextFormField textOutTime() {
+  TextFormField textShiftInchargePostlime() {
     return TextFormField(
-      controller: outTimeController,
+      controller: shiftinchargepostlimeController,
+      minLines: 1,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.next,
       decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Out Time Time (hh:mm AM/PM)",
+          hintText: "Please Enter Shift Incharge Postlime",
           counterText: '',
-          errorText: _errorMessage,
-          contentPadding: const EdgeInsets.all(10)),
+          contentPadding: EdgeInsets.all(10)),
       style: AppStyles.textInputTextStyle,
-      onChanged: (value) {
-        setState(() {
-          _errorMessage = _validateOutTime(value);
-        });
-      },
+      readOnly: false,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter out time';
-        } else if (_errorMessage != "") {
-          return _errorMessage;
+          return 'Please enter shift incharge postlime';
         }
         return null;
       },
@@ -376,22 +381,22 @@ class _AddQualityState extends State<AddQuality> {
     );
   }
 
-  TextFormField textSerialNumber() {
+  TextFormField textWattage() {
     return TextFormField(
-      controller: serialnumberController,
+      controller: wattageController,
       minLines: 1,
       maxLines: null,
       keyboardType: TextInputType.multiline,
       textInputAction: TextInputAction.next,
       decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Serial Number",
+          hintText: "Please Enter Wattage",
           counterText: '',
           contentPadding: EdgeInsets.all(10)),
       style: AppStyles.textInputTextStyle,
       readOnly: false,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter serial number';
+          return 'Please enter wattage';
         }
         return null;
       },
@@ -683,12 +688,19 @@ class _AddQualityState extends State<AddQuality> {
   }
 
   Future createData(
-    String employeeid,
-    String loginid,
-    String joblocation,
-    String fullname,
-    String department,
-    String designation,
+    String shift,
+    String shiftinchargename,
+    String inTime,
+    String outTime,
+    String productBarcode,
+    String serialnumber,
+    String modelnumber,
+    String issuetype,
+    String stage,
+    String responsibleperson,
+    String reasonofissue,
+    String issuecomefrom,
+    String actiontaken,
   ) async {
     setState(() {
       _isLoading = true;
@@ -704,12 +716,12 @@ class _AddQualityState extends State<AddQuality> {
         "personid":
             widget.id != '' && widget.id != null ? widget.id.toString() : '',
         "currentuser": personid ?? '',
-        "employeeid": employeeid,
-        "loginid": loginid,
-        "joblocation": joblocation,
-        "fullname": fullname,
-        "department": department,
-        "designation": designation,
+        // "employeeid": employeeid,
+        // "loginid": loginid,
+        // "joblocation": joblocation,
+        // "fullname": fullname,
+        // "department": department,
+        // "designation": designation,
       }),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -722,15 +734,15 @@ class _AddQualityState extends State<AddQuality> {
       var data = json.decode(response.body);
       if (data['msg'] == 'Update Employee Detail') {
         if (personlogoBytes != null && personlogoBytes != '') {
-          upload((personlogoBytes ?? []), (personLogoname ?? ''));
+          upload((_imageBytes ?? []), (modelnumberController.text ?? ''));
         } else {
           setState(() {
             _isLoading = false;
           });
           Toast.show(
               widget.id != '' && widget.id != null
-                  ? "Employee updated successfully."
-                  : "Employee registered successfully.",
+                  ? "Issue reporting successfully."
+                  : "Issue reporting successfully.",
               duration: Toast.lengthLong,
               gravity: Toast.center,
               backgroundColor: AppColors.primaryColor);
@@ -745,13 +757,13 @@ class _AddQualityState extends State<AddQuality> {
         });
         if ((data['data'][0].length > 0) &&
             (personlogoBytes != null && personlogoBytes != '')) {
-          upload((personlogoBytes ?? []), (personLogoname ?? ''));
+          upload((_imageBytes ?? []), (modelnumberController.text ?? ''));
           // pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
         } else {
           Toast.show(
               widget.id != '' && widget.id != null
-                  ? "Employee updated successfully."
-                  : "Employee registered successfully.",
+                  ? "Issue reporting successfully."
+                  : "Issue reporting successfully.",
               duration: Toast.lengthLong,
               gravity: Toast.center,
               backgroundColor: AppColors.primaryColor);
@@ -815,8 +827,8 @@ class _AddQualityState extends State<AddQuality> {
 
         Toast.show(
             widget.id != '' && widget.id != null
-                ? "Employee updated successfully."
-                : "Employee registered successfully.",
+                ? "Issue reporting successfully."
+                : "Issue reporting successfully.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.primaryColor);
@@ -896,25 +908,25 @@ class _AddQualityState extends State<AddQuality> {
             textShiftInchargeName(),
             const SizedBox(height: 15),
             Text(
-              "Shift Incharge In Time*",
+              "Shift Incharge Prelime*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(
               height: 5,
             ),
-            textInTime(),
+            textShiftInchargePrelime(),
             const SizedBox(
               height: 15,
             ),
 
             Text(
-              "Shift Incharge Out Time*",
+              "Shift Incharge Postlime*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(
               height: 5,
             ),
-            textOutTime(),
+            textShiftInchargePostlime(),
             const SizedBox(
               height: 15,
             ),
@@ -928,11 +940,11 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(height: 15),
 
             Text(
-              "Serial Number*",
+              "Wattage*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(height: 5),
-            textSerialNumber(),
+            textWattage(),
             const SizedBox(height: 15),
             Text(
               "Model Number*",
@@ -991,7 +1003,46 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(height: 5),
             textActionTaken(),
             const SizedBox(height: 15),
-
+            Text(
+              "Capture Module Pic*",
+              style: AppStyles.textfieldCaptionTextStyle,
+            ),
+            const SizedBox(height: 10),
+            _image == null
+                ? Container(
+                    width: 300, // Set the desired width
+                    height: 300, // Set the desired height
+                    child: GestureDetector(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            10), // Adjust the radius to your preference
+                        child: Image.asset(
+                          AppAssets.camera,
+                          fit: BoxFit.cover,
+                          width:
+                              300, // Set width and height to match Container's size
+                          height: 300,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    width: 300, // Set the desired width
+                    height: 300, // Set the desired height
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        _image!, // Assuming _image is a File object
+                        fit: BoxFit.cover,
+                        width:
+                            300, // Set width and height to match Container's size
+                        height: 300,
+                      ),
+                    ),
+                  ),
             // Text(
             //   "Designation*",
             //   style: AppStyles.textfieldCaptionTextStyle,
@@ -1017,26 +1068,24 @@ class _AddQualityState extends State<AddQuality> {
                 print(personlogoBytes);
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-
-                  if ((widget.id == '' || widget.id == null) &&
-                      (personlogoBytes != null && personlogoBytes != '')) {
+                  if (_imageBytes != "" && _imageBytes != null) {
                     createData(
-                        inTimeController.text,
-                        outTimeController.text,
-                        shiftController ?? "",
-                        shiftinchargenameController.text,
-                        issuetypeController ?? "",
-                        designationController ?? "");
-                  } else if ((widget.id != '' && widget.id != null)) {
-                    createData(
-                        inTimeController.text,
-                        outTimeController.text,
-                        shiftController ?? "",
-                        shiftinchargenameController.text,
-                        issuetypeController ?? "",
-                        designationController ?? "");
+                      shiftController ?? "",
+                      shiftinchargenameController.text,
+                      shiftinchargeprelimeController.text,
+                      shiftinchargepostlimeController.text,
+                      productBarcodeController.text,
+                      wattageController.text,
+                      modelnumberController.text,
+                      issuetypeController ?? "",
+                      stageController.text,
+                      responsiblepersonController.text,
+                      reasonofissueController.text,
+                      issuecomefromController.text,
+                      actiontakenController.text,
+                    );
                   } else {
-                    Toast.show("Please Upload Profile Picture.",
+                    Toast.show("Please Capture Mudule Pic.",
                         duration: Toast.lengthLong,
                         gravity: Toast.center,
                         backgroundColor: Colors.redAccent);
