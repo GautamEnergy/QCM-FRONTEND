@@ -1,8 +1,20 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Welcomepage.dart';
+import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
+import 'package:QCM/ipqcTestList.dart';
 import 'package:QCM/machineCard.dart';
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:QCM/stringerCards.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/src/response.dart' as Response;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -13,9 +25,12 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_helper.dart';
 import 'package:QCM/constant/app_styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class stringer3 extends StatefulWidget {
+  final String? id;
+  stringer3({this.id});
   @override
   _stringer3State createState() => _stringer3State();
 }
@@ -105,22 +120,36 @@ class _stringer3State extends State<stringer3> {
   TextEditingController BS1TrackALController = TextEditingController();
   TextEditingController BHighestController = TextEditingController();
   TextEditingController BS1TrackAHController = TextEditingController();
+  TextEditingController referencePdfController = new TextEditingController();
 
   bool menu = false, user = false, face = false, home = false;
   int numberOfStringers = 0;
   bool _isLoading = false;
-  String setPage = '', pic = '';
+  String setPage = '', pic = '', site = '', personid = '';
   String invoiceDate = '';
   String date = '';
   String dateOfQualityCheck = '';
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
-  String? selectedShift;
+  List<int>? referencePdfFileBytes;
+  String selectedShift = "Day Shift";
+  late String sendStatus;
+  String status = '',
+      jobCarId = '',
+      approvalStatus = "Approved",
+      designation = '',
+      token = '',
+      department = '';
+  final _dio = Dio();
+  List data = [];
+
+  Response.Response? _response;
 
   @override
   void initState() {
     super.initState();
-    isCycleTimeTrue = true; // Set initial value
+    store();
+    isCycleTimeTrue = true;
     setState(() {
       ASet1Controller.text = "Set Temperature1 | 230+-30  | °C";
       ASet2Controller.text = "Set Temperature2 | 230+-30  | °C";
@@ -158,81 +187,456 @@ class _stringer3State extends State<stringer3> {
     });
   }
 
-  // ****************************************  Send the Data where will be Used to Backend **************************
-  Future<void> sendDataToBackend() async {
-    final url =
-        'your-backend-url'; // Replace 'your-backend-url' with your actual backend URL
+  // ------- Send the Data where will be Used to Backend -----------
 
-    // Gather data from text controllers
-    final data = {
-      'date': dateController.text,
-      'shift': shiftController.text,
-      'ASet1': ASet1Controller.text,
-      'AS1TackAs1': AS1TackAs1Controller.text,
-      'ASet2': ASet2Controller.text,
-      'AS1TackAs2': AS1TackAs2Controller.text,
-      'AWtime1': AWtime1Controller.text,
-      'AS1TrackAW1': AS1TrackAW1Controller.text,
-      'AWtime2': AWtime2Controller.text,
-      'AS1TrackAW2': AS1TrackAW2Controller.text,
-      'AWtime3': AWtime3Controller.text,
-      'AS1TrackAW3': AS1TrackAW3Controller.text,
-      'AWtime4': AWtime4Controller.text,
-      'AS1TrackAW4': AS1TrackAW4Controller.text,
-      'AWtime5': AWtime5Controller.text,
-      'AS1TrackAW5': AS1TrackAW5Controller.text,
-      'AWtime6': AWtime6Controller.text,
-      'AS1TrackAW6': AS1TrackAW6Controller.text,
-      'AHeating1': AHeating1Controller.text,
-      'AS1TrackAH1': AS1TrackAH1Controller.text,
-      'AHeating2': AHeating2Controller.text,
-      'AS1TrackAH2': AS1TrackAH2Controller.text,
-      'AHeating3': AHeating3Controller.text,
-      'AS1TrackAH3': AS1TrackAH3Controller.text,
-      'AHeating4': AHeating4Controller.text,
-      'AS1TrackAH4': AS1TrackAH4Controller.text,
-      'AHeating5': AHeating5Controller.text,
-      'AS1TrackAH5': AS1TrackAH5Controller.text,
-      'AHeating6': AHeating6Controller.text,
-      'AS1TrackAH6': AS1TrackAH6Controller.text,
-      'ALowest': ALowestController.text,
-      'AS1TrackAL': AS1TrackALController.text,
-      'AHighest': AHighestController.text,
-      'AS1TrackAH': AS1TrackAHController.text,
-      'BSet1': BSet1Controller.text,
-      'BS1TackAs1': BS1TackAs1Controller.text,
-      'BSet2': BSet2Controller.text,
-      'BS1TackAs2': BS1TackAs2Controller.text,
-      'BWtime1': BWtime1Controller.text,
-      'BS1TrackAW1': BS1TrackAW1Controller.text,
-      'BWtime2': BWtime2Controller.text,
-      'BS1TrackAW2': BS1TrackAW2Controller.text,
-      'BWtime3': BWtime3Controller.text,
-      'BS1TrackAW3': BS1TrackAW3Controller.text,
-      'BWtime4': BWtime4Controller.text,
-      'BS1TrackAW4': BS1TrackAW4Controller.text,
-      'BWtime5': BWtime5Controller.text,
-      'BS1TrackAW5': BS1TrackAW5Controller.text,
-      'BWtime6': BWtime6Controller.text,
-      'BS1TrackAW6': BS1TrackAW6Controller.text,
-      'BHeating1': BHeating1Controller.text,
-      'BS1TrackAH1': BS1TrackAH1Controller.text,
-      'BHeating2': BHeating2Controller.text,
-      'BS1TrackAH2': BS1TrackAH2Controller.text,
-      'BHeating3': BHeating3Controller.text,
-      'BS1TrackAH3': BS1TrackAH3Controller.text,
-      'BHeating4': BHeating4Controller.text,
-      'BS1TrackAH4': BS1TrackAH4Controller.text,
-      'BHeating5': BHeating5Controller.text,
-      'BS1TrackAH5': BS1TrackAH5Controller.text,
-      'BHeating6': BHeating6Controller.text,
-      'BS1TrackAH6': BS1TrackAH6Controller.text,
-      'BLowest': BLowestController.text,
-      'BS1TrackAL': BS1TrackALController.text,
-      'BHighest': BHighestController.text,
-      'BS1TrackAH': BS1TrackAHController.text,
+  void store() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      pic = prefs.getString('pic')!;
+      personid = prefs.getString('personid')!;
+      site = prefs.getString('site')!;
+      designation = prefs.getString('designation')!;
+      department = prefs.getString('department')!;
+      token = prefs.getString('token')!;
+    });
+    _get();
+  }
+
+  Future _get() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
+    print(widget.id);
+    setState(() {
+      if (widget.id != '' && widget.id != null) {
+        _isLoading = true;
+      }
+      site = prefs.getString('site')!;
+    });
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificStringerMachine');
+    final allSolarData = await http.post(
+      Uri.parse(AllSolarData),
+      body: jsonEncode(<String, String>{
+        "JobCardDetailId": widget.id ?? '',
+        "token": token!
+      }),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+    print("hhhhhhhhhhhhhhhh");
+    var resBody = json.decode(allSolarData.body);
+
+    if (mounted) {
+      setState(() {
+        if (resBody != '') {
+          print(resBody['response']);
+          print(resBody['response']['Date']);
+          // print(resBody['response']['Visual Inspection & Laminator Description']
+          //     ["Cycle_Time"]);
+
+          print("saiffffffffffffffffffffffffffffffffffffffffff");
+          print("kulllllllllllllllllllllllllllllllllllllllllll");
+          status = resBody['response']['Status'] ?? '';
+          dateOfQualityCheck = resBody['response']['Date'] ?? '';
+          dateController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          selectedShift = resBody['response']['Shift'] ?? '';
+          AS1TackAs1Controller.text =
+              resBody['response']['SetTemperature1_TrackA'] ?? '';
+          BS1TackAs1Controller.text =
+              resBody['response']['SetTemperature1_TrackB'] ?? '';
+          AS1TackAs2Controller.text =
+              resBody['response']['SetTemperature2_TrackA'] ?? '';
+          BS1TackAs2Controller.text =
+              resBody['response']['SetTemperature2_TrackB'] ?? '';
+          AS1TrackAW1Controller.text =
+              resBody['response']['WeldingTime1_TrackA'] ?? '';
+          BS1TrackAW1Controller.text =
+              resBody['response']['WeldingTime1_TrackB'] ?? '';
+          AS1TrackAW2Controller.text =
+              resBody['response']['WeldingTime2_TrackA'] ?? '';
+          BS1TrackAW2Controller.text =
+              resBody['response']['WeldingTime2_TrackB'] ?? '';
+          AS1TrackAW3Controller.text =
+              resBody['response']['WeldingTime3_TrackA'] ?? '';
+          BS1TrackAW3Controller.text =
+              resBody['response']['WeldingTime3_TrackB'] ?? '';
+          AS1TrackAW4Controller.text =
+              resBody['response']['WeldingTime4_TrackA'] ?? '';
+          BS1TrackAW4Controller.text =
+              resBody['response']['WeldingTime4_TrackB'] ?? '';
+          AS1TrackAW5Controller.text =
+              resBody['response']['WeldingTime5_TrackA'] ?? '';
+          BS1TrackAW5Controller.text =
+              resBody['response']['WeldingTime5_TrackB'] ?? '';
+          AS1TrackAW6Controller.text =
+              resBody['response']['WeldingTime6_TrackA'] ?? '';
+          BS1TrackAW6Controller.text =
+              resBody['response']['WeldingTime6_TrackB'] ?? '';
+          AS1TrackAH1Controller.text =
+              resBody['response']['Heatingplatform1_TrackA'] ?? '';
+          BS1TrackAH1Controller.text =
+              resBody['response']['Heatingplatform1_TrackB'] ?? '';
+          AS1TrackAH2Controller.text =
+              resBody['response']['Heatingplatform2_TrackA'] ?? '';
+          BS1TrackAH2Controller.text =
+              resBody['response']['Heatingplatform2_TrackB'] ?? '';
+          AS1TrackAH3Controller.text =
+              resBody['response']['Heatingplatform3_TrackA'] ?? '';
+          BS1TrackAH3Controller.text =
+              resBody['response']['Heatingplatform3_TrackB'] ?? '';
+          AS1TrackAH4Controller.text =
+              resBody['response']['Heatingplatform4_TrackA'] ?? '';
+          BS1TrackAH4Controller.text =
+              resBody['response']['Heatingplatform4_TrackB'] ?? '';
+          AS1TrackAH5Controller.text =
+              resBody['response']['Heatingplatform5_TrackA'] ?? '';
+          BS1TrackAH5Controller.text =
+              resBody['response']['Heatingplatform5_TrackB'] ?? '';
+          AS1TrackAH6Controller.text =
+              resBody['response']['Heatingplatform6_TrackA'] ?? '';
+          BS1TrackAH6Controller.text =
+              resBody['response']['Heatingplatform6_TrackB'] ?? '';
+          AS1TrackALController.text =
+              resBody['response']['LowestTemp.setting_TrackA'] ?? '';
+          BS1TrackALController.text =
+              resBody['response']['LowestTemp.setting_TrackB'] ?? '';
+          AS1TrackAHController.text =
+              resBody['response']['HighestTemp.setting_TrackA'] ?? '';
+          BS1TrackAHController.text =
+              resBody['response']['HighestTemp.setting_TrackB'] ?? '';
+          referencePdfController.text = resBody['response']['PreLamPdf'] ?? '';
+        }
+      });
+    }
+  }
+
+  Future setApprovalStatus() async {
+    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    print(approvalStatus);
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
+
+    final url = (site! + "IPQC/UpdatePreLamStatus");
+
+    var params = {
+      "token": token,
+      "CurrentUser": personid,
+      "ApprovalStatus": approvalStatus,
+      "JobCardDetailId": widget.id ?? ""
     };
-    print('$data');
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(params),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _isLoading = false;
+      });
+      var objData = json.decode(response.body);
+      if (objData['success'] == false) {
+        Toast.show("Please Try Again.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        Toast.show("Stringer 3 Test $approvalStatus .",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
+    }
+  }
+
+  Future<void> _pickReferencePDF() async {
+    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      File pdffile = File(result.files.single.path!);
+      setState(() {
+        referencePdfFileBytes = pdffile.readAsBytesSync();
+        referencePdfController.text = result.files.single.name;
+      });
+    } else {
+      // User canceled the file picker
+    }
+  }
+
+  Future createData() async {
+    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
+    // print(jobCardDate);
+    var data = {
+      "JobCardDetailId": jobCarId != '' && jobCarId != null
+          ? jobCarId
+          : widget.id != '' && widget.id != null
+              ? widget.id
+              : '',
+      "CurrentUser": personid,
+      "DocNo": "GSPL/IPQC/ST/004",
+      "RevNo": "1.0 dated 12.08.2023",
+      "Date": dateOfQualityCheck,
+      "Shift": selectedShift,
+      "Status": sendStatus,
+      "Type": "Stringer3",
+      "Track": [
+        {
+          "Parameter": "Set Temperature1 ",
+          "Specification": "230±30",
+          "UOM": "°C",
+          "TrackA": AS1TackAs1Controller.text,
+          "TrackB": BS1TackAs1Controller.text
+        },
+        {
+          "Parameter": "Set Temperature2",
+          "Specification": "230±30",
+          "UOM": "°C",
+          "TrackA": AS1TackAs2Controller.text,
+          "TrackB": BS1TackAs2Controller.text
+        },
+        {
+          "Parameter": "Welding Time1",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW1Controller.text,
+          "TrackB": BS1TrackAW1Controller.text,
+        },
+        {
+          "Parameter": "Welding Time2",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW2Controller.text,
+          "TrackB": BS1TrackAW2Controller.text,
+        },
+        {
+          "Parameter": "Welding Time3",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW3Controller.text,
+          "TrackB": BS1TrackAW3Controller.text,
+        },
+        {
+          "Parameter": "Welding Time4",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW4Controller.text,
+          "TrackB": BS1TrackAW4Controller.text,
+        },
+        {
+          "Parameter": "Welding Time5",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW5Controller.text,
+          "TrackB": BS1TrackAW5Controller.text,
+        },
+        {
+          "Parameter": "Welding Time6",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW6Controller.text,
+          "TrackB": BS1TrackAW6Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 1",
+          "Specification": "80+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH1Controller.text,
+          "TrackB": BS1TrackAH1Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 2",
+          "Specification": "90+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH2Controller.text,
+          "TrackB": BS1TrackAH2Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 3",
+          "Specification": "110+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH3Controller.text,
+          "TrackB": BS1TrackAH3Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 4",
+          "Specification": "100+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH4Controller.text,
+          "TrackB": BS1TrackAH4Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 5",
+          "Specification": "90+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH5Controller.text,
+          "TrackB": BS1TrackAH5Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 6",
+          "Specification": "80+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH6Controller.text,
+          "TrackB": BS1TrackAH6Controller.text,
+        },
+        {
+          "Parameter": "Lowest Temp.setting",
+          "Specification": "30",
+          "UOM": "°C",
+          "TrackA": AS1TrackALController.text,
+          "TrackB": BS1TrackALController.text,
+        },
+        {
+          "Parameter": "Highest Temp. setting",
+          "Specification": "50",
+          "UOM": "°C",
+          "TrackA": AS1TrackAHController.text,
+          "TrackB": BS1TrackAHController.text,
+        }
+      ]
+    };
+
+    setState(() {
+      _isLoading = true;
+    });
+    FocusScope.of(context).unfocus();
+
+    final url = (site! + "IPQC/AddStringerMachine");
+
+    final prefs = await SharedPreferences.getInstance();
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: json.encode(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print("Bhanuu bhai");
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      var objData = json.decode(response.body);
+      setState(() {
+        jobCarId = objData['UUID'];
+
+        _isLoading = false;
+      });
+
+      print(
+          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      print(objData['UUID']);
+      if (objData['success'] == false) {
+        Toast.show(objData['message'],
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.redColor);
+      } else {
+        if (sendStatus == 'Pending') {
+          uploadPDF((referencePdfFileBytes ?? []));
+        } else {
+          Toast.show("Data has been saved.",
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: AppColors.blueColor);
+        }
+      }
+    } else {
+      Toast.show("Error In Server",
+          duration: Toast.lengthLong, gravity: Toast.center);
+    }
+  }
+
+  uploadPDF(List<int> referenceBytes) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+    site = prefs.getString('site')!;
+
+    var currentdate = DateTime.now().microsecondsSinceEpoch;
+    var formData = FormData.fromMap({
+      "JobCardDetailId": jobCarId,
+      "PreLamPdf": MultipartFile.fromBytes(
+        referenceBytes,
+        filename:
+            (referencePdfController.text + (currentdate.toString()) + '.pdf'),
+        contentType: MediaType("application", 'pdf'),
+      ),
+    });
+
+    _response = await _dio.post((site! + 'IPQC/UploadPreLamPdf'), // Prod
+
+        options: Options(
+          contentType: 'multipart/form-data',
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+        data: formData);
+
+    try {
+      if (_response?.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Toast.show("Stringer 3 Test Completed.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.blueColor);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => IpqcTestList()));
+      } else {
+        Toast.show("Error In Server",
+            duration: Toast.lengthLong, gravity: Toast.center);
+      }
+    } catch (err) {
+      print("Error");
+    }
+  }
+
+  Widget _getFAB() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 70),
+      child: FloatingActionButton(
+        onPressed: () {
+          if (status != 'Pending') {
+            setState(() {
+              sendStatus = 'Inprogress';
+            });
+            createData();
+          }
+        },
+        child: ClipOval(
+          child: Image.asset(
+            AppAssets.save,
+            height: 70,
+            width: 60,
+          ),
+        ),
+      ),
+    );
   }
 // ***************** Done Send the Data *******************************
 
@@ -254,37 +658,36 @@ class _stringer3State extends State<stringer3> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return StringersCard();
+                return widget.id != "" && widget.id != null
+                    ? IpqcTestList()
+                    : StringersCard();
               }));
             },
           ),
-          body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: setPage == ''
-                ? Stack(
-                    alignment: Alignment.center,
-                    fit: StackFit.expand,
-                    children: [
-                      SingleChildScrollView(
-                        child: Form(
-                          key: _registerFormKey,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.center,
+          body: _isLoading
+              ? AppLoader()
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: setPage == ''
+                      ? Stack(
+                          alignment: Alignment.center,
+                          fit: StackFit.expand,
+                          children: [
+                            SingleChildScrollView(
+                              child: Form(
+                                key: _registerFormKey,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
                                     Container(
                                       alignment: Alignment.center,
                                       child: Column(
@@ -293,10 +696,1048 @@ class _stringer3State extends State<stringer3> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Image.asset(
-                                            AppAssets.imgLogo,
-                                            height: 100,
-                                            width: 230,
+                                          Container(
+                                            alignment: Alignment.center,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  AppAssets.imgLogo,
+                                                  height: 100,
+                                                  width: 230,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 10),
+                                        child: Text(
+                                          "Monitoring For Tabber & Stringer Machine",
+                                          style: TextStyle(
+                                            fontSize: 27,
+                                            color:
+                                                Color.fromARGB(255, 56, 57, 56),
+                                            fontFamily: appFontFamily,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    // **************** Document Number *******************
+                                    const SizedBox(
+                                      height: 35,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Document No : ',
+                                          style: AppStyles
+                                              .textfieldCaptionTextStyle,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          'GSPL/IPQC/ST/004',
+                                          style: AppStyles
+                                              .textfieldCaptionTextStyle,
+                                        ),
+                                      ],
+                                    ),
+
+                                    // *************************** Revisional Number ********************
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Rev.No./Dated : ',
+                                          style: AppStyles
+                                              .textfieldCaptionTextStyle,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          'Ver.1.0 & 12-08-2023',
+                                          style: AppStyles
+                                              .textfieldCaptionTextStyle,
+                                        ),
+                                      ],
+                                    ),
+
+                                    // ****************** Date *****************************************
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      "Date",
+                                      style:
+                                          AppStyles.textfieldCaptionTextStyle,
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextFormField(
+                                      controller: dateController,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Date",
+                                        counterText: '',
+                                        suffixIcon: Icon(Icons.calendar_month),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      onTap: () async {
+                                        if (status != 'Pending') {
+                                          DateTime date = DateTime(2021);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+                                          date = (await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime.now(),
+                                          ))!;
+                                          dateController.text =
+                                              DateFormat("EEE MMM dd, yyyy")
+                                                  .format(
+                                            DateTime.parse(date.toString()),
+                                          );
+                                          setState(() {
+                                            dateOfQualityCheck =
+                                                DateFormat("yyyy-MM-dd").format(
+                                              DateTime.parse(date.toString()),
+                                            );
+                                          });
+                                        }
+                                      },
+                                      validator: MultiValidator(
+                                        [
+                                          RequiredValidator(
+                                            errorText: "Please Enter Date",
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+
+                                    // ************************************* Shift *********************
+
+                                    Text(
+                                      "Shift",
+                                      style:
+                                          AppStyles.textfieldCaptionTextStyle,
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    DropdownButtonFormField<String>(
+                                      value: selectedShift,
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (String? newValue) {
+                                              setState(() {
+                                                selectedShift = newValue!;
+                                                shiftController.text =
+                                                    selectedShift!;
+                                              });
+                                            },
+                                      items: <String>[
+                                        'Night Shift',
+                                        'Day Shift'
+                                      ].map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Select Shift",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Please Select Shift";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+
+//  *******************************************   Monitoring For tabber & Stringer Machine ********************
+
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+
+                                    const Center(
+                                      child: Text(
+                                        "Track A",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Color.fromARGB(255, 250, 4, 4),
+                                          fontFamily: appFontFamily,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    const Center(
+                                      child: Text(
+                                        "PARAMETER",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color:
+                                              Color.fromARGB(255, 86, 104, 243),
+                                          fontFamily: appFontFamily,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+
+                                    // ***************  Temperature's  ****************
+
+                                    TextFormField(
+                                      controller: ASet1Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Set Temperature1 | 230+-30  | °C",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TackAs1Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: ASet2Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Set Temperature2 | 230+-30  | °C",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TackAs2Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+
+                                    TextFormField(
+                                      controller: AWtime1Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Welding Time1 | 1.7-2.5  | sec.",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAW1Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+
+                                    TextFormField(
+                                      controller: AWtime2Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Welding Time2 | 1.7-2.5  | sec.",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAW2Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AWtime3Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Welding Time3 | 1.7-2.5  | sec.",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAW3Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AWtime4Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Welding Time4 | 1.7-2.5  | sec.",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAW4Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AWtime5Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Welding Time5 | 1.7-2.5  | sec.",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAW5Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+
+                                    TextFormField(
+                                      controller: AWtime6Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Welding Time6 | 1.7-2.5  | sec.",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAW6Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+
+                                    TextFormField(
+                                      controller: AHeating1Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Heating Platform 1 | 80+-30 | °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAH1Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AHeating2Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Heating Platform 2 | 90+-30 | °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAH2Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AHeating3Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Heating Platform 3 | 110+-30 | °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAH3Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AHeating4Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Heating Platform 4 | 100+-30 | °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAH4Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AHeating5Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Heating Platform 5 | 90+-30 | °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAH5Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AHeating6Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Heating Platform 6 | 80+-30 | °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAH6Controller,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: ALowestController,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Lowest Temp.setting |  30  |  °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackALController,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    TextFormField(
+                                      controller: AHighestController,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText:
+                                            "Highest Temp.setting |  150  |  °C ",
+                                        counterText: '',
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: AS1TrackAHController,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                        hintText: "Please Enter Track-A Data",
+                                        counterText: '',
+                                        fillColor:
+                                            Color.fromARGB(255, 215, 243, 207),
+                                      ),
+                                      style: AppStyles.textInputTextStyle,
+                                      readOnly: status == 'Pending' &&
+                                              designation != "QC"
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Enter Correct Track A Data";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                    _isLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator())
+                                        : AppButton(
+                                            textStyle: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.white,
+                                              fontSize: 16,
+                                            ),
+                                            onTap: () {
+                                              AppHelper.hideKeyboard(context);
+                                              if (status != 'Pending') {
+                                                setState(() {
+                                                  sendStatus = 'Inprogress';
+                                                });
+                                                createData();
+                                              } //400
+
+                                              // _registerFormKey.currentState!.save;
+                                              // if (_registerFormKey.currentState!
+                                              //     .validate()) {
+                                              //   createData();
+                                              // }
+                                              setState(() {
+                                                setPage = "TrackB";
+                                              });
+                                              // print("Page set");
+                                              print(setPage);
+                                            },
+                                            label: "Next",
+                                            organization: '',
+                                          ),
+
+                                    // Back button
+                                    // const SizedBox(
+                                    //   height: 15,
+                                    // ),
+                                    // AppButton(
+                                    //   textStyle: const TextStyle(
+                                    //     fontWeight: FontWeight.w700,
+                                    //     color: AppColors.white,
+                                    //     fontSize: 16,
+                                    //   ),
+                                    //   onTap: () {
+                                    //     AppHelper.hideKeyboard(context);
+
+                                    //     setState(() {
+                                    //       setPage = 'backpage';
+                                    //     });
+                                    //     print("Page set");
+                                    //     print(setPage);
+                                    //   },
+                                    //   label: "Back",
+                                    //   organization: '',
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 10,
+                                    // ),
+
+                                    const SizedBox(
+                                      height: 25,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: const Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Powered By Gautam Solar Pvt. Ltd.",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: appFontFamily,
+                                              color: AppColors.greyColor,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
                                           ),
                                         ],
                                       ),
@@ -304,934 +1745,25 @@ class _stringer3State extends State<stringer3> {
                                   ],
                                 ),
                               ),
-                              const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    "Monitoring For Tabber & Stringer Machine",
-                                    style: TextStyle(
-                                      fontSize: 27,
-                                      color: Color.fromARGB(255, 56, 57, 56),
-                                      fontFamily: appFontFamily,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              // **************** Document Number *******************
-                              const SizedBox(
-                                height: 35,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Document No : ',
-                                    style: AppStyles.textfieldCaptionTextStyle,
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'GSPL/IPQC/ST/004',
-                                    style: AppStyles.textfieldCaptionTextStyle,
-                                  ),
-                                ],
-                              ),
-
-                              // *************************** Revisional Number ********************
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Rev.No./Dated : ',
-                                    style: AppStyles.textfieldCaptionTextStyle,
-                                  ),
-                                  const SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'Ver.1.0 & 12-08-2023',
-                                    style: AppStyles.textfieldCaptionTextStyle,
-                                  ),
-                                ],
-                              ),
-
-// ****************** Date *****************************************
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Text(
-                                "Date",
-                                style: AppStyles.textfieldCaptionTextStyle,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              TextFormField(
-                                controller: dateController,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Date",
-                                  counterText: '',
-                                  suffixIcon: Icon(Icons.calendar_month),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                onTap: () async {
-                                  DateTime date = DateTime(2021);
-                                  FocusScope.of(context)
-                                      .requestFocus(new FocusNode());
-                                  date = (await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime.now(),
-                                  ))!;
-                                  dateController.text =
-                                      DateFormat("EEE MMM dd, yyyy").format(
-                                    DateTime.parse(date.toString()),
-                                  );
-                                  setState(() {
-                                    dateOfQualityCheck =
-                                        DateFormat("yyyy-MM-dd").format(
-                                      DateTime.parse(date.toString()),
-                                    );
-                                  });
-                                },
-                                validator: MultiValidator(
-                                  [
-                                    RequiredValidator(
-                                      errorText: "Please Enter Date",
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              const SizedBox(
-                                height: 15,
-                              ),
-
-                              // ************************************* Shift *********************
-
-                              Text(
-                                "Shift",
-                                style: AppStyles.textfieldCaptionTextStyle,
-                              ),
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              DropdownButtonFormField<String>(
-                                value: selectedShift,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedShift = newValue!;
-                                    shiftController.text = selectedShift!;
-                                  });
-                                },
-                                items: <String>[
-                                  'Night Shift',
-                                  'Day Shift'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Select Shift",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Please Select Shift";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-
-//  *******************************************   Monitoring For tabber & Stringer Machine ********************
-
-                              const SizedBox(
-                                height: 15,
-                              ),
-
-                              const Center(
-                                child: Text(
-                                  "Track A",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 250, 4, 4),
-                                    fontFamily: appFontFamily,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              const Center(
-                                child: Text(
-                                  "PARAMETER",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 86, 104, 243),
-                                    fontFamily: appFontFamily,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-
-// *********************  Temperature's  ************************
-
-                              TextFormField(
-                                controller: ASet1Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Set Temperature1 | 230+-30  | °C",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TackAs1Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: ASet2Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Set Temperature2 | 230+-30  | °C",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TackAs2Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-
-                              TextFormField(
-                                controller: AWtime1Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Welding Time1 | 1.7-2.5  | sec.",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAW1Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-
-                              TextFormField(
-                                controller: AWtime2Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Welding Time2 | 1.7-2.5  | sec.",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAW2Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AWtime3Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Welding Time3 | 1.7-2.5  | sec.",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAW3Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AWtime4Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Welding Time4 | 1.7-2.5  | sec.",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAW4Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AWtime5Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Welding Time5 | 1.7-2.5  | sec.",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAW5Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-
-                              TextFormField(
-                                controller: AWtime6Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Welding Time6 | 1.7-2.5  | sec.",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAW6Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-
-                              TextFormField(
-                                controller: AHeating1Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Heating Platform 1 | 80+-30 | °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAH1Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AHeating2Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Heating Platform 2 | 90+-30 | °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAH2Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AHeating3Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText:
-                                      "Heating Platform 3 | 110+-30 | °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAH3Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AHeating4Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText:
-                                      "Heating Platform 4 | 100+-30 | °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAH4Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AHeating5Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Heating Platform 5 | 90+-30 | °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAH5Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AHeating6Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Heating Platform 6 | 80+-30 | °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAH6Controller,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: ALowestController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Lowest Temp.setting |  30  |  °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackALController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              TextFormField(
-                                controller: AHighestController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText:
-                                      "Highest Temp.setting |  150  |  °C ",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly: true,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                controller: AS1TrackAHController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Track-A Data",
-                                  counterText: '',
-                                  fillColor: Color.fromARGB(255, 215, 243, 207),
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Correct Track A Data";
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-
-// -------------------------  It's Working End point's -----------------------------
-                              // Center(
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.all(8.0),
-                              //     child: InkWell(
-                              //       onTap: () {
-                              //         // Navigator.of(context).pushReplacement(
-                              //         //     MaterialPageRoute(
-                              //         //         builder: (BuildContext context) =>
-                              //         //             LoginPage(
-                              //         //                 appName: widget.appName)));
-                              //       },
-                              //       child: Text(
-                              //         "BACK",
-                              //         style: TextStyle(
-                              //           fontFamily: appFontFamily,
-                              //           fontSize: 16,
-                              //           fontWeight: FontWeight.w500,
-                              //           color: AppColors.redColor,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-
-                              // ^^^^^^^
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                              _isLoading
-                                  ? Center(child: CircularProgressIndicator())
-                                  : AppButton(
-                                      textStyle: const TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.white,
-                                        fontSize: 16,
-                                      ),
-                                      onTap: () {
-                                        AppHelper.hideKeyboard(context);
-                                        sendDataToBackend(); //400
-
-                                        // _registerFormKey.currentState!.save;
-                                        // if (_registerFormKey.currentState!
-                                        //     .validate()) {
-                                        //   sendDataToBackend();
-                                        // }
-                                        setState(() {
-                                          setPage = "TrackB";
-                                        });
-                                        // print("Page set");
-                                        print(setPage);
-                                      },
-                                      label: "Next",
-                                      organization: '',
-                                    ),
-
-                              // Back button
-                              // const SizedBox(
-                              //   height: 15,
-                              // ),
-                              // AppButton(
-                              //   textStyle: const TextStyle(
-                              //     fontWeight: FontWeight.w700,
-                              //     color: AppColors.white,
-                              //     fontSize: 16,
-                              //   ),
-                              //   onTap: () {
-                              //     AppHelper.hideKeyboard(context);
-
-                              //     setState(() {
-                              //       setPage = 'backpage';
-                              //     });
-                              //     print("Page set");
-                              //     print(setPage);
-                              //   },
-                              //   label: "Back",
-                              //   organization: '',
-                              // ),
-                              // const SizedBox(
-                              //   height: 10,
-                              // ),
-
-                              // ^^^^^^^
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Powered By Gautam Solar Pvt. Ltd.",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: appFontFamily,
-                                        color: AppColors.greyColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-
-                // 999999999999999999999999999999999999999999
-                : setPage == "TrackB"
-                    ? Stack(
-                        alignment: Alignment.center,
-                        fit: StackFit.expand,
-                        children: [
-                          SingleChildScrollView(
-                            child: Form(
-                              key: _registerFormKey,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    alignment: Alignment.center,
+                            ),
+                          ],
+                        )
+                      : setPage == "TrackB"
+                          ? Stack(
+                              alignment: Alignment.center,
+                              fit: StackFit.expand,
+                              children: [
+                                SingleChildScrollView(
+                                  child: Form(
+                                    key: _registerFormKey,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
                                         Container(
                                           alignment: Alignment.center,
                                           child: Column(
@@ -1240,10 +1772,1063 @@ class _stringer3State extends State<stringer3> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.center,
                                             children: [
-                                              Image.asset(
-                                                AppAssets.imgLogo,
-                                                height: 100,
-                                                width: 230,
+                                              Container(
+                                                alignment: Alignment.center,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      AppAssets.imgLogo,
+                                                      height: 100,
+                                                      width: 230,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(top: 10),
+                                            child: Text(
+                                              "Monitoring For Tabber & Stringer Machine",
+                                              style: TextStyle(
+                                                fontSize: 27,
+                                                color: Color.fromARGB(
+                                                    255, 56, 57, 56),
+                                                fontFamily: appFontFamily,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // **************** Document Number *******************
+                                        const SizedBox(
+                                          height: 35,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Document No : ',
+                                              style: AppStyles
+                                                  .textfieldCaptionTextStyle,
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              'GSPL/IPQC/ST/004',
+                                              style: AppStyles
+                                                  .textfieldCaptionTextStyle,
+                                            ),
+                                          ],
+                                        ),
+
+                                        // *************************** Revisional Number ********************
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'Rev.No./Dated : ',
+                                              style: AppStyles
+                                                  .textfieldCaptionTextStyle,
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              'Ver.1.0 & 12-08-2023',
+                                              style: AppStyles
+                                                  .textfieldCaptionTextStyle,
+                                            ),
+                                          ],
+                                        ),
+
+                                        //  ***************   Monitoring For tabber & Stringer Machine ****************
+
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+
+                                        const Center(
+                                          child: Text(
+                                            "Track B",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromARGB(
+                                                  255, 250, 4, 4),
+                                              fontFamily: appFontFamily,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        const Center(
+                                          child: Text(
+                                            "PARAMETER",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromARGB(
+                                                  255, 86, 104, 243),
+                                              fontFamily: appFontFamily,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+
+                                        // *********************  Temperature's  ************************
+
+                                        TextFormField(
+                                          controller: BSet1Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Set Temperature1 | 230+-30  | °C",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TackAs1Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BSet2Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Set Temperature2 | 230+-30  | °C",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TackAs2Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+
+                                        TextFormField(
+                                          controller: BWtime1Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Welding Time1 | 1.7-2.5  | sec.",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAW1Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+
+                                        TextFormField(
+                                          controller: BWtime2Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Welding Time2 | 1.7-2.5  | sec.",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAW2Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BWtime3Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Welding Time3 | 1.7-2.5  | sec.",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAW3Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BWtime4Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Welding Time4 | 1.7-2.5  | sec.",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAW4Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BWtime5Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Welding Time5 | 1.7-2.5  | sec.",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAW5Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+
+                                        TextFormField(
+                                          controller: BWtime6Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Welding Time6 | 1.7-2.5  | sec.",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAW6Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+
+                                        TextFormField(
+                                          controller: BHeating1Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Heating Platform 1 | 80+-30 | °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAH1Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BHeating2Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Heating Platform 2 | 90+-30 | °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAH2Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BHeating3Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Heating Platform 3 | 110+-30 | °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAH3Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BHeating4Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Heating Platform 4 | 100+-30 | °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAH4Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BHeating5Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Heating Platform 5 | 90+-30 | °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAH5Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BHeating6Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Heating Platform 6 | 80+-30 | °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAH6Controller,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BLowestController,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Lowest Temp.setting |  30  |  °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackALController,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextFormField(
+                                          controller: BHighestController,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Highest Temp.setting |  150  |  °C ",
+                                            counterText: '',
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        TextFormField(
+                                          controller: BS1TrackAHController,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText:
+                                                "Please Enter Track-B Data",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: status == 'Pending' &&
+                                                  designation != "QC"
+                                              ? true
+                                              : false,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Enter Correct Track A Data";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+
+                                        // -------------------------  It's Working End point's -----------------------------
+
+                                        Text(
+                                          "Reference PDF Document ",
+                                          style: AppStyles
+                                              .textfieldCaptionTextStyle,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        TextFormField(
+                                          controller: referencePdfController,
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                                  hintText:
+                                                      "Please Select Reference Pdf",
+                                                  suffixIcon: IconButton(
+                                                    onPressed: () async {
+                                                      if (widget.id != null &&
+                                                          widget.id != '' &&
+                                                          referencePdfController
+                                                                  .text !=
+                                                              '') {
+                                                        UrlLauncher.launch(
+                                                            referencePdfController
+                                                                .text);
+                                                      } else if (status !=
+                                                          'Pending') {
+                                                        _pickReferencePDF();
+                                                      }
+                                                    },
+                                                    icon: widget.id != null &&
+                                                            widget.id != '' &&
+                                                            referencePdfController
+                                                                    .text !=
+                                                                ''
+                                                        ? const Icon(
+                                                            Icons.download)
+                                                        : const Icon(
+                                                            Icons.upload_file),
+                                                  ),
+                                                  counterText: ''),
+                                          style: AppStyles.textInputTextStyle,
+                                          maxLines: 1,
+                                          readOnly: true,
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return "Please Select Reference Pdf";
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 10, 0, 0)),
+                                        _isLoading
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : (widget.id == "" ||
+                                                        widget.id == null) ||
+                                                    (status == 'Inprogress' &&
+                                                        widget.id != null)
+                                                ? AppButton(
+                                                    textStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: AppColors.white,
+                                                      fontSize: 16,
+                                                    ),
+                                                    onTap: () {
+                                                      AppHelper.hideKeyboard(
+                                                          context);
+                                                      _registerFormKey
+                                                          .currentState!.save;
+                                                      if (_registerFormKey
+                                                          .currentState!
+                                                          .validate()) {
+                                                        setState(() {
+                                                          sendStatus =
+                                                              "Pending";
+                                                        });
+                                                        createData();
+                                                      }
+
+                                                      // _registerFormKey.currentState!.save;
+                                                      // if (_registerFormKey.currentState!
+                                                      //     .validate()) {
+                                                      //   createData();
+                                                      // }
+                                                      setState(() {
+                                                        setPage =
+                                                            "Successful Save the Data";
+                                                      });
+                                                      // print("Page set");
+                                                      print(setPage);
+                                                      print(
+                                                          "Kul bhushan Singh");
+                                                    },
+                                                    label: "SAVE",
+                                                    organization: '',
+                                                  )
+                                                : Container(),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                        if (widget.id != "" &&
+                                            widget.id != null &&
+                                            status == 'Pending')
+                                          Container(
+                                            color: Color.fromARGB(255, 191, 226,
+                                                187), // Change the background color to your desired color
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: [
+                                                Divider(),
+                                                SizedBox(height: 15),
+                                                AppButton(
+                                                  textStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: AppColors.white,
+                                                      fontSize: 16),
+                                                  onTap: () {
+                                                    AppHelper.hideKeyboard(
+                                                        context);
+                                                    setApprovalStatus();
+                                                  },
+                                                  label: "Approve",
+                                                  organization: '',
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Divider(),
+                                              ],
+                                            ),
+                                          ),
+
+                                        // Back button
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  setPage = '';
+                                                });
+                                                // Navigator.of(context).pushReplacement(
+                                                //     MaterialPageRoute(
+                                                //         builder: (BuildContext context) =>
+                                                //             LoginPage(
+                                                //                 appName: widget.appName)));
+                                              },
+                                              child: const Text(
+                                                "BACK",
+                                                style: TextStyle(
+                                                    fontFamily: appFontFamily,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors.redColor),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Powered By Gautam Solar Pvt. Ltd.",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: appFontFamily,
+                                                  color: AppColors.greyColor,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
                                               ),
                                             ],
                                           ),
@@ -1251,892 +2836,12 @@ class _stringer3State extends State<stringer3> {
                                       ],
                                     ),
                                   ),
-                                  const Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        "Monitoring For Tabber & Stringer Machine",
-                                        style: TextStyle(
-                                          fontSize: 27,
-                                          color:
-                                              Color.fromARGB(255, 56, 57, 56),
-                                          fontFamily: appFontFamily,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  // **************** Document Number *******************
-                                  const SizedBox(
-                                    height: 35,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Document No : ',
-                                        style:
-                                            AppStyles.textfieldCaptionTextStyle,
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'GSPL/IPQC/ST/004',
-                                        style:
-                                            AppStyles.textfieldCaptionTextStyle,
-                                      ),
-                                    ],
-                                  ),
-
-                                  // *************************** Revisional Number ********************
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Rev.No./Dated : ',
-                                        style:
-                                            AppStyles.textfieldCaptionTextStyle,
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Ver.1.0 & 12-08-2023',
-                                        style:
-                                            AppStyles.textfieldCaptionTextStyle,
-                                      ),
-                                    ],
-                                  ),
-
-//  *******************************************   Monitoring For tabber & Stringer Machine ********************
-
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-
-                                  const Center(
-                                    child: Text(
-                                      "Track B",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Color.fromARGB(255, 250, 4, 4),
-                                        fontFamily: appFontFamily,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  const Center(
-                                    child: Text(
-                                      "PARAMETER",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color:
-                                            Color.fromARGB(255, 86, 104, 243),
-                                        fontFamily: appFontFamily,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-
-// *********************  Temperature's  ************************
-
-                                  TextFormField(
-                                    controller: BSet1Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Set Temperature1 | 230+-30  | °C",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TackAs1Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BSet2Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Set Temperature2 | 230+-30  | °C",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TackAs2Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-
-                                  TextFormField(
-                                    controller: BWtime1Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Welding Time1 | 1.7-2.5  | sec.",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAW1Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-
-                                  TextFormField(
-                                    controller: BWtime2Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Welding Time2 | 1.7-2.5  | sec.",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAW2Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BWtime3Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Welding Time3 | 1.7-2.5  | sec.",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAW3Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BWtime4Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Welding Time4 | 1.7-2.5  | sec.",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAW4Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BWtime5Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Welding Time5 | 1.7-2.5  | sec.",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAW5Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-
-                                  TextFormField(
-                                    controller: BWtime6Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Welding Time6 | 1.7-2.5  | sec.",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAW6Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-
-                                  TextFormField(
-                                    controller: BHeating1Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Heating Platform 1 | 80+-30 | °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAH1Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BHeating2Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Heating Platform 2 | 90+-30 | °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAH2Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BHeating3Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Heating Platform 3 | 110+-30 | °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAH3Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BHeating4Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Heating Platform 4 | 100+-30 | °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAH4Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BHeating5Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Heating Platform 5 | 90+-30 | °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAH5Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BHeating6Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Heating Platform 6 | 80+-30 | °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAH6Controller,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BLowestController,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Lowest Temp.setting |  30  |  °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackALController,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: BHighestController,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText:
-                                          "Highest Temp.setting |  150  |  °C ",
-                                      counterText: '',
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    controller: BS1TrackAHController,
-                                    keyboardType: TextInputType.text,
-                                    textInputAction: TextInputAction.next,
-                                    decoration: AppStyles
-                                        .textFieldInputDecoration
-                                        .copyWith(
-                                      hintText: "Please Enter Track-B Data",
-                                      counterText: '',
-                                      fillColor:
-                                          Color.fromARGB(255, 215, 243, 207),
-                                    ),
-                                    style: AppStyles.textInputTextStyle,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Please Enter Correct Track A Data";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-
-// -------------------------  It's Working End point's -----------------------------
-                                  // Center(
-                                  //   child: Padding(
-                                  //     padding: const EdgeInsets.all(8.0),
-                                  //     child: InkWell(
-                                  //       onTap: () {
-                                  //         // Navigator.of(context).pushReplacement(
-                                  //         //     MaterialPageRoute(
-                                  //         //         builder: (BuildContext context) =>
-                                  //         //             LoginPage(
-                                  //         //                 appName: widget.appName)));
-                                  //       },
-                                  //       child: Text(
-                                  //         "BACK",
-                                  //         style: TextStyle(
-                                  //           fontFamily: appFontFamily,
-                                  //           fontSize: 16,
-                                  //           fontWeight: FontWeight.w500,
-                                  //           color: AppColors.redColor,
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                  _isLoading
-                                      ? Center(
-                                          child: CircularProgressIndicator())
-                                      : AppButton(
-                                          textStyle: const TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.white,
-                                            fontSize: 16,
-                                          ),
-                                          onTap: () {
-                                            AppHelper.hideKeyboard(context);
-                                            sendDataToBackend(); //400
-
-                                            // _registerFormKey.currentState!.save;
-                                            // if (_registerFormKey.currentState!
-                                            //     .validate()) {
-                                            //   sendDataToBackend();
-                                            // }
-                                            setState(() {
-                                              setPage =
-                                                  "Successful Save the Data";
-                                            });
-                                            // print("Page set");
-                                            print(setPage);
-                                            print("Kul bhushan Singh");
-                                          },
-                                          label: "SAVE",
-                                          organization: '',
-                                        ),
-
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-
-                                  // Back button
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            setPage = '';
-                                          });
-                                          // Navigator.of(context).pushReplacement(
-                                          //     MaterialPageRoute(
-                                          //         builder: (BuildContext context) =>
-                                          //             LoginPage(
-                                          //                 appName: widget.appName)));
-                                        },
-                                        child: const Text(
-                                          "BACK",
-                                          style: TextStyle(
-                                              fontFamily: appFontFamily,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.redColor),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Powered By Gautam Solar Pvt. Ltd.",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: appFontFamily,
-                                            color: AppColors.greyColor,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container(),
-          ),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                ),
+          floatingActionButton: (status == "Pending") ? null : _getFAB(),
           bottomNavigationBar: Container(
             height: 60,
             decoration: const BoxDecoration(
@@ -2152,7 +2857,11 @@ class _stringer3State extends State<stringer3> {
                 InkWell(
                     onTap: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomePage()));
+                          builder: (BuildContext context) =>
+                              department == 'IPQC' &&
+                                      designation != 'Super Admin'
+                                  ? IpqcPage()
+                                  : WelcomePage()));
                     },
                     child: Image.asset(
                         home
@@ -2189,10 +2898,10 @@ class _stringer3State extends State<stringer3> {
                   width: 8,
                 ),
                 InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => PublicDrawer()));
-                    // },
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => PublicDrawer()));
+                    },
                     child: Image.asset(
                         menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                         height: 25)),

@@ -8,6 +8,7 @@ import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/bomcard.dart';
+import 'package:QCM/busBar.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_assets.dart';
@@ -17,8 +18,14 @@ import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/framing.dart';
 import 'package:QCM/ipqcSelant.dart';
 import 'package:QCM/ipqc_list_model.dart';
+import 'package:QCM/laminator1.dart';
+import 'package:QCM/laminator2.dart';
 import 'package:QCM/postlam.dart';
 import 'package:QCM/prelam.dart';
+import 'package:QCM/solderingPeel.dart';
+import 'package:QCM/stringer1.dart';
+import 'package:QCM/stringer2.dart';
+import 'package:QCM/stringer3.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
@@ -690,19 +697,40 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                               ? AppAssets.framemeasurement
                                               : type == "Sealent"
                                                   ? AppAssets.sealantmeasurement
+                                                  : type == "Busbar"
+                                                      ? AppAssets.busbar
+                                                      : type == "Soldering"
+                                                          ? AppAssets.peel
+                                                          : type == "Laminator1"
+                                                              ? AppAssets
+                                                                  .Laminator1
+                                                              : type ==
+                                                                      "Laminator2"
+                                                                  ? AppAssets
+                                                                      .Laminator2
+                                                                  : type ==
+                                                                          "Stringer1"
+                                                                      ? AppAssets
+                                                                          .Stringer1
+                                                                      : type ==
+                                                                              "Stringer2"
+                                                                          ? AppAssets
+                                                                              .Stringer2
+                                                                          : type == "Stringer3"
+                                                                              ? AppAssets.Stringer3
 
-                                                  //     : type ==
-                                                  //             "Aluminium Frame"
-                                                  //         ? AppAssets.imgSalaryReport
-                                                  //         : type == "Flux"
-                                                  //             ? AppAssets.flux
-                                                  //             : type ==
-                                                  //                     "Backsheet"
-                                                  //                 ? AppAssets
-                                                  //                     .imgAttendanceList
-                                                  : type == "PostLam"
-                                                      ? AppAssets.postlam
-                                                      : AppAssets.jobcard,
+                                                                              //     : type ==
+                                                                              //             "Aluminium Frame"
+                                                                              //         ? AppAssets.imgSalaryReport
+                                                                              //         : type == "Flux"
+                                                                              //             ? AppAssets.flux
+                                                                              //             : type ==
+                                                                              //                     "Backsheet"
+                                                                              //                 ? AppAssets
+                                                                              //                     .imgAttendanceList
+                                                                              : type == "PostLam"
+                                                                                  ? AppAssets.postlam
+                                                                                  : AppAssets.jobcard,
                               height: 60,
                               width: 60,
                             ),
@@ -884,7 +912,27 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                                         ? framing(id: id)
                                                         : type == "Sealent"
                                                             ? ipqcSelant(id: id)
-                                                            : BomCard(id: id)),
+                                                            : type == "Busbar"
+                                                                ? busbar(id: id)
+                                                                : type ==
+                                                                        "Soldering"
+                                                                    ? solderingPeel(
+                                                                        id: id)
+                                                                    : type ==
+                                                                            "Laminator1"
+                                                                        ? laminator1(
+                                                                            id:
+                                                                                id)
+                                                                        : type ==
+                                                                                "Laminator2"
+                                                                            ? laminator2(id: id)
+                                                                            : type == "Stringer1"
+                                                                                ? stringer1(id: id)
+                                                                                : type == "Stringer2"
+                                                                                    ? stringer2(id: id)
+                                                                                    : type == "Stringer3"
+                                                                                        ? stringer3(id: id)
+                                                                                        : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(
@@ -919,7 +967,27 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                                         ? framing(id: id)
                                                         : type == "Sealent"
                                                             ? ipqcSelant(id: id)
-                                                            : BomCard(id: id)),
+                                                            : type == "Busbar"
+                                                                ? busbar(id: id)
+                                                                : type ==
+                                                                        "Soldering"
+                                                                    ? solderingPeel(
+                                                                        id: id)
+                                                                    : type ==
+                                                                            "Laminator1"
+                                                                        ? laminator1(
+                                                                            id:
+                                                                                id)
+                                                                        : type ==
+                                                                                "Laminator2"
+                                                                            ? laminator2(id: id)
+                                                                            : type == "Stringer1"
+                                                                                ? stringer1(id: id)
+                                                                                : type == "Stringer2"
+                                                                                    ? stringer2(id: id)
+                                                                                    : type == "Stringer3"
+                                                                                        ? stringer3(id: id)
+                                                                                        : BomCard(id: id)),
                                 (Route<dynamic> route) => false);
                           },
                           child: Image.asset(

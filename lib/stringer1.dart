@@ -132,7 +132,7 @@ class _stringer1State extends State<stringer1> {
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
   List<int>? referencePdfFileBytes;
-  String? selectedShift;
+  String selectedShift = "Day Shift";
   late String sendStatus;
   String status = '',
       jobCarId = '',
@@ -148,6 +148,7 @@ class _stringer1State extends State<stringer1> {
   @override
   void initState() {
     super.initState();
+    store();
     isCycleTimeTrue = true;
     setState(() {
       ASet1Controller.text = "Set Temperature1 | 230+-30  | °C";
@@ -187,85 +188,6 @@ class _stringer1State extends State<stringer1> {
   }
 
   // ------- Send the Data where will be Used to Backend -----------
-  Future<void> createData1() async {
-    var data = {
-      'date': dateController.text,
-      'shift': shiftController.text,
-      'Track-A': [
-        {
-          'ASet1': ASet1Controller.text,
-          'AS1TackAs1': AS1TackAs1Controller.text,
-          'ASet2': ASet2Controller.text,
-          'AS1TackAs2': AS1TackAs2Controller.text,
-          'AWtime1': AWtime1Controller.text,
-          'AS1TrackAW1': AS1TrackAW1Controller.text,
-          'AWtime2': AWtime2Controller.text,
-          'AS1TrackAW2': AS1TrackAW2Controller.text,
-          'AWtime3': AWtime3Controller.text,
-          'AS1TrackAW3': AS1TrackAW3Controller.text,
-          'AWtime4': AWtime4Controller.text,
-          'AS1TrackAW4': AS1TrackAW4Controller.text,
-          'AWtime5': AWtime5Controller.text,
-          'AS1TrackAW5': AS1TrackAW5Controller.text,
-          'AWtime6': AWtime6Controller.text,
-          'AS1TrackAW6': AS1TrackAW6Controller.text,
-          'AHeating1': AHeating1Controller.text,
-          'AS1TrackAH1': AS1TrackAH1Controller.text,
-          'AHeating2': AHeating2Controller.text,
-          'AS1TrackAH2': AS1TrackAH2Controller.text,
-          'AHeating3': AHeating3Controller.text,
-          'AS1TrackAH3': AS1TrackAH3Controller.text,
-          'AHeating4': AHeating4Controller.text,
-          'AS1TrackAH4': AS1TrackAH4Controller.text,
-          'AHeating5': AHeating5Controller.text,
-          'AS1TrackAH5': AS1TrackAH5Controller.text,
-          'AHeating6': AHeating6Controller.text,
-          'AS1TrackAH6': AS1TrackAH6Controller.text,
-          'ALowest': ALowestController.text,
-          'AS1TrackAL': AS1TrackALController.text,
-          'AHighest': AHighestController.text,
-          'AS1TrackAH': AS1TrackAHController.text,
-        }
-      ],
-      'Track-B': [
-        {
-          'BSet1': BSet1Controller.text,
-          'BS1TackAs1': BS1TackAs1Controller.text,
-          'BSet2': BSet2Controller.text,
-          'BS1TackAs2': BS1TackAs2Controller.text,
-          'BWtime1': BWtime1Controller.text,
-          'BS1TrackAW1': BS1TrackAW1Controller.text,
-          'BWtime2': BWtime2Controller.text,
-          'BS1TrackAW2': BS1TrackAW2Controller.text,
-          'BWtime3': BWtime3Controller.text,
-          'BS1TrackAW3': BS1TrackAW3Controller.text,
-          'BWtime4': BWtime4Controller.text,
-          'BS1TrackAW4': BS1TrackAW4Controller.text,
-          'BWtime5': BWtime5Controller.text,
-          'BS1TrackAW5': BS1TrackAW5Controller.text,
-          'BWtime6': BWtime6Controller.text,
-          'BS1TrackAW6': BS1TrackAW6Controller.text,
-          'BHeating1': BHeating1Controller.text,
-          'BS1TrackAH1': BS1TrackAH1Controller.text,
-          'BHeating2': BHeating2Controller.text,
-          'BS1TrackAH2': BS1TrackAH2Controller.text,
-          'BHeating3': BHeating3Controller.text,
-          'BS1TrackAH3': BS1TrackAH3Controller.text,
-          'BHeating4': BHeating4Controller.text,
-          'BS1TrackAH4': BS1TrackAH4Controller.text,
-          'BHeating5': BHeating5Controller.text,
-          'BS1TrackAH5': BS1TrackAH5Controller.text,
-          'BHeating6': BHeating6Controller.text,
-          'BS1TrackAH6': BS1TrackAH6Controller.text,
-          'BLowest': BLowestController.text,
-          'BS1TrackAL': BS1TrackALController.text,
-          'BHighest': BHighestController.text,
-          'BS1TrackAH': BS1TrackAHController.text,
-        }
-      ]
-    };
-    print('$data');
-  }
 
   void store() async {
     final prefs = await SharedPreferences.getInstance();
@@ -290,7 +212,7 @@ class _stringer1State extends State<stringer1> {
       }
       site = prefs.getString('site')!;
     });
-    final AllSolarData = ((site!) + 'IPQC/GetSpecificeJobCard');
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificStringerMachine');
     final allSolarData = await http.post(
       Uri.parse(AllSolarData),
       body: jsonEncode(<String, String>{
@@ -318,124 +240,78 @@ class _stringer1State extends State<stringer1> {
 
           print("saiffffffffffffffffffffffffffffffffffffffffff");
           print("kulllllllllllllllllllllllllllllllllllllllllll");
-          // dateController.text = resBody['response']['Date'] ?? '';
-          // status = resBody['response']['Status'] ?? '';
-          // jobCardDate = resBody['response']['Date'] ?? '';
-          // dateController.text = resBody['response']['Date'] != ''
-          //     ? DateFormat("EEE MMM dd, yyyy").format(
-          //         DateTime.parse(resBody['response']['Date'].toString()))
-          //     : '';
-          // moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
-
-          // // invoiceDateController.text = DateFormat("EEE MMM dd, yyyy").format(
-          // //         DateTime.parse(dataMap[0]['InvoiceDate'].toString())) ??
-          // //     '';
-          // matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
-          // moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
-          // lotNoController.text =
-          //     resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
-          // lotSizeController.text =
-          //     resBody['response']['Glass Washing Description']["size"] ?? '';
-          // glassCommentController.text =
-          //     resBody['response']['Glass Washing Comments'] ?? '';
-          // evaLotNoController.text = resBody['response']
-          //         ['Foil cutterr Description']["EVA_Lot_No"] ??
-          //     '';
-          // evaSizeController.text =
-          //     resBody['response']['Foil cutterr Description']["EVA_Size"] ?? '';
-          // backsheetLotController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_Lot"] ??
-          //     '';
-
-          // backsheetSizeController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_size"] ??
-          //     '';
-          // foilCommentController.text =
-          //     resBody['response']['Foil cutterr Comments'] ?? '';
-          // cellLotNoController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Lot_No"] ??
-          //     '';
-          // cellTypeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Type"] ??
-          //     '';
-          // cellSyzeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Size"] ??
-          //     '';
-          // cellEffController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Eff"] ??
-          //     '';
-          // interconnectRibbonSizeController.text = resBody['response']
-          //             ['Tabbing & Stringing Description']
-          //         ["Interconnect_Ribbon_Size"] ??
-          //     '';
-          // busbarSizeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Busbar_Size"] ??
-          //     '';
-          // fluxController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Flux"] ??
-          //     '';
-          // tabbingCommentController.text =
-          //     resBody['response']['Tabbing & Stringing Comments'] ?? '';
-          // cellToCellGapController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Cell_To_Cell_Gap"] ??
-          //     '';
-          // stringToStringGapController.text = resBody['response']
-          //             ['Bussing/InterConnection Description']
-          //         ["String_To_String_Gap"] ??
-          //     '';
-          // solderingTempController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Soldering_Temp"] ??
-          //     '';
-          // bussingCommentController.text =
-          //     resBody['response']['Bussing/InterConnection Comments'] ?? '';
-          // tempreatureController.text = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Temperature"] ??
-          //     '';
-          // cycleTimeController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Description']["Cycle_Time"] ??
-          //     '';
-          // isCycleTimeTrue = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Laminate_Quality"] ??
-          //     '';
-          // visualCommentController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Comments'] ??
-          //     '';
-          // isBacksheetCuttingTrue = resBody['response']
-          //         ['Edge Triming Description']["BackSheet_Cutting"] ??
-          //     '';
-
-          // edgeCommentController.text =
-          //     resBody['response']['Edge Triming Comments'] ?? '';
-          // frameTypeController.text =
-          //     resBody['response']['Framing Description']["Frame_Type"] ?? '';
-          // frameSizeController.text =
-          //     resBody['response']['Framing Description']["Frame_Size"] ?? '';
-          // sliconGlueLotController.text = resBody['response']
-          //         ['Framing Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
-
-          // framingCommentController.text =
-          //     resBody['response']['Framing Comments'] ?? '';
-          // jBLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["JB_Lot_No"] ??
-          //     '';
-          // jBTypeController.text =
-          //     resBody['response']['J/B Assembly Description']["JB_Type"] ?? '';
-          // siliconGlueLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
-
-          // jbCommentController.text =
-          //     resBody['response']['J/B Assembly Comments'] ?? '';
-          // pmaxController.text =
-          //     resBody['response']['Sun Simulator Description']["Pmax"] ?? '';
-
-          // sunCommentController.text =
-          //     resBody['response']['Sun Simulator Comments'] ?? '';
-          // referencePdfController.text =
-          //     resBody['response']['ReferencePdf'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          dateOfQualityCheck = resBody['response']['Date'] ?? '';
+          dateController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          selectedShift = resBody['response']['Shift'] ?? '';
+          AS1TackAs1Controller.text =
+              resBody['response']['SetTemperature1_TrackA'] ?? '';
+          BS1TackAs1Controller.text =
+              resBody['response']['SetTemperature1_TrackB'] ?? '';
+          AS1TackAs2Controller.text =
+              resBody['response']['SetTemperature2_TrackA'] ?? '';
+          BS1TackAs2Controller.text =
+              resBody['response']['SetTemperature2_TrackB'] ?? '';
+          AS1TrackAW1Controller.text =
+              resBody['response']['WeldingTime1_TrackA'] ?? '';
+          BS1TrackAW1Controller.text =
+              resBody['response']['WeldingTime1_TrackB'] ?? '';
+          AS1TrackAW2Controller.text =
+              resBody['response']['WeldingTime2_TrackA'] ?? '';
+          BS1TrackAW2Controller.text =
+              resBody['response']['WeldingTime2_TrackB'] ?? '';
+          AS1TrackAW3Controller.text =
+              resBody['response']['WeldingTime3_TrackA'] ?? '';
+          BS1TrackAW3Controller.text =
+              resBody['response']['WeldingTime3_TrackB'] ?? '';
+          AS1TrackAW4Controller.text =
+              resBody['response']['WeldingTime4_TrackA'] ?? '';
+          BS1TrackAW4Controller.text =
+              resBody['response']['WeldingTime4_TrackB'] ?? '';
+          AS1TrackAW5Controller.text =
+              resBody['response']['WeldingTime5_TrackA'] ?? '';
+          BS1TrackAW5Controller.text =
+              resBody['response']['WeldingTime5_TrackB'] ?? '';
+          AS1TrackAW6Controller.text =
+              resBody['response']['WeldingTime6_TrackA'] ?? '';
+          BS1TrackAW6Controller.text =
+              resBody['response']['WeldingTime6_TrackB'] ?? '';
+          AS1TrackAH1Controller.text =
+              resBody['response']['Heatingplatform1_TrackA'] ?? '';
+          BS1TrackAH1Controller.text =
+              resBody['response']['Heatingplatform1_TrackB'] ?? '';
+          AS1TrackAH2Controller.text =
+              resBody['response']['Heatingplatform2_TrackA'] ?? '';
+          BS1TrackAH2Controller.text =
+              resBody['response']['Heatingplatform2_TrackB'] ?? '';
+          AS1TrackAH3Controller.text =
+              resBody['response']['Heatingplatform3_TrackA'] ?? '';
+          BS1TrackAH3Controller.text =
+              resBody['response']['Heatingplatform3_TrackB'] ?? '';
+          AS1TrackAH4Controller.text =
+              resBody['response']['Heatingplatform4_TrackA'] ?? '';
+          BS1TrackAH4Controller.text =
+              resBody['response']['Heatingplatform4_TrackB'] ?? '';
+          AS1TrackAH5Controller.text =
+              resBody['response']['Heatingplatform5_TrackA'] ?? '';
+          BS1TrackAH5Controller.text =
+              resBody['response']['Heatingplatform5_TrackB'] ?? '';
+          AS1TrackAH6Controller.text =
+              resBody['response']['Heatingplatform6_TrackA'] ?? '';
+          BS1TrackAH6Controller.text =
+              resBody['response']['Heatingplatform6_TrackB'] ?? '';
+          AS1TrackALController.text =
+              resBody['response']['LowestTemp.setting_TrackA'] ?? '';
+          BS1TrackALController.text =
+              resBody['response']['LowestTemp.setting_TrackB'] ?? '';
+          AS1TrackAHController.text =
+              resBody['response']['HighestTemp.setting_TrackA'] ?? '';
+          BS1TrackAHController.text =
+              resBody['response']['HighestTemp.setting_TrackB'] ?? '';
+          referencePdfController.text = resBody['response']['PreLamPdf'] ?? '';
         }
       });
     }
@@ -450,7 +326,7 @@ class _stringer1State extends State<stringer1> {
     FocusScope.of(context).unfocus();
     print("goooooooooooooooooooooooooooooooooooooooooooooooo");
 
-    final url = (site! + "IPQC/UpdateJobCardStatus");
+    final url = (site! + "IPQC/UpdatePreLamStatus");
 
     var params = {
       "token": token,
@@ -478,7 +354,7 @@ class _stringer1State extends State<stringer1> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Job Card Test $approvalStatus .",
+        Toast.show("Stringer 1 Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -512,125 +388,141 @@ class _stringer1State extends State<stringer1> {
   Future createData() async {
     print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
     // print(jobCardDate);
-    // var data = [
-    //   {
-    //     "JobCardDetails": {
-    //       "Type": "Job Card",
-    //       "JobCardDetailId": jobCarId != '' && jobCarId != null
-    //           ? jobCarId
-    //           : widget.id != '' && widget.id != null
-    //               ? widget.id
-    //               : '',
-    //       "date": jobCardDate,
-    //       "moduleType": moduleTypeController.text,
-    //       "matrixSize": matrixSizeController.text,
-    //       "moduleNo": moduleNoController.text,
-    //       "DocNo": "GSPL/IPQC/BM/024",
-    //       "RevisionNo": "1.0",
-    //       "RevisionDate": "12.08.2023",
-    //       "Status": sendStatus,
-    //       "CreatedBy": personid
-    //     }
-    //   },
-    //   {
-    //     "JobCard": [
-    //       {
-    //         "Process": 'Glass Washing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Lot_No": lotNoController.text,
-    //           "size": lotSizeController.text
-    //         },
-    //         "Comment": glassCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Foil cutterr',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "EVA_Lot_No": evaLotNoController.text,
-    //           "EVA_Size": evaSizeController.text,
-    //           "Backsheet_Lot": backsheetLotController.text,
-    //           "Backsheet_size": backsheetSizeController.text
-    //         },
-    //         "Comment": foilCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Tabbing & Stringing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Cell_Lot_No": cellLotNoController.text,
-    //           "Cell_Type": cellTypeController.text,
-    //           "Cell_Size": cellSyzeController.text,
-    //           "Cell_Eff": cellEffController.text,
-    //           "Interconnect_Ribbon_Size": interconnectRibbonSizeController.text,
-    //           "Busbar_Size": busbarSizeController.text,
-    //           "Flux": fluxController.text
-    //         },
-    //         "Comment": tabbingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Bussing/InterConnection',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Cell_To_Cell_Gap": cellToCellGapController.text,
-    //           "String_To_String_Gap": stringToStringGapController.text,
-    //           "Soldering_Temp": solderingTempController.text
-    //         },
-    //         "Comment": bussingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Visual Inspection & Laminator',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Temperature": tempreatureController.text,
-    //           "Cycle_Time": cycleTimeController.text,
-    //           "Laminate_Quality": isCycleTimeTrue
-    //         },
-    //         "Comment": visualCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Edge Triming',
-    //         "EmployeeID": personid,
-    //         "Description": {"BackSheet_Cutting": isBacksheetCuttingTrue},
-    //         "Comment": edgeCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Framing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Frame_Type": frameTypeController.text,
-    //           "Frame_Size": frameSizeController.text,
-    //           "Silicon_Glue_Lot_No": sliconGlueLotController.text
-    //         },
-    //         "Comment": framingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'J/B Assembly',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "JB_Lot_No": jBLotNoController.text,
-    //           "JB_Type": jBTypeController.text,
-    //           "Silicon_Glue_Lot_No": siliconGlueLotNoController.text
-    //         },
-    //         "Comment": jbCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Sun Simulator',
-    //         "EmployeeID": personid,
-    //         "Description": {"Pmax": pmaxController.text},
-    //         "Comment": sunCommentController.text
-    //       }
-    //     ]
-    //   }
-    // ];
-    // print('Sending data to backend: $data');
+    var data = {
+      "JobCardDetailId": jobCarId != '' && jobCarId != null
+          ? jobCarId
+          : widget.id != '' && widget.id != null
+              ? widget.id
+              : '',
+      "CurrentUser": personid,
+      "DocNo": "GSPL/IPQC/ST/004",
+      "RevNo": "1.0 dated 12.08.2023",
+      "Date": dateOfQualityCheck,
+      "Shift": selectedShift,
+      "Status": sendStatus,
+      "Type": "Stringer1",
+      "Track": [
+        {
+          "Parameter": "Set Temperature1 ",
+          "Specification": "230±30",
+          "UOM": "°C",
+          "TrackA": AS1TackAs1Controller.text,
+          "TrackB": BS1TackAs1Controller.text
+        },
+        {
+          "Parameter": "Set Temperature2",
+          "Specification": "230±30",
+          "UOM": "°C",
+          "TrackA": AS1TackAs2Controller.text,
+          "TrackB": BS1TackAs2Controller.text
+        },
+        {
+          "Parameter": "Welding Time1",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW1Controller.text,
+          "TrackB": BS1TrackAW1Controller.text,
+        },
+        {
+          "Parameter": "Welding Time2",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW2Controller.text,
+          "TrackB": BS1TrackAW2Controller.text,
+        },
+        {
+          "Parameter": "Welding Time3",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW3Controller.text,
+          "TrackB": BS1TrackAW3Controller.text,
+        },
+        {
+          "Parameter": "Welding Time4",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW4Controller.text,
+          "TrackB": BS1TrackAW4Controller.text,
+        },
+        {
+          "Parameter": "Welding Time5",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW5Controller.text,
+          "TrackB": BS1TrackAW5Controller.text,
+        },
+        {
+          "Parameter": "Welding Time6",
+          "Specification": "1.7-2.5",
+          "UOM": "sec",
+          "TrackA": AS1TrackAW6Controller.text,
+          "TrackB": BS1TrackAW6Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 1",
+          "Specification": "80+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH1Controller.text,
+          "TrackB": BS1TrackAH1Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 2",
+          "Specification": "90+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH2Controller.text,
+          "TrackB": BS1TrackAH2Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 3",
+          "Specification": "110+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH3Controller.text,
+          "TrackB": BS1TrackAH3Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 4",
+          "Specification": "100+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH4Controller.text,
+          "TrackB": BS1TrackAH4Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 5",
+          "Specification": "90+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH5Controller.text,
+          "TrackB": BS1TrackAH5Controller.text,
+        },
+        {
+          "Parameter": "Heating platform 6",
+          "Specification": "80+-30",
+          "UOM": "°C",
+          "TrackA": AS1TrackAH6Controller.text,
+          "TrackB": BS1TrackAH6Controller.text,
+        },
+        {
+          "Parameter": "Lowest Temp.setting",
+          "Specification": "30",
+          "UOM": "°C",
+          "TrackA": AS1TrackALController.text,
+          "TrackB": BS1TrackALController.text,
+        },
+        {
+          "Parameter": "Highest Temp. setting",
+          "Specification": "50",
+          "UOM": "°C",
+          "TrackA": AS1TrackAHController.text,
+          "TrackB": BS1TrackAHController.text,
+        }
+      ]
+    };
 
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
 
-    final url = (site! + "IPQC/AddJobCard");
+    final url = (site! + "IPQC/AddStringerMachine");
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -686,7 +578,7 @@ class _stringer1State extends State<stringer1> {
     var currentdate = DateTime.now().microsecondsSinceEpoch;
     var formData = FormData.fromMap({
       "JobCardDetailId": jobCarId,
-      "Reference": MultipartFile.fromBytes(
+      "PreLamPdf": MultipartFile.fromBytes(
         referenceBytes,
         filename:
             (referencePdfController.text + (currentdate.toString()) + '.pdf'),
@@ -694,7 +586,7 @@ class _stringer1State extends State<stringer1> {
       ),
     });
 
-    _response = await _dio.post((site! + 'IPQC/UploadPdf'), // Prod
+    _response = await _dio.post((site! + 'IPQC/UploadPreLamPdf'), // Prod
 
         options: Options(
           contentType: 'multipart/form-data',
@@ -709,7 +601,7 @@ class _stringer1State extends State<stringer1> {
           _isLoading = false;
         });
 
-        Toast.show("Job Card Test Completed.",
+        Toast.show("Stringer 1 Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -766,7 +658,7 @@ class _stringer1State extends State<stringer1> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -774,7 +666,7 @@ class _stringer1State extends State<stringer1> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return widget.id != "" && widget.id != null
                     ? IpqcTestList()
-                    : IpqcPage();
+                    : StringersCard();
               }));
             },
           ),
@@ -911,26 +803,28 @@ class _stringer1State extends State<stringer1> {
                                           ? true
                                           : false,
                                       onTap: () async {
-                                        DateTime date = DateTime(2021);
-                                        FocusScope.of(context)
-                                            .requestFocus(new FocusNode());
-                                        date = (await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
-                                          lastDate: DateTime.now(),
-                                        ))!;
-                                        dateController.text =
-                                            DateFormat("EEE MMM dd, yyyy")
-                                                .format(
-                                          DateTime.parse(date.toString()),
-                                        );
-                                        setState(() {
-                                          dateOfQualityCheck =
-                                              DateFormat("yyyy-MM-dd").format(
+                                        if (status != 'Pending') {
+                                          DateTime date = DateTime(2021);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+                                          date = (await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime.now(),
+                                          ))!;
+                                          dateController.text =
+                                              DateFormat("EEE MMM dd, yyyy")
+                                                  .format(
                                             DateTime.parse(date.toString()),
                                           );
-                                        });
+                                          setState(() {
+                                            dateOfQualityCheck =
+                                                DateFormat("yyyy-MM-dd").format(
+                                              DateTime.parse(date.toString()),
+                                            );
+                                          });
+                                        }
                                       },
                                       validator: MultiValidator(
                                         [
@@ -957,12 +851,16 @@ class _stringer1State extends State<stringer1> {
                                     ),
                                     DropdownButtonFormField<String>(
                                       value: selectedShift,
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          selectedShift = newValue!;
-                                          shiftController.text = selectedShift!;
-                                        });
-                                      },
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (String? newValue) {
+                                              setState(() {
+                                                selectedShift = newValue!;
+                                                shiftController.text =
+                                                    selectedShift!;
+                                              });
+                                            },
                                       items: <String>[
                                         'Night Shift',
                                         'Day Shift'

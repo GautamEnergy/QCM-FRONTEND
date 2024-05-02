@@ -65,7 +65,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
   List<int>? referencePdfFileBytes;
-  String? selectedShift;
+  String selectedShift = "Day Shift";
   String sendStatus = "";
   String status = '',
       jobCarId = '',

@@ -28,14 +28,14 @@ import 'package:QCM/constant/app_helper.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:toast/toast.dart';
 
-class laminator1 extends StatefulWidget {
+class laminator2 extends StatefulWidget {
   final String? id;
-  laminator1({this.id});
+  laminator2({this.id});
   @override
-  _laminator1State createState() => _laminator1State();
+  _laminator2State createState() => _laminator2State();
 }
 
-class _laminator1State extends State<laminator1> {
+class _laminator2State extends State<laminator2> {
   final _registerFormKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
@@ -219,6 +219,7 @@ class _laminator1State extends State<laminator1> {
                   DateTime.parse(resBody['response']['Date'].toString()))
               : '';
           selectedShift = resBody['response']['Shift'] ?? '';
+
           evaController.text =
               resBody['response']['EVAMake_ObservedValueA'] ?? '';
           evaBController.text =
@@ -398,7 +399,7 @@ class _laminator1State extends State<laminator1> {
         {"Locationfield": position6Controller.text}
       ],
       "Status": sendStatus,
-      "Type": "Laminator1",
+      "Type": "Laminator2",
       "Stage": [
         {
           "Parameter": "EVA Make",
@@ -586,7 +587,7 @@ class _laminator1State extends State<laminator1> {
           _isLoading = false;
         });
 
-        Toast.show("Laminator 1 Test Completed.",
+        Toast.show("Laminator 2 Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -883,7 +884,7 @@ class _laminator1State extends State<laminator1> {
 
                                     const Center(
                                       child: Text(
-                                        "Laminator 1",
+                                        "Laminator 2",
                                         style: TextStyle(
                                           fontSize: 20,
                                           color: Color.fromARGB(255, 250, 4, 4),

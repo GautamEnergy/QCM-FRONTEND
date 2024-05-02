@@ -62,10 +62,13 @@ class _solderingPeelState extends State<solderingPeel> {
   List<int>? referencePdfFileBytes;
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
-  String? selectedShift;
+  String selectedShift = "Day Shift";
   String? selectedtype;
   List Sample1Controllers = [];
+  List Samples = [];
   List Sample2Controllers = [];
+  List sampleAInputtext = [];
+  List sampleBInputText = [];
   late String sendStatus;
   String status = '',
       jobCarId = '',
@@ -79,45 +82,47 @@ class _solderingPeelState extends State<solderingPeel> {
   Response.Response? _response;
 
   void addfrontControllers(int count) {
+    print("Chahahhahahhaha");
+    print(count);
+    print(sampleAInputtext);
+    print(sampleBInputText);
     for (int i = 0; i < count; i++) {
+      print("bhanu..?");
       frontControllers.add(TextEditingController());
+      backControllers.add(
+          TextEditingController()); // Ensure backControllers are initialized
+      if (widget.id != null &&
+          widget.id!.isNotEmpty &&
+          sampleAInputtext != null &&
+          sampleAInputtext.isNotEmpty &&
+          i < sampleAInputtext.length &&
+          sampleAInputtext[i] != null) {
+        print(sampleAInputtext[i]['FrontController']);
+        frontControllers[i].text = sampleAInputtext[i]['FrontController'] ?? "";
+        backControllers[i].text = sampleAInputtext[i]['BackController'] ??
+            ""; // Ensure BackController key matches the actual key
+      }
     }
   }
 
-  void addbackControllers(int count) {
-    for (int i = 0; i < count; i++) {
-      backControllers.add(TextEditingController());
-    }
-  }
+  // void addbackControllers(int count) {
+  //   for (int i = 0; i < count; i++) {
+  //     backControllers.add(TextEditingController());
+  //     if (widget.id != "" && widget.id != null && sampleAInputtext.length > 0) {
+  //       backControllers[i].text =
+  //           sampleAInputtext[i]['backControllers${i + 1}'];
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
+    store();
     isCycleTimeTrue = true; // Set initial value
     // setState(() {
 
     // });
-  }
-
-  Future<void> createData1() async {
-    print(Sample1Controllers);
-    print("kuch bhi");
-    print(Sample2Controllers);
-
-    final data = {
-      'date': dateController.text,
-      'shift': shiftController.text,
-      'line': LineController.text,
-      'operator': operatorController.text,
-      'ribbonSize': ribbonSizeController.text,
-      'cellSize': cellSizeController.text,
-      'ribbonMake': ribbonMakeController.text,
-      'cellMake': cellMakeController.text,
-      'machine': machineController.text,
-      'ribbon': ribbonController.text,
-    };
-
-    print('$data');
   }
 
   void store() async {
@@ -143,7 +148,7 @@ class _solderingPeelState extends State<solderingPeel> {
       }
       site = prefs.getString('site')!;
     });
-    final AllSolarData = ((site!) + 'IPQC/GetSpecificeJobCard');
+    final AllSolarData = ((site!) + 'IPQC/GetSpecificSolderingPeelTest');
     final allSolarData = await http.post(
       Uri.parse(AllSolarData),
       body: jsonEncode(<String, String>{
@@ -171,124 +176,42 @@ class _solderingPeelState extends State<solderingPeel> {
 
           print("saiffffffffffffffffffffffffffffffffffffffffff");
           print("kulllllllllllllllllllllllllllllllllllllllllll");
-          // dateController.text = resBody['response']['Date'] ?? '';
-          // status = resBody['response']['Status'] ?? '';
-          // jobCardDate = resBody['response']['Date'] ?? '';
-          // dateController.text = resBody['response']['Date'] != ''
-          //     ? DateFormat("EEE MMM dd, yyyy").format(
-          //         DateTime.parse(resBody['response']['Date'].toString()))
-          //     : '';
-          // moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
+          status = resBody['response']['Status'] ?? '';
+          dateOfQualityCheck = resBody['response']['Date'] ?? '';
+          dateController.text = resBody['response']['Date'] != ''
+              ? DateFormat("EEE MMM dd, yyyy").format(
+                  DateTime.parse(resBody['response']['Date'].toString()))
+              : '';
+          selectedShift = resBody['response']['Shift'] ?? '';
+          LineController.text = resBody['response']['Line'] ?? '';
 
-          // // invoiceDateController.text = DateFormat("EEE MMM dd, yyyy").format(
-          // //         DateTime.parse(dataMap[0]['InvoiceDate'].toString())) ??
-          // //     '';
-          // matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
-          // moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
-          // lotNoController.text =
-          //     resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
-          // lotSizeController.text =
-          //     resBody['response']['Glass Washing Description']["size"] ?? '';
-          // glassCommentController.text =
-          //     resBody['response']['Glass Washing Comments'] ?? '';
-          // evaLotNoController.text = resBody['response']
-          //         ['Foil cutterr Description']["EVA_Lot_No"] ??
-          //     '';
-          // evaSizeController.text =
-          //     resBody['response']['Foil cutterr Description']["EVA_Size"] ?? '';
-          // backsheetLotController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_Lot"] ??
-          //     '';
+          operatorController.text = resBody['response']['OperatorName'] ?? '';
+          ribbonSizeController.text = resBody['response']['RibbonSize'] ?? '';
+          cellSizeController.text = resBody['response']['CellSize'] ?? '';
+          ribbonMakeController.text = resBody['response']['RibbonMake'] ?? '';
+          cellMakeController.text = resBody['response']['CellMake'] ?? '';
+          machineController.text = resBody['response']['MachineNo'] ?? '';
 
-          // backsheetSizeController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_size"] ??
-          //     '';
-          // foilCommentController.text =
-          //     resBody['response']['Foil cutterr Comments'] ?? '';
-          // cellLotNoController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Lot_No"] ??
-          //     '';
-          // cellTypeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Type"] ??
-          //     '';
-          // cellSyzeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Size"] ??
-          //     '';
-          // cellEffController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Eff"] ??
-          //     '';
-          // interconnectRibbonSizeController.text = resBody['response']
-          //             ['Tabbing & Stringing Description']
-          //         ["Interconnect_Ribbon_Size"] ??
-          //     '';
-          // busbarSizeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Busbar_Size"] ??
-          //     '';
-          // fluxController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Flux"] ??
-          //     '';
-          // tabbingCommentController.text =
-          //     resBody['response']['Tabbing & Stringing Comments'] ?? '';
-          // cellToCellGapController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Cell_To_Cell_Gap"] ??
-          //     '';
-          // stringToStringGapController.text = resBody['response']
-          //             ['Bussing/InterConnection Description']
-          //         ["String_To_String_Gap"] ??
-          //     '';
-          // solderingTempController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Soldering_Temp"] ??
-          //     '';
-          // bussingCommentController.text =
-          //     resBody['response']['Bussing/InterConnection Comments'] ?? '';
-          // tempreatureController.text = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Temperature"] ??
-          //     '';
-          // cycleTimeController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Description']["Cycle_Time"] ??
-          //     '';
-          // isCycleTimeTrue = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Laminate_Quality"] ??
-          //     '';
-          // visualCommentController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Comments'] ??
-          //     '';
-          // isBacksheetCuttingTrue = resBody['response']
-          //         ['Edge Triming Description']["BackSheet_Cutting"] ??
-          //     '';
+          //ribbonWidthController.text = resBody['response']['RibbonSize'] ?? '';
+          //busbarWidthController.text = resBody['response']['BusBarWidth'] ?? '';
+          ribbonController.text =
+              resBody['response']['Sample1Length'].toString() ?? '';
 
-          // edgeCommentController.text =
-          //     resBody['response']['Edge Triming Comments'] ?? '';
-          // frameTypeController.text =
-          //     resBody['response']['Framing Description']["Frame_Type"] ?? '';
-          // frameSizeController.text =
-          //     resBody['response']['Framing Description']["Frame_Size"] ?? '';
-          // sliconGlueLotController.text = resBody['response']
-          //         ['Framing Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
+          // ribbonController.text = (resBody['response']['Sample1Length'] != ""
+          //     ? resBody['response']['Sample1Length'].toString()
+          //     : '') as TextEditingValue;
+          print("hahahahahah");
+          print(ribbonController.text);
 
-          // framingCommentController.text =
-          //     resBody['response']['Framing Comments'] ?? '';
-          // jBLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["JB_Lot_No"] ??
-          //     '';
-          // jBTypeController.text =
-          //     resBody['response']['J/B Assembly Description']["JB_Type"] ?? '';
-          // siliconGlueLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
+          sampleAInputtext = resBody['response']['Sample1'] ?? [];
+          numberOfStringers = resBody['response']['Sample1Length'] ?? 0;
+          print(numberOfStringers);
+          // sampleBInputText = resBody['response']['Sample1'] ?? [];
 
-          // jbCommentController.text =
-          //     resBody['response']['J/B Assembly Comments'] ?? '';
-          // pmaxController.text =
-          //     resBody['response']['Sun Simulator Description']["Pmax"] ?? '';
-
-          // sunCommentController.text =
-          //     resBody['response']['Sun Simulator Comments'] ?? '';
-          // referencePdfController.text =
-          //     resBody['response']['ReferencePdf'] ?? '';
+          // sampleBInputText = resBody['response']['Sample2'] ?? [];
+          addfrontControllers(numberOfStringers);
+          // remarkController.text = resBody['response']['Remarks'] ?? '';
+          referencePdfController.text = resBody['response']['Pdf'] ?? '';
         }
       });
     }
@@ -303,7 +226,7 @@ class _solderingPeelState extends State<solderingPeel> {
     FocusScope.of(context).unfocus();
     print("goooooooooooooooooooooooooooooooooooooooooooooooo");
 
-    final url = (site! + "IPQC/UpdateJobCardStatus");
+    final url = (site! + "IPQC/UpdateSolderingPeelTestStatus");
 
     var params = {
       "token": token,
@@ -331,7 +254,7 @@ class _solderingPeelState extends State<solderingPeel> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Job Card Test $approvalStatus .",
+        Toast.show("Soldering Peel Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -352,9 +275,9 @@ class _solderingPeelState extends State<solderingPeel> {
     );
 
     if (result != null) {
-      // File pdffile = File(result.files.single.path!);
+      File pdffile = File(result.files.single.path!);
       setState(() {
-        //referencePdfFileBytes = pdffile.readAsBytesSync();
+        referencePdfFileBytes = pdffile.readAsBytesSync();
         referencePdfController.text = result.files.single.name;
       });
     } else {
@@ -365,117 +288,32 @@ class _solderingPeelState extends State<solderingPeel> {
   Future createData() async {
     print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
     // print(jobCardDate);
-    var data = [
-      // {
-      //   "JobCardDetails": {
-      //     "Type": "Job Card",
-      //     "JobCardDetailId": jobCarId != '' && jobCarId != null
-      //         ? jobCarId
-      //         : widget.id != '' && widget.id != null
-      //             ? widget.id
-      //             : '',
-      //     "date": jobCardDate,
-      //     "moduleType": moduleTypeController.text,
-      //     "matrixSize": matrixSizeController.text,
-      //     "moduleNo": moduleNoController.text,
-      //     "DocNo": "GSPL/IPQC/BM/024",
-      //     "RevisionNo": "1.0",
-      //     "RevisionDate": "12.08.2023",
-      //     "Status": sendStatus,
-      //     "CreatedBy": personid
-      //   }
-      // },
-      // {
-      //   "JobCard": [
-      //     {
-      //       "Process": 'Glass Washing',
-      //       "EmployeeID": personid,
-      //       "Description": {
-      //         "Lot_No": lotNoController.text,
-      //         "size": lotSizeController.text
-      //       },
-      //       "Comment": glassCommentController.text
-      //     },
-      //     {
-      //       "Process": 'Foil cutterr',
-      //       "EmployeeID": personid,
-      //       "Description": {
-      //         "EVA_Lot_No": evaLotNoController.text,
-      //         "EVA_Size": evaSizeController.text,
-      //         "Backsheet_Lot": backsheetLotController.text,
-      //         "Backsheet_size": backsheetSizeController.text
-      //       },
-      //       "Comment": foilCommentController.text
-      //     },
-      //     {
-      //       "Process": 'Tabbing & Stringing',
-      //       "EmployeeID": personid,
-      //       "Description": {
-      //         "Cell_Lot_No": cellLotNoController.text,
-      //         "Cell_Type": cellTypeController.text,
-      //         "Cell_Size": cellSyzeController.text,
-      //         "Cell_Eff": cellEffController.text,
-      //         "Interconnect_Ribbon_Size": interconnectRibbonSizeController.text,
-      //         "Busbar_Size": busbarSizeController.text,
-      //         "Flux": fluxController.text
-      //       },
-      //       "Comment": tabbingCommentController.text
-      //     },
-      //     {
-      //       "Process": 'Bussing/InterConnection',
-      //       "EmployeeID": personid,
-      //       "Description": {
-      //         "Cell_To_Cell_Gap": cellToCellGapController.text,
-      //         "String_To_String_Gap": stringToStringGapController.text,
-      //         "Soldering_Temp": solderingTempController.text
-      //       },
-      //       "Comment": bussingCommentController.text
-      //     },
-      //     {
-      //       "Process": 'Visual Inspection & Laminator',
-      //       "EmployeeID": personid,
-      //       "Description": {
-      //         "Temperature": tempreatureController.text,
-      //         "Cycle_Time": cycleTimeController.text,
-      //         "Laminate_Quality": isCycleTimeTrue
-      //       },
-      //       "Comment": visualCommentController.text
-      //     },
-      //     {
-      //       "Process": 'Edge Triming',
-      //       "EmployeeID": personid,
-      //       "Description": {"BackSheet_Cutting": isBacksheetCuttingTrue},
-      //       "Comment": edgeCommentController.text
-      //     },
-      //     {
-      //       "Process": 'Framing',
-      //       "EmployeeID": personid,
-      //       "Description": {
-      //         "Frame_Type": frameTypeController.text,
-      //         "Frame_Size": frameSizeController.text,
-      //         "Silicon_Glue_Lot_No": sliconGlueLotController.text
-      //       },
-      //       "Comment": framingCommentController.text
-      //     },
-      //     {
-      //       "Process": 'J/B Assembly',
-      //       "EmployeeID": personid,
-      //       "Description": {
-      //         "JB_Lot_No": jBLotNoController.text,
-      //         "JB_Type": jBTypeController.text,
-      //         "Silicon_Glue_Lot_No": siliconGlueLotNoController.text
-      //       },
-      //       "Comment": jbCommentController.text
-      //     },
-      //     {
-      //       "Process": 'Sun Simulator',
-      //       "EmployeeID": personid,
-      //       "Description": {"Pmax": pmaxController.text},
-      //       "Comment": sunCommentController.text
-      //     }
-      //   ]
-      // }
-    ];
+    var data = {
+      "Type": "Soldering",
+      "JobCardDetailId": jobCarId != '' && jobCarId != null
+          ? jobCarId
+          : widget.id != '' && widget.id != null
+              ? widget.id
+              : '',
+      "DocNo": "GSPL/IPQC/GP/005",
+      "RevNo": "1.0 & 12.08.2023",
+      "RibbonMake": ribbonMakeController.text,
+      "CellSize": cellSizeController.text,
+      "RibbonSize": ribbonSizeController.text,
+      "Date": dateOfQualityCheck,
+      "Line": LineController.text,
+      "Shift": selectedShift,
+      "MachineNo": machineController.text,
+      "OperatorName": operatorController.text,
+      "CellMake": cellMakeController.text,
+      "Status": sendStatus,
+      "BussingStage": "",
+      "BusBarWidth": "",
+      "CreatedBy": personid,
+      "Remarks": "",
+      "Sample1Length": ribbonController.text,
+      "Samples": {"Sample1": Sample1Controllers}
+    };
     print('Sending data to backend: $data');
 
     setState(() {
@@ -483,7 +321,7 @@ class _solderingPeelState extends State<solderingPeel> {
     });
     FocusScope.of(context).unfocus();
 
-    final url = (site! + "IPQC/AddJobCard");
+    final url = (site! + "IPQC/AddSolderingPeelTest");
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -539,7 +377,7 @@ class _solderingPeelState extends State<solderingPeel> {
     var currentdate = DateTime.now().microsecondsSinceEpoch;
     var formData = FormData.fromMap({
       "JobCardDetailId": jobCarId,
-      "Reference": MultipartFile.fromBytes(
+      "SolderingPdf": MultipartFile.fromBytes(
         referenceBytes,
         filename:
             (referencePdfController.text + (currentdate.toString()) + '.pdf'),
@@ -547,7 +385,7 @@ class _solderingPeelState extends State<solderingPeel> {
       ),
     });
 
-    _response = await _dio.post((site! + 'IPQC/UploadPdf'),
+    _response = await _dio.post((site! + 'IPQC/UploadSolderingPeelTestPdf'),
         options: Options(
           contentType: 'multipart/form-data',
           followRedirects: false,
@@ -561,7 +399,7 @@ class _solderingPeelState extends State<solderingPeel> {
           _isLoading = false;
         });
 
-        Toast.show("Job Card Test Completed.",
+        Toast.show("Soldering Peel Test Completed.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -581,6 +419,14 @@ class _solderingPeelState extends State<solderingPeel> {
       padding: const EdgeInsets.only(bottom: 70),
       child: FloatingActionButton(
         onPressed: () {
+          Sample1Controllers = [];
+
+          for (int i = 0; i < numberOfStringers; i++) {
+            Sample1Controllers.add({
+              "FrontController": frontControllers[i].text,
+              "BackController": backControllers[i].text
+            });
+          }
           if (status != 'Pending') {
             setState(() {
               sendStatus = 'Inprogress';
@@ -619,7 +465,7 @@ class _solderingPeelState extends State<solderingPeel> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -627,7 +473,7 @@ class _solderingPeelState extends State<solderingPeel> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return widget.id != "" && widget.id != null
                     ? IpqcTestList()
-                    : IpqcPage();
+                    : TestingCard();
               }));
             },
           ),
@@ -766,26 +612,28 @@ class _solderingPeelState extends State<solderingPeel> {
                                           ? true
                                           : false,
                                       onTap: () async {
-                                        DateTime date = DateTime(2021);
-                                        FocusScope.of(context)
-                                            .requestFocus(new FocusNode());
-                                        date = (await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
-                                          lastDate: DateTime.now(),
-                                        ))!;
-                                        dateController.text =
-                                            DateFormat("EEE MMM dd, yyyy")
-                                                .format(
-                                          DateTime.parse(date.toString()),
-                                        );
-                                        setState(() {
-                                          dateOfQualityCheck =
-                                              DateFormat("yyyy-MM-dd").format(
+                                        if (status != 'Pending') {
+                                          DateTime date = DateTime(2021);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+                                          date = (await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime.now(),
+                                          ))!;
+                                          dateController.text =
+                                              DateFormat("EEE MMM dd, yyyy")
+                                                  .format(
                                             DateTime.parse(date.toString()),
                                           );
-                                        });
+                                          setState(() {
+                                            dateOfQualityCheck =
+                                                DateFormat("yyyy-MM-dd").format(
+                                              DateTime.parse(date.toString()),
+                                            );
+                                          });
+                                        }
                                       },
                                       validator: MultiValidator(
                                         [
@@ -812,12 +660,16 @@ class _solderingPeelState extends State<solderingPeel> {
                                     ),
                                     DropdownButtonFormField<String>(
                                       value: selectedShift,
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          selectedShift = newValue!;
-                                          shiftController.text = selectedShift!;
-                                        });
-                                      },
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (String? newValue) {
+                                              setState(() {
+                                                selectedShift = newValue!;
+                                                shiftController.text =
+                                                    selectedShift!;
+                                              });
+                                            },
                                       items: <String>[
                                         'Night Shift',
                                         'Day Shift'
@@ -1134,9 +986,7 @@ class _solderingPeelState extends State<solderingPeel> {
                                           numberOfStringers =
                                               int.tryParse(value) ?? 0;
                                           addfrontControllers(
-                                              numberOfStringers * 5);
-                                          addbackControllers(
-                                              numberOfStringers * 5);
+                                              numberOfStringers);
                                         });
                                       },
                                       decoration: AppStyles
@@ -1341,22 +1191,31 @@ class _solderingPeelState extends State<solderingPeel> {
                                                       i < numberOfStringers;
                                                       i++) {
                                                     Sample1Controllers.add({
-                                                      "frontControllers${i + 1}":
+                                                      "FrontController":
                                                           frontControllers[i]
                                                               .text,
-                                                    });
-                                                  }
-                                                  Sample2Controllers = [];
-
-                                                  for (int i = 0;
-                                                      i < numberOfStringers;
-                                                      i++) {
-                                                    Sample2Controllers.add({
-                                                      "backControllers${i + 1}":
+                                                      "BackController":
                                                           backControllers[i]
-                                                              .text,
+                                                              .text
                                                     });
                                                   }
+                                                  print(
+                                                      'Samplessssssssssssssssssssssssssssss');
+                                                  print(Sample1Controllers);
+                                                  // Sample2Controllers = [];
+
+                                                  // for (int i = 0;
+                                                  //     i < numberOfStringers;
+                                                  //     i++) {
+                                                  //   Sample2Controllers.add({
+                                                  //     "backControllers${i + 1}":
+                                                  //         backControllers[i]
+                                                  //             .text,
+                                                  //   });
+                                                  // }
+                                                  // print(
+                                                  //     "Arrrrrrrrdddddddddddddddddddddddddddd2222");
+                                                  // print(Sample2Controllers);
 
                                                   _registerFormKey
                                                       .currentState!.save;

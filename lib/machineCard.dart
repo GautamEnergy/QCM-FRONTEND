@@ -1,3 +1,4 @@
+import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -8,6 +9,7 @@ import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
 import 'package:QCM/laminator1.dart';
+import 'package:QCM/laminator2.dart';
 import 'package:flutter/material.dart';
 import 'package:QCM/stringerCards.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,7 +98,7 @@ class _WelcomePageState extends State<MachineCard> {
       appBar: GautamAppBar(
         organization: "organizationtype",
         isBackRequired: true,
-        memberId: "personid",
+        memberId: personid,
         imgPath: "ImagePath",
         memberPic: pic,
         logo: "logo",
@@ -231,10 +233,10 @@ class _WelcomePageState extends State<MachineCard> {
                 Expanded(
                     child:
                         tabDashboard('Laminator 2', AppAssets.Laminator2, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => SalaryReport()),
-                  //     (Route<dynamic> route) => false);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => laminator2()),
+                      (Route<dynamic> route) => false);
                 })),
               ],
             ),
@@ -260,9 +262,15 @@ class _WelcomePageState extends State<MachineCard> {
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          department == 'IQCP' && designation == 'QC'
+                          (department == 'IQCP' && designation != 'Super Admin')
                               ? IqcpPage()
-                              : WelcomePage()));
+                              : (department == 'IPQC' &&
+                                      designation != 'Super Admin')
+                                  ? IpqcPage()
+                                  : (department == 'FQC' &&
+                                          designation != 'Super Admin')
+                                      ? FqcPage()
+                                      : WelcomePage()));
                 },
                 child: Image.asset(
                     home
@@ -315,10 +323,9 @@ class _WelcomePageState extends State<MachineCard> {
   InkWell buttonDashboard() {
     return InkWell(
         onTap: () {
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(
-          //         builder: (BuildContext context) => WelcomePage()),
-          //     (Route<dynamic> route) => false);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => IpqcPage()),
+              (Route<dynamic> route) => false);
         },
         child: Row(
             mainAxisAlignment: MainAxisAlignment.start,

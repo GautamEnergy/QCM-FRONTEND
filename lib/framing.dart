@@ -114,7 +114,7 @@ class _framingState extends State<framing> {
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
   List<int>? referencePdfFileBytes;
-  String? selectedShift;
+  String selectedShift = "Day Shift";
   String status = '',
       framingId = '',
       approvalStatus = "Approved",
@@ -372,7 +372,7 @@ class _framingState extends State<framing> {
               resBody['response']['5FramingDimension']['y1'] ?? '';
           Sample5y2Controller.text =
               resBody['response']['5FramingDimension']['y2'] ?? '';
-          Sample1L1Controller.text =
+          Sample5L1Controller.text =
               resBody['response']['5FramingDimension']['l1'] ?? '';
           Sample5L2Controller.text =
               resBody['response']['1FramingDimension']['l2'] ?? '';

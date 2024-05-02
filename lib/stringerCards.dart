@@ -1,3 +1,5 @@
+import 'package:QCM/Fqc.dart';
+import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
@@ -95,7 +97,7 @@ class _WelcomePageState extends State<StringersCard> {
       appBar: GautamAppBar(
         organization: "organizationtype",
         isBackRequired: true,
-        memberId: "personid",
+        memberId: personid,
         imgPath: "ImagePath",
         memberPic: pic,
         logo: "logo",
@@ -218,9 +220,15 @@ class _WelcomePageState extends State<StringersCard> {
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          department == 'IQCP' && designation == 'QC'
+                          (department == 'IQCP' && designation != 'Super Admin')
                               ? IqcpPage()
-                              : WelcomePage()));
+                              : (department == 'IPQC' &&
+                                      designation != 'Super Admin')
+                                  ? IpqcPage()
+                                  : (department == 'FQC' &&
+                                          designation != 'Super Admin')
+                                      ? FqcPage()
+                                      : WelcomePage()));
                 },
                 child: Image.asset(
                     home
