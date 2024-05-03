@@ -777,7 +777,7 @@ class _FluxState extends State<Flux> {
           appBar: GautamAppBar(
             organization: "organizationtype",
             isBackRequired: true,
-            memberId: "personid",
+            memberId: personid,
             imgPath: "ImagePath",
             memberPic: pic,
             logo: "logo",
@@ -1540,21 +1540,21 @@ class _FluxState extends State<Flux> {
                                                       widget.id != null &&
                                                       Packaging.length > 0) {
                                                     packagingRemarksControllers[
-                                                            i]
-                                                        .text = Packaging[
-                                                            i][
-                                                        'PackageSampleRemarks${i + 1}'];
+                                                                i]
+                                                            .text =
+                                                        Packaging[i]
+                                                            ['SampleRemarks'];
 
                                                     selectedPackagingTestValues[
-                                                        i] = Packaging[
-                                                            i][
-                                                        'PackageSampleTest${i + 1}'];
+                                                            i] =
+                                                        Packaging[i]
+                                                            ['SampleTest'];
 
                                                     packagingBarcodeControllers[
-                                                            i]
-                                                        .text = Packaging[
-                                                            i][
-                                                        'PackageSampleBarcode${i + 1}'];
+                                                                i]
+                                                            .text =
+                                                        Packaging[i]
+                                                            ['SampleBarcode'];
                                                   }
                                                 }
 
@@ -1843,14 +1843,14 @@ class _FluxState extends State<Flux> {
                                                   i < numberOfPackagingSampleFields;
                                                   i++) {
                                                 packagingSampleData.add({
-                                                  "PackageSampleBarcode${i + 1}":
+                                                  "SampleBarcode":
                                                       packagingBarcodeControllers[
                                                               i]
                                                           .text,
-                                                  "PackageSampleTest${i + 1}":
+                                                  "SampleTest":
                                                       selectedPackagingTestValues[
                                                           i],
-                                                  "PackageSampleRemarks${i + 1}":
+                                                  "SampleRemarks":
                                                       packagingRemarksControllers[
                                                               i]
                                                           .text
@@ -2235,18 +2235,18 @@ class _FluxState extends State<Flux> {
                                                                     i]
                                                                 .text = Visual[
                                                                     i][
-                                                                'VisualSampleRemarks${i + 1}'];
+                                                                'SampleRemarks'];
 
                                                             selectedVisualTestValues[
                                                                 i] = Visual[
-                                                                    i][
-                                                                'VisualSampleTest${i + 1}'];
+                                                                    i]
+                                                                ['SampleTest'];
 
                                                             visualBarcodeControllers[
                                                                     i]
                                                                 .text = Visual[
                                                                     i][
-                                                                'VisualSampleBarcode${i + 1}'];
+                                                                'SampleBarcode'];
                                                           }
                                                         }
 
@@ -2572,14 +2572,14 @@ class _FluxState extends State<Flux> {
                                                           i < numberOfVisualSampleFields;
                                                           i++) {
                                                         visualSampleData.add({
-                                                          "VisualSampleBarcode${i + 1}":
+                                                          "SampleBarcode":
                                                               visualBarcodeControllers[
                                                                       i]
                                                                   .text,
-                                                          "VisualSampleTest${i + 1}":
+                                                          "SampleTest":
                                                               selectedVisualTestValues[
                                                                   i],
-                                                          "VisualSampleRemarks${i + 1}":
+                                                          "SampleRemarks":
                                                               visualRemarksControllers[
                                                                       i]
                                                                   .text
@@ -3009,18 +3009,18 @@ class _FluxState extends State<Flux> {
                                                                             i]
                                                                         .text = Physical[
                                                                             i][
-                                                                        'PhysicalSampleRemarks${i + 1}'];
+                                                                        'SampleRemarks'];
 
                                                                     selectedPhysicalTestValues[
                                                                         i] = Physical[
                                                                             i][
-                                                                        'PhysicalSampleTest${i + 1}'];
+                                                                        'SampleTest'];
 
                                                                     physicalBarcodeControllers[
                                                                             i]
                                                                         .text = Physical[
                                                                             i][
-                                                                        'PhysicalSampleBarcode${i + 1}'];
+                                                                        'SampleBarcode'];
                                                                   }
                                                                 }
 
@@ -3352,14 +3352,14 @@ class _FluxState extends State<Flux> {
                                                                   i++) {
                                                                 physicalSampleData
                                                                     .add({
-                                                                  "PhysicalSampleBarcode${i + 1}":
+                                                                  "SampleBarcode":
                                                                       physicalBarcodeControllers[
                                                                               i]
                                                                           .text,
-                                                                  "PhysicalSampleTest${i + 1}":
+                                                                  "SampleTest":
                                                                       selectedPhysicalTestValues[
                                                                           i],
-                                                                  "PhysicalSampleRemarks${i + 1}":
+                                                                  "SampleRemarks":
                                                                       physicalRemarksControllers[
                                                                               i]
                                                                           .text
@@ -3792,13 +3792,13 @@ class _FluxState extends State<Flux> {
                                                                               widget.id != null &&
                                                                               FrontBus.length > 0) {
                                                                             frontbusRemarksControllers[i].text =
-                                                                                FrontBus[i]['FrontbusSampleRemarks${i + 1}'];
+                                                                                FrontBus[i]['SampleRemarks'];
 
                                                                             selectedFrontbusTestValues[i] =
-                                                                                FrontBus[i]['FrontbusSampleTest${i + 1}'];
+                                                                                FrontBus[i]['SampleTest'];
 
                                                                             frontbusBarcodeControllers[i].text =
-                                                                                FrontBus[i]['FrontbusSampleBarcode${i + 1}'];
+                                                                                FrontBus[i]['SampleBarcode'];
                                                                           }
                                                                         }
 
@@ -4128,11 +4128,11 @@ class _FluxState extends State<Flux> {
                                                                           i++) {
                                                                         frontbusSampleData
                                                                             .add({
-                                                                          "FrontbusSampleBarcode${i + 1}":
+                                                                          "SampleBarcode":
                                                                               frontbusBarcodeControllers[i].text,
-                                                                          "FrontbusSampleTest${i + 1}":
+                                                                          "SampleTest":
                                                                               selectedFrontbusTestValues[i],
-                                                                          "FrontbusSampleRemarks${i + 1}":
+                                                                          "SampleRemarks":
                                                                               frontbusRemarksControllers[i].text
                                                                         });
                                                                       }
@@ -4524,11 +4524,11 @@ class _FluxState extends State<Flux> {
 
                                                                                   // Update Time.......
                                                                                   if (widget.id != "" && widget.id != null && Verification.length > 0) {
-                                                                                    verificationRemarksControllers[i].text = Verification[i]['VerificationSampleRemarks${i + 1}'];
+                                                                                    verificationRemarksControllers[i].text = Verification[i]['SampleRemarks'];
 
-                                                                                    selectedVerificationTestValues[i] = Verification[i]['VerificationSampleTest${i + 1}'];
+                                                                                    selectedVerificationTestValues[i] = Verification[i]['SampleTest'];
 
-                                                                                    verificationBarcodeControllers[i].text = Verification[i]['VerificationSampleBarcode${i + 1}'];
+                                                                                    verificationBarcodeControllers[i].text = Verification[i]['SampleBarcode'];
                                                                                   }
                                                                                 }
 
@@ -4768,9 +4768,9 @@ class _FluxState extends State<Flux> {
 
                                                                               for (int i = 0; i < numberOfVerificationSampleFields; i++) {
                                                                                 verificationSampleData.add({
-                                                                                  "VerificationSampleBarcode${i + 1}": verificationBarcodeControllers[i].text,
-                                                                                  "VerificationSampleTest${i + 1}": selectedVerificationTestValues[i],
-                                                                                  "VerificationSampleRemarks${i + 1}": verificationRemarksControllers[i].text
+                                                                                  "SampleBarcode": verificationBarcodeControllers[i].text,
+                                                                                  "SampleTest": selectedVerificationTestValues[i],
+                                                                                  "SampleRemarks": verificationRemarksControllers[i].text
                                                                                 });
                                                                               }
 
@@ -4908,6 +4908,7 @@ class _FluxState extends State<Flux> {
                                                                                           visualRejection = false;
                                                                                           physicalRejection = false;
                                                                                           frontbusRejection = false;
+                                                                                          verificationRejection = false;
                                                                                           // electricalRejection = false;
                                                                                           //  performanceRejection = false;
                                                                                         });
