@@ -537,7 +537,7 @@ class _PostlamState extends State<Postlam> {
       finalFitmentFrequencyController.text = "5 Piece per Shift";
       finalFitmentCrieteriaController.text =
           "Partial fitment of JB cover not allowed";
-      finalWiFrequencyController.text = "5 Piece per Shift";
+      finalWiFrequencyController.text = "Once per Shift";
       finalWiCrieteriaController.text = "Must be present";
       // PAckaging
       packagingBarcodeFrequencyController.text = "5 Piece per  Shift";
@@ -7032,7 +7032,7 @@ class _PostlamState extends State<Postlam> {
                                                         ),
                                                         TextFormField(
                                                           controller:
-                                                              buffingEdgeFrequencyController,
+                                                              buffingEdgeCrieteriaController,
                                                           keyboardType:
                                                               TextInputType
                                                                   .text,

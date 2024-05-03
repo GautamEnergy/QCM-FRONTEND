@@ -2740,9 +2740,7 @@ class _laminator1State extends State<laminator1> {
                                                       //     .validate()) {
                                                       //   createData();
                                                       // }
-                                                      setState(() {
-                                                        setPage = "#####";
-                                                      });
+
                                                       // print("Page set");
                                                       print(setPage);
                                                     },

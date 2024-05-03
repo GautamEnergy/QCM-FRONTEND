@@ -2729,14 +2729,8 @@ class _stringer1State extends State<stringer1> {
                                                       //     .validate()) {
                                                       //   createData();
                                                       // }
-                                                      setState(() {
-                                                        setPage =
-                                                            "Successful Save the Data";
-                                                      });
+
                                                       // print("Page set");
-                                                      print(setPage);
-                                                      print(
-                                                          "Kul bhushan Singh");
                                                     },
                                                     label: "SAVE",
                                                     organization: '',

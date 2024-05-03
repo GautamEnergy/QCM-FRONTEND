@@ -345,7 +345,7 @@ class _laminator2State extends State<laminator2> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Laminator 1 Test $approvalStatus .",
+        Toast.show("Laminator 2 Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -2741,9 +2741,7 @@ class _laminator2State extends State<laminator2> {
                                                       //     .validate()) {
                                                       //   createData();
                                                       // }
-                                                      setState(() {
-                                                        setPage = "#####";
-                                                      });
+
                                                       // print("Page set");
                                                       print(setPage);
                                                     },

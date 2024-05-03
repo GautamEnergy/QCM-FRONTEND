@@ -1,3 +1,4 @@
+import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
@@ -282,9 +283,9 @@ class _WelcomePageState extends State<MachineCard> {
             ),
             InkWell(
                 onTap: () {
-                  if (designation != 'QC') {
+                  if (designation == 'Super Admin') {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => AddEditProfile()));
+                        builder: (BuildContext context) => EmployeeList()));
                   }
                 },
                 child: Image.asset(
@@ -307,10 +308,10 @@ class _WelcomePageState extends State<MachineCard> {
               width: 8,
             ),
             InkWell(
-                // onTap: () {
-                //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //       builder: (BuildContext context) => PublicDrawer()));
-                // },
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (BuildContext context) => PublicDrawer()));
+                },
                 child: Image.asset(
                     menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
                     height: 25)),

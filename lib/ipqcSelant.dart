@@ -265,7 +265,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Job Card Test $approvalStatus .",
+        Toast.show("Sealent Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -753,7 +753,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                     ),
                                     TextFormField(
                                       controller: LongAController,
-                                      keyboardType: TextInputType.text,
+                                      keyboardType: TextInputType.number,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration
@@ -791,7 +791,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                     ),
                                     TextFormField(
                                       controller: LongBController,
-                                      keyboardType: TextInputType.text,
+                                      keyboardType: TextInputType.number,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration
@@ -839,10 +839,11 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                             Color.fromARGB(255, 215, 243, 207),
                                       ),
                                       style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
+                                      readOnly: true,
+                                      //  status == 'Pending' &&
+                                      //         designation != "QC"
+                                      //     ? true
+                                      //     : false,
                                       validator: MultiValidator(
                                         [
                                           RequiredValidator(
@@ -1059,7 +1060,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                         ),
                                         TextFormField(
                                           controller: ShortAController,
-                                          keyboardType: TextInputType.text,
+                                          keyboardType: TextInputType.number,
                                           textInputAction: TextInputAction.next,
                                           decoration: AppStyles
                                               .textFieldInputDecoration
@@ -1098,7 +1099,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                         ),
                                         TextFormField(
                                           controller: ShortBController,
-                                          keyboardType: TextInputType.text,
+                                          keyboardType: TextInputType.number,
                                           textInputAction: TextInputAction.next,
                                           decoration: AppStyles
                                               .textFieldInputDecoration
@@ -1146,10 +1147,11 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                                 255, 215, 243, 207),
                                           ),
                                           style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
+                                          readOnly: true,
+                                          // status == 'Pending' &&
+                                          //         designation != "QC"
+                                          //     ? true
+                                          //     : false,
                                           validator: MultiValidator(
                                             [
                                               RequiredValidator(
@@ -1401,7 +1403,8 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                             ),
                                             TextFormField(
                                               controller: JunctionAController,
-                                              keyboardType: TextInputType.text,
+                                              keyboardType:
+                                                  TextInputType.number,
                                               textInputAction:
                                                   TextInputAction.next,
                                               decoration: AppStyles
@@ -1442,7 +1445,8 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                             ),
                                             TextFormField(
                                               controller: JunctionBController,
-                                              keyboardType: TextInputType.text,
+                                              keyboardType:
+                                                  TextInputType.number,
                                               textInputAction:
                                                   TextInputAction.next,
                                               decoration: AppStyles
@@ -1496,10 +1500,11 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                               ),
                                               style:
                                                   AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
+                                              readOnly: true,
+                                              // status == 'Pending' &&
+                                              //         designation != "QC"
+                                              //     ? true
+                                              //     : false,
                                               validator: MultiValidator(
                                                 [
                                                   RequiredValidator(
@@ -1996,12 +2001,7 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                                               //     .validate()) {
 
                                                               // }
-                                                              setState(() {
-                                                                setPage =
-                                                                    'nextpage';
-                                                                print(
-                                                                    'All data will be successfully Submited');
-                                                              });
+
                                                               // print("Page set");
                                                               print(setPage);
                                                             },

@@ -89,19 +89,9 @@ class _busbarState extends State<busbar> {
   Response.Response? _response;
 
   void addControllers(int count) {
-    print("count.....?/");
-    print(count);
-    print(sampleAInputtext);
-    print(sampleBInputText);
     for (int i = 0; i < count; i++) {
       sampleAControllers.add(TextEditingController());
       sampleBControllers.add(TextEditingController());
-      if (widget.id != "" && widget.id != null && sampleAInputtext.length > 0) {
-        sampleAControllers[i].text =
-            sampleAInputtext[i]["sampleAControllers${i + 1}"];
-        sampleBControllers[i].text =
-            sampleBInputText[i]["sampleBControllers${i + 1}"];
-      }
     }
   }
 
@@ -198,6 +188,21 @@ class _busbarState extends State<busbar> {
 
           sampleBInputText = resBody['response']['Sample2'] ?? [];
           addControllers(numberOfStringers);
+
+          for (int i = 0; i < numberOfStringers; i++) {
+            sampleAControllers.add(TextEditingController());
+            sampleBControllers.add(TextEditingController());
+            if (widget.id != "" &&
+                widget.id != null &&
+                sampleAInputtext.length > 0 &&
+                sampleBInputText.length > 0) {
+              sampleAControllers[i].text =
+                  sampleAInputtext[i]["sampleAControllers${i + 1}"];
+              sampleBControllers[i].text =
+                  sampleBInputText[i]["sampleBControllers${i + 1}"];
+            }
+          }
+
           remarkController.text = resBody['response']['Remarks'] ?? '';
           referencePdfController.text = resBody['response']['Pdf'] ?? '';
         }
@@ -722,26 +727,28 @@ class _busbarState extends State<busbar> {
                                           ? true
                                           : false,
                                       onTap: () async {
-                                        DateTime date = DateTime(2021);
-                                        FocusScope.of(context)
-                                            .requestFocus(new FocusNode());
-                                        date = (await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
-                                          lastDate: DateTime.now(),
-                                        ))!;
-                                        dateController.text =
-                                            DateFormat("EEE MMM dd, yyyy")
-                                                .format(
-                                          DateTime.parse(date.toString()),
-                                        );
-                                        setState(() {
-                                          dateOfQualityCheck =
-                                              DateFormat("yyyy-MM-dd").format(
+                                        if (status != 'Pending') {
+                                          DateTime date = DateTime(2021);
+                                          FocusScope.of(context)
+                                              .requestFocus(new FocusNode());
+                                          date = (await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime.now(),
+                                          ))!;
+                                          dateController.text =
+                                              DateFormat("EEE MMM dd, yyyy")
+                                                  .format(
                                             DateTime.parse(date.toString()),
                                           );
-                                        });
+                                          setState(() {
+                                            dateOfQualityCheck =
+                                                DateFormat("yyyy-MM-dd").format(
+                                              DateTime.parse(date.toString()),
+                                            );
+                                          });
+                                        }
                                       },
                                       validator: MultiValidator(
                                         [
@@ -1066,6 +1073,8 @@ class _busbarState extends State<busbar> {
                                       shrinkWrap: true,
                                       itemCount: numberOfStringers,
                                       itemBuilder: (context, index) {
+                                        print("chachajajajajjajmamaamam");
+                                        print(numberOfStringers);
                                         return Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

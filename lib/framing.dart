@@ -283,106 +283,105 @@ class _framingState extends State<framing> {
           selectedShift = resBody['response']['Shift'] ?? '';
           Sample1Controller.text = resBody['response']['Sample1'] ?? '';
           Sample1GlueController.text =
-              resBody['response']['1FramingObservation'] ?? '';
+              resBody['response']['FramingObservation1'] ?? '';
           Sample1x1Controller.text =
-              resBody['response']['1FramingDimension']['x1'] ?? '';
+              resBody['response']['FramingDimension1']['x1'] ?? '';
           Sample1x2Controller.text =
-              resBody['response']['1FramingDimension']['x2'] ?? '';
+              resBody['response']['FramingDimension1']['x2'] ?? '';
           Sample1y1Controller.text =
-              resBody['response']['1FramingDimension']['y1'] ?? '';
+              resBody['response']['FramingDimension1']['y1'] ?? '';
           Sample1y2Controller.text =
-              resBody['response']['1FramingDimension']['y2'] ?? '';
+              resBody['response']['FramingDimension1']['y2'] ?? '';
           Sample1L1Controller.text =
-              resBody['response']['1FramingDimension']['l1'] ?? '';
+              resBody['response']['FramingDimension1']['l1'] ?? '';
           Sample1L2Controller.text =
-              resBody['response']['1FramingDimension']['l2'] ?? '';
+              resBody['response']['FramingDimension1']['l2'] ?? '';
           Sample1W1Controller.text =
-              resBody['response']['1FramingDimension']['w1'] ?? '';
+              resBody['response']['FramingDimension1']['w1'] ?? '';
           Sample1W2Controller.text =
-              resBody['response']['1FramingDimension']['w2'] ?? '';
+              resBody['response']['FramingDimension1']['w2'] ?? '';
           // Sample 2
           Sample2Controller.text = resBody['response']['Sample2'] ?? '';
           Sample2GlueController.text =
-              resBody['response']['2FramingObservation'] ?? '';
+              resBody['response']['FramingObservation2'] ?? '';
           Sample2x1Controller.text =
-              resBody['response']['2FramingDimension']['x1'] ?? '';
+              resBody['response']['FramingDimension2']['x1'] ?? '';
           Sample2x2Controller.text =
-              resBody['response']['2FramingDimension']['x2'] ?? '';
+              resBody['response']['FramingDimension2']['x2'] ?? '';
           Sample2y1Controller.text =
-              resBody['response']['2FramingDimension']['y1'] ?? '';
+              resBody['response']['FramingDimension2']['y1'] ?? '';
           Sample2y2Controller.text =
-              resBody['response']['2FramingDimension']['y2'] ?? '';
+              resBody['response']['FramingDimension2']['y2'] ?? '';
           Sample2L1Controller.text =
-              resBody['response']['2FramingDimension']['l1'] ?? '';
+              resBody['response']['FramingDimension2']['l1'] ?? '';
           Sample2L2Controller.text =
-              resBody['response']['2FramingDimension']['l2'] ?? '';
+              resBody['response']['FramingDimension2']['l2'] ?? '';
           Sample2W1Controller.text =
-              resBody['response']['2FramingDimension']['w1'] ?? '';
+              resBody['response']['FramingDimension2']['w1'] ?? '';
           Sample2W2Controller.text =
-              resBody['response']['2FramingDimension']['w2'] ?? '';
+              resBody['response']['FramingDimension2']['w2'] ?? '';
           // Sample 3
           Sample3Controller.text = resBody['response']['Sample3'] ?? '';
           Sample3GlueController.text =
-              resBody['response']['3FramingObservation'] ?? '';
+              resBody['response']['FramingObservation3'] ?? '';
           Sample3x1Controller.text =
-              resBody['response']['3FramingDimension']['x1'] ?? '';
+              resBody['response']['FramingDimension3']['x1'] ?? '';
           Sample3x2Controller.text =
-              resBody['response']['3FramingDimension']['x2'] ?? '';
+              resBody['response']['FramingDimension3']['x2'] ?? '';
           Sample3y1Controller.text =
-              resBody['response']['3FramingDimension']['y1'] ?? '';
+              resBody['response']['FramingDimension3']['y1'] ?? '';
           Sample3y2Controller.text =
-              resBody['response']['3FramingDimension']['y2'] ?? '';
+              resBody['response']['FramingDimension3']['y2'] ?? '';
           Sample3L1Controller.text =
-              resBody['response']['3FramingDimension']['l1'] ?? '';
+              resBody['response']['FramingDimension3']['l1'] ?? '';
           Sample3L2Controller.text =
-              resBody['response']['3FramingDimension']['l2'] ?? '';
+              resBody['response']['FramingDimension3']['l2'] ?? '';
           Sample3W1Controller.text =
-              resBody['response']['3FramingDimension']['w1'] ?? '';
+              resBody['response']['FramingDimension3']['w1'] ?? '';
           Sample3W2Controller.text =
-              resBody['response']['3FramingDimension']['w2'] ?? '';
+              resBody['response']['FramingDimension3']['w2'] ?? '';
           // Sample 4
           Sample4Controller.text = resBody['response']['Sample4'] ?? '';
           Sample4GlueController.text =
-              resBody['response']['4FramingObservation'] ?? '';
+              resBody['response']['FramingObservation4'] ?? '';
           Sample4x1Controller.text =
-              resBody['response']['4FramingDimension']['x1'] ?? '';
+              resBody['response']['FramingDimension4']['x1'] ?? '';
           Sample4x2Controller.text =
-              resBody['response']['4FramingDimension']['x2'] ?? '';
+              resBody['response']['FramingDimension4']['x2'] ?? '';
           Sample4y1Controller.text =
-              resBody['response']['4FramingDimension']['y1'] ?? '';
+              resBody['response']['FramingDimension4']['y1'] ?? '';
           Sample4y2Controller.text =
-              resBody['response']['4FramingDimension']['y2'] ?? '';
+              resBody['response']['FramingDimension4']['y2'] ?? '';
           Sample4L1Controller.text =
-              resBody['response']['4FramingDimension']['l1'] ?? '';
+              resBody['response']['FramingDimension4']['l1'] ?? '';
           Sample4L2Controller.text =
-              resBody['response']['4FramingDimension']['l2'] ?? '';
+              resBody['response']['FramingDimension4']['l2'] ?? '';
           Sample4W1Controller.text =
-              resBody['response']['4FramingDimension']['w1'] ?? '';
+              resBody['response']['FramingDimension4']['w1'] ?? '';
           Sample4W2Controller.text =
-              resBody['response']['4FramingDimension']['w2'] ?? '';
+              resBody['response']['FramingDimension4']['w2'] ?? '';
           //Sample 5
           Sample5Controller.text = resBody['response']['Sample5'] ?? '';
           Sample5GlueController.text =
-              resBody['response']['5FramingObservation'] ?? '';
+              resBody['response']['FramingObservation5'] ?? '';
           Sample5x1Controller.text =
-              resBody['response']['5FramingDimension']['x1'] ?? '';
+              resBody['response']['FramingDimension5']['x1'] ?? '';
           Sample5x2Controller.text =
-              resBody['response']['5FramingDimension']['x2'] ?? '';
+              resBody['response']['FramingDimension5']['x2'] ?? '';
           Sample5y1Controller.text =
-              resBody['response']['5FramingDimension']['y1'] ?? '';
+              resBody['response']['FramingDimension5']['y1'] ?? '';
           Sample5y2Controller.text =
-              resBody['response']['5FramingDimension']['y2'] ?? '';
+              resBody['response']['FramingDimension5']['y2'] ?? '';
           Sample5L1Controller.text =
-              resBody['response']['5FramingDimension']['l1'] ?? '';
+              resBody['response']['FramingDimension5']['l1'] ?? '';
           Sample5L2Controller.text =
-              resBody['response']['1FramingDimension']['l2'] ?? '';
+              resBody['response']['FramingDimension5']['l2'] ?? '';
           Sample5W1Controller.text =
-              resBody['response']['5FramingDimension']['w1'] ?? '';
+              resBody['response']['FramingDimension5']['w1'] ?? '';
           Sample5W2Controller.text =
-              resBody['response']['5FramingDimension']['w2'] ?? '';
+              resBody['response']['FramingDimension5']['w2'] ?? '';
 
-          referencePdfController.text =
-              resBody['response']['ReferencePdf'] ?? '';
+          referencePdfController.text = resBody['response']['PreLamPdf'] ?? '';
         }
       });
     }
@@ -425,7 +424,7 @@ class _framingState extends State<framing> {
             gravity: Toast.center,
             backgroundColor: AppColors.redColor);
       } else {
-        Toast.show("Job Card Test $approvalStatus .",
+        Toast.show("Framing Test $approvalStatus .",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.blueColor);
@@ -4361,13 +4360,8 @@ class _framingState extends State<framing> {
                                                                   //     .validate()) {
                                                                   //   sendDataToBackend();
                                                                   // }
-                                                                  setState(() {
-                                                                    setPage =
-                                                                        "Done All Page's";
-                                                                  });
+
                                                                   // print("Page set");
-                                                                  print(
-                                                                      setPage);
                                                                 },
                                                                 label: "Submit",
                                                                 organization:

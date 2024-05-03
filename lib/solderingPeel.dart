@@ -1233,11 +1233,8 @@ class _solderingPeelState extends State<solderingPeel> {
                                                   //     .validate()) {
                                                   //   createData();
                                                   // }
-                                                  setState(() {
-                                                    setPage = "NextPage";
-                                                  });
+
                                                   // print("Page set");
-                                                  print(setPage);
                                                 },
                                                 label: "Save",
                                                 organization: '',
