@@ -1589,21 +1589,21 @@ class _SealantState extends State<Sealant> {
                                                       widget.id != null &&
                                                       Packaging.length > 0) {
                                                     packagingRemarksControllers[
-                                                            i]
-                                                        .text = Packaging[
-                                                            i][
-                                                        'PackageSampleRemarks${i + 1}'];
+                                                                i]
+                                                            .text =
+                                                        Packaging[i]
+                                                            ['SampleRemarks'];
 
                                                     selectedPackagingTestValues[
-                                                        i] = Packaging[
-                                                            i][
-                                                        'PackageSampleTest${i + 1}'];
+                                                            i] =
+                                                        Packaging[i]
+                                                            ['SampleTest'];
 
                                                     packagingBarcodeControllers[
-                                                            i]
-                                                        .text = Packaging[
-                                                            i][
-                                                        'PackageSampleBarcode${i + 1}'];
+                                                                i]
+                                                            .text =
+                                                        Packaging[i]
+                                                            ['SampleBarcode'];
                                                   }
                                                 }
 
@@ -1892,14 +1892,14 @@ class _SealantState extends State<Sealant> {
                                                   i < numberOfPackagingSampleFields;
                                                   i++) {
                                                 packagingSampleData.add({
-                                                  "PackageSampleBarcode${i + 1}":
+                                                  "SampleBarcode":
                                                       packagingBarcodeControllers[
                                                               i]
                                                           .text,
-                                                  "PackageSampleTest${i + 1}":
+                                                  "SampleTest":
                                                       selectedPackagingTestValues[
                                                           i],
-                                                  "PackageSampleRemarks${i + 1}":
+                                                  "SampleRemarks":
                                                       packagingRemarksControllers[
                                                               i]
                                                           .text
@@ -2295,18 +2295,18 @@ class _SealantState extends State<Sealant> {
                                                                     i]
                                                                 .text = Visual[
                                                                     i][
-                                                                'VisualSampleRemarks${i + 1}'];
+                                                                'SampleRemarks'];
 
                                                             selectedVisualTestValues[
                                                                 i] = Visual[
-                                                                    i][
-                                                                'VisualSampleTest${i + 1}'];
+                                                                    i]
+                                                                ['SampleTest'];
 
                                                             visualBarcodeControllers[
                                                                     i]
                                                                 .text = Visual[
                                                                     i][
-                                                                'VisualSampleBarcode${i + 1}'];
+                                                                'SampleBarcode'];
                                                           }
                                                         }
 
@@ -2615,14 +2615,14 @@ class _SealantState extends State<Sealant> {
                                                           i < numberOfVisualSampleFields;
                                                           i++) {
                                                         visualSampleData.add({
-                                                          "VisualSampleBarcode${i + 1}":
+                                                          "SampleBarcode":
                                                               visualBarcodeControllers[
                                                                       i]
                                                                   .text,
-                                                          "VisualSampleTest${i + 1}":
+                                                          "SampleTest":
                                                               selectedVisualTestValues[
                                                                   i],
-                                                          "VisualSampleRemarks${i + 1}":
+                                                          "SampleRemarks":
                                                               visualRemarksControllers[
                                                                       i]
                                                                   .text
@@ -3049,18 +3049,18 @@ class _SealantState extends State<Sealant> {
                                                                             i]
                                                                         .text = Physical[
                                                                             i][
-                                                                        'PhysicalSampleRemarks${i + 1}'];
+                                                                        'SampleRemarks'];
 
                                                                     selectedPhysicalTestValues[
                                                                         i] = Physical[
                                                                             i][
-                                                                        'PhysicalSampleTest${i + 1}'];
+                                                                        'SampleTest'];
 
                                                                     physicalBarcodeControllers[
                                                                             i]
                                                                         .text = Physical[
                                                                             i][
-                                                                        'PhysicalSampleBarcode${i + 1}'];
+                                                                        'SampleBarcode'];
                                                                   }
                                                                 }
 
@@ -3392,14 +3392,14 @@ class _SealantState extends State<Sealant> {
                                                                   i++) {
                                                                 physicalSampleData
                                                                     .add({
-                                                                  "PhysicalSampleBarcode${i + 1}":
+                                                                  "SampleBarcode":
                                                                       physicalBarcodeControllers[
                                                                               i]
                                                                           .text,
-                                                                  "PhysicalSampleTest${i + 1}":
+                                                                  "SampleTest":
                                                                       selectedPhysicalTestValues[
                                                                           i],
-                                                                  "PhysicalSampleRemarks${i + 1}":
+                                                                  "SampleRemarks":
                                                                       physicalRemarksControllers[
                                                                               i]
                                                                           .text
@@ -3829,13 +3829,13 @@ class _SealantState extends State<Sealant> {
                                                                               widget.id != null &&
                                                                               FrontBus.length > 0) {
                                                                             frontbusRemarksControllers[i].text =
-                                                                                FrontBus[i]['FrontbusSampleRemarks${i + 1}'];
+                                                                                FrontBus[i]['SampleRemarks'];
 
                                                                             selectedFrontbusTestValues[i] =
-                                                                                FrontBus[i]['FrontbusSampleTest${i + 1}'];
+                                                                                FrontBus[i]['SampleTest'];
 
                                                                             frontbusBarcodeControllers[i].text =
-                                                                                FrontBus[i]['FrontbusSampleBarcode${i + 1}'];
+                                                                                FrontBus[i]['SampleBarcode'];
                                                                           }
                                                                         }
 
@@ -4165,11 +4165,11 @@ class _SealantState extends State<Sealant> {
                                                                           i++) {
                                                                         frontbusSampleData
                                                                             .add({
-                                                                          "FrontbusSampleBarcode${i + 1}":
+                                                                          "SampleBarcode":
                                                                               frontbusBarcodeControllers[i].text,
-                                                                          "FrontbusSampleTest${i + 1}":
+                                                                          "SampleTest":
                                                                               selectedFrontbusTestValues[i],
-                                                                          "FrontbusSampleRemarks${i + 1}":
+                                                                          "SampleRemarks":
                                                                               frontbusRemarksControllers[i].text
                                                                         });
                                                                       }
@@ -4561,11 +4561,11 @@ class _SealantState extends State<Sealant> {
 
                                                                                   // Update Time.......
                                                                                   if (widget.id != "" && widget.id != null && Verification.length > 0) {
-                                                                                    verificationRemarksControllers[i].text = Verification[i]['VerificationSampleRemarks${i + 1}'];
+                                                                                    verificationRemarksControllers[i].text = Verification[i]['SampleRemarks'];
 
-                                                                                    selectedVerificationTestValues[i] = Verification[i]['VerificationSampleTest${i + 1}'];
+                                                                                    selectedVerificationTestValues[i] = Verification[i]['SampleTest'];
 
-                                                                                    verificationBarcodeControllers[i].text = Verification[i]['VerificationSampleBarcode${i + 1}'];
+                                                                                    verificationBarcodeControllers[i].text = Verification[i]['SampleBarcode'];
                                                                                   }
                                                                                 }
 
@@ -4805,9 +4805,9 @@ class _SealantState extends State<Sealant> {
 
                                                                               for (int i = 0; i < numberOfVerificationSampleFields; i++) {
                                                                                 verificationSampleData.add({
-                                                                                  "VerificationSampleBarcode${i + 1}": verificationBarcodeControllers[i].text,
-                                                                                  "VerificationSampleTest${i + 1}": selectedVerificationTestValues[i],
-                                                                                  "VerificationSampleRemarks${i + 1}": verificationRemarksControllers[i].text
+                                                                                  "SampleBarcode": verificationBarcodeControllers[i].text,
+                                                                                  "SampleTest": selectedVerificationTestValues[i],
+                                                                                  "SampleRemarks": verificationRemarksControllers[i].text
                                                                                 });
                                                                               }
 
@@ -5103,11 +5103,11 @@ class _SealantState extends State<Sealant> {
 
                                                                                           // Update Time.......
                                                                                           if (widget.id != "" && widget.id != null && Electrical.length > 0) {
-                                                                                            electricalBarcodeControllers[i].text = Electrical[i]['ElectricalSampleBarcode${i + 1}'];
+                                                                                            electricalBarcodeControllers[i].text = Electrical[i]['SampleBarcode'];
 
-                                                                                            selectedElectricalTestValues[i] = Electrical[i]['ElectricalSampleTest${i + 1}'] ?? false;
+                                                                                            selectedElectricalTestValues[i] = Electrical[i]['SampleTest'] ?? false;
 
-                                                                                            electricalRemarksControllers[i].text = Electrical[i]['ElectricalSampleRemarks${i + 1}'];
+                                                                                            electricalRemarksControllers[i].text = Electrical[i]['SampleRemarks'];
                                                                                           }
                                                                                         }
 
@@ -5314,9 +5314,9 @@ class _SealantState extends State<Sealant> {
 
                                                                                       for (int i = 0; i < numberOfElectricalSampleFields; i++) {
                                                                                         electricalSampleData.add({
-                                                                                          "ElectricalSampleBarcode${i + 1}": electricalBarcodeControllers[i].text,
-                                                                                          "ElectricalSampleTest${i + 1}": selectedElectricalTestValues[i],
-                                                                                          "ElectricalSampleRemarks${i + 1}": electricalRemarksControllers[i].text
+                                                                                          "SampleBarcode": electricalBarcodeControllers[i].text,
+                                                                                          "SampleTest": selectedElectricalTestValues[i],
+                                                                                          "SampleRemarks": electricalRemarksControllers[i].text
                                                                                         });
                                                                                       }
 
@@ -5582,11 +5582,11 @@ class _SealantState extends State<Sealant> {
 
                                                                                                   // Update Time.......
                                                                                                   if (widget.id != "" && widget.id != null && Performance.length > 0) {
-                                                                                                    performanceRemarksControllers[i].text = Performance[i]['PerformanceSampleRemarks${i + 1}'];
+                                                                                                    performanceRemarksControllers[i].text = Performance[i]['SampleRemarks'];
 
-                                                                                                    selectedPerformanceTestValues[i] = Performance[i]['PerformanceSampleTest${i + 1}'];
+                                                                                                    selectedPerformanceTestValues[i] = Performance[i]['SampleTest'];
 
-                                                                                                    performanceBarcodeControllers[i].text = Performance[i]['PerformanceSampleBarcode${i + 1}'];
+                                                                                                    performanceBarcodeControllers[i].text = Performance[i]['SampleBarcode'];
                                                                                                   }
                                                                                                 }
 
@@ -5785,9 +5785,9 @@ class _SealantState extends State<Sealant> {
                                                                                               performanceSampleData = [];
                                                                                               for (int i = 0; i < numberOfPerformanceSampleFields; i++) {
                                                                                                 performanceSampleData.add({
-                                                                                                  "PerformanceSampleBarcode${i + 1}": performanceBarcodeControllers[i].text,
-                                                                                                  "PerformanceSampleTest${i + 1}": selectedPerformanceTestValues[i],
-                                                                                                  "PerformanceSampleRemarks${i + 1}": performanceRemarksControllers[i].text
+                                                                                                  "SampleBarcode": performanceBarcodeControllers[i].text,
+                                                                                                  "SampleTest": selectedPerformanceTestValues[i],
+                                                                                                  "SampleRemarks": performanceRemarksControllers[i].text
                                                                                                 });
                                                                                               }
 
@@ -6053,11 +6053,11 @@ class _SealantState extends State<Sealant> {
 
                                                                                                           // Update Time.......
                                                                                                           if (widget.id != "" && widget.id != null && Sealant.length > 0) {
-                                                                                                            sealantRemarksControllers[i].text = Sealant[i]['SealantSampleRemarks${i + 1}'];
+                                                                                                            sealantRemarksControllers[i].text = Sealant[i]['SampleRemarks'];
 
-                                                                                                            selectedSealantTestValues[i] = Sealant[i]['SealantSampleTest${i + 1}'];
+                                                                                                            selectedSealantTestValues[i] = Sealant[i]['SampleTest'];
 
-                                                                                                            sealantBarcodeControllers[i].text = Sealant[i]['SealantSampleBarcode${i + 1}'];
+                                                                                                            sealantBarcodeControllers[i].text = Sealant[i]['SampleBarcode'];
                                                                                                           }
                                                                                                         }
 
@@ -6256,9 +6256,9 @@ class _SealantState extends State<Sealant> {
                                                                                                       sealantSampleData = [];
                                                                                                       for (int i = 0; i < numberOfSealantSampleFields; i++) {
                                                                                                         sealantSampleData.add({
-                                                                                                          "SealantSampleBarcode${i + 1}": sealantBarcodeControllers[i].text,
-                                                                                                          "SealantSampleTest${i + 1}": selectedSealantTestValues[i],
-                                                                                                          "SealantSampleRemarks${i + 1}": sealantRemarksControllers[i].text
+                                                                                                          "SampleBarcode": sealantBarcodeControllers[i].text,
+                                                                                                          "SampleTest": selectedSealantTestValues[i],
+                                                                                                          "SampleRemarks": sealantRemarksControllers[i].text
                                                                                                         });
                                                                                                       }
 
