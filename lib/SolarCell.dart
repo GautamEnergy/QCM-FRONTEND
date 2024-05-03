@@ -5545,7 +5545,7 @@ class _SolarCellState extends State<SolarCell> {
                                                                                                   if (widget.id != "" && widget.id != null && Performance.length > 0) {
                                                                                                     performanceRemarksControllers[i].text = Performance[i]['SampleRemarks'];
 
-                                                                                                    selectedPerformanceTestValues[i] = Performance[i]['SampleTest${i + 1}'];
+                                                                                                    selectedPerformanceTestValues[i] = Performance[i]['SampleTest'];
 
                                                                                                     performanceBarcodeControllers[i].text = Performance[i]['SampleBarcode'];
                                                                                                   }
