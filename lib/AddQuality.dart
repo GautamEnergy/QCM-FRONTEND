@@ -63,7 +63,7 @@ class _AddQualityState extends State<AddQuality> {
       issuetypeController,
       shiftController,
       reportingManagerController,
-      designationController,
+      modelNumberController,
       profilepicture,
       personLogoname,
       personid,
@@ -103,7 +103,7 @@ class _AddQualityState extends State<AddQuality> {
   //       {"key": "Breakdown", "value": "Breakdown"},
   //     ],
   List issueList = [],
-      designationList = [],
+      modelNumberList = [],
       reportingManagerList = [],
       shiftList = [
         {"key": "Day", "value": "Day"},
@@ -118,13 +118,15 @@ class _AddQualityState extends State<AddQuality> {
   TextEditingController shiftinchargenameController = TextEditingController();
   TextEditingController productBarcodeController = new TextEditingController();
   TextEditingController wattageController = new TextEditingController();
-  TextEditingController modelnumberController = new TextEditingController();
+  TextEditingController othermodelnumberController =
+      new TextEditingController();
   TextEditingController responsiblepersonController =
       new TextEditingController();
   TextEditingController reasonofissueController = new TextEditingController();
   TextEditingController stageController = new TextEditingController();
   TextEditingController issuecomefromController = new TextEditingController();
   TextEditingController actiontakenController = new TextEditingController();
+  TextEditingController otherissuetypeController = new TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -151,7 +153,7 @@ class _AddQualityState extends State<AddQuality> {
     getLocationData();
 
     getIssueData();
-    getDsignationData();
+    getModelNumberData();
     print("ProfilePicccc");
     print(profilepicture);
     super.initState();
@@ -232,7 +234,7 @@ class _AddQualityState extends State<AddQuality> {
           shiftinchargenameController.text = dataMap[0]['Name'] ?? '';
           shiftController = dataMap[0]['WorkLocation'] ?? '';
           issuetypeController = dataMap[0]['Department'] ?? '';
-          //   designationController = dataMap[0]['Desgination'] ?? '';
+          //   modelNumberController = dataMap[0]['Desgination'] ?? '';
           //   profilepicture = dataMap[0]['ProfileImg'] ?? '';
         }
       });
@@ -404,9 +406,9 @@ class _AddQualityState extends State<AddQuality> {
     );
   }
 
-  TextFormField textModelNumber() {
+  TextFormField textOtherModelNumber() {
     return TextFormField(
-      controller: modelnumberController,
+      controller: othermodelnumberController,
       minLines: 1,
       maxLines: null,
       keyboardType: TextInputType.multiline,
@@ -420,6 +422,28 @@ class _AddQualityState extends State<AddQuality> {
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter model number';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField textOtherIssueType() {
+    return TextFormField(
+      controller: otherissuetypeController,
+      minLines: 1,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.next,
+      decoration: AppStyles.textFieldInputDecoration.copyWith(
+          hintText: "Please Enter Issue Type",
+          counterText: '',
+          contentPadding: EdgeInsets.all(10)),
+      style: AppStyles.textInputTextStyle,
+      readOnly: false,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter issue type';
         }
         return null;
       },
@@ -558,11 +582,11 @@ class _AddQualityState extends State<AddQuality> {
     });
   }
 
-  getDsignationData() async {
+  getModelNumberData() async {
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
 
-    final url = (site! + 'QCM/GetDesignationList');
+    final url = (site! + 'Quality/GetModels');
 
     http.get(
       Uri.parse(url),
@@ -572,9 +596,10 @@ class _AddQualityState extends State<AddQuality> {
       },
     ).then((response) {
       if (mounted) {
-        var designationBody = jsonDecode(response.body);
+        var modelNumberBody = jsonDecode(response.body);
         setState(() {
-          designationList = designationBody['data'];
+          modelNumberList = modelNumberBody['Models'];
+          modelNumberList.add({"ModelId": "Other", "ModelName": "Other"});
         });
       }
     });
@@ -658,18 +683,18 @@ class _AddQualityState extends State<AddQuality> {
     );
   }
 
-  DropdownButtonFormField textDesignation() {
+  DropdownButtonFormField textModelNumber() {
     return DropdownButtonFormField<String>(
       decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Select Designation",
+          hintText: "Please Select Model Number",
           counterText: '',
           contentPadding: EdgeInsets.all(10)),
       borderRadius: BorderRadius.circular(20),
-      items: designationList
+      items: modelNumberList
           .map((label) => DropdownMenuItem(
-                child: Text(label['Designation'],
+                child: Text(label['ModelName'],
                     style: AppStyles.textInputTextStyle),
-                value: label['DesignationID'].toString(),
+                value: label['ModelId'].toString(),
               ))
           .toList(),
       onChanged:
@@ -677,13 +702,13 @@ class _AddQualityState extends State<AddQuality> {
               ? null
               : (val) {
                   setState(() {
-                    designationController = val!;
+                    modelNumberController = val!;
                   });
                 },
-      value: designationController != '' ? designationController : null,
+      value: modelNumberController != '' ? modelNumberController : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please select a designation';
+          return 'Please select a model number';
         }
         return null; // Return null if the validation is successful
       },
@@ -693,12 +718,14 @@ class _AddQualityState extends State<AddQuality> {
   Future createData(
     String shift,
     String shiftinchargename,
-    String inTime,
-    String outTime,
+    String shiftinchargeprelime,
+    String shiftinchargepostlime,
     String productBarcode,
-    String serialnumber,
+    String wattage,
     String modelnumber,
+    String othermodelnumber,
     String issuetype,
+    String otherissuetype,
     String stage,
     String responsibleperson,
     String reasonofissue,
@@ -716,15 +743,22 @@ class _AddQualityState extends State<AddQuality> {
     final response = await http.post(
       Uri.parse(url),
       body: jsonEncode(<String, String>{
-        "personid":
-            widget.id != '' && widget.id != null ? widget.id.toString() : '',
         "currentuser": personid ?? '',
-        // "employeeid": employeeid,
-        // "loginid": loginid,
-        // "joblocation": joblocation,
-        // "fullname": fullname,
-        // "department": department,
-        // "designation": designation,
+        "shift": shift,
+        "shiftinchargename": shiftinchargename,
+        "shiftinchargeprelime": shiftinchargeprelime,
+        "shiftinchargepostlime": shiftinchargepostlime,
+        "productBarcode": productBarcode,
+        "wattage": wattage,
+        "modelnumber": modelnumber,
+        "othermodelnumber": othermodelnumber,
+        "issuetype": issuetype,
+        "otherissuetype": otherissuetype,
+        "stage": stage,
+        "responsibleperson": responsibleperson,
+        "reasonofissue": reasonofissue,
+        "issuecomefrom": issuecomefrom,
+        "actiontaken": actiontaken,
       }),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -735,52 +769,28 @@ class _AddQualityState extends State<AddQuality> {
     print(response.body);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      if (data['msg'] == 'Update Employee Detail') {
-        if (personlogoBytes != null && personlogoBytes != '') {
-          upload((_imageBytes ?? []), (modelnumberController.text ?? ''));
-        } else {
-          setState(() {
-            _isLoading = false;
-          });
-          Toast.show(
-              widget.id != '' && widget.id != null
-                  ? "Issue reporting successfully."
-                  : "Issue reporting successfully.",
-              duration: Toast.lengthLong,
-              gravity: Toast.center,
-              backgroundColor: AppColors.primaryColor);
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => EmployeeList()),
-              (Route<dynamic> route) => false);
-        }
+
+      setState(() {
+        setpersonid = data['data'][0][0]['vPersonID'];
+      });
+      if ((data['data'][0].length > 0) &&
+          (personlogoBytes != null && personlogoBytes != '')) {
+        upload((_imageBytes ?? []), (productBarcode ?? ''));
       } else {
-        setState(() {
-          setpersonid = data['data'][0][0]['vPersonID'];
-        });
-        if ((data['data'][0].length > 0) &&
-            (personlogoBytes != null && personlogoBytes != '')) {
-          upload((_imageBytes ?? []), (modelnumberController.text ?? ''));
-          // pdfFileUpload((pdfFileBytes ?? []), (personLogoname ?? ''));
-        } else {
-          Toast.show(
-              widget.id != '' && widget.id != null
-                  ? "Issue reporting successfully."
-                  : "Issue reporting successfully.",
-              duration: Toast.lengthLong,
-              gravity: Toast.center,
-              backgroundColor: AppColors.primaryColor);
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => EmployeeList()),
-              (Route<dynamic> route) => false);
-        }
+        Toast.show("Issue reporting successfully.",
+            duration: Toast.lengthLong,
+            gravity: Toast.center,
+            backgroundColor: AppColors.primaryColor);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => EmployeeList()),
+            (Route<dynamic> route) => false);
       }
     } else if (response.statusCode == 400) {
       setState(() {
         _isLoading = false;
       });
-      Toast.show("This Login Id is Already Active.",
+      Toast.show("This Issue is Already Reported.",
           duration: Toast.lengthLong,
           gravity: Toast.center,
           backgroundColor: Colors.redAccent);
@@ -813,7 +823,7 @@ class _AddQualityState extends State<AddQuality> {
       ),
     });
 
-    _response = await _dio.post((site! + 'Employee/UploadProfileImg'), // Prod
+    _response = await _dio.post((site! + ''), // Prod
 
         options: Options(
           contentType: 'multipart/form-data',
@@ -890,7 +900,7 @@ class _AddQualityState extends State<AddQuality> {
                         fontFamily: appFontFamily,
                         fontWeight: FontWeight.w700))),
             const SizedBox(
-              height: 35,
+              height: 25,
             ),
             const SizedBox(height: 10),
             Text(
@@ -949,13 +959,27 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(height: 5),
             textWattage(),
             const SizedBox(height: 15),
+
             Text(
               "Model Number*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
-            const SizedBox(height: 5),
+            const SizedBox(
+              height: 5,
+            ),
+
             textModelNumber(),
-            const SizedBox(height: 15),
+            const SizedBox(
+              height: 15,
+            ),
+            if (modelNumberController == "Other")
+              Text(
+                "Other Model Number*",
+                style: AppStyles.textfieldCaptionTextStyle,
+              ),
+            if (modelNumberController == "Other") const SizedBox(height: 5),
+            if (modelNumberController == "Other") textOtherModelNumber(),
+            if (modelNumberController == "Other") const SizedBox(height: 15),
             Text(
               "Issue Type*",
               style: AppStyles.textfieldCaptionTextStyle,
@@ -967,6 +991,21 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(
               height: 15,
             ),
+            if (issuetypeController == "Other")
+              Text(
+                "Other Issue Type*",
+                style: AppStyles.textfieldCaptionTextStyle,
+              ),
+            if (issuetypeController == "Other")
+              const SizedBox(
+                height: 5,
+              ),
+            if (issuetypeController == "Other") textOtherIssueType(),
+            if (issuetypeController == "Other")
+              const SizedBox(
+                height: 15,
+              ),
+
             Text(
               "Stage*",
               style: AppStyles.textfieldCaptionTextStyle,
@@ -1046,18 +1085,7 @@ class _AddQualityState extends State<AddQuality> {
                       ),
                     ),
                   ),
-            // Text(
-            //   "Designation*",
-            //   style: AppStyles.textfieldCaptionTextStyle,
-            // ),
-            // const SizedBox(
-            //   height: 5,
-            // ),
 
-            // textDesignation(),
-            // const SizedBox(
-            //   height: 15,
-            // ),
             const SizedBox(height: 30),
 
             AppButton(
@@ -1079,8 +1107,10 @@ class _AddQualityState extends State<AddQuality> {
                       shiftinchargepostlimeController.text,
                       productBarcodeController.text,
                       wattageController.text,
-                      modelnumberController.text,
+                      modelNumberController ?? "",
+                      othermodelnumberController.text,
                       issuetypeController ?? "",
+                      otherissuetypeController.text,
                       stageController.text,
                       responsiblepersonController.text,
                       reasonofissueController.text,
