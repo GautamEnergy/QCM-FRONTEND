@@ -176,31 +176,31 @@ class _WelcomePageState extends State<TestingCard> {
               height: 10,
             ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: tabDashboard('Soldering Iron', AppAssets.iron, () {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //     MaterialPageRoute(
-                  //         builder: (BuildContext context) => filename()),
-                  //     (Route<dynamic> route) => false);
-                })),
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //         child: tabDashboard('Soldering Iron', AppAssets.iron, () {
+            //       // Navigator.of(context).pushAndRemoveUntil(
+            //       //     MaterialPageRoute(
+            //       //         builder: (BuildContext context) => filename()),
+            //       //     (Route<dynamic> route) => false);
+            //     })),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
 
             SizedBox(
               height: 10,
