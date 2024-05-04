@@ -38,6 +38,7 @@ class UserData {
   DateTime? qualityCheckDate;
   String? cOCPdf;
   String? invoicePdf;
+  String? excelURL;
   String? solarDetailID;
   String? invoiceNo;
   String? materialName;
@@ -51,6 +52,7 @@ class UserData {
       this.qualityCheckDate,
       this.cOCPdf,
       this.invoicePdf,
+      this.excelURL,
       this.solarDetailID,
       this.invoiceNo,
       this.materialName});
@@ -64,6 +66,7 @@ class UserData {
     qualityCheckDate = DateTime.parse(json['QualityCheckDate']);
     cOCPdf = json['COCPdf'];
     invoicePdf = json['InvoicePdf'];
+    excelURL = json['ExcelURL'];
     solarDetailID = json['SolarDetailID'];
     invoiceNo = json['InvoiceNo'];
     materialName = json['MaterialName'];
@@ -79,6 +82,7 @@ class UserData {
     data['QualityCheckDate'] = this.qualityCheckDate;
     data['COCPdf'] = this.cOCPdf;
     data['InvoicePdf'] = this.invoicePdf;
+    data['ExcelURL'] = this.excelURL;
     data['SolarDetailID'] = this.solarDetailID;
     data['InvoiceNo'] = this.invoiceNo;
     data['MaterialName'] = this.materialName;

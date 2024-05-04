@@ -511,7 +511,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].supplierName ?? '',
                             data.data![index].qualityCheckDate.toString() ?? '',
                             data.data![index].cOCPdf ?? '',
-                            data.data![index].invoicePdf ?? ''));
+                            data.data![index].invoicePdf ?? '',
+                            data.data![index].excelURL ?? ''));
                   } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
@@ -531,7 +532,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].supplierName ?? '',
                             data.data![index].qualityCheckDate.toString() ?? '',
                             data.data![index].cOCPdf ?? '',
-                            data.data![index].invoicePdf ?? ''));
+                            data.data![index].invoicePdf ?? '',
+                            data.data![index].excelURL ?? ''));
                   } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -548,7 +550,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].supplierName ?? '',
                             data.data![index].qualityCheckDate.toString() ?? '',
                             data.data![index].cOCPdf ?? '',
-                            data.data![index].invoicePdf ?? ''));
+                            data.data![index].invoicePdf ?? '',
+                            data.data![index].excelURL ?? ''));
                   } else if (data.data![index].supplierName!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -565,7 +568,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].supplierName ?? '',
                             data.data![index].qualityCheckDate.toString() ?? '',
                             data.data![index].cOCPdf ?? '',
-                            data.data![index].invoicePdf ?? ''));
+                            data.data![index].invoicePdf ?? '',
+                            data.data![index].excelURL ?? ''));
                   } else if ((data.data![index].employeeID!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -582,7 +586,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].supplierName ?? '',
                             data.data![index].qualityCheckDate.toString() ?? '',
                             data.data![index].cOCPdf ?? '',
-                            data.data![index].invoicePdf ?? ''));
+                            data.data![index].invoicePdf ?? '',
+                            data.data![index].excelURL ?? ''));
                   } else if (data.data![index].solarDetailID!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -599,7 +604,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
                             data.data![index].supplierName ?? '',
                             data.data![index].qualityCheckDate.toString() ?? '',
                             data.data![index].cOCPdf ?? '',
-                            data.data![index].invoicePdf ?? ''));
+                            data.data![index].invoicePdf ?? '',
+                            data.data![index].excelURL ?? ''));
                   } else {
                     return Container();
                   }
@@ -622,7 +628,8 @@ class _IqcpTestListState extends State<IqcpTestList> {
       String supplierName,
       String qualityCheckDate,
       String cOCPdf,
-      String invoicePdf) {
+      String invoicePdf,
+      String excelReport) {
     return InkWell(
       onTap: () {},
       child: Padding(
@@ -941,6 +948,54 @@ class _IqcpTestListState extends State<IqcpTestList> {
                                   ),
                                 ),
                               ),
+                          ]),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        if ((_hasBeenPressed1 == 'Approved' ||
+                                _hasBeenPressed1 == 'Rejected') &&
+                            excelReport != "" &&
+                            excelReport != null)
+                          Row(children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(
+                                    255, 172, 69, 141), // Background color
+                                borderRadius: BorderRadius.circular(
+                                    10), // Optional: Add border radius for rounded corners
+                              ),
+                              child: const Text(
+                                "Excell Report :",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Color.fromARGB(255, 255, 255,
+                                      255), // Optional: Set text color
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                UrlLauncher.launch(excelReport);
+                              },
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  AppAssets.icPdf,
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
                           ]),
 
                         const SizedBox(
