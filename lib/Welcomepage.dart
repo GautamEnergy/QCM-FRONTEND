@@ -8,6 +8,7 @@ import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
+import 'package:QCM/QualityList.dart';
 import 'package:QCM/QualityPage.dart';
 import 'package:QCM/SolarCell.dart';
 import 'package:QCM/addeditemployee.dart';
@@ -214,35 +215,35 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ],
               ),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     const SizedBox(
-              //       width: 10,
-              //     ),
-              //     Expanded(
-              //         child: tabDashboard(
-              //             'QUALITY',
-              //             designation != 'Super Admin'
-              //                 ? AppAssets.quality
-              //                 : AppAssets.qualityadd, () {
-              //       Navigator.of(context).pushAndRemoveUntil(
-              //           MaterialPageRoute(
-              //               builder: (BuildContext context) =>
-              //                   designation != 'Super Admin'
-              //                       ? QualityPage()
-              //                       : QualityPage()),
-              //           (Route<dynamic> route) => false);
-              //     })),
-              //     const SizedBox(
-              //       width: 10,
-              //     ),
-              //   ],
-              // ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard(
+                          'QUALITY',
+                          designation != 'Super Admin'
+                              ? AppAssets.qualityadd
+                              : AppAssets.quality, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                designation != 'Super Admin'
+                                    ? QualityPage()
+                                    : QualityList()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
             ],
           ),
         ),

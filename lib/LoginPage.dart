@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
+import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/components/app_loader.dart';
@@ -37,12 +38,18 @@ class _LoginPageState extends State<LoginPage> {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   // String path = "http://192.168.0.100:8080/"; //local
-  String path =
-      "https://fair-gray-gharial-wig.cyclic.app/"; // QCM App Cyclic Dev
+  // String path =
+  //     "https://fair-gray-gharial-wig.cyclic.app/"; // QCM Cyclic Dev
+
+  // String path =
+  //     "https://emp56gfc2b.ap-south-1.awsapprunner.com/"; // QCM AWS Dev
   // String path =
   //     "https://sore-rose-kingfisher-tutu.cyclic.app/"; // QCM App Cyclic Prod
 
   // String path = "https://xvvmywehv3.ap-south-1.awsapprunner.com/"; // AWS Prod
+  String path = "http://srv515471.hstgr.cloud:8080/"; // Hostinger Dev
+
+  // String path = "http://srv515471.hstgr.cloud:9090/"; // Hostinger Prod
 
   @override
   void initState() {
@@ -126,7 +133,10 @@ class _LoginPageState extends State<LoginPage> {
                         ? IpqcPage()
                         : (department == 'FQC' && designation != 'Super Admin')
                             ? FqcPage()
-                            : WelcomePage()));
+                            : (department == 'QUALITY' &&
+                                    designation != 'Super Admin')
+                                ? QualityPage()
+                                : WelcomePage()));
           });
           print(prefs.getString('site'));
         }

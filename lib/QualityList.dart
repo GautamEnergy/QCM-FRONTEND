@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
@@ -17,22 +18,23 @@ import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_strings.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/main.dart';
-import 'package:QCM/user_list_model.dart';
+import 'package:QCM/quality_list_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
-class EmployeeList extends StatefulWidget {
-  EmployeeList();
+class QualityList extends StatefulWidget {
+  QualityList();
 
   @override
   _DirectoryState createState() => _DirectoryState();
 }
 
-class _DirectoryState extends State<EmployeeList> {
+class _DirectoryState extends State<QualityList> {
   final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
   TextEditingController SearchController = TextEditingController();
   // TextEditingController _paymentModeController = new TextEditingController();
@@ -43,7 +45,7 @@ class _DirectoryState extends State<EmployeeList> {
   GlobalKey<FormState> _renewalFormkey = GlobalKey<FormState>();
 
   bool _isLoading = false, IN = false, OUT = false;
-  bool menu = false, user = true, face = false, home = false;
+  bool menu = false, user = false, face = false, home = false;
   String? _paymentModeController;
   List paymentModeData = [];
   String? personid,
@@ -63,7 +65,7 @@ class _DirectoryState extends State<EmployeeList> {
       _hasBeenPressedorganization = '',
       organizationtype,
       _hasBeenPressed = '',
-      _hasBeenPressed1 = 'Active',
+      _hasBeenPressed1 = 'Pending',
       _hasBeenPressed2 = '',
       Expirydate,
       Paymentdate;
@@ -107,7 +109,7 @@ class _DirectoryState extends State<EmployeeList> {
       _isLoading = true;
     });
 
-    final url = (site! + 'Employee/GetList');
+    final url = (site! + 'Quality/QualityList');
 
     http.get(
       Uri.parse(url),
@@ -166,7 +168,7 @@ class _DirectoryState extends State<EmployeeList> {
     }
   }
 
-  contentBox(context, String personId) {
+  contentBox(context, String modulePicture) {
     return SingleChildScrollView(
       child: Form(
         child: Column(
@@ -185,62 +187,47 @@ class _DirectoryState extends State<EmployeeList> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      // 'Disable Member',
-                      "Disable Member",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'HKGrotesk',
-                        fontWeight: FontWeight.w500,
+                    Container(
+                        child: Material(
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      color: Colors.transparent,
+                      child: CachedNetworkImage(
+                        imageUrl: modulePicture,
+                        height: 360,
+                        width: 360,
+                        placeholder: (context, url) {
+                          return ClipOval(
+                            child: Image.asset(
+                              AppAssets.profilePlaceholder,
+                              height: 360,
+                              width: 360,
+                            ),
+                          );
+                        },
+                        errorWidget: (context, url, error) {
+                          return ClipOval(
+                            child: Image.asset(
+                              AppAssets.profilePlaceholder,
+                              height: 360,
+                              width: 360,
+                            ),
+                          );
+                        },
                       ),
-                      textAlign: TextAlign.center,
-                    ),
+                    )),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 15),
-                        const Text(
-                          // 'Are you sure you want to disable this member?',
-                          "Are you sure you want to disable this member?",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 15),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            setMemberStatus('Inactive', personId);
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.only(top: 10, bottom: 10),
-                              child: Center(
-                                child: Text(
-                                  'Yes',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'HKGrotesk',
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
                         InkWell(
                             onTap: () {
                               Navigator.of(context).pop();
                             },
                             child: const Center(
                               child: Text(
-                                'NO',
+                                'CLOSE',
                                 style: TextStyle(
                                     fontFamily: appFontFamily,
                                     fontSize: 16,
@@ -263,7 +250,11 @@ class _DirectoryState extends State<EmployeeList> {
 
   Future<bool> redirectto() async {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                (department == 'QUALITY' && designation != 'Super Admin')
+                    ? QualityPage()
+                    : WelcomePage()),
         (Route<dynamic> route) => false);
     return true;
   }
@@ -297,7 +288,10 @@ class _DirectoryState extends State<EmployeeList> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return WelcomePage();
+                      return (department == 'QUALITY' &&
+                              designation != 'Super Admin')
+                          ? QualityPage()
+                          : WelcomePage();
                     }));
                   },
                 ),
@@ -310,7 +304,7 @@ class _DirectoryState extends State<EmployeeList> {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      EmployeeList()),
+                                      QualityList()),
                               (Route<dynamic> route) => false);
                           return Future<void>.delayed(
                               const Duration(seconds: 3));
@@ -321,9 +315,9 @@ class _DirectoryState extends State<EmployeeList> {
                           child: Center(child: _userData()),
                         ),
                       ),
-                floatingActionButton: designation != 'Reporting Manager'
-                    ? _getFAB()
-                    : Container(),
+                // floatingActionButton: designation != 'Reporting Manager'
+                //     ? _getFAB()
+                //     : Container(),
                 bottomNavigationBar: Container(
                   height: 60,
                   decoration: const BoxDecoration(
@@ -368,12 +362,12 @@ class _DirectoryState extends State<EmployeeList> {
                         width: 8,
                       ),
                       InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        EmployeeList()));
-                          },
+                          // onTap: () {
+                          //   Navigator.of(context).pushReplacement(
+                          //       MaterialPageRoute(
+                          //           builder: (BuildContext context) =>
+                          //               EmployeeList()));
+                          // },
                           child: Image.asset(
                               user
                                   ? AppAssets.imgSelectedPerson
@@ -472,18 +466,18 @@ class _DirectoryState extends State<EmployeeList> {
             InkWell(
                 onTap: () {
                   setState(() {
-                    _hasBeenPressed1 = 'Active';
+                    _hasBeenPressed1 = 'Pending';
                     _hasBeenPressed2 = '';
                   });
                   userdata = getData();
                 },
-                child: Text('Active',
+                child: Text('Pending',
                     style: TextStyle(
                         fontFamily: appFontFamily,
-                        color: _hasBeenPressed1 == 'Active'
+                        color: _hasBeenPressed1 == 'Pending'
                             ? AppColors.blueColor
                             : AppColors.black,
-                        fontWeight: _hasBeenPressed1 == 'Active'
+                        fontWeight: _hasBeenPressed1 == 'Pending'
                             ? FontWeight.w700
                             : FontWeight.normal))),
 
@@ -499,18 +493,18 @@ class _DirectoryState extends State<EmployeeList> {
             InkWell(
               onTap: () {
                 setState(() {
-                  _hasBeenPressed1 = 'Inactive';
+                  _hasBeenPressed1 = 'Resolved';
                 });
                 userdata = getData();
               },
               child: Text(
-                'Inactive',
+                'Resolved',
                 style: TextStyle(
                     fontFamily: appFontFamily,
-                    color: _hasBeenPressed1 == 'Inactive'
+                    color: _hasBeenPressed1 == 'Resolved'
                         ? AppColors.blueColor
                         : AppColors.black,
-                    fontWeight: _hasBeenPressed1 == 'Inactive'
+                    fontWeight: _hasBeenPressed1 == 'Resolved'
                         ? FontWeight.w700
                         : FontWeight.normal),
               ),
@@ -592,7 +586,7 @@ class _DirectoryState extends State<EmployeeList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Employee List',
+              Text('Quality List',
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 20,
@@ -611,7 +605,7 @@ class _DirectoryState extends State<EmployeeList> {
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               decoration: AppStyles.textFieldInputDecoration.copyWith(
-                  hintText: AppStrings.SEARCH_MEMBERS,
+                  hintText: "Search Quality",
                   prefixIcon: const Icon(
                     Icons.search,
                     size: 25,
@@ -625,29 +619,30 @@ class _DirectoryState extends State<EmployeeList> {
           )),
         ),
       ]),
+      // Padding(
+      //     padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //       crossAxisAlignment: CrossAxisAlignment.end,
+      //       children: [filter()],
+      //     )),
       Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [if (isAllowedEdit) filter()],
-          )),
-      Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                   data.data!.length > 1
-                      ? '${data.data!.length} Employees'
-                      : '${data.data!.length} Employee',
+                      ? '${data.data!.length} Qualities'
+                      : '${data.data!.length} Quality',
                   style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontFamily: appFontFamily,
                       fontSize: 15,
                       color: AppColors.greyColor)),
-              // if (isAllowedEdit) filter()
+              filter()
             ],
           )),
       Container(
@@ -656,91 +651,119 @@ class _DirectoryState extends State<EmployeeList> {
                 itemCount: data.data!.length,
                 itemBuilder: (context, index) {
                   if (SearchController.text.isEmpty) {
-                    print("Image ka link..........");
-                    print(data.data![index].profileImg);
                     return Container(
                         child: _tile(
-                            data.data![index].personID ?? '',
-                            data.data![index].employeeID ?? '',
-                            data.data![index].profileImg ?? '',
-                            data.data![index].name ?? '',
-                            data.data![index].location ?? '',
-                            data.data![index].designation ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].status ?? ''));
-                  } else if ((data.data![index].name ?? '')
+                            data.data![index].qualityId ?? '',
+                            data.data![index].shift ?? '',
+                            data.data![index].modulePicture ?? '',
+                            data.data![index].productBarCode ?? '',
+                            data.data![index].modelNumber ?? '',
+                            data.data![index].issueType ?? '',
+                            data.data![index].stage ?? '',
+                            data.data![index].resposiblePerson ?? '',
+                            data.data![index].reasonOfIssue ?? '',
+                            data.data![index].createdOn ?? '',
+                            data.data![index].createdBy ?? '',
+                            data.data![index].otherIssueType ?? '',
+                            data.data![index].otherModelNumber ?? ''));
+                  } else if ((data.data![index].modelNumber ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
-                      data.data![index].employeeID!
+                      data.data![index].shift!
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personID ?? '',
-                            data.data![index].employeeID ?? '',
-                            data.data![index].profileImg ?? '',
-                            data.data![index].name ?? '',
-                            data.data![index].location ?? '',
-                            data.data![index].designation ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].status ?? ''));
-                  } else if (data.data![index].location!
+                            data.data![index].qualityId ?? '',
+                            data.data![index].shift ?? '',
+                            data.data![index].modulePicture ?? '',
+                            data.data![index].productBarCode ?? '',
+                            data.data![index].modelNumber ?? '',
+                            data.data![index].issueType ?? '',
+                            data.data![index].stage ?? '',
+                            data.data![index].resposiblePerson ?? '',
+                            data.data![index].reasonOfIssue ?? '',
+                            data.data![index].createdOn ?? '',
+                            data.data![index].createdBy ?? '',
+                            data.data![index].otherIssueType ?? '',
+                            data.data![index].otherModelNumber ?? ''));
+                  } else if (data.data![index].stage!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personID ?? '',
-                            data.data![index].employeeID ?? '',
-                            data.data![index].profileImg ?? '',
-                            data.data![index].name ?? '',
-                            data.data![index].location ?? '',
-                            data.data![index].designation ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].status ?? ''));
-                  } else if (data.data![index].department!
+                            data.data![index].qualityId ?? '',
+                            data.data![index].shift ?? '',
+                            data.data![index].modulePicture ?? '',
+                            data.data![index].productBarCode ?? '',
+                            data.data![index].modelNumber ?? '',
+                            data.data![index].issueType ?? '',
+                            data.data![index].stage ?? '',
+                            data.data![index].resposiblePerson ?? '',
+                            data.data![index].reasonOfIssue ?? '',
+                            data.data![index].createdOn ?? '',
+                            data.data![index].createdBy ?? '',
+                            data.data![index].otherIssueType ?? '',
+                            data.data![index].otherModelNumber ?? ''));
+                  } else if (data.data![index].resposiblePerson!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personID ?? '',
-                            data.data![index].employeeID ?? '',
-                            data.data![index].profileImg ?? '',
-                            data.data![index].name ?? '',
-                            data.data![index].location ?? '',
-                            data.data![index].designation ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].status ?? ''));
-                  } else if ((data.data![index].designation!)
+                            data.data![index].qualityId ?? '',
+                            data.data![index].shift ?? '',
+                            data.data![index].modulePicture ?? '',
+                            data.data![index].productBarCode ?? '',
+                            data.data![index].modelNumber ?? '',
+                            data.data![index].issueType ?? '',
+                            data.data![index].stage ?? '',
+                            data.data![index].resposiblePerson ?? '',
+                            data.data![index].reasonOfIssue ?? '',
+                            data.data![index].createdOn ?? '',
+                            data.data![index].createdBy ?? '',
+                            data.data![index].otherIssueType ?? '',
+                            data.data![index].otherModelNumber ?? ''));
+                  } else if ((data.data![index].createdBy!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personID ?? '',
-                            data.data![index].employeeID ?? '',
-                            data.data![index].profileImg ?? '',
-                            data.data![index].name ?? '',
-                            data.data![index].location ?? '',
-                            data.data![index].designation ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].status ?? ''));
-                  } else if (data.data![index].status!
+                            data.data![index].qualityId ?? '',
+                            data.data![index].shift ?? '',
+                            data.data![index].modulePicture ?? '',
+                            data.data![index].productBarCode ?? '',
+                            data.data![index].modelNumber ?? '',
+                            data.data![index].issueType ?? '',
+                            data.data![index].stage ?? '',
+                            data.data![index].resposiblePerson ?? '',
+                            data.data![index].reasonOfIssue ?? '',
+                            data.data![index].createdOn ?? '',
+                            data.data![index].createdBy ?? '',
+                            data.data![index].otherIssueType ?? '',
+                            data.data![index].otherModelNumber ?? ''));
+                  } else if (data.data![index].issueType!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: _tile(
-                            data.data![index].personID ?? '',
-                            data.data![index].employeeID ?? '',
-                            data.data![index].profileImg ?? '',
-                            data.data![index].name ?? '',
-                            data.data![index].location ?? '',
-                            data.data![index].designation ?? '',
-                            data.data![index].department ?? '',
-                            data.data![index].status ?? ''));
+                            data.data![index].qualityId ?? '',
+                            data.data![index].shift ?? '',
+                            data.data![index].modulePicture ?? '',
+                            data.data![index].productBarCode ?? '',
+                            data.data![index].modelNumber ?? '',
+                            data.data![index].issueType ?? '',
+                            data.data![index].stage ?? '',
+                            data.data![index].resposiblePerson ?? '',
+                            data.data![index].reasonOfIssue ?? '',
+                            data.data![index].createdOn ?? '',
+                            data.data![index].createdBy ?? '',
+                            data.data![index].otherIssueType ?? '',
+                            data.data![index].otherModelNumber ?? ''));
                   } else {
                     return Container();
                   }
@@ -752,17 +775,29 @@ class _DirectoryState extends State<EmployeeList> {
     ]);
   }
 
-  Widget _tile(String id, String employeeid, String profilepic, String name,
-      String location, String designation, String department, String status) {
+  Widget _tile(
+      String id,
+      String shift,
+      String modulePicture,
+      String productBarCode,
+      String modelNumber,
+      String issueType,
+      String stage,
+      String resposiblePerson,
+      String reasonOfIssue,
+      String createdOn,
+      String createdBy,
+      String otherIssueType,
+      String otherModelNumber) {
     return InkWell(
-      onTap: () {
-        // Navigator.of(context).pushAndRemoveUntil(
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => DirectoryDetails(
-        //               personId: id,
-        //             )),
-        //     (Route<dynamic> route) => false);
-      },
+      // onTap: () {
+      //   // Navigator.of(context).pushAndRemoveUntil(
+      //   //     MaterialPageRoute(
+      //   //         builder: (BuildContext context) => DirectoryDetails(
+      //   //               personId: id,
+      //   //             )),
+      //   //     (Route<dynamic> route) => false);
+      // },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
         child: Column(
@@ -775,34 +810,83 @@ class _DirectoryState extends State<EmployeeList> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Container(
-                        child: Material(
-                      shape: const CircleBorder(),
-                      clipBehavior: Clip.hardEdge,
-                      color: Colors.transparent,
-                      child: CachedNetworkImage(
-                        imageUrl: profilepic,
-                        height: 60,
-                        width: 60,
-                        placeholder: (context, url) {
-                          return ClipOval(
-                            child: Image.asset(
-                              AppAssets.profilePlaceholder,
-                              height: 60,
-                              width: 60,
-                            ),
-                          );
-                        },
-                        errorWidget: (context, url, error) {
-                          return ClipOval(
-                            child: Image.asset(
-                              AppAssets.profilePlaceholder,
-                              height: 60,
-                              width: 60,
-                            ),
-                          );
-                        },
+                      child: Material(
+                        shape: const CircleBorder(),
+                        clipBehavior: Clip.hardEdge,
+                        color: Colors.transparent,
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                  child: Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    elevation: 0,
+                                    backgroundColor:
+                                        Color.fromARGB(0, 232, 131, 8),
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0),
+                                            topRight: Radius.circular(25.0),
+                                            bottomLeft: Radius.circular(25.0),
+                                          )),
+                                      child: CachedNetworkImage(
+                                        width: 430,
+                                        height: 450,
+                                        imageUrl: (modulePicture),
+                                        errorWidget: (context, url, error) {
+                                          return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Image.asset(
+                                                AppAssets.imgModule,
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                              ));
+                                        },
+                                        // placeholder: 'cupertinoActivityIndicator',
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: modulePicture,
+                            height: 60,
+                            width: 60,
+                            placeholder: (context, url) {
+                              return ClipOval(
+                                child: Image.asset(
+                                  AppAssets.imgModule,
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              );
+                            },
+                            errorWidget: (context, url, error) {
+                              return ClipOval(
+                                child: Image.asset(
+                                  AppAssets.imgModule,
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    )),
+                    ),
                   ),
                   Container(
                     child: Expanded(
@@ -813,7 +897,7 @@ class _DirectoryState extends State<EmployeeList> {
                         //Name
                         Row(children: <Widget>[
                           Flexible(
-                            child: Text(name,
+                            child: Text(modelNumber,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontFamily: appFontFamily,
@@ -831,7 +915,7 @@ class _DirectoryState extends State<EmployeeList> {
                         ]),
 
                         //Occupication
-                        Text(department,
+                        Text(stage,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -839,7 +923,7 @@ class _DirectoryState extends State<EmployeeList> {
 
                         Row(children: <Widget>[
                           Flexible(
-                            child: Text(employeeid,
+                            child: Text(createdBy,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontFamily: appFontFamily,
@@ -859,7 +943,7 @@ class _DirectoryState extends State<EmployeeList> {
                                   10), // Optional: Add border radius for rounded corners
                             ),
                             child: Text(
-                              designation,
+                              createdOn,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 11,
@@ -1100,53 +1184,50 @@ class _DirectoryState extends State<EmployeeList> {
                       ],
                     )),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          print("piccc.......");
-                          print(id);
-                          print(profilepic);
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      AddEditProfile(id: id)),
-                              (Route<dynamic> route) => false);
-                        },
-                        child: Image.asset(
-                          AppAssets.icMemberEdit,
-                          height: 40,
-                          width: 40,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
-                          child: Image.asset(
-                            AppAssets.icMemberDelete,
-                            height: 40,
-                            width: 40,
-                          ),
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(21),
-                                  ),
-                                  elevation: 0,
-                                  backgroundColor: Colors.transparent,
-                                  child: contentBox(context, id),
-                                );
-                              },
-                            );
-                          })
-                    ],
-                  )
+                  // Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     InkWell(
+                  //       onTap: () {
+                  //         Navigator.of(context).pushAndRemoveUntil(
+                  //             MaterialPageRoute(
+                  //                 builder: (BuildContext context) =>
+                  //                     AddEditProfile(id: id)),
+                  //             (Route<dynamic> route) => false);
+                  //       },
+                  //       child: Image.asset(
+                  //         AppAssets.icMemberEdit,
+                  //         height: 40,
+                  //         width: 40,
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       height: 10,
+                  //     ),
+                  //     InkWell(
+                  //         child: Image.asset(
+                  //           AppAssets.icMemberDelete,
+                  //           height: 40,
+                  //           width: 40,
+                  //         ),
+                  //         onTap: () {
+                  //           showDialog(
+                  //             context: context,
+                  //             builder: (BuildContext context) {
+                  //               return Dialog(
+                  //                 shape: RoundedRectangleBorder(
+                  //                   borderRadius: BorderRadius.circular(21),
+                  //                 ),
+                  //                 elevation: 0,
+                  //                 backgroundColor: Colors.transparent,
+                  //                 child: contentBox(context, id),
+                  //               );
+                  //             },
+                  //           );
+                  //         })
+                  //   ],
+                  // )
                 ],
               ),
             ),

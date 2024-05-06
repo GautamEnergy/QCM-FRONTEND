@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
+import 'package:QCM/QualityList.dart';
 import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
@@ -738,7 +739,7 @@ class _AddQualityState extends State<AddQuality> {
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
 
-    final url = (site! + ''); // Prod
+    final url = (site! + 'Quality/AddQuality'); // Prod
 
     final response = await http.post(
       Uri.parse(url),
@@ -769,12 +770,13 @@ class _AddQualityState extends State<AddQuality> {
     print(response.body);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+      print(data);
+      print(data['UUID']);
 
       setState(() {
-        setpersonid = data['data'][0][0]['vPersonID'];
+        setpersonid = data['UUID'];
       });
-      if ((data['data'][0].length > 0) &&
-          (personlogoBytes != null && personlogoBytes != '')) {
+      if (_imageBytes != null && _imageBytes != '') {
         upload((_imageBytes ?? []), (productBarcode ?? ''));
       } else {
         Toast.show("Issue reporting successfully.",
@@ -782,8 +784,7 @@ class _AddQualityState extends State<AddQuality> {
             gravity: Toast.center,
             backgroundColor: AppColors.primaryColor);
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => EmployeeList()),
+            MaterialPageRoute(builder: (BuildContext context) => QualityList()),
             (Route<dynamic> route) => false);
       }
     } else if (response.statusCode == 400) {
@@ -811,19 +812,15 @@ class _AddQualityState extends State<AddQuality> {
 
     var currentdate = DateTime.now().microsecondsSinceEpoch;
     var formData = FormData.fromMap({
-      'personid': setpersonid != '' && setpersonid != null
-          ? setpersonid
-          : widget.id != '' && widget.id != null
-              ? widget.id.toString()
-              : '',
-      "Profile": MultipartFile.fromBytes(
+      'QualityId': setpersonid != '' && setpersonid != null ? setpersonid : '',
+      "ModuleImage": MultipartFile.fromBytes(
         bytes,
         filename: (name + (currentdate.toString()) + '.jpg'),
         contentType: MediaType("image", 'jpg'),
       ),
     });
 
-    _response = await _dio.post((site! + ''), // Prod
+    _response = await _dio.post((site! + 'Quality/UploadModuleImage'), // Prod
 
         options: Options(
           contentType: 'multipart/form-data',
@@ -837,17 +834,15 @@ class _AddQualityState extends State<AddQuality> {
         setState(() {
           _isLoading = false;
         });
+        print("Upload....?");
+        print(_response!.data);
 
-        Toast.show(
-            widget.id != '' && widget.id != null
-                ? "Issue reporting successfully."
-                : "Issue reporting successfully.",
+        Toast.show("Issue reporting successfully.",
             duration: Toast.lengthLong,
             gravity: Toast.center,
             backgroundColor: AppColors.primaryColor);
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => EmployeeList()),
+            MaterialPageRoute(builder: (BuildContext context) => QualityList()),
             (Route<dynamic> route) => false);
       }
     } catch (err) {

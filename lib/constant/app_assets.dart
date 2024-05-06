@@ -33,6 +33,7 @@ class AppAssets {
   static String location = 'assets/icons/location.png';
   static String icRoundBlack = 'assets/icons/ic_round_back.png';
   static String imgPlaceholder = 'assets/images/img_placeholder.png';
+  static String imgModule = 'assets/images/module.jpg';
   static String profilePlaceholder = 'assets/images/profile_placeholder.png';
 
   static String imgPerson = 'assets/icons/Member.png';

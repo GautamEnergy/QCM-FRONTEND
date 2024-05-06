@@ -631,7 +631,7 @@ class _IqcpTestListState extends State<IqcpTestList> {
       String invoicePdf,
       String excelReport) {
     return InkWell(
-      onTap: () {},
+      // onTap: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
         child: Column(

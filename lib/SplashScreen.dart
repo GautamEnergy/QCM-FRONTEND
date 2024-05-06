@@ -4,6 +4,7 @@ import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/LoginPage.dart';
+import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/constant/app_assets.dart';
 import 'package:QCM/directory.dart';
@@ -76,7 +77,10 @@ class _SplashScreenState extends State<SplashScreen> {
                         ? IpqcPage()
                         : (department == 'FQC' && designation != 'Super Admin')
                             ? FqcPage()
-                            : WelcomePage())));
+                            : (department == 'QUALITY' &&
+                                    designation != 'Super Admin')
+                                ? QualityPage()
+                                : WelcomePage())));
       } else {
         Timer(
             Duration(seconds: 3),

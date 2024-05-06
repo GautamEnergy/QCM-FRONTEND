@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
+import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:dio/src/response.dart' as Response;
@@ -229,7 +230,15 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
   Future<bool> redirectto() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return EmployeeList();
+      return designation != "Super Admin" && department == "IQCP"
+          ? IqcpPage()
+          : designation != "Super Admin" && department == "IPQC"
+              ? IpqcPage()
+              : designation != "Super Admin" && department == "FQC"
+                  ? FqcPage()
+                  : designation != "Super Admin" && department == "QUALITY"
+                      ? QualityPage()
+                      : EmployeeList();
     }));
     return true;
   }
@@ -265,7 +274,10 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                             : designation != "Super Admin" &&
                                     department == "FQC"
                                 ? FqcPage()
-                                : EmployeeList();
+                                : designation != "Super Admin" &&
+                                        department == "QUALITY"
+                                    ? QualityPage()
+                                    : EmployeeList();
                   }));
                 },
               ),

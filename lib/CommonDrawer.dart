@@ -4,6 +4,8 @@ import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
+import 'package:QCM/QualityList.dart';
+import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/attendance.dart';
 import 'package:QCM/components/appbar.dart';
@@ -160,7 +162,10 @@ class _PublicDrawerState extends State<PublicDrawer> {
                                       : (department == 'FQC' &&
                                               designation != 'Super Admin')
                                           ? FqcPage()
-                                          : WelcomePage()),
+                                          : (department == 'QUALITY' &&
+                                                  designation != 'Super Admin')
+                                              ? QualityPage()
+                                              : WelcomePage()),
                       (Route<dynamic> route) => false);
                 })),
                 SizedBox(
@@ -245,10 +250,6 @@ class _PublicDrawerState extends State<PublicDrawer> {
                 ],
               ),
 
-            SizedBox(
-              height: 10,
-            ),
-
             if ((designation != 'Super Admin' && department == 'FQC') ||
                 (designation == 'Super Admin'))
               SizedBox(
@@ -279,6 +280,45 @@ class _PublicDrawerState extends State<PublicDrawer> {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) => FqcPage()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+
+            if ((designation != 'Super Admin' && department == 'QUALITY') ||
+                (designation == 'Super Admin'))
+              SizedBox(
+                height: 10,
+              ),
+            // IQCP
+            if ((designation != 'Super Admin' && department == 'QUALITY') ||
+                (designation == 'Super Admin'))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child:
+                          tabDashboard('Quality List', AppAssets.quality, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => QualityList()),
+                        (Route<dynamic> route) => false);
+                  })),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: tabDashboard('QUALITY', AppAssets.qualityadd, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => QualityPage()),
                         (Route<dynamic> route) => false);
                   })),
                   SizedBox(
@@ -362,7 +402,10 @@ class _PublicDrawerState extends State<PublicDrawer> {
                                   : (department == 'FQC' &&
                                           designation != 'Super Admin')
                                       ? FqcPage()
-                                      : WelcomePage()));
+                                      : (department == 'QUALITY' &&
+                                              designation != 'Super Admin')
+                                          ? QualityPage()
+                                          : WelcomePage()));
                 },
                 child: Image.asset(
                     home
