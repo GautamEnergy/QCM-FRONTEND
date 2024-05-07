@@ -657,16 +657,14 @@ class _DirectoryState extends State<QualityList> {
                             data.data![index].shift ?? '',
                             data.data![index].modulePicture ?? '',
                             data.data![index].productBarCode ?? '',
-                            data.data![index].modelNumber ?? '',
-                            data.data![index].issueType ?? '',
+                            data.data![index].modelName ?? '',
+                            data.data![index].issue ?? '',
                             data.data![index].stage ?? '',
                             data.data![index].resposiblePerson ?? '',
                             data.data![index].reasonOfIssue ?? '',
                             data.data![index].createdOn ?? '',
-                            data.data![index].createdBy ?? '',
-                            data.data![index].otherIssueType ?? '',
-                            data.data![index].otherModelNumber ?? ''));
-                  } else if ((data.data![index].modelNumber ?? '')
+                            data.data![index].createdBy ?? ''));
+                  } else if ((data.data![index].modelName ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
                       data.data![index].shift!
@@ -679,15 +677,13 @@ class _DirectoryState extends State<QualityList> {
                             data.data![index].shift ?? '',
                             data.data![index].modulePicture ?? '',
                             data.data![index].productBarCode ?? '',
-                            data.data![index].modelNumber ?? '',
-                            data.data![index].issueType ?? '',
+                            data.data![index].modelName ?? '',
+                            data.data![index].issue ?? '',
                             data.data![index].stage ?? '',
                             data.data![index].resposiblePerson ?? '',
                             data.data![index].reasonOfIssue ?? '',
                             data.data![index].createdOn ?? '',
-                            data.data![index].createdBy ?? '',
-                            data.data![index].otherIssueType ?? '',
-                            data.data![index].otherModelNumber ?? ''));
+                            data.data![index].createdBy ?? ''));
                   } else if (data.data![index].stage!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -698,15 +694,13 @@ class _DirectoryState extends State<QualityList> {
                             data.data![index].shift ?? '',
                             data.data![index].modulePicture ?? '',
                             data.data![index].productBarCode ?? '',
-                            data.data![index].modelNumber ?? '',
-                            data.data![index].issueType ?? '',
+                            data.data![index].modelName ?? '',
+                            data.data![index].issue ?? '',
                             data.data![index].stage ?? '',
                             data.data![index].resposiblePerson ?? '',
                             data.data![index].reasonOfIssue ?? '',
                             data.data![index].createdOn ?? '',
-                            data.data![index].createdBy ?? '',
-                            data.data![index].otherIssueType ?? '',
-                            data.data![index].otherModelNumber ?? ''));
+                            data.data![index].createdBy ?? ''));
                   } else if (data.data![index].resposiblePerson!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -717,15 +711,13 @@ class _DirectoryState extends State<QualityList> {
                             data.data![index].shift ?? '',
                             data.data![index].modulePicture ?? '',
                             data.data![index].productBarCode ?? '',
-                            data.data![index].modelNumber ?? '',
-                            data.data![index].issueType ?? '',
+                            data.data![index].modelName ?? '',
+                            data.data![index].issue ?? '',
                             data.data![index].stage ?? '',
                             data.data![index].resposiblePerson ?? '',
                             data.data![index].reasonOfIssue ?? '',
                             data.data![index].createdOn ?? '',
-                            data.data![index].createdBy ?? '',
-                            data.data![index].otherIssueType ?? '',
-                            data.data![index].otherModelNumber ?? ''));
+                            data.data![index].createdBy ?? ''));
                   } else if ((data.data![index].createdBy!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -736,16 +728,14 @@ class _DirectoryState extends State<QualityList> {
                             data.data![index].shift ?? '',
                             data.data![index].modulePicture ?? '',
                             data.data![index].productBarCode ?? '',
-                            data.data![index].modelNumber ?? '',
-                            data.data![index].issueType ?? '',
+                            data.data![index].modelName ?? '',
+                            data.data![index].issue ?? '',
                             data.data![index].stage ?? '',
                             data.data![index].resposiblePerson ?? '',
                             data.data![index].reasonOfIssue ?? '',
                             data.data![index].createdOn ?? '',
-                            data.data![index].createdBy ?? '',
-                            data.data![index].otherIssueType ?? '',
-                            data.data![index].otherModelNumber ?? ''));
-                  } else if (data.data![index].issueType!
+                            data.data![index].createdBy ?? ''));
+                  } else if (data.data![index].issue!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
                     return Container(
@@ -755,15 +745,13 @@ class _DirectoryState extends State<QualityList> {
                             data.data![index].shift ?? '',
                             data.data![index].modulePicture ?? '',
                             data.data![index].productBarCode ?? '',
-                            data.data![index].modelNumber ?? '',
-                            data.data![index].issueType ?? '',
+                            data.data![index].modelName ?? '',
+                            data.data![index].issue ?? '',
                             data.data![index].stage ?? '',
                             data.data![index].resposiblePerson ?? '',
                             data.data![index].reasonOfIssue ?? '',
                             data.data![index].createdOn ?? '',
-                            data.data![index].createdBy ?? '',
-                            data.data![index].otherIssueType ?? '',
-                            data.data![index].otherModelNumber ?? ''));
+                            data.data![index].createdBy ?? ''));
                   } else {
                     return Container();
                   }
@@ -786,9 +774,7 @@ class _DirectoryState extends State<QualityList> {
       String resposiblePerson,
       String reasonOfIssue,
       String createdOn,
-      String createdBy,
-      String otherIssueType,
-      String otherModelNumber) {
+      String createdBy) {
     return InkWell(
       // onTap: () {
       //   // Navigator.of(context).pushAndRemoveUntil(

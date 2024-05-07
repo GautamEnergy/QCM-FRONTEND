@@ -130,6 +130,7 @@ class _AddQualityState extends State<AddQuality> {
   TextEditingController otherissuetypeController = new TextEditingController();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> qualityformKey = GlobalKey<FormState>();
 
   Future<void> _pickPDF() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -230,11 +231,11 @@ class _AddQualityState extends State<AddQuality> {
           _isLoading = false;
           final dataMap = data.asMap();
 
-          shiftinchargeprelimeController.text = dataMap[0]['EmployeeID'] ?? '';
-          shiftinchargepostlimeController.text = dataMap[0]['LoginID'] ?? '';
-          shiftinchargenameController.text = dataMap[0]['Name'] ?? '';
-          shiftController = dataMap[0]['WorkLocation'] ?? '';
-          issuetypeController = dataMap[0]['Department'] ?? '';
+          // shiftinchargeprelimeController.text = dataMap[0]['EmployeeID'] ?? '';
+          // shiftinchargepostlimeController.text = dataMap[0]['LoginID'] ?? '';
+          // shiftinchargenameController.text = dataMap[0]['Name'] ?? '';
+          // shiftController = dataMap[0]['WorkLocation'] ?? '';
+          // issuetypeController = dataMap[0]['Department'] ?? '';
           //   modelNumberController = dataMap[0]['Desgination'] ?? '';
           //   profilepicture = dataMap[0]['ProfileImg'] ?? '';
         }
@@ -377,7 +378,7 @@ class _AddQualityState extends State<AddQuality> {
       readOnly: false,
       style: AppStyles.textInputTextStyle,
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Please Scan Product Barcode.';
         }
         return null;
@@ -554,6 +555,7 @@ class _AddQualityState extends State<AddQuality> {
       readOnly: false,
       validator: (value) {
         if (value!.isEmpty) {
+          print("hiiiiiiiiii");
           return 'Please enter action taken for this issue';
         }
         return null;
@@ -577,7 +579,10 @@ class _AddQualityState extends State<AddQuality> {
         var issueBody = jsonDecode(response.body);
         setState(() {
           issueList = issueBody['Issues'];
-          issueList.add({"IssueId": "Other", "Issue": "Other"});
+          issueList.add({
+            "IssueId": "9f00c67d-0b99-11ef-8005-52549f6cc694",
+            "Issue": "Other"
+          });
         });
       }
     });
@@ -600,7 +605,10 @@ class _AddQualityState extends State<AddQuality> {
         var modelNumberBody = jsonDecode(response.body);
         setState(() {
           modelNumberList = modelNumberBody['Models'];
-          modelNumberList.add({"ModelId": "Other", "ModelName": "Other"});
+          modelNumberList.add({
+            "ModelId": "8634275c-0b99-11ef-8005-52549f6cc694",
+            "ModelName": "Other"
+          });
         });
       }
     });
@@ -672,6 +680,7 @@ class _AddQualityState extends State<AddQuality> {
       onChanged: (val) {
         setState(() {
           issuetypeController = val!;
+          print("hiiiiiiiiii");
         });
       },
       value: issuetypeController != '' ? issuetypeController : null,
@@ -698,14 +707,12 @@ class _AddQualityState extends State<AddQuality> {
                 value: label['ModelId'].toString(),
               ))
           .toList(),
-      onChanged:
-          widget.id != '' && widget.id != null && designation != "Super Admin"
-              ? null
-              : (val) {
-                  setState(() {
-                    modelNumberController = val!;
-                  });
-                },
+      onChanged: (val) {
+        setState(() {
+          modelNumberController = val!;
+          print("hiiiiiiiiii");
+        });
+      },
       value: modelNumberController != '' ? modelNumberController : null,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -736,9 +743,12 @@ class _AddQualityState extends State<AddQuality> {
     setState(() {
       _isLoading = true;
     });
+    print("whyyyyyyyyyyyyyyyyyyyy");
+
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
-
+    print("Howwwwwwwwwwwwwwwwwwwww");
+    print(site);
     final url = (site! + 'Quality/AddQuality'); // Prod
 
     final response = await http.post(
@@ -853,7 +863,7 @@ class _AddQualityState extends State<AddQuality> {
   Widget _user() {
     return Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: formKey,
+        key: qualityformKey,
         child: ListView(
           children: [
             // Padding(padding: EdgeInsets.only(top: 10)),
@@ -962,19 +972,21 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(
               height: 5,
             ),
-
             textModelNumber(),
             const SizedBox(
               height: 15,
             ),
-            if (modelNumberController == "Other")
+            if (modelNumberController == "8634275c-0b99-11ef-8005-52549f6cc694")
               Text(
                 "Other Model Number*",
                 style: AppStyles.textfieldCaptionTextStyle,
               ),
-            if (modelNumberController == "Other") const SizedBox(height: 5),
-            if (modelNumberController == "Other") textOtherModelNumber(),
-            if (modelNumberController == "Other") const SizedBox(height: 15),
+            if (modelNumberController == "8634275c-0b99-11ef-8005-52549f6cc694")
+              const SizedBox(height: 5),
+            if (modelNumberController == "8634275c-0b99-11ef-8005-52549f6cc694")
+              textOtherModelNumber(),
+            if (modelNumberController == "8634275c-0b99-11ef-8005-52549f6cc694")
+              const SizedBox(height: 15),
             Text(
               "Issue Type*",
               style: AppStyles.textfieldCaptionTextStyle,
@@ -986,17 +998,18 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(
               height: 15,
             ),
-            if (issuetypeController == "Other")
+            if (issuetypeController == "9f00c67d-0b99-11ef-8005-52549f6cc694")
               Text(
                 "Other Issue Type*",
                 style: AppStyles.textfieldCaptionTextStyle,
               ),
-            if (issuetypeController == "Other")
+            if (issuetypeController == "9f00c67d-0b99-11ef-8005-52549f6cc694")
               const SizedBox(
                 height: 5,
               ),
-            if (issuetypeController == "Other") textOtherIssueType(),
-            if (issuetypeController == "Other")
+            if (issuetypeController == "9f00c67d-0b99-11ef-8005-52549f6cc694")
+              textOtherIssueType(),
+            if (issuetypeController == "9f00c67d-0b99-11ef-8005-52549f6cc694")
               const SizedBox(
                 height: 15,
               ),
@@ -1091,9 +1104,9 @@ class _AddQualityState extends State<AddQuality> {
                   fontSize: 16),
               onTap: () async {
                 print("personlogoBytes ??????");
-                print(personlogoBytes);
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
+                print(_imageBytes);
+                if (qualityformKey.currentState!.validate()) {
+                  qualityformKey.currentState!.save();
                   if (_imageBytes != "" && _imageBytes != null) {
                     createData(
                       shiftController ?? "",

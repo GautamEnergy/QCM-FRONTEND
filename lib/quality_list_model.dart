@@ -37,21 +37,17 @@ class UserData {
   String? shiftInChargePreLime;
   String? shiftInChargePostLim;
   String? productBarCode;
+  String? createdOn;
+  String? createdBy;
   String? wattage;
-  String? modelNumber;
-  String? issueType;
   String? stage;
   String? resposiblePerson;
   String? reasonOfIssue;
   String? issueComeFrom;
   String? actionTaken;
-  String? createdBy;
-  Null? updatedBy;
-  String? createdOn;
-  Null? updatedOn;
   String? modulePicture;
-  String? otherIssueType;
-  String? otherModelNumber;
+  String? issue;
+  String? modelName;
 
   UserData(
       {this.qualityId,
@@ -60,21 +56,17 @@ class UserData {
       this.shiftInChargePreLime,
       this.shiftInChargePostLim,
       this.productBarCode,
+      this.createdOn,
+      this.createdBy,
       this.wattage,
-      this.modelNumber,
-      this.issueType,
       this.stage,
       this.resposiblePerson,
       this.reasonOfIssue,
       this.issueComeFrom,
       this.actionTaken,
-      this.createdBy,
-      this.updatedBy,
-      this.createdOn,
-      this.updatedOn,
       this.modulePicture,
-      this.otherIssueType,
-      this.otherModelNumber});
+      this.issue,
+      this.modelName});
 
   UserData.fromJson(Map<String, dynamic> json) {
     qualityId = json['QualityId'];
@@ -83,21 +75,17 @@ class UserData {
     shiftInChargePreLime = json['ShiftInChargePreLime'];
     shiftInChargePostLim = json['ShiftInChargePostLim'];
     productBarCode = json['ProductBarCode'];
+    createdOn = json['CreatedOn'];
+    createdBy = json['CreatedBy'];
     wattage = json['Wattage'];
-    modelNumber = json['ModelNumber'];
-    issueType = json['IssueType'];
     stage = json['Stage'];
     resposiblePerson = json['ResposiblePerson'];
     reasonOfIssue = json['ReasonOfIssue'];
     issueComeFrom = json['IssueComeFrom'];
     actionTaken = json['ActionTaken'];
-    createdBy = json['CreatedBy'];
-    updatedBy = json['UpdatedBy'];
-    createdOn = json['CreatedOn'];
-    updatedOn = json['UpdatedOn'];
     modulePicture = json['ModulePicture'];
-    otherIssueType = json['OtherIssueType'];
-    otherModelNumber = json['OtherModelNumber'];
+    issue = json['Issue'];
+    modelName = json['ModelName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -108,21 +96,17 @@ class UserData {
     data['ShiftInChargePreLime'] = this.shiftInChargePreLime;
     data['ShiftInChargePostLim'] = this.shiftInChargePostLim;
     data['ProductBarCode'] = this.productBarCode;
+    data['CreatedOn'] = this.createdOn;
+    data['CreatedBy'] = this.createdBy;
     data['Wattage'] = this.wattage;
-    data['ModelNumber'] = this.modelNumber;
-    data['IssueType'] = this.issueType;
     data['Stage'] = this.stage;
     data['ResposiblePerson'] = this.resposiblePerson;
     data['ReasonOfIssue'] = this.reasonOfIssue;
     data['IssueComeFrom'] = this.issueComeFrom;
     data['ActionTaken'] = this.actionTaken;
-    data['CreatedBy'] = this.createdBy;
-    data['UpdatedBy'] = this.updatedBy;
-    data['CreatedOn'] = this.createdOn;
-    data['UpdatedOn'] = this.updatedOn;
     data['ModulePicture'] = this.modulePicture;
-    data['OtherIssueType'] = this.otherIssueType;
-    data['OtherModelNumber'] = this.otherModelNumber;
+    data['Issue'] = this.issue;
+    data['ModelName'] = this.modelName;
     return data;
   }
 }
