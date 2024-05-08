@@ -6,6 +6,7 @@ import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/QualityList.dart';
 import 'package:QCM/QualityPage.dart';
+import 'package:QCM/QualityReport.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/attendance.dart';
 import 'package:QCM/components/appbar.dart';
@@ -335,17 +336,19 @@ class _PublicDrawerState extends State<PublicDrawer> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // SizedBox(
-                //   width: 10,
-                // ),
-                // Expanded(
-                //     child: tabDashboard(
-                //         'Daily Attendance', AppAssets.imgAttendanceList, () {
-                //   Navigator.of(context).pushAndRemoveUntil(
-                //       MaterialPageRoute(
-                //           builder: (BuildContext context) => InOut()),
-                //       (Route<dynamic> route) => false);
-                // })),
+                if (designation == 'Super Admin')
+                  SizedBox(
+                    width: 10,
+                  ),
+                if (designation == 'Super Admin')
+                  Expanded(
+                      child: tabDashboard(
+                          'Quality Reports', AppAssets.imgReportIcon, () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => QualityReport()),
+                        (Route<dynamic> route) => false);
+                  })),
                 SizedBox(
                   width: 10,
                 ),

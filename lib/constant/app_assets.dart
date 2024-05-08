@@ -15,6 +15,8 @@ class AppAssets {
   static String icHomeUnSelected = 'assets/icons/ic_home_unselected.png';
   static String imgLogo = 'assets/images/galo_logo.png';
   static String imgAttendanceList = 'assets/icons/papers.png';
+  static String imgReport = 'assets/icons/report.jpg';
+  static String imgReportIcon = 'assets/icons/reporticon.png';
   static String framemeasurement = 'assets/icons/framemeasure.png';
   static String imgSalaryReport = 'assets/icons/frame.png';
   static String sealantmeasurement = 'assets/icons/sealant.png';
