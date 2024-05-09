@@ -17,6 +17,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_strings.dart';
 import 'package:QCM/constant/app_styles.dart';
+import 'package:QCM/directory.dart';
 import 'package:QCM/main.dart';
 import 'package:QCM/quality_list_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -362,12 +363,14 @@ class _DirectoryState extends State<QualityList> {
                         width: 8,
                       ),
                       InkWell(
-                          // onTap: () {
-                          //   Navigator.of(context).pushReplacement(
-                          //       MaterialPageRoute(
-                          //           builder: (BuildContext context) =>
-                          //               EmployeeList()));
-                          // },
+                          onTap: () {
+                            if (designation == 'Super Admin') {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          EmployeeList()));
+                            }
+                          },
                           child: Image.asset(
                               user
                                   ? AppAssets.imgSelectedPerson

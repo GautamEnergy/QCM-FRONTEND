@@ -375,7 +375,26 @@ class _PublicDrawerState extends State<PublicDrawer> {
                 ),
               ],
             ),
-            SizedBox(
+
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: const Text(
+                ('DEV'),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+              ),
+            ),
+            Container(
+                alignment: Alignment.center,
+                child: const Text(
+                  ('V1.0.20240509.1440'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                )),
+            const SizedBox(
               height: 10,
             ),
           ],
@@ -420,8 +439,10 @@ class _PublicDrawerState extends State<PublicDrawer> {
             ),
             InkWell(
                 onTap: () {
-                  // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  //     builder: (BuildContext context) => EmployeeList()));
+                  if (designation == 'Super Admin') {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => EmployeeList()));
+                  }
                 },
                 child: Image.asset(
                     user ? AppAssets.imgSelectedPerson : AppAssets.imgPerson,

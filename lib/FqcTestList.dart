@@ -21,6 +21,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/Fqc_list_model.dart';
+import 'package:QCM/directory.dart';
 import 'package:intl/intl.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -246,10 +247,12 @@ class _FqcTestListState extends State<FqcTestList> {
                       ),
                       InkWell(
                           onTap: () {
-                            // Navigator.of(context).pushReplacement(
-                            //     MaterialPageRoute(
-                            //         builder: (BuildContext context) =>
-                            //             EmployeeList()));
+                            if (designation == 'Super Admin') {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          EmployeeList()));
+                            }
                           },
                           child: Image.asset(
                               user
