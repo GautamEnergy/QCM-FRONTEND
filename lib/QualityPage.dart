@@ -23,7 +23,7 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
-import 'package:QCM/dynamicfield.dart';
+
 import 'package:QCM/salaryreports.dart';
 import 'package:flutter/material.dart';
 
@@ -291,61 +291,61 @@ class _QualityPageState extends State<QualityPage> {
             ]));
   }
 
-  Item? selectedUser;
-  List<Item> users = <Item>[
-    const Item('1-2-1', "images/drawer-p2p.png"),
-    const Item('Referral', "images/drawer-referral.png"),
-    const Item('TYN', "images/drawer-tyn.png"),
-    const Item('Testimonial', "images/drawer-testimonials.png"),
-    const Item('Visitor', "images/drawer-visitors.png"),
-  ];
+  // Item? selectedUser;
+  // List<Item> users = <Item>[
+  //   const Item('1-2-1', "images/drawer-p2p.png"),
+  //   const Item('Referral', "images/drawer-referral.png"),
+  //   const Item('TYN', "images/drawer-tyn.png"),
+  //   const Item('Testimonial', "images/drawer-testimonials.png"),
+  //   const Item('Visitor', "images/drawer-visitors.png"),
+  // ];
 
-  Item1? selectedUser1;
-  List<Item1> users1 = <Item1>[
-    const Item1('Meeting', "images/drawer-add-meeting.png"),
-    const Item1('Training', "images/drawer-training.png"),
-  ];
+  // Item1? selectedUser1;
+  // List<Item1> users1 = <Item1>[
+  //   const Item1('Meeting', "images/drawer-add-meeting.png"),
+  //   const Item1('Training', "images/drawer-training.png"),
+  // ];
 
-  Item2? selectedUser2;
-  List<Item2> users2 = <Item2>[
-    const Item2('Activity', "images/drawer-referral.png"),
-    const Item2('1-2-1', "images/drawer-p2p.png"),
-    const Item2('Referral', "images/drawer-referral.png"),
-    const Item2('TYN', "images/drawer-tyn.png"),
-    const Item2('Attendance', 'icons/attendance.png'),
-  ];
-  Item3? selectedUser3;
-  List<Item3> users3 = <Item3>[
-    const Item3('TYN', "images/drawer-tyn.png"),
-    const Item3('Referral', "images/drawer-referral.png"),
-    const Item3('1-2-1', "images/drawer-p2p.png"),
-    const Item3('Overall', "images/drawer-visitors.png"),
-  ];
+  // Item2? selectedUser2;
+  // List<Item2> users2 = <Item2>[
+  //   const Item2('Activity', "images/drawer-referral.png"),
+  //   const Item2('1-2-1', "images/drawer-p2p.png"),
+  //   const Item2('Referral', "images/drawer-referral.png"),
+  //   const Item2('TYN', "images/drawer-tyn.png"),
+  //   const Item2('Attendance', 'icons/attendance.png'),
+  // ];
+  // Item3? selectedUser3;
+  // List<Item3> users3 = <Item3>[
+  //   const Item3('TYN', "images/drawer-tyn.png"),
+  //   const Item3('Referral', "images/drawer-referral.png"),
+  //   const Item3('1-2-1', "images/drawer-p2p.png"),
+  //   const Item3('Overall', "images/drawer-visitors.png"),
+  // ];
 }
 
-class Item {
-  const Item(this.name, this.path);
-  final String name;
-  final String path;
-}
+// class Item {
+//   const Item(this.name, this.path);
+//   final String name;
+//   final String path;
+// }
 
-class Item1 {
-  const Item1(this.name, this.path);
-  final String name;
-  final String path;
-}
+// class Item1 {
+//   const Item1(this.name, this.path);
+//   final String name;
+//   final String path;
+// }
 
-class Item2 {
-  const Item2(this.name, this.path);
-  final String name;
-  final String path;
-}
+// class Item2 {
+//   const Item2(this.name, this.path);
+//   final String name;
+//   final String path;
+// }
 
-class Item3 {
-  const Item3(this.name, this.path);
-  final String name;
-  final String path;
-}
+// class Item3 {
+//   const Item3(this.name, this.path);
+//   final String name;
+//   final String path;
+// }
 
 Widget tabDashboard(String title, String img, final Function onPressed) {
   return InkWell(

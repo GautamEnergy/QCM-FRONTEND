@@ -18,7 +18,6 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
-import 'package:QCM/dynamicfield.dart';
 import 'package:QCM/ipqcTestList.dart';
 import 'package:QCM/salaryreports.dart';
 import 'package:flutter/material.dart';
