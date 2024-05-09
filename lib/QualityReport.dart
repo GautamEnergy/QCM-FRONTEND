@@ -58,6 +58,12 @@ class _QualityReportState extends State<QualityReport> {
   final _dio = Dio();
   // Response? _response;
   Response.Response? _response;
+  int? FromDateYear,
+      ToDateYear,
+      FromDateMonth,
+      ToDateMonth,
+      FromDateDay,
+      ToDateDay;
   String? fromdate,
       todate,
       _errorMessage,
@@ -319,6 +325,9 @@ class _QualityReportState extends State<QualityReport> {
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2024),
                       lastDate: DateTime.now()))!;
+                  FromDateYear = date.year;
+                  FromDateMonth = date.month;
+                  FromDateDay = date.day;
                   fromdateController.text = DateFormat("EEE MMM dd, yyyy")
                       .format(DateTime.parse(date.toString()));
                   setState(() {
@@ -358,6 +367,9 @@ class _QualityReportState extends State<QualityReport> {
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2024),
                       lastDate: DateTime.now()))!;
+                  ToDateYear = date.year;
+                  ToDateMonth = date.month;
+                  ToDateDay = date.day;
                   todateController.text = DateFormat("EEE MMM dd, yyyy")
                       .format(DateTime.parse(date.toString()));
                   setState(() {
@@ -381,7 +393,31 @@ class _QualityReportState extends State<QualityReport> {
                 if (qualityformKey.currentState!.validate()) {
                   qualityformKey.currentState!.save();
 
-                  createData();
+                  var now = DateTime.now();
+                  var formatter = new DateFormat('yyyy-MM-dd');
+                  var Today = formatter.format(now);
+
+                  if (FromDateYear! > ToDateYear!) {
+                    Toast.show("Invalid Date Range.",
+                        duration: Toast.lengthLong,
+                        gravity: Toast.center,
+                        backgroundColor: Colors.red);
+                  } else if (FromDateYear == ToDateYear &&
+                      FromDateMonth! > ToDateMonth!) {
+                    Toast.show("Invalid Date Range.",
+                        duration: Toast.lengthLong,
+                        gravity: Toast.center,
+                        backgroundColor: Colors.red);
+                  } else if (FromDateYear == ToDateYear &&
+                      FromDateMonth == ToDateMonth &&
+                      FromDateDay! > ToDateDay!) {
+                    Toast.show("Invalid Date Range.",
+                        duration: Toast.lengthLong,
+                        gravity: Toast.center,
+                        backgroundColor: Colors.red);
+                  } else {
+                    createData();
+                  }
                 }
               },
               label: "Generate",

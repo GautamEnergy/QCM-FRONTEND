@@ -901,7 +901,7 @@ class _DirectoryState extends State<QualityList> {
                         ]),
 
                         //Occupication
-                        Text(stage,
+                        Text(issueType,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -909,7 +909,7 @@ class _DirectoryState extends State<QualityList> {
 
                         Row(children: <Widget>[
                           Flexible(
-                            child: Text(createdBy,
+                            child: Text("Found By: $createdBy",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontFamily: appFontFamily,
@@ -924,7 +924,7 @@ class _DirectoryState extends State<QualityList> {
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(
-                                  255, 0, 0, 0), // Background color
+                                  255, 3, 96, 150), // Background color
                               borderRadius: BorderRadius.circular(
                                   10), // Optional: Add border radius for rounded corners
                             ),

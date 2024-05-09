@@ -116,7 +116,7 @@ class _AddQualityState extends State<AddQuality> {
       new TextEditingController();
   TextEditingController shiftinchargepostlimeController =
       new TextEditingController();
-  TextEditingController shiftinchargenameController = TextEditingController();
+
   TextEditingController productBarcodeController = new TextEditingController();
   TextEditingController wattageController = new TextEditingController();
   TextEditingController othermodelnumberController =
@@ -233,7 +233,7 @@ class _AddQualityState extends State<AddQuality> {
 
           // shiftinchargeprelimeController.text = dataMap[0]['EmployeeID'] ?? '';
           // shiftinchargepostlimeController.text = dataMap[0]['LoginID'] ?? '';
-          // shiftinchargenameController.text = dataMap[0]['Name'] ?? '';
+
           // shiftController = dataMap[0]['WorkLocation'] ?? '';
           // issuetypeController = dataMap[0]['Department'] ?? '';
           //   modelNumberController = dataMap[0]['Desgination'] ?? '';
@@ -323,28 +323,6 @@ class _AddQualityState extends State<AddQuality> {
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter shift incharge postlime';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField textShiftInchargeName() {
-    return TextFormField(
-      controller: shiftinchargenameController,
-      minLines: 1,
-      maxLines: null,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.next,
-      decoration: AppStyles.textFieldInputDecoration.copyWith(
-          hintText: "Please Enter Shift Incharge Name",
-          counterText: '',
-          contentPadding: EdgeInsets.all(10)),
-      style: AppStyles.textInputTextStyle,
-      readOnly: false,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter shift incharge name';
         }
         return null;
       },
@@ -725,7 +703,6 @@ class _AddQualityState extends State<AddQuality> {
 
   Future createData(
     String shift,
-    String shiftinchargename,
     String shiftinchargeprelime,
     String shiftinchargepostlime,
     String productBarcode,
@@ -756,7 +733,7 @@ class _AddQualityState extends State<AddQuality> {
       body: jsonEncode(<String, String>{
         "currentuser": personid ?? '',
         "shift": shift,
-        "shiftinchargename": shiftinchargename,
+        "shiftinchargename": "",
         "shiftinchargeprelime": shiftinchargeprelime,
         "shiftinchargepostlime": shiftinchargepostlime,
         "productBarcode": productBarcode,
@@ -918,15 +895,9 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(
               height: 15,
             ),
+
             Text(
-              "Shift Incharge Name*",
-              style: AppStyles.textfieldCaptionTextStyle,
-            ),
-            const SizedBox(height: 5),
-            textShiftInchargeName(),
-            const SizedBox(height: 15),
-            Text(
-              "Shift Incharge Prelime*",
+              "Shift Incharge Name Prelime*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(
@@ -938,7 +909,7 @@ class _AddQualityState extends State<AddQuality> {
             ),
 
             Text(
-              "Shift Incharge Postlime*",
+              "Shift Incharge Name Postlime*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(
@@ -1110,7 +1081,6 @@ class _AddQualityState extends State<AddQuality> {
                   if (_imageBytes != "" && _imageBytes != null) {
                     createData(
                       shiftController ?? "",
-                      shiftinchargenameController.text,
                       shiftinchargeprelimeController.text,
                       shiftinchargepostlimeController.text,
                       productBarcodeController.text,
