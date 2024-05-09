@@ -12,7 +12,6 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
-import 'package:QCM/dynamicfield.dart';
 import 'package:QCM/framing.dart';
 import 'package:QCM/ipqcSelant.dart';
 import 'package:QCM/machineCard.dart';
