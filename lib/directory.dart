@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
@@ -775,34 +776,83 @@ class _DirectoryState extends State<EmployeeList> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Container(
-                        child: Material(
-                      shape: const CircleBorder(),
-                      clipBehavior: Clip.hardEdge,
-                      color: Colors.transparent,
-                      child: CachedNetworkImage(
-                        imageUrl: profilepic,
-                        height: 60,
-                        width: 60,
-                        placeholder: (context, url) {
-                          return ClipOval(
-                            child: Image.asset(
-                              AppAssets.profilePlaceholder,
-                              height: 60,
-                              width: 60,
-                            ),
-                          );
-                        },
-                        errorWidget: (context, url, error) {
-                          return ClipOval(
-                            child: Image.asset(
-                              AppAssets.profilePlaceholder,
-                              height: 60,
-                              width: 60,
-                            ),
-                          );
-                        },
+                      child: Material(
+                        shape: const CircleBorder(),
+                        clipBehavior: Clip.hardEdge,
+                        color: Colors.transparent,
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                  child: Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    elevation: 0,
+                                    backgroundColor:
+                                        Color.fromARGB(0, 232, 131, 8),
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0),
+                                            topRight: Radius.circular(25.0),
+                                            bottomLeft: Radius.circular(25.0),
+                                          )),
+                                      child: CachedNetworkImage(
+                                        width: 430,
+                                        height: 400,
+                                        imageUrl: (profilepic),
+                                        errorWidget: (context, url, error) {
+                                          return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: Image.asset(
+                                                AppAssets.profilePlaceholder,
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                              ));
+                                        },
+                                        // placeholder: 'cupertinoActivityIndicator',
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: CachedNetworkImage(
+                            imageUrl: profilepic,
+                            height: 60,
+                            width: 60,
+                            placeholder: (context, url) {
+                              return ClipOval(
+                                child: Image.asset(
+                                  AppAssets.profilePlaceholder,
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              );
+                            },
+                            errorWidget: (context, url, error) {
+                              return ClipOval(
+                                child: Image.asset(
+                                  AppAssets.profilePlaceholder,
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    )),
+                    ),
                   ),
                   Container(
                     child: Expanded(
