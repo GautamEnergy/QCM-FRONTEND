@@ -1,42 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:QCM/CommonDrawer.dart';
-import 'package:QCM/Fqc.dart';
-import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Iqcp.dart';
-import 'package:QCM/QualityList.dart';
-import 'package:QCM/QualityPage.dart';
-import 'package:QCM/Welcomepage.dart';
-import 'package:QCM/components/app_loader.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/src/response.dart' as Response;
 import 'package:QCM/components/app_button_widget.dart';
-import 'package:QCM/dialogs/city_list_model.dart';
-import 'package:QCM/dialogs/dialog_role_city.dart';
-import 'package:QCM/dialogs/dialog_role_state.dart';
-import 'package:QCM/dialogs/state_list_model.dart';
-import 'package:QCM/directory.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'components/appbar.dart';
 import 'constant/app_assets.dart';
 import 'constant/app_color.dart';
 import 'constant/app_fonts.dart';
-import 'constant/app_strings.dart';
 import 'constant/app_styles.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
@@ -209,12 +189,10 @@ class _QualityReportState extends State<QualityReport> {
     setState(() {
       _isLoading = true;
     });
-    print("whyyyyyyyyyyyyyyyyyyyy");
 
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
-    print("Howwwwwwwwwwwwwwwwwwwww");
-    print(site);
+
     final url = (site! + 'Quality/GetQualityReportExcel'); // Prod
 
     final response = await http.post(
@@ -233,8 +211,6 @@ class _QualityReportState extends State<QualityReport> {
     print(response.body);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
-      print(data);
-      print(data['URL']);
 
       setState(() {
         excelReport = data['URL'];
