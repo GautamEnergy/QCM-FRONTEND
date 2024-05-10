@@ -17,7 +17,6 @@ import '../constant/app_assets.dart';
 
 class MachineCard extends StatefulWidget {
   MachineCard({Key? key}) : super(key: key);
-
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
