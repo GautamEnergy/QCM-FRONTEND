@@ -3,7 +3,6 @@ import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
-import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
@@ -117,8 +116,7 @@ class _WelcomePageState extends State<StringersCard> {
             SizedBox(
               height: 10,
             ),
-// ---------------------------------------------   Start the stringer's ------------------------------
-            // 001
+            // ----------   Start the stringer's -----------------
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,9 +142,6 @@ class _WelcomePageState extends State<StringersCard> {
             SizedBox(
               height: 10,
             ),
-
-            // 002
-
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,9 +161,6 @@ class _WelcomePageState extends State<StringersCard> {
                 ),
               ],
             ),
-
-            // 003
-
             SizedBox(
               height: 10,
             ),
@@ -414,12 +406,6 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
                           AppAssets.icEllipse,
                         ),
                         fit: BoxFit.fill)),
-                // child: Image.asset(
-                //   AppAssets.icEllipse,
-                //   fit: BoxFit.fill,
-                //   height: 50,
-                //   width: 155,
-                // ),
               )),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -445,7 +431,6 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
                         img,
                         height: 36,
                         width: 36,
-                        //fit: BoxFit.cover,
                       )))
             ],
           )

@@ -3,7 +3,6 @@ import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
-import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/busBar.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_color.dart';
@@ -13,11 +12,6 @@ import 'package:QCM/directory.dart';
 import 'package:QCM/solderingPeel.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:QCM/stringer1.dart';
-
-// import '../BoxCricket.dart';
-
 import '../constant/app_assets.dart';
 
 class TestingCard extends StatefulWidget {
@@ -120,7 +114,7 @@ class _WelcomePageState extends State<TestingCard> {
             SizedBox(
               height: 10,
             ),
-// ---------------------------------------------   Start the Testing ------------------------------
+            // ---------   Start the Testing ------------------
             // 001
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -147,9 +141,6 @@ class _WelcomePageState extends State<TestingCard> {
             SizedBox(
               height: 10,
             ),
-
-            // 002
-
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,39 +160,6 @@ class _WelcomePageState extends State<TestingCard> {
                 ),
               ],
             ),
-
-            // 003
-
-            SizedBox(
-              height: 10,
-            ),
-
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Expanded(
-            //         child: tabDashboard('Soldering Iron', AppAssets.iron, () {
-            //       // Navigator.of(context).pushAndRemoveUntil(
-            //       //     MaterialPageRoute(
-            //       //         builder: (BuildContext context) => filename()),
-            //       //     (Route<dynamic> route) => false);
-            //     })),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-
             SizedBox(
               height: 10,
             ),
@@ -417,12 +375,6 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
                           AppAssets.icEllipse,
                         ),
                         fit: BoxFit.fill)),
-                // child: Image.asset(
-                //   AppAssets.icEllipse,
-                //   fit: BoxFit.fill,
-                //   height: 50,
-                //   width: 155,
-                // ),
               )),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -448,7 +400,6 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
                         img,
                         height: 36,
                         width: 36,
-                        //fit: BoxFit.cover,
                       )))
             ],
           )

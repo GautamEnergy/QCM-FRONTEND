@@ -1,10 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Iqcp.dart';
-import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/ipqcTestList.dart';
@@ -35,25 +31,11 @@ class PreCard extends StatefulWidget {
 
 class _PreCardState extends State<PreCard> {
   final _preLamFormKey = GlobalKey<FormState>();
-  // final _glassSideFormKey = GlobalKey<FormState>();
-  // final _temperatureFormKey = GlobalKey<FormState>();
-  // final _cellCuttingFormKey = GlobalKey<FormState>();
-  // final _cellLoadingFormKey = GlobalKey<FormState>();
-  // final _tabberFormKey = GlobalKey<FormState>();
-  // final _autoStringFormKey = GlobalKey<FormState>();
-  // final _autoBussingFormKey = GlobalKey<FormState>();
-  // final _evaFormKey = GlobalKey<FormState>();
-  // final _preLaminatorFormKey = GlobalKey<FormState>();
-  // final _stringFormKey = GlobalKey<FormState>();
-  // final _pmoduleFormKey = GlobalKey<FormState>();
-  // final _laminatorFormKey = GlobalKey<FormState>();
-
   TextEditingController DayController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
   TextEditingController lineController = TextEditingController();
   TextEditingController PoController = TextEditingController();
   //1. Glass Loader
-  // final _registerFormKey = GlobalKey<FormState>();
   TextEditingController GlassLoaderFreqquency1Controller =
       TextEditingController();
   TextEditingController GlassLoaderGlassDimensionController =
@@ -67,7 +49,6 @@ class _PreCardState extends State<PreCard> {
   TextEditingController GlassLoaderCriteria2Controller =
       TextEditingController();
   TextEditingController GlassLoaderRemarkController = TextEditingController();
-
   //2.  Glass side EVA cutting machine
   TextEditingController GlassEVAFrequency1Controller = TextEditingController();
   TextEditingController GlassEVADimensionController = TextEditingController();
@@ -88,7 +69,6 @@ class _PreCardState extends State<PreCard> {
   TextEditingController GlasAvabilityCriteriaController =
       TextEditingController();
   TextEditingController GlasSideRemarkController = TextEditingController();
-
   //3. Temperature & Relative humidity(%RH) monitoring
   TextEditingController TempShopFrequencyController = TextEditingController();
   TextEditingController TempShopFloorController = TextEditingController();
@@ -100,7 +80,6 @@ class _PreCardState extends State<PreCard> {
   TextEditingController TempRelativeCriteriaController =
       TextEditingController();
   TextEditingController TemperatureRemarkController = TextEditingController();
-
   //4. Cell Cutting Machine
   TextEditingController CellSizeFrequencyController = TextEditingController();
   TextEditingController CellSizelengthController = TextEditingController();
@@ -120,7 +99,6 @@ class _PreCardState extends State<PreCard> {
   TextEditingController CellAvabilityofCriteriaController =
       TextEditingController();
   TextEditingController CellCuttingRemarkController = TextEditingController();
-
   //5. Cell Loading
   TextEditingController CellLoadingcellFrequencyController =
       TextEditingController();
@@ -151,7 +129,6 @@ class _PreCardState extends State<PreCard> {
       TextEditingController();
   TextEditingController CellLoadingVerificationCriteriaController =
       TextEditingController();
-
   // ** Entert the number of the Stringer ****
   TextEditingController CellLoadingStringFrequencyController =
       TextEditingController();
@@ -162,43 +139,34 @@ class _PreCardState extends State<PreCard> {
   TextEditingController cellLoaderStringCriteriaController =
       TextEditingController();
   TextEditingController cellLoaderRemarkController = TextEditingController();
-
   //6. Tabber & Stringer
   TextEditingController TabberVisualFrequencyController =
       TextEditingController();
   TextEditingController TabberVisualnumberOfStringersController =
       TextEditingController();
   List<TextEditingController> TabberVisualStringerControllers = [];
-  // TextEditingController TabberVisualCheckController = TextEditingController();
   TextEditingController TabberVisualCriteriaController =
       TextEditingController();
-
   TextEditingController TabberEIimageFrequencyController =
       TextEditingController();
   TextEditingController tabberEIimagenumberOfStringersController =
       TextEditingController();
   List<TextEditingController> TabberEIimageofStringerControllers = [];
-  // TextEditingController TabberEIimageCheckController = TextEditingController();
   TextEditingController TabberEIimageCriteriaController =
       TextEditingController();
-
   TextEditingController TabberVerificationFrequencyController =
       TextEditingController();
   TextEditingController TabberVerificationNumberofstringController =
       TextEditingController();
   List<TextEditingController> TabberVerificationofsilderingControllers = [];
-  // TextEditingController TabberVerificationCheckController =
-  //     TextEditingController();
   TextEditingController TabberVerificationCriteriaController =
       TextEditingController();
-
   TextEditingController TabberAvaibilityFrequencyController =
       TextEditingController();
   TextEditingController TabberAvabilityofSpecificationController =
       TextEditingController();
   TextEditingController TabberAvabilityofCriteriaController =
       TextEditingController();
-
   //-- reamrk for the Tabber
   TextEditingController TabberstringerRemarkController =
       TextEditingController();
@@ -207,20 +175,15 @@ class _PreCardState extends State<PreCard> {
   TextEditingController AutoCellFrequencyController = TextEditingController();
   TextEditingController AutoCellController = TextEditingController();
   TextEditingController AutoCellCriteriaController = TextEditingController();
-  // TextEditingController AutoTimeController = TextEditingController();
-
   TextEditingController AutoStringFrequencyController = TextEditingController();
   TextEditingController AutoStringController = TextEditingController();
   TextEditingController AutoStringCriteriaController = TextEditingController();
-
   TextEditingController AutoCelledgeFrequencyController =
       TextEditingController();
   TextEditingController AutoCelledController = TextEditingController();
   TextEditingController AutoCellEdgeCriteriaController =
       TextEditingController();
-
   TextEditingController AutoStringerRemarkController = TextEditingController();
-
   //8. Auto Bussing & Tapping
   TextEditingController AutoSolderingFrequencyController =
       TextEditingController();
@@ -269,7 +232,6 @@ class _PreCardState extends State<PreCard> {
       TextEditingController();
 
   TextEditingController AutoBussingRemarkController = TextEditingController();
-
   // 9. EVA/Backsheet Cutting
   TextEditingController EVARearFrequencyController = TextEditingController();
   TextEditingController EVARearController = TextEditingController();
@@ -302,8 +264,6 @@ class _PreCardState extends State<PreCard> {
   TextEditingController PreLaminationEInumberOfStringersController =
       TextEditingController();
   List<TextEditingController> PreLaminationEIinspectionrControllers = [];
-  // TextEditingController PreLaminationEIinspectionController =
-  //     TextEditingController();
   TextEditingController PreLaminationEIinspectionCriteriaController =
       TextEditingController();
 
@@ -312,8 +272,6 @@ class _PreCardState extends State<PreCard> {
   TextEditingController PreLaminationVisualnumberOfStringersController =
       TextEditingController();
   List<TextEditingController> PreLaminationVisualinspectionrControllers = [];
-  // TextEditingController PreLaminationVisualinspectionController =
-  //     TextEditingController();
   TextEditingController PreLaminationVisualinspectionCriteriaController =
       TextEditingController();
 
@@ -326,7 +284,6 @@ class _PreCardState extends State<PreCard> {
 
   TextEditingController PreLaminationELRemarkController =
       TextEditingController();
-
   // 11. String Rework Station
   TextEditingController StringAvaibilityFrequencyController =
       TextEditingController();
@@ -724,8 +681,6 @@ class _PreCardState extends State<PreCard> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -747,22 +702,11 @@ class _PreCardState extends State<PreCard> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
-
     var resBody = json.decode(allSolarData.body);
 
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print("Aaaaaaaaaaaaaaaaaaajajaaa");
-          // print(resBody['response']['Status']);
-          print(resBody);
-          print(resBody['response']['Tabber&StringerFrequency']
-              ['Visual Check after stringer Number of Created Input text ']);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
-          // dateController.text = resBody['response']['Date'] ?? '';
           status = resBody['response']['Status'] ?? '';
           dateOfQualityCheck = resBody['response']['Date'] ?? '';
           DayController.text = resBody['response']['Date'] != ''
@@ -850,7 +794,6 @@ class _PreCardState extends State<PreCard> {
                       ['CellLoadingCheckPoint']
                   ['Verification of process parameter'] ??
               '';
-
           // ---Dynamic Field Byend Data          (cell loading)
           CellLoadingnumberOfStringerController.text = resBody['response']
                           ['CellLoadingFrequency']
@@ -868,7 +811,6 @@ class _PreCardState extends State<PreCard> {
           addControllers(numberOfStringers * 5);
           cellLoaderRemarkController.text =
               resBody['response']['CellLoadingRemark'] ?? '';
-
           // Tabber and Stringer
           TabberVisualnumberOfStringersController.text = resBody['response']
                           ['Tabber&StringerFrequency']
@@ -881,7 +823,6 @@ class _PreCardState extends State<PreCard> {
           tabberVisual = resBody['response']['Tabber&StringerFrequency'][
                   'Visual Check after stringer Number of Created Input text '] ??
               [];
-
           numberOfStringers1 =
               int.tryParse(TabberVisualnumberOfStringersController.text) ?? 0;
           addTabberVisualControllers(numberOfStringers1 * 5);
@@ -1095,16 +1036,11 @@ class _PreCardState extends State<PreCard> {
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
-
     final url = (site! + "IPQC/UpdatePreLamStatus");
-
     var params = {
       "token": token,
       "CurrentUser": personid,
@@ -1145,7 +1081,6 @@ class _PreCardState extends State<PreCard> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -1157,8 +1092,6 @@ class _PreCardState extends State<PreCard> {
         referencePdfFileBytes = pdffile.readAsBytesSync();
         referencePdfController.text = result.files.single.name;
       });
-      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
-      print(referencePdfFileBytes);
     } else {
       // User canceled the file picker
     }
@@ -1181,9 +1114,6 @@ class _PreCardState extends State<PreCard> {
         contentType: MediaType("application", 'pdf'),
       ),
     });
-    print("Hoiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-    print(formData.files);
-
     _response = await _dio.post((site! + 'IPQC/UploadPreLamPdf'), // Prod
 
         options: Options(
@@ -1214,16 +1144,9 @@ class _PreCardState extends State<PreCard> {
     }
   }
 
-  // ****************************************  Send the Data where will be Used to Backend **************************
+  // **************  Send the Data where will be Used to Backend *****************
 
   Future sendDataToBackend() async {
-    print("Kya aayaa...?????");
-    // print(PreLaminationEIinspectionrControllers);
-    print('Problem are there');
-    print(sample6Controller);
-    print(widget.id);
-
-    print(prelamId);
     var data = [
       {
         "PreLamDetailId": prelamId != '' && prelamId != null
@@ -1639,9 +1562,6 @@ class _PreCardState extends State<PreCard> {
         },
       ]
     ];
-
-    print('Sending data to backend: ');
-
     setState(() {
       _isLoading = true;
     });
@@ -1650,9 +1570,6 @@ class _PreCardState extends State<PreCard> {
     FocusScope.of(context).unfocus();
 
     final url = (site! + "IPQC/AddPreLam");
-
-    // ignore: unused_local_variable
-
     var response = await http.post(
       Uri.parse(url),
       body: json.encode(data),
@@ -1660,9 +1577,6 @@ class _PreCardState extends State<PreCard> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Bhanuu bhai");
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
@@ -1670,10 +1584,6 @@ class _PreCardState extends State<PreCard> {
 
         _isLoading = false;
       });
-
-      print(
-          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-      print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
@@ -1693,9 +1603,6 @@ class _PreCardState extends State<PreCard> {
       Toast.show("Error In Server",
           duration: Toast.lengthLong, gravity: Toast.center);
     }
-
-    print("hiiii kulbhusan");
-    print('$data');
   }
 
   Widget _getFAB() {
@@ -4140,10 +4047,6 @@ class _PreCardState extends State<PreCard> {
                                                           AppHelper
                                                               .hideKeyboard(
                                                                   context);
-                                                          print(
-                                                              "hiiiiiiiiiiiiii");
-                                                          // print(CellManufactureEffController
-                                                          //     .text);
                                                           if (status !=
                                                               'Pending') {
                                                             setState(() {
@@ -4152,17 +4055,10 @@ class _PreCardState extends State<PreCard> {
                                                             });
                                                             sendDataToBackend();
                                                           }
-
-                                                          // _cellCuttingFormKey
-                                                          //     .currentState!.save;
-                                                          // if (_cellCuttingFormKey
-                                                          //     .currentState!
-                                                          //     .validate()) {}
                                                           setState(() {
                                                             setPage =
                                                                 "Cell Loading";
                                                           });
-                                                          // createData();
                                                         },
                                                         label: "Next",
                                                         organization: '',
@@ -4182,11 +4078,6 @@ class _PreCardState extends State<PreCard> {
                                                           setPage =
                                                               'temperature';
                                                         });
-                                                        // Navigator.of(context).pushReplacement(
-                                                        //     MaterialPageRoute(
-                                                        //         builder: (BuildContext context) =>
-                                                        //             LoginPage(
-                                                        //                 appName: widget.appName)));
                                                       },
                                                       child: const Text(
                                                         "BACK",
@@ -5220,10 +5111,6 @@ class _PreCardState extends State<PreCard> {
                                                                           .text,
                                                                 });
                                                               }
-                                                              print(
-                                                                  "NAnanananannananpyaaa");
-                                                              print(
-                                                                  sample1Controller);
 
                                                               if (status !=
                                                                   'Pending') {
@@ -5233,19 +5120,10 @@ class _PreCardState extends State<PreCard> {
                                                                 });
                                                                 sendDataToBackend();
                                                               }
-                                                              // _cellLoadingFormKey
-                                                              //     .currentState!.save;
-                                                              // if (_cellLoadingFormKey
-                                                              //     .currentState!
-                                                              //     .validate()) {}
-
                                                               setState(() {
                                                                 setPage =
                                                                     "Tabber & Stringer";
                                                               });
-                                                              // createData();
-                                                              print("Page set");
-                                                              print(setPage);
                                                             },
                                                             label: "Next",
                                                             organization: '',
@@ -5266,11 +5144,6 @@ class _PreCardState extends State<PreCard> {
                                                               setPage =
                                                                   'Cell Cutting Machine';
                                                             });
-                                                            // Navigator.of(context).pushReplacement(
-                                                            //     MaterialPageRoute(
-                                                            //         builder: (BuildContext context) =>
-                                                            //             LoginPage(
-                                                            //                 appName: widget.appName)));
                                                           },
                                                           child: const Text(
                                                             "BACK",
@@ -5440,7 +5313,7 @@ class _PreCardState extends State<PreCard> {
                                                             ),
                                                           ],
                                                         ),
-// ************** Tabber & Stringer *****************
+                                                        // ******** Tabber & Stringer *****************
                                                         const SizedBox(
                                                           height: 15,
                                                         ),
@@ -5501,21 +5374,10 @@ class _PreCardState extends State<PreCard> {
                                                               .textInputTextStyle,
                                                           readOnly: true,
                                                         ),
-
-// 990099
-
                                                         const SizedBox(
                                                           height: 20,
                                                         ),
-                                                        // Text(
-                                                        //   "Visual Check after stringer",
-                                                        //   style: AppStyles
-                                                        //       .textfieldCaptionTextStyle,
-                                                        // ),
 
-                                                        // const SizedBox(
-                                                        //   height: 20,
-                                                        // ),
                                                         Text(
                                                           "Visual Check after stringer",
                                                           style: AppStyles
@@ -5570,7 +5432,6 @@ class _PreCardState extends State<PreCard> {
                                                             ],
                                                           ),
                                                         ),
-                                                        // SizedBox(height: 20),
                                                         ListView.builder(
                                                           shrinkWrap: true,
                                                           physics:
@@ -5684,7 +5545,6 @@ class _PreCardState extends State<PreCard> {
                                                           height: 15,
                                                         ),
 
-                                                        // ------------------------------------------------------------
                                                         const SizedBox(
                                                           height: 15,
                                                         ),
@@ -5726,14 +5586,6 @@ class _PreCardState extends State<PreCard> {
                                                         const SizedBox(
                                                           height: 20,
                                                         ),
-                                                        // Text(
-                                                        //   "EI image of String",
-                                                        //   style: AppStyles
-                                                        //       .textfieldCaptionTextStyle,
-                                                        // ),
-                                                        // SizedBox(
-                                                        //   height: 5,
-                                                        // ),
                                                         Text(
                                                           "EI image of String",
                                                           style: AppStyles
@@ -5788,8 +5640,6 @@ class _PreCardState extends State<PreCard> {
                                                             ],
                                                           ),
                                                         ),
-
-                                                        // SizedBox(height: 20),
                                                         ListView.builder(
                                                           shrinkWrap: true,
                                                           physics:
@@ -5942,14 +5792,6 @@ class _PreCardState extends State<PreCard> {
                                                         const SizedBox(
                                                           height: 20,
                                                         ),
-                                                        // Text(
-                                                        //   "Verification of sildering peel strength",
-                                                        //   style: AppStyles
-                                                        //       .textfieldCaptionTextStyle,
-                                                        // ),
-                                                        // SizedBox(
-                                                        //   height: 15,
-                                                        // ),
                                                         Text(
                                                           "Verification of sildering peel strength",
                                                           style: AppStyles
@@ -6004,7 +5846,6 @@ class _PreCardState extends State<PreCard> {
                                                             ],
                                                           ),
                                                         ),
-                                                        // SizedBox(height: 20),
                                                         ListView.builder(
                                                           shrinkWrap: true,
                                                           physics:
@@ -6319,13 +6160,7 @@ class _PreCardState extends State<PreCard> {
                                                                   AppHelper
                                                                       .hideKeyboard(
                                                                           context);
-                                                                  //100
 
-                                                                  // _tabberFormKey.currentState!.save;
-                                                                  // if (_tabberFormKey.currentState!
-                                                                  //     .validate()) {
-                                                                  //   sendDataToBackend();
-                                                                  // }
                                                                   sample2Controller =
                                                                       [];
                                                                   for (int i =
@@ -6382,22 +6217,11 @@ class _PreCardState extends State<PreCard> {
                                                                     });
                                                                     sendDataToBackend();
                                                                   }
-                                                                  // _tabberFormKey
-                                                                  //     .currentState!
-                                                                  //     .save;
-                                                                  // if (_tabberFormKey
-                                                                  //     .currentState!
-                                                                  //     .validate()) {}
 
                                                                   setState(() {
                                                                     setPage =
                                                                         "Auto String Layup";
                                                                   });
-                                                                  // createData();
-                                                                  print(
-                                                                      "Page set");
-                                                                  print(
-                                                                      setPage);
                                                                 },
                                                                 label: "Next",
                                                                 organization:
@@ -6419,11 +6243,6 @@ class _PreCardState extends State<PreCard> {
                                                                   setPage =
                                                                       'Cell Loading';
                                                                 });
-                                                                // Navigator.of(context).pushReplacement(
-                                                                //     MaterialPageRoute(
-                                                                //         builder: (BuildContext context) =>
-                                                                //             LoginPage(
-                                                                //                 appName: widget.appName)));
                                                               },
                                                               child: const Text(
                                                                 "BACK",
@@ -6611,15 +6430,10 @@ class _PreCardState extends State<PreCard> {
                                                                             appFontFamily,
                                                                         fontWeight:
                                                                             FontWeight.w700))),
-
                                                             // **********  start Tabber ***********
-
                                                             const SizedBox(
                                                               height: 15,
                                                             ),
-
-                                                            //
-
                                                             Divider(
                                                               color:
                                                                   Colors.black,
@@ -6743,52 +6557,6 @@ class _PreCardState extends State<PreCard> {
                                                             const SizedBox(
                                                               height: 15,
                                                             ),
-
-                                                            // *** Time
-                                                            // const SizedBox(
-                                                            //   height: 15,
-                                                            // ),
-
-                                                            // Text(
-                                                            //   "Time",
-                                                            //   style: AppStyles
-                                                            //       .textfieldCaptionTextStyle,
-                                                            // ),
-                                                            // SizedBox(
-                                                            //   height: 5,
-                                                            // ),
-
-                                                            // TextFormField(
-                                                            //   controller:
-                                                            //       AutoTimeController,
-                                                            //   keyboardType:
-                                                            //       TextInputType.text,
-                                                            //   textInputAction:
-                                                            //       TextInputAction
-                                                            //           .next,
-                                                            //   decoration: AppStyles
-                                                            //       .textFieldInputDecoration
-                                                            //       .copyWith(
-                                                            //     hintText: "Time ",
-                                                            //     counterText: '',
-                                                            //   ),
-                                                            //   style: AppStyles
-                                                            //       .textInputTextStyle,
-                                                            //   validator:
-                                                            //       MultiValidator(
-                                                            //     [
-                                                            //       RequiredValidator(
-                                                            //         errorText:
-                                                            //             "Please Enter Correct Time",
-                                                            //       ),
-                                                            //     ],
-                                                            //   ),
-                                                            // ),
-
-                                                            // const SizedBox(
-                                                            //   height: 15,
-                                                            // ),
-
                                                             Divider(
                                                               color:
                                                                   Colors.black,
@@ -7128,24 +6896,12 @@ class _PreCardState extends State<PreCard> {
                                                                               'Inprogress';
                                                                         });
                                                                         sendDataToBackend();
-                                                                      } //100
-
-                                                                      // _autoStringFormKey
-                                                                      //     .currentState!
-                                                                      //     .save;
-                                                                      // if (_autoStringFormKey
-                                                                      //     .currentState!
-                                                                      //     .validate()) {}
+                                                                      }
                                                                       setState(
                                                                           () {
                                                                         setPage =
                                                                             "Auto Bussing & Tapping";
                                                                       });
-                                                                      // createData();
-                                                                      print(
-                                                                          "Page set");
-                                                                      print(
-                                                                          setPage);
                                                                     },
                                                                     label:
                                                                         "Next",
@@ -7169,11 +6925,6 @@ class _PreCardState extends State<PreCard> {
                                                                       setPage =
                                                                           'Tabber & Stringer';
                                                                     });
-                                                                    // Navigator.of(context).pushReplacement(
-                                                                    //     MaterialPageRoute(
-                                                                    //         builder: (BuildContext context) =>
-                                                                    //             LoginPage(
-                                                                    //                 appName: widget.appName)));
                                                                   },
                                                                   child:
                                                                       const Text(
@@ -7366,9 +7117,6 @@ class _PreCardState extends State<PreCard> {
                                                                 const SizedBox(
                                                                   height: 15,
                                                                 ),
-
-                                                                //
-
                                                                 Divider(
                                                                   color: Colors
                                                                       .black,
@@ -7495,13 +7243,8 @@ class _PreCardState extends State<PreCard> {
                                                                       true,
                                                                 ),
                                                                 const SizedBox(
-                                                                  height: 15,
+                                                                  height: 25,
                                                                 ),
-
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
-
                                                                 Divider(
                                                                   color: Colors
                                                                       .black,
@@ -8493,24 +8236,12 @@ class _PreCardState extends State<PreCard> {
                                                                               sendStatus = 'Inprogress';
                                                                             });
                                                                             sendDataToBackend();
-                                                                          } //100
-
-                                                                          // _autoBussingFormKey
-                                                                          //     .currentState!
-                                                                          //     .save;
-                                                                          // if (_autoBussingFormKey
-                                                                          //     .currentState!
-                                                                          //     .validate()) {}
+                                                                          }
                                                                           setState(
                                                                               () {
                                                                             setPage =
                                                                                 "EVA/Backsheet Cutting";
                                                                           });
-                                                                          // createData();
-                                                                          print(
-                                                                              "Page set");
-                                                                          print(
-                                                                              setPage);
                                                                         },
                                                                         label:
                                                                             "Next",
@@ -8537,11 +8268,6 @@ class _PreCardState extends State<PreCard> {
                                                                           setPage =
                                                                               'Auto String Layup';
                                                                         });
-                                                                        // Navigator.of(context).pushReplacement(
-                                                                        //     MaterialPageRoute(
-                                                                        //         builder: (BuildContext context) =>
-                                                                        //             LoginPage(
-                                                                        //                 appName: widget.appName)));
                                                                       },
                                                                       child:
                                                                           const Text(
@@ -8716,7 +8442,7 @@ class _PreCardState extends State<PreCard> {
                                                                                 fontFamily: appFontFamily,
                                                                                 fontWeight: FontWeight.w700))),
 
-                                                                    // **********  start EVA/Backsheet Cutting ***********
+                                                                    // ******  start EVA/Backsheet Cutting ***
 
                                                                     const SizedBox(
                                                                       height:
@@ -9475,19 +9201,10 @@ class _PreCardState extends State<PreCard> {
                                                                                   sendStatus = 'Inprogress';
                                                                                 });
                                                                                 sendDataToBackend();
-                                                                              } //100
-
-                                                                              // _evaFormKey
-                                                                              //     .currentState!
-                                                                              //     .save;
-                                                                              // if (_evaFormKey
-                                                                              //     .currentState!
-                                                                              //     .validate()) {}
+                                                                              }
                                                                               setState(() {
                                                                                 setPage = "Pre Lamination El & Visual inspection";
                                                                               });
-                                                                              print("Page set");
-                                                                              print(setPage);
                                                                             },
                                                                             label:
                                                                                 "Next",
@@ -9512,11 +9229,6 @@ class _PreCardState extends State<PreCard> {
                                                                             setState(() {
                                                                               setPage = 'Auto Bussing & Tapping';
                                                                             });
-                                                                            // Navigator.of(context).pushReplacement(
-                                                                            //     MaterialPageRoute(
-                                                                            //         builder: (BuildContext context) =>
-                                                                            //             LoginPage(
-                                                                            //                 appName: widget.appName)));
                                                                           },
                                                                           child:
                                                                               const Text(
@@ -9717,15 +9429,7 @@ class _PreCardState extends State<PreCard> {
                                                                           height:
                                                                               20,
                                                                         ),
-                                                                        // Text(
-                                                                        //   "EI Inspection",
-                                                                        //   style:
-                                                                        //       AppStyles.textfieldCaptionTextStyle,
-                                                                        // ),
-                                                                        // SizedBox(
-                                                                        //   height:
-                                                                        //       10,
-                                                                        // ),
+
                                                                         Text(
                                                                           "EI Inspection",
                                                                           style:
@@ -9773,9 +9477,7 @@ class _PreCardState extends State<PreCard> {
                                                                             ],
                                                                           ),
                                                                         ),
-                                                                        // SizedBox(
-                                                                        //     height:
-                                                                        //         20),
+
                                                                         ListView
                                                                             .builder(
                                                                           shrinkWrap:
@@ -9905,15 +9607,7 @@ class _PreCardState extends State<PreCard> {
                                                                           height:
                                                                               20,
                                                                         ),
-                                                                        // Text(
-                                                                        //   "Visual Inspection",
-                                                                        //   style:
-                                                                        //       AppStyles.textfieldCaptionTextStyle,
-                                                                        // ),
-                                                                        // SizedBox(
-                                                                        //   height:
-                                                                        //       10,
-                                                                        // ),
+
                                                                         Text(
                                                                           "Visual Inspection",
                                                                           style:
@@ -9961,9 +9655,7 @@ class _PreCardState extends State<PreCard> {
                                                                             ],
                                                                           ),
                                                                         ),
-                                                                        // SizedBox(
-                                                                        //     height:
-                                                                        //         20),
+
                                                                         ListView
                                                                             .builder(
                                                                           shrinkWrap:
@@ -10262,15 +9954,10 @@ class _PreCardState extends State<PreCard> {
                                                                                       sendStatus = 'Inprogress';
                                                                                     });
                                                                                     sendDataToBackend();
-                                                                                  } //100
-
-                                                                                  // _preLaminatorFormKey.currentState!.save;
-                                                                                  // if (_preLaminatorFormKey.currentState!.validate()) {}
+                                                                                  }
                                                                                   setState(() {
                                                                                     setPage = "String Rework Station";
                                                                                   });
-                                                                                  print("Page set");
-                                                                                  print(setPage);
                                                                                 },
                                                                                 label: "Next",
                                                                                 organization: '',
@@ -10280,47 +9967,6 @@ class _PreCardState extends State<PreCard> {
                                                                               10,
                                                                         ),
 
-// Back button
-                                                                        // const SizedBox(
-                                                                        //   height: 15,
-                                                                        // ),
-                                                                        // AppButton(
-                                                                        //   textStyle:
-                                                                        //       const TextStyle(
-                                                                        //     fontWeight:
-                                                                        //         FontWeight
-                                                                        //             .w700,
-                                                                        //     color: AppColors
-                                                                        //         .white,
-                                                                        //     fontSize:
-                                                                        //         16,
-                                                                        //   ),
-                                                                        //   onTap: () {
-                                                                        //     AppHelper
-                                                                        //         .hideKeyboard(
-                                                                        //             context);
-
-                                                                        //     setState(
-                                                                        //         () {
-                                                                        //       setPage =
-                                                                        //           'EVA/Backsheet Cutting';
-                                                                        //     });
-                                                                        //     print(
-                                                                        //         "Page set");
-                                                                        //     print(
-                                                                        //         setPage);
-                                                                        //   },
-                                                                        //   label:
-                                                                        //       "Back",
-                                                                        //   organization:
-                                                                        //       '',
-                                                                        // ),
-                                                                        // const SizedBox(
-                                                                        //   height: 10,
-                                                                        // ),
-                                                                        // const SizedBox(
-                                                                        //   height: 25,
-                                                                        // ),
                                                                         // Back button
                                                                         Center(
                                                                           child:
@@ -10333,11 +9979,6 @@ class _PreCardState extends State<PreCard> {
                                                                                 setState(() {
                                                                                   setPage = 'EVA/Backsheet Cutting';
                                                                                 });
-                                                                                // Navigator.of(context).pushReplacement(
-                                                                                //     MaterialPageRoute(
-                                                                                //         builder: (BuildContext context) =>
-                                                                                //             LoginPage(
-                                                                                //                 appName: widget.appName)));
                                                                               },
                                                                               child: const Text(
                                                                                 "BACK",
@@ -10459,7 +10100,7 @@ class _PreCardState extends State<PreCard> {
                                                                               ],
                                                                             ),
 
-// ************** String Rework Station *****************
+                                                                            // ************** String Rework Station *****************
                                                                             const SizedBox(
                                                                               height: 15,
                                                                             ),
@@ -10672,15 +10313,10 @@ class _PreCardState extends State<PreCard> {
                                                                                         });
                                                                                         sendDataToBackend();
                                                                                       }
-                                                                                      // _stringFormKey.currentState!.save;
-                                                                                      // if (_stringFormKey.currentState!.validate()) {}
                                                                                       setState(() {
                                                                                         setPage = "Module Rework Station";
                                                                                         sendStatus = "Inprogress";
                                                                                       });
-                                                                                      // createData();
-                                                                                      print("Page set");
-                                                                                      print(setPage);
                                                                                     },
                                                                                     label: "Next",
                                                                                     organization: '',
@@ -10698,11 +10334,6 @@ class _PreCardState extends State<PreCard> {
                                                                                     setState(() {
                                                                                       setPage = 'Pre Lamination El & Visual inspection';
                                                                                     });
-                                                                                    // Navigator.of(context).pushReplacement(
-                                                                                    //     MaterialPageRoute(
-                                                                                    //         builder: (BuildContext context) =>
-                                                                                    //             LoginPage(
-                                                                                    //                 appName: widget.appName)));
                                                                                   },
                                                                                   child: const Text(
                                                                                     "BACK",
@@ -11188,16 +10819,10 @@ class _PreCardState extends State<PreCard> {
                                                                                               sendStatus = 'Inprogress';
                                                                                             });
                                                                                             sendDataToBackend();
-                                                                                          } //300
-
-                                                                                          // _pmoduleFormKey.currentState!.save;
-                                                                                          // if (_pmoduleFormKey.currentState!.validate()) {}
+                                                                                          }
                                                                                           setState(() {
                                                                                             setPage = "Laminator";
                                                                                           });
-                                                                                          // createData();
-                                                                                          print("Page set");
-                                                                                          print(setPage);
                                                                                         },
                                                                                         label: "Next",
                                                                                         organization: '',
@@ -11215,11 +10840,6 @@ class _PreCardState extends State<PreCard> {
                                                                                         setState(() {
                                                                                           setPage = 'String Rework Station';
                                                                                         });
-                                                                                        // Navigator.of(context).pushReplacement(
-                                                                                        //     MaterialPageRoute(
-                                                                                        //         builder: (BuildContext context) =>
-                                                                                        //             LoginPage(
-                                                                                        //                 appName: widget.appName)));
                                                                                       },
                                                                                       child: const Text(
                                                                                         "BACK",
@@ -11653,7 +11273,6 @@ class _PreCardState extends State<PreCard> {
                                                                                     ),
 
                                                                                     // *** Remark
-
                                                                                     Text(
                                                                                       "Remark",
                                                                                       style: AppStyles.textfieldCaptionTextStyle,
@@ -11781,7 +11400,6 @@ class _PreCardState extends State<PreCard> {
                                                                                       ),
 
                                                                                     // Back button
-
                                                                                     Center(
                                                                                       child: Padding(
                                                                                         padding: const EdgeInsets.all(8.0),
@@ -11790,11 +11408,6 @@ class _PreCardState extends State<PreCard> {
                                                                                             setState(() {
                                                                                               setPage = 'Module Rework Station';
                                                                                             });
-                                                                                            // Navigator.of(context).pushReplacement(
-                                                                                            //     MaterialPageRoute(
-                                                                                            //         builder: (BuildContext context) =>
-                                                                                            //             LoginPage(
-                                                                                            //                 appName: widget.appName)));
                                                                                           },
                                                                                           child: const Text(
                                                                                             "BACK",
@@ -11839,72 +11452,68 @@ class _PreCardState extends State<PreCard> {
                                                                       : Container(),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );

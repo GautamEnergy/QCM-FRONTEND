@@ -1,34 +1,23 @@
 import 'dart:convert';
-//import 'dart:html';
 import 'dart:io';
-
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
-import 'package:QCM/SolarCell.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/ipqcTestList.dart';
-
-//import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-
 import 'package:flutter/material.dart';
-
 import 'package:form_field_validator/form_field_validator.dart';
-
 import 'package:intl/intl.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/src/response.dart' as Response;
-
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
 import '../constant/app_color.dart';
@@ -40,7 +29,6 @@ import '../constant/app_styles.dart';
 class BomCard extends StatefulWidget {
   final String? id;
   BomCard({this.id});
-  //const BomCard({super.key});
 
   @override
   _BomCardState createState() => _BomCardState();
@@ -166,8 +154,6 @@ class _BomCardState extends State<BomCard> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       pic = prefs.getString('pic')!;
-      print("Depppppppppppppppppppppppppppppppppppppppppppppppp");
-      print(prefs.getString('personid')!);
       personid = prefs.getString('personid')!;
       site = prefs.getString('site')!;
       designation = prefs.getString('designation')!;
@@ -179,8 +165,6 @@ class _BomCardState extends State<BomCard> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -202,23 +186,12 @@ class _BomCardState extends State<BomCard> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
-    print(allSolarData.body);
+
     var resBody = json.decode(allSolarData.body);
 
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print(resBody);
-          print("LAllallallallalallalal");
-          print(resBody['data']['Date'] ?? '');
-          print(resBody['data']['Status']);
-          // print(resBody['response']['Visual Inspection & Laminator Description']
-          //     ["Cycle_Time"]);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
-          // dateController.text = resBody['data'][0]['Date'] ?? '';
           status = resBody['data']['Status'] ?? '';
           bomCardDate = resBody['data']['Date'] ?? '';
           dateController.text = resBody['data']['Date'] != ''
@@ -335,133 +308,16 @@ class _BomCardState extends State<BomCard> {
           RfidLotBatchController.text = resBody['data']['RFID BatchNo'] ?? '';
           RfidremarkController.text = resBody['data']['RFID Remarks'] ?? '';
           referencePdfController.text = resBody['data']['ReferencePdf'] ?? '';
-
-          // dateController.text = resBody['data']['Date']
-          ///   ? DateFormat("EEE MMM dd, yyyy")
-          //     .format(DateTime.parse(resBody['data']['Date'].toString())) ??
-          //  : '';
-          // moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
-
-          // matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
-          // moduleNoController.text = resBody['response']['ModuleNo'] ?? '';
-          // lotNoController.text =
-          //     resBody['response']['Glass Washing Description']["Lot_No"] ?? '';
-          // lotSizeController.text =
-          //     resBody['response']['Glass Washing Description']["size"] ?? '';
-          // glassCommentController.text =
-          //     resBody['response']['Glass Washing Comments'] ?? '';
-          // evaLotNoController.text = resBody['response']
-          //         ['Foil cutterr Description']["EVA_Lot_No"] ??
-          //     '';
-          // evaSizeController.text =
-          //     resBody['response']['Foil cutterr Description']["EVA_Size"] ?? '';
-          // backsheetLotController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_Lot"] ??
-          //     '';
-
-          // backsheetSizeController.text = resBody['response']
-          //         ['Foil cutterr Description']["Backsheet_size"] ??
-          //     '';
-          // foilCommentController.text =
-          //     resBody['response']['Foil cutterr Comments'] ?? '';
-          // cellLotNoController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Lot_No"] ??
-          //     '';
-          // cellTypeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Type"] ??
-          //     '';
-          // cellSyzeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Size"] ??
-          //     '';
-          // cellEffController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Cell_Eff"] ??
-          //     '';
-          // interconnectRibbonSizeController.text = resBody['response']
-          //             ['Tabbing & Stringing Description']
-          //         ["Interconnect_Ribbon_Size"] ??
-          //     '';
-          // busbarSizeController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Busbar_Size"] ??
-          //     '';
-          // fluxController.text = resBody['response']
-          //         ['Tabbing & Stringing Description']["Flux"] ??
-          //     '';
-          // tabbingCommentController.text =
-          //     resBody['response']['Tabbing & Stringing Comments'] ?? '';
-          // cellToCellGapController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Cell_To_Cell_Gap"] ??
-          //     '';
-          // stringToStringGapController.text = resBody['response']
-          //             ['Bussing/InterConnection Description']
-          //         ["String_To_String_Gap"] ??
-          //     '';
-          // solderingTempController.text = resBody['response']
-          //         ['Bussing/InterConnection Description']["Soldering_Temp"] ??
-          //     '';
-          // bussingCommentController.text =
-          //     resBody['response']['Bussing/InterConnection Comments'] ?? '';
-          // tempreatureController.text = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Temperature"] ??
-          //     '';
-          // cycleTimeController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Description']["Cycle_Time"] ??
-          //     '';
-          // isCycleTimeTrue = resBody['response']
-          //             ['Visual Inspection & Laminator Description']
-          //         ["Laminate_Quality"] ??
-          //     '';
-          // visualCommentController.text = resBody['response']
-          //         ['Visual Inspection & Laminator Comments'] ??
-          //     '';
-          // isBacksheetCuttingTrue = resBody['response']
-          //         ['Edge Triming Description']["BackSheet_Cutting"] ??
-          //     '';
-
-          // edgeCommentController.text =
-          //     resBody['response']['Edge Triming Comments'] ?? '';
-          // frameTypeController.text =
-          //     resBody['response']['Framing Description']["Frame_Type"] ?? '';
-          // frameSizeController.text =
-          //     resBody['response']['Framing Description']["Frame_Size"] ?? '';
-          // sliconGlueLotController.text = resBody['response']
-          //         ['Framing Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
-
-          // framingCommentController.text =
-          //     resBody['response']['Framing Comments'] ?? '';
-          // jBLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["JB_Lot_No"] ??
-          //     '';
-          // jBTypeController.text =
-          //     resBody['response']['J/B Assembly Description']["JB_Type"] ?? '';
-          // siliconGlueLotNoController.text = resBody['response']
-          //         ['J/B Assembly Description']["Silicon_Glue_Lot_No"] ??
-          //     '';
-
-          // jbCommentController.text =
-          //     resBody['response']['J/B Assembly Comments'] ?? '';
-          // pmaxController.text =
-          //     resBody['response']['Sun Simulator Description']["Pmax"] ?? '';
-
-          // sunCommentController.text =
-          //     resBody['response']['Sun Simulator Comments'] ?? '';
-          // referencePdfController.text =
-          //     resBody['response']['ReferencePdf'] ?? '';
         }
       });
     }
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
-
     final url = (site! + "IPQC/UpdateBOMStatus");
 
     var params = {
@@ -504,7 +360,6 @@ class _BomCardState extends State<BomCard> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -516,8 +371,6 @@ class _BomCardState extends State<BomCard> {
         referencePdfFileBytes = pdffile.readAsBytesSync();
         referencePdfController.text = result.files.single.name;
       });
-      print("oyeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-      print(referencePdfFileBytes);
     } else {
       // User canceled the file picker
     }
@@ -526,8 +379,6 @@ class _BomCardState extends State<BomCard> {
   Future findData() async {
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site')!;
-    print("Gautammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
-    print(widget.id);
     var Bom = [
       {
         "Type": "BOM Verification",
@@ -646,9 +497,6 @@ class _BomCardState extends State<BomCard> {
     FocusScope.of(context).unfocus();
 
     final url = (site! + "IPQC/AddBOMVerification");
-
-    print("chaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
     var response = await http.post(
       Uri.parse(url),
       body: json.encode(Bom),
@@ -656,18 +504,11 @@ class _BomCardState extends State<BomCard> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("helllllllllllllllllllllllllllllllllllllooooooooo");
-    print(response.statusCode);
 
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
-      print("hiiiiiiiiiiiiiiiiiiiiiiiiii");
-      print(objData);
       setState(() {
         BomId = objData['UUID'];
-        print("kyoooooooooooooooooooooooooooooooooooooooo");
-        print(BomId);
-
         _isLoading = false;
       });
       print(objData);
@@ -692,58 +533,7 @@ class _BomCardState extends State<BomCard> {
     }
   }
 
-  // uploadPDF(List<int> referenceBytes) async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   final prefs = await SharedPreferences.getInstance();
-  //   site = prefs.getString('site')!;
-
-  //   var currentdate = DateTime.now().microsecondsSinceEpoch;
-  //   var formData = FormData.fromMap({
-  //     "JobCardDetailId": BomId,
-  //     "ReferencePdf": MultipartFile.fromBytes(
-  //       referenceBytes,
-  //       filename:
-  //           (referencePdfController.text + (currentdate.toString()) + '.pdf'),
-  //       contentType: MediaType("application", 'pdf'),
-  //     ),
-  //   });
-
-  //   _response = await _dio.post((site! + 'IPQC/BOMUploadPdf'), // Prod
-
-  //       options: Options(
-  //         contentType: 'multipart/form-data',
-  //         followRedirects: false,
-  //         validateStatus: (status) => true,
-  //       ),
-  //       data: formData);
-
-  //   try {
-  //     if (_response?.statusCode == 200) {
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-
-  //       Toast.show("Job Card Test Completed.",
-  //           duration: Toast.lengthLong,
-  //           gravity: Toast.center,
-  //           backgroundColor: AppColors.blueColor);
-  //       Navigator.of(context).pushReplacement(MaterialPageRoute(
-  //           builder: (BuildContext context) => IpqcTestList()));
-  //     } else {
-  //       Toast.show("Error In Server",
-  //           duration: Toast.lengthLong, gravity: Toast.center);
-  //     }
-  //   } catch (err) {
-  //     print("Error");
-  //   }
-  // }
-
   uploadPDF(List<int> referenceBytes) async {
-    print("Hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
-    print(BomId);
-    print(referenceBytes);
     setState(() {
       _isLoading = true;
     });
@@ -760,8 +550,6 @@ class _BomCardState extends State<BomCard> {
         contentType: MediaType("application", 'pdf'),
       ),
     });
-    print("challlllllllllllllllllllllllllllllllllll");
-    print(formData.files);
 
     _response = await _dio.post((site! + 'IPQC/BOMUploadPdf'), // Prod
 
@@ -773,7 +561,6 @@ class _BomCardState extends State<BomCard> {
         data: formData);
 
     try {
-      print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       print(_response?.statusCode);
       if (_response?.statusCode == 200) {
         setState(() {
@@ -890,8 +677,6 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-                              //  ***************************?
-
                               const Center(
                                   child: Padding(
                                       padding: EdgeInsets.only(top: 10),
@@ -947,7 +732,7 @@ class _BomCardState extends State<BomCard> {
                                 ],
                               ),
 
-// ****************** Date *****************************************
+                              // ************ Date *********
                               const SizedBox(
                                 height: 15,
                               ),
@@ -1002,7 +787,7 @@ class _BomCardState extends State<BomCard> {
                               const SizedBox(
                                 height: 15,
                               ),
-                              // ************************************* Shift *********************
+                              // ******************** Shift *********************
                               Text(
                                 "Shift",
                                 style: AppStyles.textfieldCaptionTextStyle,
@@ -1033,7 +818,7 @@ class _BomCardState extends State<BomCard> {
                                 },
                               ),
 
-                              // ********************************* Line *******************************
+                              // *********** Line ********
 
                               const SizedBox(
                                 height: 15,
@@ -1067,13 +852,13 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *******************************  PO Number ***********************
+                              // ************  PO Number ***********************
 
                               const SizedBox(
                                 height: 15,
                               ),
                               Text(
-                                "Po Number",
+                                "PO Number",
                                 style: AppStyles.textfieldCaptionTextStyle,
                               ),
 
@@ -1086,7 +871,7 @@ class _BomCardState extends State<BomCard> {
                                 textInputAction: TextInputAction.next,
                                 decoration:
                                     AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Po Number",
+                                  hintText: "Please PO Number",
                                   counterText: '',
                                 ),
                                 style: AppStyles.textInputTextStyle,
@@ -1097,13 +882,13 @@ class _BomCardState extends State<BomCard> {
                                 validator: MultiValidator(
                                   [
                                     RequiredValidator(
-                                      errorText: "Please Po Number",
+                                      errorText: "Please PO Number",
                                     ),
                                   ],
                                 ),
                               ),
 
-//  *******************************************   BOM Verification Check sheet ********************
+                              //  ********   BOM Verification Check sheet ********************
 
                               const SizedBox(
                                 height: 15,
@@ -1120,7 +905,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *********************  Supplier ************************
+                              // *************  Supplier ************************
 
                               const SizedBox(
                                 height: 15,
@@ -1155,7 +940,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Specification / Model No. *********************
+                              // ********** Specification / Model No. *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1192,7 +977,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Lot/Batch Number *********************
+                              // ************* Lot/Batch Number *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1228,7 +1013,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Remark *********************
+                              // *************************** Remark *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1264,7 +1049,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Flux *********************
+                              // *********** Flux *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1281,7 +1066,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *********************  Flux-Supplier ************************
+                              // *********************  Flux-Supplier ************************
 
                               const SizedBox(
                                 height: 15,
@@ -1316,7 +1101,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Flux-Specification / Model No. *********************
+                              // **************** Flux-Specification / Model No. *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1353,7 +1138,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Flux- Lot/Batch Number *********************
+                              // *************************** Flux- Lot/Batch Number *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1390,8 +1175,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Remark *********************
-
+                              // *************** Remark *********************
                               const SizedBox(
                                 height: 15,
                               ),
@@ -1426,7 +1210,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// ####################################   Ribbon ########################################
+                              // ############   Ribbon ########################################
 
                               const SizedBox(
                                 height: 15,
@@ -1443,7 +1227,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *********************  ribbon-Supplier ************************
+                              // ****  ribbon-Supplier ************************
 
                               const SizedBox(
                                 height: 15,
@@ -1478,7 +1262,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** ribbon-Specification / Model No. *********************
+                              // ********* ribbon-Specification / Model No. *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1515,7 +1299,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** ribbon-Lot/Batch Number *********************
+                              // ********************* ribbon-Lot/Batch Number *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1552,7 +1336,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** ribbon-Remark *********************
+                              // *************************** ribbon-Remark *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1588,7 +1372,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// ####################################   Interconnector-Bus-bar ########################################
+                              // ################   Interconnector-Bus-bar ######################
 
                               const SizedBox(
                                 height: 15,
@@ -1605,7 +1389,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *********************  Interconnector-Supplier ************************
+                              // *********************  Interconnector-Supplier ************************
 
                               const SizedBox(
                                 height: 15,
@@ -1642,7 +1426,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// ***************************  Interconnector-Specification / Model No. *********************
+                              // *********  Interconnector-Specification / Model No. *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1680,7 +1464,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// ***************************  Interconnector-Lot/Batch Number *********************
+                              // *******  Interconnector-Lot/Batch Number *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1717,7 +1501,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Interconnector-Remark *********************
+                              // ********** Interconnector-Remark *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1755,7 +1539,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// ####################################   Glass ########################################
+                              // ########   Glass ########
 
                               const SizedBox(
                                 height: 15,
@@ -1772,7 +1556,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *********************  Glass-Supplier ************************
+                              // ***************  Glass-Supplier ************************
 
                               const SizedBox(
                                 height: 15,
@@ -1807,7 +1591,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Glass-Specification / Model No. *********************
+                              // ************ Glass-Specification / Model No. *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1844,7 +1628,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Glass-Lot/Batch Number *********************
+                              // ******* Glass-Lot/Batch Number *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1881,7 +1665,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *************************** Glass-Remark *********************
+                              // *************** Glass-Remark *********************
 
                               const SizedBox(
                                 height: 15,
@@ -1917,7 +1701,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// ####################################  Eva Glass side(FrontEVA)  ########################################
+                              // ########  Eva Glass side(FrontEVA)  ##########
 
                               const SizedBox(
                                 height: 15,
@@ -1934,7 +1718,7 @@ class _BomCardState extends State<BomCard> {
                                 ),
                               ),
 
-// *********************  Eva-Glass-Supplier ************************
+                              // *********************  Eva-Glass-Supplier ************************
 
                               const SizedBox(
                                 height: 15,
@@ -3304,12 +3088,6 @@ class _BomCardState extends State<BomCard> {
                                               sendStatus = "Inprogress";
                                             });
                                             findData();
-
-                                            // _bomCardFormKey.currentState!.save;
-                                            // if (_bomCardFormKey.currentState!
-                                            //     .validate()) {
-
-                                            // }
                                           },
                                           label: "Save",
                                           organization: '',
@@ -3329,8 +3107,6 @@ class _BomCardState extends State<BomCard> {
                                       ),
                                       onTap: () {
                                         AppHelper.hideKeyboard(context);
-                                        // sendDataToBackend();
-
                                         _bomCardFormKey.currentState!.save;
                                         if (_bomCardFormKey.currentState!
                                             .validate()) {
@@ -3351,8 +3127,7 @@ class _BomCardState extends State<BomCard> {
                                   widget.id != null &&
                                   status == 'Pending')
                                 Container(
-                                  color: Color.fromARGB(255, 191, 226,
-                                      187), // Change the background color to your desired color
+                                  color: Color.fromARGB(255, 191, 226, 187),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
@@ -3378,30 +3153,6 @@ class _BomCardState extends State<BomCard> {
                                     ],
                                   ),
                                 ),
-
-                              // Center(
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.all(8.0),
-                              //     child: InkWell(
-                              //       onTap: () {
-                              //         // Navigator.of(context).pushReplacement(
-                              //         //     MaterialPageRoute(
-                              //         //         builder: (BuildContext context) =>
-                              //         //             LoginPage(
-                              //         //                 appName: widget.appName)));
-                              //       },
-                              //       child: Text(
-                              //         "BACK",
-                              //         style: TextStyle(
-                              //           fontFamily: appFontFamily,
-                              //           fontSize: 16,
-                              //           fontWeight: FontWeight.w500,
-                              //           color: AppColors.redColor,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
                               const SizedBox(
                                 height: 25,
                               ),
@@ -3434,72 +3185,68 @@ class _BomCardState extends State<BomCard> {
                   ),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -8,7 +7,6 @@ import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/ipqcTestList.dart';
 import 'package:QCM/testingCard.dart';
-import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -100,11 +98,7 @@ class _busbarState extends State<busbar> {
     super.initState();
     store();
     isCycleTimeTrue = true; // Set initial value
-    // setState(() {
-
-    // });
   }
-
   // *******  Send the Data where will be Used to Backend *******
 
   void store() async {
@@ -122,9 +116,6 @@ class _busbarState extends State<busbar> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(ribbonController.text);
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -146,20 +137,12 @@ class _busbarState extends State<busbar> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
+
     var resBody = json.decode(allSolarData.body);
 
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print(resBody['response']);
-          print(resBody['response']['Sample1Length']);
-          // print(resBody['response']['Visual Inspection & Laminator Description']
-          //     ["Cycle_Time"]);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
-          // dateController.text = resBody['response']['Date'] ?? '';
           status = resBody['response']['Status'] ?? '';
           dateOfQualityCheck = resBody['response']['Date'] ?? '';
           dateController.text = resBody['response']['Date'] != ''
@@ -176,15 +159,8 @@ class _busbarState extends State<busbar> {
           ribbonController.text =
               resBody['response']['Sample1Length'].toString() ?? '';
 
-          // ribbonController.text = (resBody['response']['Sample1Length'] != ""
-          //     ? resBody['response']['Sample1Length'].toString()
-          //     : '') as TextEditingValue;
-          print("hahahahahah");
-          print(ribbonController.text);
-
           sampleAInputtext = resBody['response']['Sample1'] ?? [];
           numberOfStringers = resBody['response']['Sample1Length'] ?? 0;
-          print(numberOfStringers);
 
           sampleBInputText = resBody['response']['Sample2'] ?? [];
           addControllers(numberOfStringers);
@@ -211,14 +187,10 @@ class _busbarState extends State<busbar> {
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
-
     final url = (site! + "IPQC/UpdateSolderingPeelTestStatus");
 
     var params = {
@@ -261,7 +233,6 @@ class _busbarState extends State<busbar> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -279,123 +250,6 @@ class _busbarState extends State<busbar> {
   }
 
   Future createData() async {
-    print(Sample1Controllers);
-    print(ribbonController.text);
-    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
-    //print(jobCardDate);
-    // var data = [
-    //   {
-    //     "JobCardDetails": {
-    //       "Type": "Job Card",
-    //       "JobCardDetailId": jobCarId != '' && jobCarId != null
-    //           ? jobCarId
-    //           : widget.id != '' && widget.id != null
-    //               ? widget.id
-    //               : '',
-    //       "date": jobCardDate,
-    //       "moduleType": moduleTypeController.text,
-    //       "matrixSize": matrixSizeController.text,
-    //       "moduleNo": moduleNoController.text,
-    //       "DocNo": "GSPL/IPQC/BM/024",
-    //       "RevisionNo": "1.0",
-    //       "RevisionDate": "12.08.2023",
-    //       "Status": sendStatus,
-    //       "CreatedBy": personid
-    //     }
-    //   },
-    //   {
-    //     "JobCard": [
-    //       {
-    //         "Process": 'Glass Washing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Lot_No": lotNoController.text,
-    //           "size": lotSizeController.text
-    //         },
-    //         "Comment": glassCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Foil cutterr',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "EVA_Lot_No": evaLotNoController.text,
-    //           "EVA_Size": evaSizeController.text,
-    //           "Backsheet_Lot": backsheetLotController.text,
-    //           "Backsheet_size": backsheetSizeController.text
-    //         },
-    //         "Comment": foilCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Tabbing & Stringing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Cell_Lot_No": cellLotNoController.text,
-    //           "Cell_Type": cellTypeController.text,
-    //           "Cell_Size": cellSyzeController.text,
-    //           "Cell_Eff": cellEffController.text,
-    //           "Interconnect_Ribbon_Size": interconnectRibbonSizeController.text,
-    //           "Busbar_Size": busbarSizeController.text,
-    //           "Flux": fluxController.text
-    //         },
-    //         "Comment": tabbingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Bussing/InterConnection',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Cell_To_Cell_Gap": cellToCellGapController.text,
-    //           "String_To_String_Gap": stringToStringGapController.text,
-    //           "Soldering_Temp": solderingTempController.text
-    //         },
-    //         "Comment": bussingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Visual Inspection & Laminator',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Temperature": tempreatureController.text,
-    //           "Cycle_Time": cycleTimeController.text,
-    //           "Laminate_Quality": isCycleTimeTrue
-    //         },
-    //         "Comment": visualCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Edge Triming',
-    //         "EmployeeID": personid,
-    //         "Description": {"BackSheet_Cutting": isBacksheetCuttingTrue},
-    //         "Comment": edgeCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Framing',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "Frame_Type": frameTypeController.text,
-    //           "Frame_Size": frameSizeController.text,
-    //           "Silicon_Glue_Lot_No": sliconGlueLotController.text
-    //         },
-    //         "Comment": framingCommentController.text
-    //       },
-    //       {
-    //         "Process": 'J/B Assembly',
-    //         "EmployeeID": personid,
-    //         "Description": {
-    //           "JB_Lot_No": jBLotNoController.text,
-    //           "JB_Type": jBTypeController.text,
-    //           "Silicon_Glue_Lot_No": siliconGlueLotNoController.text
-    //         },
-    //         "Comment": jbCommentController.text
-    //       },
-    //       {
-    //         "Process": 'Sun Simulator',
-    //         "EmployeeID": personid,
-    //         "Description": {"Pmax": pmaxController.text},
-    //         "Comment": sunCommentController.text
-    //       }
-    //     ]
-    //   }
-    // ];
-    // print('Sending data to backend: $data');
-
     var data = {
       "Type": "Busbar",
       "JobCardDetailId": jobCarId != '' && jobCarId != null
@@ -422,8 +276,7 @@ class _busbarState extends State<busbar> {
       "Sample1Length": ribbonController.text,
       "Samples": {"Sample1": Sample1Controllers, "Sample2": Sample2Controllers}
     };
-    print(data);
-    print(Sample1Controllers);
+
     setState(() {
       _isLoading = true;
     });
@@ -440,9 +293,7 @@ class _busbarState extends State<busbar> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Bhanuu bhai");
-    print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
@@ -451,8 +302,6 @@ class _busbarState extends State<busbar> {
         _isLoading = false;
       });
 
-      print(
-          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
@@ -1073,8 +922,6 @@ class _busbarState extends State<busbar> {
                                       shrinkWrap: true,
                                       itemCount: numberOfStringers,
                                       itemBuilder: (context, index) {
-                                        print("chachajajajajjajmamaamam");
-                                        print(numberOfStringers);
                                         return Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -1320,10 +1167,6 @@ class _busbarState extends State<busbar> {
                                                               .text
                                                     });
                                                   }
-                                                  print(
-                                                      "Arrrrrrrrdddddddddddddddddddddddddddd");
-                                                  print(Sample1Controllers);
-
                                                   Sample2Controllers = [];
 
                                                   for (int i = 0;
@@ -1335,9 +1178,6 @@ class _busbarState extends State<busbar> {
                                                               .text
                                                     });
                                                   }
-                                                  print(
-                                                      "Arrrrrrrrxxxxxxxxxxxxxxxxxxxxxxxxxxddddddddd");
-                                                  print(Sample2Controllers);
 
                                                   _registerFormKey
                                                       .currentState!.save;
@@ -1349,50 +1189,12 @@ class _busbarState extends State<busbar> {
                                                     });
                                                     createData();
                                                   }
-
-                                                  // _registerFormKey.currentState!.save;
-                                                  // if (_registerFormKey.currentState!
-                                                  //     .validate()) {
-                                                  //   sendDataToBackend();
-                                                  // }
-                                                  // setState(() {
-                                                  //   setPage = "NextPage";
-                                                  // });
-                                                  // print("Page set");
-                                                  print(setPage);
                                                 },
                                                 label: "Save",
                                                 organization: '',
                                               )
                                             : Container(),
 
-                                    // Back button
-                                    // const SizedBox(
-                                    //   height: 15,
-                                    // ),
-                                    // AppButton(
-                                    //   textStyle: const TextStyle(
-                                    //     fontWeight: FontWeight.w700,
-                                    //     color: AppColors.white,
-                                    //     fontSize: 16,
-                                    //   ),
-                                    //   onTap: () {
-                                    //     AppHelper.hideKeyboard(context);
-
-                                    //     setState(() {
-                                    //       setPage = 'backpage';
-                                    //     });
-                                    //     print("Page set");
-                                    //     print(setPage);
-                                    //   },
-                                    //   label: "Back",
-                                    //   organization: '',
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 10,
-                                    // ),
-
-                                    // ^^^^^^^
                                     const SizedBox(
                                       height: 25,
                                     ),
@@ -1400,8 +1202,8 @@ class _busbarState extends State<busbar> {
                                         widget.id != null &&
                                         status == 'Pending')
                                       Container(
-                                        color: Color.fromARGB(255, 191, 226,
-                                            187), // Change the background color to your desired color
+                                        color:
+                                            Color.fromARGB(255, 191, 226, 187),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.stretch,
@@ -1459,72 +1261,68 @@ class _busbarState extends State<busbar> {
                       : Container(),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );

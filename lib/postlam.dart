@@ -1,37 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Iqcp.dart';
-import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/ipqcTestList.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:form_field_validator/form_field_validator.dart';
-
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/src/response.dart' as Response;
-
 import '../components/appbar.dart';
 import '../constant/app_assets.dart';
 import '../constant/app_color.dart';
 import '../constant/app_fonts.dart';
 import '../constant/app_helper.dart';
-
 import '../constant/app_styles.dart';
 
 class Postlam extends StatefulWidget {
@@ -50,7 +38,6 @@ class _PostlamState extends State<Postlam> {
 
   /******Trimming **********/
   final _postLamFormKey = GlobalKey<FormState>();
-
   TextEditingController trimmingWiCrieteriaController = TextEditingController();
   TextEditingController trimmingWiFrequencyController = TextEditingController();
   TextEditingController trimmingWiController = TextEditingController();
@@ -553,9 +540,6 @@ class _PostlamState extends State<Postlam> {
   }
 
   Future createData() async {
-    print('sampleeeeeeeeeeeeeeeeeeeeeeeee');
-    print(sunExpiryController.text);
-    print(junctionWiController.text);
     var data = [
       {
         "PreLamDetailId": prelamId != '' && prelamId != null
@@ -1068,366 +1052,6 @@ class _PostlamState extends State<Postlam> {
         },
       ]
     ];
-    print("hahahhahhahahhahahhahahhahahahhahahhahahhahahhah");
-
-    print(data);
-    // var PostLamDetails = {
-    //   "PreLamDetailId": prelamId != '' && prelamId != null
-    //       ? prelamId
-    //       : widget.id != '' && widget.id != null
-    //           ? widget.id
-    //           : '',
-    //   "Type": "PostLam",
-    //   "CurrentUser": personid,
-    //   "Status": sendStatus,
-    //   "Date": date,
-    //   "Shift": shiftController.text,
-    //   "Line": lineController.text,
-    //   "PONo": poController.text,
-    //   "Document No": "GSPL/IPQC/IPC/003",
-    //   "RevNo": "Ver2.0/28-03-2024"
-    // };
-
-    // var Postlam = {
-    //   "Trimming": {
-    //     "Avaibility of WI": trimmingWiController.text,
-    //     "Frequency": trimmingWiFrequencyController.text,
-    //     "Crieteria": trimmingWiCrieteriaController.text,
-    //     "Physical verification of Union trimming & Blade replacing frequency": {
-    //       "Observation 1": trimmingPhysicalObs1Controller.text,
-    //       "Observation 2": trimmingPhysicalObs2Controller.text,
-    //       "Observation 3": trimmingPhysicalObs3Controller.text,
-    //       "Observation 4": trimmingPhysicalObs4Controller.text,
-    //       "Observation 5": trimmingPhysicalObs5Controller.text,
-    //     },
-    //     "Frequency": trimmingPhysicalFrequencyController.text,
-    //     "Acceptance_Criteria": trimmingPhysicalCriteriaController.text,
-    //   },
-    //   "Post Lam Visual Inspection": {
-    //     "Avaibility of WI & criteria": postLamWiController.text,
-    //     "Frequency": postLamWiFrequencyController.text,
-    //     "Acceptance_Criteria": postLamWiCrieteriaController.text,
-    //     "Visual Defects": {
-    //       "Observation 1": postLamVisualObs1Controller.text,
-    //       "Observation 2": postLamVisualObs2Controller.text,
-    //       "Observation 3": postLamVisualObs3Controller.text,
-    //       "Observation 4": postLamVisualObs4Controller.text,
-    //       "Observation 5": postLamVisualObs5Controller.text,
-    //     },
-    //     "Frequency": postLamVisualFrequencyController.text,
-    //     "Crieteria": postLamVisualCrieteriaController.text,
-    //   },
-    //   "Framing": {
-    //     "Avaibility of WI & Sealant weight Specification":
-    //         framingWiController.text,
-    //     "Frequency": framingWiFrequencyController.text,
-    //     "Crieteria": framingWiCrieteriaController.text,
-    //     "Glue uniformity & continuity in frame groove": {
-    //       "Observation 1": framingGlueUniObs1Controller.text,
-    //       "Observation 2": framingGlueUniObs2Controller.text,
-    //       "Observation 3": framingGlueUniObs3Controller.text,
-    //       "Observation 4": framingGlueUniObs4Controller.text,
-    //       "Observation 5": framingGlueUniObs5Controller.text,
-    //     },
-    //     "Frequency": framingGlueUniFrequencyController.text,
-    //     "Crieteria": framingGlueUniCrieteriaController.text,
-    //     "Glue Weight": framingGlueWeightController.text,
-    //     "Frequency": framingGlueWeightFrequencyController.text,
-    //     "Crieteria": framingGlueWeightCrieteriaController.text,
-    //     "Corner Gap": {
-    //       "Observation 1": framingCornerObs1Controller.text,
-    //       "Observation 2": framingCornerObs2Controller.text,
-    //       "Observation 3": framingCornerObs3Controller.text,
-    //       "Observation 4": framingCornerObs4Controller.text,
-    //       "Observation 5": framingCornerObs5Controller.text,
-    //     },
-    //     "Frequency": framingCornerFrequencyController.text,
-    //     "Crieteria": framingCornerCrieteriaController.text,
-    //     "Top & Buttom cut Length side cut length": framingTopController.text,
-    //     "Frequency": framingTopFrequencyController.text,
-    //     "Crieteria": framingTopCrieteriaController.text,
-    //     "Mounting hole x,y pitch": framingMountingController.text,
-    //     "Frequency": framingMountingFrequencyController.text,
-    //     "Crieteria": framingMountingCrieteriaController.text,
-    //     "Anodizing thicknes": framingAnodizingController.text,
-    //     "Frequency": framingAnodizingFrequencyController.text,
-    //     "Crieteria": framingAnodizingCrieteriaController.text,
-    //   },
-    //   "Junction Box Assembly": {
-    //     "Avaibility of WI & sealant weight specification":
-    //         junctionWiController.text,
-    //     "Frequency": junctionWiFrequencyController.text,
-    //     "Crieteria": junctionWiCrieteriaController.text,
-    //     "Glue around jB": {
-    //       "Observation 1": junctionGlueObs1Controller.text,
-    //       "Observation 2": junctionGlueObs2Controller.text,
-    //       "Observation 3": junctionGlueObs3Controller.text,
-    //       "Observation 4": junctionGlueObs4Controller.text,
-    //       "Observation 5": junctionGlueObs5Controller.text,
-    //     },
-    //     "Frequency": junctionGlueFrequencyController.text,
-    //     "Crieteria": junctionGlueFrequencyController.text,
-    //     "JB tilt": {
-    //       "Observation 1": junctionJbObs1Controller.text,
-    //       "Observation 2": junctionJbObs2Controller.text,
-    //       "Observation 3": junctionJbObs3Controller.text,
-    //       "Observation 4": junctionJbObs4Controller.text,
-    //       "Observation 5": junctionJbObs5Controller.text,
-    //     },
-    //     "Frequency": junctionJbFrequencyController.text,
-    //     "Crieteria": junctionJbFrequencyController.text,
-    //     "Glue Weight": junctionGlueWeightController.text,
-    //     "Frequency": junctionGlueWeightFrequencyController.text,
-    //     "Crieteria": junctionGlueWeightCrieteriaController.text,
-    //     "Glue(Base+Catalyst)potting Ratio &Weight":
-    //         junctionGlueRatioController.text,
-    //     "Frequency": junctionGlueRatioFrequencyController.text,
-    //     "Crieteria": junctionGlueRatioCrieteriaController.text,
-    //   },
-    //   "Curing": {
-    //     "Avaibility of WI ": curingWiController.text,
-    //     "Frequency": curingWiFrequencyController.text,
-    //     "Crieteria": curingWiCrieteriaController.text,
-    //     "Curing Time ": curingTimeController.text,
-    //     "Frequency": curingTimeFrequencyController.text,
-    //     "Crieteria": curingTimeCrieteriaController.text,
-    //     "Temperature & Humidity ": curingTempController.text,
-    //     "Frequency": curingTempFrequencyController.text,
-    //     "Crieteria": curingTempCrieteriaController.text,
-    //   },
-    //   "Buffing": {
-    //     "Avaibillity of WI": buffingWiController.text,
-    //     "Frequency": buffingWiFrequencyController.text,
-    //     "Crieteria": buffingWiCrieteriaController.text,
-    //     "Edge of corner, Buffing belt condition": {
-    //       "Observation 1": buffingEdseObs1Controller.text,
-    //       "Observation 2": buffingEdseObs2Controller.text,
-    //       "Observation 3": buffingEdseObs3Controller.text,
-    //       "Observation 4": buffingEdseObs4Controller.text,
-    //       "Observation 5": buffingEdseObs5Controller.text,
-    //     },
-    //     "Frequency": buffingEdgeFrequencyController.text,
-    //     "Crieteria": buffingEdgeCrieteriaController.text,
-    //   },
-    //   "Cleaning": {
-    //     "Avaibillity of WI": cleaningWiController.text,
-    //     "Frequency": cleaningWiFrequencyController.text,
-    //     "Crieteria": cleaningWiCrieteriaController.text,
-    //     "Module should be free from -Protective Film,Scratches on Frame-Backsheet,Corner cleaning of module,Silicon Sealant glue/backsheet,frame cleaning,jb cleaning,No burr":
-    //         {
-    //       "Observation 1": cleaningModuleObs1Controller.text,
-    //       "Observation 2": cleaningModuleObs2Controller.text,
-    //       "Observation 3": cleaningModuleObs3Controller.text,
-    //       "Observation 4": cleaningModuleObs4Controller.text,
-    //       "Observation 5": cleaningModuleObs5Controller.text,
-    //     },
-    //     "Frequency": cleaningModuleFrequencyController.text,
-    //     "Crieteria": cleaningModuleCrieteriaController.text,
-    //   },
-    //   "Sun Simulator Calibration": {
-    //     "Avaibillity of WI": sunWiController.text,
-    //     "Frequency": sunWiFrequencyController.text,
-    //     "Crieteria": sunWiCrieteriaController.text,
-    //     "Temperature": sunTempController.text,
-    //     "Frequency": sunTempFrequencyController.text,
-    //     "Crieteria": sunTempCrieteriaController.text,
-    //     "Irradiance": sunIrradianceController.text,
-    //     "Frequency": sunIrradianceFrequencyController.text,
-    //     "Crieteria": sunIrradianceCrieteriaController.text,
-    //     "Each sun simulator validated after every four hours using valid silver reference PV module":
-    //         {
-    //       "Inspection First": {
-    //         "Time": sunCali1TimeController.text,
-    //         "Room Temp": sunCali1RoomController.text,
-    //         "Module Temp": sunCali1ModuleTempController.text,
-    //         "Module Id": sunCali1ModuleIdController.text,
-    //       },
-    //       "Inspection Second": {
-    //         "Time": sunCali2TimeController.text,
-    //         "Room Temp": sunCali2RoomController.text,
-    //         "Module Temp": sunCali2ModuleTempController.text,
-    //         "Module Id": sunCali2ModuleIdController.text,
-    //       },
-    //       "Inspection Third": {
-    //         "Time": sunCali3TimeController.text,
-    //         "Room Temp": sunCali3RoomController.text,
-    //         "Module Temp": sunCali3ModuleTempController.text,
-    //         "Module Id": sunCali3ModuleIdController.text,
-    //       },
-    //     },
-    //     "Frequency": sunCaliFrequencyController.text,
-    //     "Crieteria": sunCaliCrieteriaController.text,
-    //     "Last Validation or calibration date and time": {
-    //       "First Inspection": sunLast1Controller.text,
-    //       "Second Inspection": sunLast2Controller.text,
-    //       "Third Inspection": sunLast3Controller.text,
-    //     },
-    //     "Frequency": sunLastFrequencyController.text,
-    //     "Crieteria": sunLastCrieteriaController.text,
-    //     "Expiry Date of Silver Module Verification": sunExpiryController.text,
-    //     "Frequency": sunExpiryFrequencyController.text,
-    //     "Crieteria": sunExpiryCrieteriaController.text,
-    //   },
-    //   "Hipot": {
-    //     "Avaibillity of WI": hipotWiController.text,
-    //     "Frequency": hipotWiFrequencyController.text,
-    //     "Crieteria": hipotWiCrieteriaController.text,
-    //     "parameter": hipotParameterController.text,
-    //     "Frequency": hipotParameterFrequencyController.text,
-    //     "Crieteria": hipotParameterCrieteriaController.text,
-    //     "DCW-4.0KV ": {
-    //       "Observation 1": hipotDCWObs1Controller.text,
-    //       "Observation 2": hipotDCWObs2Controller.text,
-    //       "Observation 3": hipotDCWObs3Controller.text,
-    //       "Observation 4": hipotDCWObs4Controller.text,
-    //       "Observation 5": hipotDCWObs5Controller.text,
-    //     },
-    //     "Frequency": hipotDCWFrequencyController.text,
-    //     "Crieteria": hipotDCWCrieteriaController.text,
-    //     "IR-1.5 KV ": {
-    //       "Observation 1": hipotIRObs1Controller.text,
-    //       "Observation 2": hipotIRObs2Controller.text,
-    //       "Observation 3": hipotIRObs3Controller.text,
-    //       "Observation 4": hipotIRObs4Controller.text,
-    //       "Observation 5": hipotIRObs5Controller.text,
-    //     },
-    //     "Frequency": hipotIRFrequencyController.text,
-    //     "Crieteria": hipotIRCrieteriaController.text,
-    //     "Ground Continuity-62.5A ": {
-    //       "Observation 1": hipotGroundObs1Controller.text,
-    //       "Observation 2": hipotGroundObs2Controller.text,
-    //       "Observation 3": hipotGroundObs3Controller.text,
-    //       "Observation 4": hipotGroundObs4Controller.text,
-    //       "Observation 5": hipotGroundObs5Controller.text,
-    //     },
-    //     "Frequency": hipotGroundFrequencyController.text,
-    //     "Crieteria": hipotGroundCrieteriaController.text,
-    //   },
-    //   "Final EL TEST": {
-    //     "Avaibillity of WI": elWiController.text,
-    //     "Frequency": elWiFrequencyController.text,
-    //     "Crieteria": elWiCrieteriaController.text,
-    //     "Voltage & Current Verification in DC power supply":
-    //         elVoltageController.text,
-    //     "Frequency": elVoltageFrequencyController.text,
-    //     "Crieteria": elVoltageCrieteriaController.text,
-    //     "EL Defect": {
-    //       "Observation 1": elDefectsObs1Controller.text,
-    //       "Observation 2": elDefectsObs2Controller.text,
-    //       "Observation 3": elDefectsObs3Controller.text,
-    //       "Observation 4": elDefectsObs4Controller.text,
-    //       "Observation 5": elDefectsObs5Controller.text,
-    //     },
-    //     "Frequency": elDefectsFrequencyController.text,
-    //     "Crieteria": elDefectsCrieteriaController.text,
-    //   },
-    //   "RFID Reading & writing": {
-    //     "Avaibillity of WI": rfidWiController.text,
-    //     "Frequency": rfidWiFrequencyController.text,
-    //     "Crieteria": rfidWiCrieteriaController.text,
-    //     "Fixing position": {
-    //       "Observation 1": rfidFixingObs1Controller.text,
-    //       "Observation 2": rfidFixingObs2Controller.text,
-    //       "Observation 3": rfidFixingObs3Controller.text,
-    //       "Observation 4": rfidFixingObs4Controller.text,
-    //       "Observation 5": rfidFixingObs5Controller.text,
-    //     },
-    //     "Frequency": rfidFixingFrequencyController.text,
-    //     "Crieteria": rfidFixingCrieteriaController.text,
-    //     "Tag read & write": rfidTagController.text,
-    //     "Frequency": rfidTagFrequencyController.text,
-    //     "Crieteria": rfidTagCrieteriaController.text,
-    //     "Certification Date Verification": rfidCertificationController.text,
-    //     "Frequency": rfidCertificationFrequencyController.text,
-    //     "Crieteria": rfidCertificationCrieteriaController.text,
-    //     "Module Manufacturing Month Verification": rfidModuleController.text,
-    //     "Frequency": rfidModuleFrequencyController.text,
-    //     "Crieteria": rfidModuleCrieteriaController.text,
-    //   },
-    //   "Back Label": {
-    //     "Data Verification": {
-    //       "Observation 1": backLabelDataObs1Controller.text,
-    //       "Observation 2": backLabelDataObs2Controller.text,
-    //       "Observation 3": backLabelDataObs3Controller.text,
-    //       "Observation 4": backLabelDataObs4Controller.text,
-    //       "Observation 5": backLabelDataObs5Controller.text,
-    //     },
-    //     "Frequency": backLabelDataFrequencyController.text,
-    //     "Crieteria": backLabelDataCrieteriaController.text,
-    //     "Air Bubbles,Tilt & Misprint": {
-    //       "Observation 1": backLabelAirObs1Controller.text,
-    //       "Observation 2": backLabelAirObs2Controller.text,
-    //       "Observation 3": backLabelAirObs3Controller.text,
-    //       "Observation 4": backLabelAirObs4Controller.text,
-    //       "Observation 5": backLabelAirObs5Controller.text,
-    //     },
-    //     "Frequency": backLabelAirFrequencyController.text,
-    //     "Crieteria": backLabelAirCrieteriaController.text,
-    //   },
-    //   "Final Visual Inspection": {
-    //     "Visual inspection ": {
-    //       "Observation 1": finalInspectionObs1Controller.text,
-    //       "Observation 2": finalInspectionObs2Controller.text,
-    //       "Observation 3": finalInspectionObs3Controller.text,
-    //       "Observation 4": finalInspectionObs4Controller.text,
-    //       "Observation 5": finalInspectionObs5Controller.text,
-    //     },
-    //     "Frequency": finalInspectionFrequencyController.text,
-    //     "Crieteria": finalInspectionCrieteriaController.text,
-    //     "Fitment of JB cover": {
-    //       "Observation 1": finalFitmentObs1Controller.text,
-    //       "Observation 2": finalFitmentObs2Controller.text,
-    //       "Observation 3": finalFitmentObs3Controller.text,
-    //       "Observation 4": finalFitmentObs4Controller.text,
-    //       "Observation 5": finalFitmentObs5Controller.text,
-    //     },
-    //     "Frequency": finalFitmentFrequencyController.text,
-    //     "Crieteria": finalFitmentCrieteriaController.text,
-    //     "Availability of acceptance Criteri & WI": finalWiController.text,
-    //     "Frequency": finalWiFrequencyController.text,
-    //     "Crieteria": finalWiCrieteriaController.text,
-    //   },
-    //   "Packaging": {
-    //     "Barcode Defects(unclear/duplication) ": {
-    //       "Observation 1": packagingBarcodeObs1Controller.text,
-    //       "Observation 2": packagingBarcodeObs2Controller.text,
-    //       "Observation 3": packagingBarcodeObs3Controller.text,
-    //       "Observation 4": packagingBarcodeObs4Controller.text,
-    //       "Observation 5": packagingBarcodeObs5Controller.text,
-    //     },
-    //     "Frequency": packagingBarcodeFrequencyController.text,
-    //     "Crieteria": packagingBarcodeCrieteriaController.text,
-    //     "Packing Label & Contents": {
-    //       "Observation 1": packagingpackingObs1Controller.text,
-    //       "Observation 2": packagingpackingObs2Controller.text,
-    //       "Observation 3": packagingpackingObs3Controller.text,
-    //       "Observation 4": packagingpackingObs4Controller.text,
-    //       "Observation 5": packagingpackingObs5Controller.text,
-    //     },
-    //     "Frequency": packagingpackingFrequencyController.text,
-    //     "Crieteria": packagingpackingCrieteriaController.text,
-    //     "Box Condition": {
-    //       "Observation 1": packagingBoxObs1Controller.text,
-    //       "Observation 2": packagingBoxObs2Controller.text,
-    //       "Observation 3": packagingBoxObs3Controller.text,
-    //       "Observation 4": packagingBoxObs4Controller.text,
-    //       "Observation 5": packagingBoxObs5Controller.text,
-    //     },
-    //     "Frequency": packagingBoxFrequencyController.text,
-    //     "Crieteria": packagingBoxCrieteriaController.text,
-    //     "Stretch wrapping": {
-    //       "Observation 1": packagingStretchObs1Controller.text,
-    //       "Observation 2": packagingStretchObs2Controller.text,
-    //       "Observation 3": packagingStretchObs3Controller.text,
-    //       "Observation 4": packagingStretchObs4Controller.text,
-    //       "Observation 5": packagingStretchObs5Controller.text,
-    //     },
-    //     "Frequency": packagingStretchFrequencyController.text,
-    //     "Crieteria": packagingStretchCrieteriaController.text,
-    //   },
-    // };
-    print("cahahhahahhahhahahahahah");
-    print(site);
     setState(() {
       _isLoading = true;
     });
@@ -1444,9 +1068,6 @@ class _PostlamState extends State<Postlam> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Bhanuu bhai");
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
@@ -1455,8 +1076,6 @@ class _PostlamState extends State<Postlam> {
         _isLoading = false;
       });
 
-      print(
-          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
@@ -1494,8 +1113,6 @@ class _PostlamState extends State<Postlam> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -1517,22 +1134,10 @@ class _PostlamState extends State<Postlam> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
-
     var resBody = json.decode(allSolarData.body);
-
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print("Aaaaaaaaaaaaaaaaaaajajaaa");
-          print(resBody['response']['Status']);
-          print(resBody);
-          print(resBody['response']['TrimmingCheckPoint'][
-                  'Physical verification of Union trimming & Blade replacing frequency']
-              ['Observation 1']);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
           status = resBody['response']['Status'] ?? '';
           dateOfPostLam = resBody['response']['Date'] ?? '';
           dateController.text = resBody['response']['Date'] != ''
@@ -2151,14 +1756,10 @@ class _PostlamState extends State<Postlam> {
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
-
     final url = (site! + "IPQC/UpdatePreLamStatus");
 
     var params = {
@@ -2201,7 +1802,6 @@ class _PostlamState extends State<Postlam> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -2213,8 +1813,6 @@ class _PostlamState extends State<Postlam> {
         referencePdfFileBytes = pdffile.readAsBytesSync();
         referencePdfController.text = result.files.single.name;
       });
-      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
-      print(referencePdfFileBytes);
     } else {
       // User canceled the file picker
     }
@@ -2237,9 +1835,6 @@ class _PostlamState extends State<Postlam> {
         contentType: MediaType("application", 'pdf'),
       ),
     });
-    print("Hoiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-    print(formData.files);
-
     _response = await _dio.post((site! + 'IPQC/UploadPreLamPdf'), // Prod
 
         options: Options(
@@ -2433,7 +2028,6 @@ class _PostlamState extends State<Postlam> {
                                         ),
                                       ],
                                     ),
-
                                     const SizedBox(
                                       height: 15,
                                     ),
@@ -2528,7 +2122,6 @@ class _PostlamState extends State<Postlam> {
                                         }
                                       },
                                     ),
-
                                     SizedBox(
                                       height: 15,
                                     ),
@@ -2603,7 +2196,7 @@ class _PostlamState extends State<Postlam> {
                                     const SizedBox(
                                       height: 15,
                                     ),
-/************************************Trimming**************************************** */
+                                    /************Trimming**************************************** */
                                     const Center(
                                       child: Text(
                                         "Trimming",
@@ -2618,7 +2211,6 @@ class _PostlamState extends State<Postlam> {
                                     const SizedBox(
                                       height: 35,
                                     ),
-
                                     Text(
                                       "Frequency",
                                       style:
@@ -2714,7 +2306,6 @@ class _PostlamState extends State<Postlam> {
                                         thickness: 2.0,
                                       ),
                                     ),
-
                                     Text(
                                       "Frequency",
                                       style:
@@ -2740,7 +2331,6 @@ class _PostlamState extends State<Postlam> {
                                     const SizedBox(
                                       height: 15,
                                     ),
-
                                     Text(
                                       "Physical verification of union trimming & Blade replacing frequency",
                                       style:
@@ -2925,7 +2515,6 @@ class _PostlamState extends State<Postlam> {
                                     const SizedBox(
                                       height: 15,
                                     ),
-
                                     Padding(
                                         padding:
                                             EdgeInsets.fromLTRB(0, 10, 0, 0)),
@@ -2946,12 +2535,6 @@ class _PostlamState extends State<Postlam> {
                                                 });
                                                 createData();
                                               }
-                                              // createData();
-
-                                              //_trimmingFormKey
-                                              // .currentState!.save;
-                                              // if (_postLamFormKey.currentState!
-                                              //     .validate())
                                               setState(() {
                                                 setPage =
                                                     'postlamvisualinspection';
@@ -2960,30 +2543,6 @@ class _PostlamState extends State<Postlam> {
                                             label: "Next",
                                             organization: '',
                                           ),
-
-                                    // Center(
-                                    //   child: Padding(
-                                    //     padding: const EdgeInsets.all(8.0),
-                                    //     child: InkWell(
-                                    //       onTap: () {
-                                    //         // Navigator.of(context).pushReplacement(
-                                    //         //     MaterialPageRoute(
-                                    //         //         builder: (BuildContext context) =>
-                                    //         //             LoginPage(
-                                    //         //                 appName: widget.appName)));
-                                    //       },
-                                    //       child: Text(
-                                    //         "BACK",
-                                    //         style: TextStyle(
-                                    //           fontFamily: appFontFamily,
-                                    //           fontSize: 16,
-                                    //           fontWeight: FontWeight.w500,
-                                    //           color: AppColors.redColor,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
                                     const SizedBox(
                                       height: 18,
                                     ),
@@ -3127,7 +2686,6 @@ class _PostlamState extends State<Postlam> {
                                         const SizedBox(
                                           height: 20,
                                         ),
-
                                         Text(
                                           "Frequency",
                                           style: AppStyles
@@ -3225,7 +2783,6 @@ class _PostlamState extends State<Postlam> {
                                             thickness: 2.0,
                                           ),
                                         ),
-
                                         Text(
                                           "Frequency",
                                           style: AppStyles
@@ -3439,7 +2996,6 @@ class _PostlamState extends State<Postlam> {
                                         const SizedBox(
                                           height: 15,
                                         ),
-
                                         Padding(
                                             padding: EdgeInsets.fromLTRB(
                                                 0, 10, 0, 0)),
@@ -3462,47 +3018,15 @@ class _PostlamState extends State<Postlam> {
                                                     });
                                                     createData();
                                                   }
-                                                  // createData();
-
                                                   _postLamFormKey
                                                       .currentState!.save;
-                                                  // if (_postLamFormKey
-                                                  //     .currentState!
-                                                  //     .validate()) {}
-
                                                   setState(() {
                                                     setPage = "framing";
                                                   });
-                                                  print("Page set");
-                                                  print(setPage);
                                                 },
                                                 label: "Next",
                                                 organization: '',
                                               ),
-
-                                        // Center(
-                                        //   child: Padding(
-                                        //     padding: const EdgeInsets.all(8.0),
-                                        //     child: InkWell(
-                                        //       onTap: () {
-                                        //         // Navigator.of(context).pushReplacement(
-                                        //         //     MaterialPageRoute(
-                                        //         //         builder: (BuildContext context) =>
-                                        //         //             LoginPage(
-                                        //         //                 appName: widget.appName)));
-                                        //       },
-                                        //       child: Text(
-                                        //         "BACK",
-                                        //         style: TextStyle(
-                                        //           fontFamily: appFontFamily,
-                                        //           fontSize: 16,
-                                        //           fontWeight: FontWeight.w500,
-                                        //           color: AppColors.redColor,
-                                        //         ),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
                                         const SizedBox(
                                           height: 18,
                                         ),
@@ -3514,11 +3038,6 @@ class _PostlamState extends State<Postlam> {
                                                 setState(() {
                                                   setPage = "trimming";
                                                 });
-                                                // Navigator.of(context).pushReplacement(
-                                                //     MaterialPageRoute(
-                                                //         builder: (BuildContext context) =>
-                                                //             LoginPage(
-                                                //                 appName: widget.appName)));
                                               },
                                               child: const Text(
                                                 "BACK",
@@ -3782,7 +3301,6 @@ class _PostlamState extends State<Postlam> {
                                               ),
                                             ),
                                             // glue uniformely
-
                                             Text(
                                               "Frequency",
                                               style: AppStyles
@@ -4021,7 +3539,6 @@ class _PostlamState extends State<Postlam> {
                                               ),
                                             ),
                                             // Glue Weight
-
                                             Text(
                                               "Frequency",
                                               style: AppStyles
@@ -4129,7 +3646,6 @@ class _PostlamState extends State<Postlam> {
                                               ),
                                             ),
                                             // Corner Gap
-
                                             Text(
                                               "Frequency",
                                               style: AppStyles
@@ -4367,9 +3883,7 @@ class _PostlamState extends State<Postlam> {
                                                 thickness: 2.0,
                                               ),
                                             ),
-
                                             // Top & Button cut length
-
                                             Text(
                                               "Frequency",
                                               style: AppStyles
@@ -4474,9 +3988,7 @@ class _PostlamState extends State<Postlam> {
                                                 thickness: 2.0,
                                               ),
                                             ),
-
                                             // Mounting hole x,y pitch
-
                                             Text(
                                               "Frequency",
                                               style: AppStyles
@@ -4581,9 +4093,7 @@ class _PostlamState extends State<Postlam> {
                                                 thickness: 2.0,
                                               ),
                                             ),
-
                                             // Anodizing thickness
-
                                             Text(
                                               "Frequency",
                                               style: AppStyles
@@ -4704,13 +4214,8 @@ class _PostlamState extends State<Postlam> {
                                                         });
                                                         createData();
                                                       }
-
                                                       _postLamFormKey
                                                           .currentState!.save;
-                                                      // if (_postLamFormKey
-                                                      //     .currentState!
-                                                      //     .validate()) {}
-
                                                       setState(() {
                                                         setPage = 'junctionbox';
                                                       });
@@ -4718,30 +4223,6 @@ class _PostlamState extends State<Postlam> {
                                                     label: "Next",
                                                     organization: '',
                                                   ),
-
-                                            // Center(
-                                            //   child: Padding(
-                                            //     padding: const EdgeInsets.all(8.0),
-                                            //     child: InkWell(
-                                            //       onTap: () {
-                                            //         // Navigator.of(context).pushReplacement(
-                                            //         //     MaterialPageRoute(
-                                            //         //         builder: (BuildContext context) =>
-                                            //         //             LoginPage(
-                                            //         //                 appName: widget.appName)));
-                                            //       },
-                                            //       child: Text(
-                                            //         "BACK",
-                                            //         style: TextStyle(
-                                            //           fontFamily: appFontFamily,
-                                            //           fontSize: 16,
-                                            //           fontWeight: FontWeight.w500,
-                                            //           color: AppColors.redColor,
-                                            //         ),
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                            // ),
                                             const SizedBox(
                                               height: 18,
                                             ),
@@ -4755,11 +4236,6 @@ class _PostlamState extends State<Postlam> {
                                                       setPage =
                                                           "postlamvisualinspection";
                                                     });
-                                                    // Navigator.of(context).pushReplacement(
-                                                    //     MaterialPageRoute(
-                                                    //         builder: (BuildContext context) =>
-                                                    //             LoginPage(
-                                                    //                 appName: widget.appName)));
                                                   },
                                                   child: const Text(
                                                     "BACK",
@@ -5296,7 +4772,6 @@ class _PostlamState extends State<Postlam> {
                                                   ),
                                                 ),
                                                 // JB Lit
-
                                                 Text(
                                                   "Frequency",
                                                   style: AppStyles
@@ -5548,7 +5023,6 @@ class _PostlamState extends State<Postlam> {
                                                   ),
                                                 ),
                                                 //Junc Glue Weight
-
                                                 Text(
                                                   "Frequency",
                                                   style: AppStyles
@@ -5659,9 +5133,7 @@ class _PostlamState extends State<Postlam> {
                                                     thickness: 2.0,
                                                   ),
                                                 ),
-
                                                 // Glue(Base+Catalyst)potting ratio and weight
-
                                                 Text(
                                                   "Frequency",
                                                   style: AppStyles
@@ -5796,9 +5268,6 @@ class _PostlamState extends State<Postlam> {
                                                           _postLamFormKey
                                                               .currentState!
                                                               .save;
-                                                          // if (_postLamFormKey
-                                                          //     .currentState!
-                                                          //     .validate()) {}
                                                           setState(() {
                                                             setPage = 'curing';
                                                           });
@@ -5806,30 +5275,6 @@ class _PostlamState extends State<Postlam> {
                                                         label: "Next",
                                                         organization: '',
                                                       ),
-
-                                                // Center(
-                                                //   child: Padding(
-                                                //     padding: const EdgeInsets.all(8.0),
-                                                //     child: InkWell(
-                                                //       onTap: () {
-                                                //         // Navigator.of(context).pushReplacement(
-                                                //         //     MaterialPageRoute(
-                                                //         //         builder: (BuildContext context) =>
-                                                //         //             LoginPage(
-                                                //         //                 appName: widget.appName)));
-                                                //       },
-                                                //       child: Text(
-                                                //         "BACK",
-                                                //         style: TextStyle(
-                                                //           fontFamily: appFontFamily,
-                                                //           fontSize: 16,
-                                                //           fontWeight: FontWeight.w500,
-                                                //           color: AppColors.redColor,
-                                                //         ),
-                                                //       ),
-                                                //     ),
-                                                //   ),
-                                                // ),
                                                 const SizedBox(
                                                   height: 18,
                                                 ),
@@ -5843,11 +5288,6 @@ class _PostlamState extends State<Postlam> {
                                                         setState(() {
                                                           setPage = "framing";
                                                         });
-                                                        // Navigator.of(context).pushReplacement(
-                                                        //     MaterialPageRoute(
-                                                        //         builder: (BuildContext context) =>
-                                                        //             LoginPage(
-                                                        //                 appName: widget.appName)));
                                                       },
                                                       child: const Text(
                                                         "BACK",
@@ -6257,7 +5697,6 @@ class _PostlamState extends State<Postlam> {
                                                       ),
                                                     ),
                                                     // Temprature And Humadity
-
                                                     Text(
                                                       "Frequency",
                                                       style: AppStyles
@@ -6398,9 +5837,6 @@ class _PostlamState extends State<Postlam> {
                                                               _postLamFormKey
                                                                   .currentState!
                                                                   .save;
-                                                              // if (_postLamFormKey
-                                                              //     .currentState!
-                                                              //     .validate()) {}
                                                               setState(() {
                                                                 setPage =
                                                                     'buffing';
@@ -6409,30 +5845,6 @@ class _PostlamState extends State<Postlam> {
                                                             label: "Next",
                                                             organization: '',
                                                           ),
-
-                                                    // Center(
-                                                    //   child: Padding(
-                                                    //     padding: const EdgeInsets.all(8.0),
-                                                    //     child: InkWell(
-                                                    //       onTap: () {
-                                                    //         // Navigator.of(context).pushReplacement(
-                                                    //         //     MaterialPageRoute(
-                                                    //         //         builder: (BuildContext context) =>
-                                                    //         //             LoginPage(
-                                                    //         //                 appName: widget.appName)));
-                                                    //       },
-                                                    //       child: Text(
-                                                    //         "BACK",
-                                                    //         style: TextStyle(
-                                                    //           fontFamily: appFontFamily,
-                                                    //           fontSize: 16,
-                                                    //           fontWeight: FontWeight.w500,
-                                                    //           color: AppColors.redColor,
-                                                    //         ),
-                                                    //       ),
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
                                                     const SizedBox(
                                                       height: 18,
                                                     ),
@@ -6447,11 +5859,6 @@ class _PostlamState extends State<Postlam> {
                                                               setPage =
                                                                   "junctionbox";
                                                             });
-                                                            // Navigator.of(context).pushReplacement(
-                                                            //     MaterialPageRoute(
-                                                            //         builder: (BuildContext context) =>
-                                                            //             LoginPage(
-                                                            //                 appName: widget.appName)));
                                                           },
                                                           child: const Text(
                                                             "BACK",
@@ -6765,8 +6172,6 @@ class _PostlamState extends State<Postlam> {
                                                             thickness: 2.0,
                                                           ),
                                                         ),
-                                                        // Edge of corner, Buffing belt condition
-
                                                         Text(
                                                           "Frequency",
                                                           style: AppStyles
@@ -7090,9 +6495,6 @@ class _PostlamState extends State<Postlam> {
                                                                   _postLamFormKey
                                                                       .currentState!
                                                                       .save;
-                                                                  // if (_postLamFormKey
-                                                                  //     .currentState!
-                                                                  //     .validate()) {}
                                                                   setState(() {
                                                                     setPage =
                                                                         'cleaning';
@@ -7102,30 +6504,6 @@ class _PostlamState extends State<Postlam> {
                                                                 organization:
                                                                     '',
                                                               ),
-
-                                                        // Center(
-                                                        //   child: Padding(
-                                                        //     padding: const EdgeInsets.all(8.0),
-                                                        //     child: InkWell(
-                                                        //       onTap: () {
-                                                        //         // Navigator.of(context).pushReplacement(
-                                                        //         //     MaterialPageRoute(
-                                                        //         //         builder: (BuildContext context) =>
-                                                        //         //             LoginPage(
-                                                        //         //                 appName: widget.appName)));
-                                                        //       },
-                                                        //       child: Text(
-                                                        //         "BACK",
-                                                        //         style: TextStyle(
-                                                        //           fontFamily: appFontFamily,
-                                                        //           fontSize: 16,
-                                                        //           fontWeight: FontWeight.w500,
-                                                        //           color: AppColors.redColor,
-                                                        //         ),
-                                                        //       ),
-                                                        //     ),
-                                                        //   ),
-                                                        // ),
                                                         const SizedBox(
                                                           height: 18,
                                                         ),
@@ -7140,11 +6518,6 @@ class _PostlamState extends State<Postlam> {
                                                                   setPage =
                                                                       "curing";
                                                                 });
-                                                                // Navigator.of(context).pushReplacement(
-                                                                //     MaterialPageRoute(
-                                                                //         builder: (BuildContext context) =>
-                                                                //             LoginPage(
-                                                                //                 appName: widget.appName)));
                                                               },
                                                               child: const Text(
                                                                 "BACK",
@@ -7202,7 +6575,7 @@ class _PostlamState extends State<Postlam> {
                                                 ),
                                               ],
                                             )
-                                          /*************************************************Cleaning***************************** */
+                                          /*********          Cleaning        ********** */
                                           : setPage == "cleaning"
                                               ? Stack(
                                                   alignment: Alignment.center,
@@ -7788,9 +7161,7 @@ class _PostlamState extends State<Postlam> {
                                                                       _postLamFormKey
                                                                           .currentState!
                                                                           .save;
-                                                                      // if (_postLamFormKey
-                                                                      //     .currentState!
-                                                                      //     .validate()) {}
+
                                                                       setState(
                                                                           () {
                                                                         setPage =
@@ -7803,29 +7174,6 @@ class _PostlamState extends State<Postlam> {
                                                                         '',
                                                                   ),
 
-                                                            // Center(
-                                                            //   child: Padding(
-                                                            //     padding: const EdgeInsets.all(8.0),
-                                                            //     child: InkWell(
-                                                            //       onTap: () {
-                                                            //         // Navigator.of(context).pushReplacement(
-                                                            //         //     MaterialPageRoute(
-                                                            //         //         builder: (BuildContext context) =>
-                                                            //         //             LoginPage(
-                                                            //         //                 appName: widget.appName)));
-                                                            //       },
-                                                            //       child: Text(
-                                                            //         "BACK",
-                                                            //         style: TextStyle(
-                                                            //           fontFamily: appFontFamily,
-                                                            //           fontSize: 16,
-                                                            //           fontWeight: FontWeight.w500,
-                                                            //           color: AppColors.redColor,
-                                                            //         ),
-                                                            //       ),
-                                                            //     ),
-                                                            //   ),
-                                                            // ),
                                                             const SizedBox(
                                                               height: 18,
                                                             ),
@@ -7842,11 +7190,6 @@ class _PostlamState extends State<Postlam> {
                                                                       setPage =
                                                                           "buffing";
                                                                     });
-                                                                    // Navigator.of(context).pushReplacement(
-                                                                    //     MaterialPageRoute(
-                                                                    //         builder: (BuildContext context) =>
-                                                                    //             LoginPage(
-                                                                    //                 appName: widget.appName)));
                                                                   },
                                                                   child:
                                                                       const Text(
@@ -9469,9 +8812,7 @@ class _PostlamState extends State<Postlam> {
                                                                           _postLamFormKey
                                                                               .currentState!
                                                                               .save;
-                                                                          // if (_postLamFormKey
-                                                                          //     .currentState!
-                                                                          //     .validate()) {}
+
                                                                           setState(
                                                                               () {
                                                                             setPage =
@@ -9484,29 +8825,6 @@ class _PostlamState extends State<Postlam> {
                                                                             '',
                                                                       ),
 
-                                                                // Center(
-                                                                //   child: Padding(
-                                                                //     padding: const EdgeInsets.all(8.0),
-                                                                //     child: InkWell(
-                                                                //       onTap: () {
-                                                                //         // Navigator.of(context).pushReplacement(
-                                                                //         //     MaterialPageRoute(
-                                                                //         //         builder: (BuildContext context) =>
-                                                                //         //             LoginPage(
-                                                                //         //                 appName: widget.appName)));
-                                                                //       },
-                                                                //       child: Text(
-                                                                //         "BACK",
-                                                                //         style: TextStyle(
-                                                                //           fontFamily: appFontFamily,
-                                                                //           fontSize: 16,
-                                                                //           fontWeight: FontWeight.w500,
-                                                                //           color: AppColors.redColor,
-                                                                //         ),
-                                                                //       ),
-                                                                //     ),
-                                                                //   ),
-                                                                // ),
                                                                 const SizedBox(
                                                                   height: 18,
                                                                 ),
@@ -9526,11 +8844,6 @@ class _PostlamState extends State<Postlam> {
                                                                           setPage =
                                                                               "cleaning";
                                                                         });
-                                                                        // Navigator.of(context).pushReplacement(
-                                                                        //     MaterialPageRoute(
-                                                                        //         builder: (BuildContext context) =>
-                                                                        //             LoginPage(
-                                                                        //                 appName: widget.appName)));
                                                                       },
                                                                       child:
                                                                           const Text(
@@ -10914,7 +10227,6 @@ class _PostlamState extends State<Postlam> {
                                                                               }
 
                                                                               _postLamFormKey.currentState!.save;
-                                                                              // if (_postLamFormKey.currentState!.validate())
                                                                               setState(() {
                                                                                 setPage = 'finalel';
                                                                               });
@@ -10925,29 +10237,6 @@ class _PostlamState extends State<Postlam> {
                                                                                 '',
                                                                           ),
 
-                                                                    // Center(
-                                                                    //   child: Padding(
-                                                                    //     padding: const EdgeInsets.all(8.0),
-                                                                    //     child: InkWell(
-                                                                    //       onTap: () {
-                                                                    //         // Navigator.of(context).pushReplacement(
-                                                                    //         //     MaterialPageRoute(
-                                                                    //         //         builder: (BuildContext context) =>
-                                                                    //         //             LoginPage(
-                                                                    //         //                 appName: widget.appName)));
-                                                                    //       },
-                                                                    //       child: Text(
-                                                                    //         "BACK",
-                                                                    //         style: TextStyle(
-                                                                    //           fontFamily: appFontFamily,
-                                                                    //           fontSize: 16,
-                                                                    //           fontWeight: FontWeight.w500,
-                                                                    //           color: AppColors.redColor,
-                                                                    //         ),
-                                                                    //       ),
-                                                                    //     ),
-                                                                    //   ),
-                                                                    // ),
                                                                     const SizedBox(
                                                                       height:
                                                                           18,
@@ -10965,11 +10254,6 @@ class _PostlamState extends State<Postlam> {
                                                                             setState(() {
                                                                               setPage = "sunsimulator";
                                                                             });
-                                                                            // Navigator.of(context).pushReplacement(
-                                                                            //     MaterialPageRoute(
-                                                                            //         builder: (BuildContext context) =>
-                                                                            //             LoginPage(
-                                                                            //                 appName: widget.appName)));
                                                                           },
                                                                           child:
                                                                               const Text(
@@ -11666,7 +10950,6 @@ class _PostlamState extends State<Postlam> {
                                                                                   }
 
                                                                                   _postLamFormKey.currentState!.save;
-                                                                                  // if (_postLamFormKey.currentState!.validate()) {}
                                                                                   setState(() {
                                                                                     setPage = 'rfid';
                                                                                   });
@@ -11675,29 +10958,6 @@ class _PostlamState extends State<Postlam> {
                                                                                 organization: '',
                                                                               ),
 
-                                                                        // Center(
-                                                                        //   child: Padding(
-                                                                        //     padding: const EdgeInsets.all(8.0),
-                                                                        //     child: InkWell(
-                                                                        //       onTap: () {
-                                                                        //         // Navigator.of(context).pushReplacement(
-                                                                        //         //     MaterialPageRoute(
-                                                                        //         //         builder: (BuildContext context) =>
-                                                                        //         //             LoginPage(
-                                                                        //         //                 appName: widget.appName)));
-                                                                        //       },
-                                                                        //       child: Text(
-                                                                        //         "BACK",
-                                                                        //         style: TextStyle(
-                                                                        //           fontFamily: appFontFamily,
-                                                                        //           fontSize: 16,
-                                                                        //           fontWeight: FontWeight.w500,
-                                                                        //           color: AppColors.redColor,
-                                                                        //         ),
-                                                                        //       ),
-                                                                        //     ),
-                                                                        //   ),
-                                                                        // ),
                                                                         const SizedBox(
                                                                           height:
                                                                               18,
@@ -11713,11 +10973,6 @@ class _PostlamState extends State<Postlam> {
                                                                                 setState(() {
                                                                                   setPage = "hipot";
                                                                                 });
-                                                                                // Navigator.of(context).pushReplacement(
-                                                                                //     MaterialPageRoute(
-                                                                                //         builder: (BuildContext context) =>
-                                                                                //             LoginPage(
-                                                                                //                 appName: widget.appName)));
                                                                               },
                                                                               child: const Text(
                                                                                 "BACK",
@@ -12256,7 +11511,7 @@ class _PostlamState extends State<Postlam> {
                                                                               ),
                                                                             ),
 
-                                                                            /// Cell Make &Manufacturing Month Verification
+                                                                            // Cell Make &Manufacturing Month Verification
                                                                             Text(
                                                                               "Frequency",
                                                                               style: AppStyles.textfieldCaptionTextStyle,
@@ -12431,7 +11686,6 @@ class _PostlamState extends State<Postlam> {
                                                                                       }
 
                                                                                       _postLamFormKey.currentState!.save;
-                                                                                      // if (_postLamFormKey.currentState!.validate()) {}
                                                                                       setState(() {
                                                                                         setPage = 'backlabel';
                                                                                       });
@@ -12440,29 +11694,6 @@ class _PostlamState extends State<Postlam> {
                                                                                     organization: '',
                                                                                   ),
 
-                                                                            // Center(
-                                                                            //   child: Padding(
-                                                                            //     padding: const EdgeInsets.all(8.0),
-                                                                            //     child: InkWell(
-                                                                            //       onTap: () {
-                                                                            //         // Navigator.of(context).pushReplacement(
-                                                                            //         //     MaterialPageRoute(
-                                                                            //         //         builder: (BuildContext context) =>
-                                                                            //         //             LoginPage(
-                                                                            //         //                 appName: widget.appName)));
-                                                                            //       },
-                                                                            //       child: Text(
-                                                                            //         "BACK",
-                                                                            //         style: TextStyle(
-                                                                            //           fontFamily: appFontFamily,
-                                                                            //           fontSize: 16,
-                                                                            //           fontWeight: FontWeight.w500,
-                                                                            //           color: AppColors.redColor,
-                                                                            //         ),
-                                                                            //       ),
-                                                                            //     ),
-                                                                            //   ),
-                                                                            // ),
                                                                             const SizedBox(
                                                                               height: 18,
                                                                             ),
@@ -12474,11 +11705,6 @@ class _PostlamState extends State<Postlam> {
                                                                                     setState(() {
                                                                                       setPage = "finalel";
                                                                                     });
-                                                                                    // Navigator.of(context).pushReplacement(
-                                                                                    //     MaterialPageRoute(
-                                                                                    //         builder: (BuildContext context) =>
-                                                                                    //             LoginPage(
-                                                                                    //                 appName: widget.appName)));
                                                                                   },
                                                                                   child: const Text(
                                                                                     "BACK",
@@ -12947,7 +12173,6 @@ class _PostlamState extends State<Postlam> {
                                                                                             createData();
                                                                                           }
                                                                                           _postLamFormKey.currentState!.save;
-                                                                                          // if (_postLamFormKey.currentState!.validate()) {}
                                                                                           setState(() {
                                                                                             setPage = 'finalvisual';
                                                                                           });
@@ -12956,29 +12181,6 @@ class _PostlamState extends State<Postlam> {
                                                                                         organization: '',
                                                                                       ),
 
-                                                                                // Center(
-                                                                                //   child: Padding(
-                                                                                //     padding: const EdgeInsets.all(8.0),
-                                                                                //     child: InkWell(
-                                                                                //       onTap: () {
-                                                                                //         // Navigator.of(context).pushReplacement(
-                                                                                //         //     MaterialPageRoute(
-                                                                                //         //         builder: (BuildContext context) =>
-                                                                                //         //             LoginPage(
-                                                                                //         //                 appName: widget.appName)));
-                                                                                //       },
-                                                                                //       child: Text(
-                                                                                //         "BACK",
-                                                                                //         style: TextStyle(
-                                                                                //           fontFamily: appFontFamily,
-                                                                                //           fontSize: 16,
-                                                                                //           fontWeight: FontWeight.w500,
-                                                                                //           color: AppColors.redColor,
-                                                                                //         ),
-                                                                                //       ),
-                                                                                //     ),
-                                                                                //   ),
-                                                                                // ),
                                                                                 const SizedBox(
                                                                                   height: 18,
                                                                                 ),
@@ -12990,11 +12192,6 @@ class _PostlamState extends State<Postlam> {
                                                                                         setState(() {
                                                                                           setPage = "rfid";
                                                                                         });
-                                                                                        // Navigator.of(context).pushReplacement(
-                                                                                        //     MaterialPageRoute(
-                                                                                        //         builder: (BuildContext context) =>
-                                                                                        //             LoginPage(
-                                                                                        //                 appName: widget.appName)));
                                                                                       },
                                                                                       child: const Text(
                                                                                         "BACK",
@@ -13540,7 +12737,6 @@ class _PostlamState extends State<Postlam> {
                                                                                               }
 
                                                                                               _postLamFormKey.currentState!.save;
-                                                                                              // if (_postLamFormKey.currentState!.validate()) {}
                                                                                               setState(() {
                                                                                                 setPage = 'packaging';
                                                                                               });
@@ -13549,29 +12745,6 @@ class _PostlamState extends State<Postlam> {
                                                                                             organization: '',
                                                                                           ),
 
-                                                                                    // Center(
-                                                                                    //   child: Padding(
-                                                                                    //     padding: const EdgeInsets.all(8.0),
-                                                                                    //     child: InkWell(
-                                                                                    //       onTap: () {
-                                                                                    //         // Navigator.of(context).pushReplacement(
-                                                                                    //         //     MaterialPageRoute(
-                                                                                    //         //         builder: (BuildContext context) =>
-                                                                                    //         //             LoginPage(
-                                                                                    //         //                 appName: widget.appName)));
-                                                                                    //       },
-                                                                                    //       child: Text(
-                                                                                    //         "BACK",
-                                                                                    //         style: TextStyle(
-                                                                                    //           fontFamily: appFontFamily,
-                                                                                    //           fontSize: 16,
-                                                                                    //           fontWeight: FontWeight.w500,
-                                                                                    //           color: AppColors.redColor,
-                                                                                    //         ),
-                                                                                    //       ),
-                                                                                    //     ),
-                                                                                    //   ),
-                                                                                    // ),
                                                                                     const SizedBox(
                                                                                       height: 18,
                                                                                     ),
@@ -13583,11 +12756,6 @@ class _PostlamState extends State<Postlam> {
                                                                                             setState(() {
                                                                                               setPage = "backlabel";
                                                                                             });
-                                                                                            // Navigator.of(context).pushReplacement(
-                                                                                            //     MaterialPageRoute(
-                                                                                            //         builder: (BuildContext context) =>
-                                                                                            //             LoginPage(
-                                                                                            //                 appName: widget.appName)));
                                                                                           },
                                                                                           child: const Text(
                                                                                             "BACK",
@@ -14465,29 +13633,6 @@ class _PostlamState extends State<Postlam> {
                                                                                             ),
                                                                                           ),
 
-                                                                                        // Center(
-                                                                                        //   child: Padding(
-                                                                                        //     padding: const EdgeInsets.all(8.0),
-                                                                                        //     child: InkWell(
-                                                                                        //       onTap: () {
-                                                                                        //         // Navigator.of(context).pushReplacement(
-                                                                                        //         //     MaterialPageRoute(
-                                                                                        //         //         builder: (BuildContext context) =>
-                                                                                        //         //             LoginPage(
-                                                                                        //         //                 appName: widget.appName)));
-                                                                                        //       },
-                                                                                        //       child: Text(
-                                                                                        //         "BACK",
-                                                                                        //         style: TextStyle(
-                                                                                        //           fontFamily: appFontFamily,
-                                                                                        //           fontSize: 16,
-                                                                                        //           fontWeight: FontWeight.w500,
-                                                                                        //           color: AppColors.redColor,
-                                                                                        //         ),
-                                                                                        //       ),
-                                                                                        //     ),
-                                                                                        //   ),
-                                                                                        // ),
                                                                                         const SizedBox(
                                                                                           height: 18,
                                                                                         ),
@@ -14499,11 +13644,6 @@ class _PostlamState extends State<Postlam> {
                                                                                                 setState(() {
                                                                                                   setPage = "finalvisual";
                                                                                                 });
-                                                                                                // Navigator.of(context).pushReplacement(
-                                                                                                //     MaterialPageRoute(
-                                                                                                //         builder: (BuildContext context) =>
-                                                                                                //             LoginPage(
-                                                                                                //                 appName: widget.appName)));
                                                                                               },
                                                                                               child: const Text(
                                                                                                 "BACK",
@@ -14545,72 +13685,68 @@ class _PostlamState extends State<Postlam> {
                                                                           : Container(),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );

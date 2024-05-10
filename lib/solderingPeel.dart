@@ -1,10 +1,5 @@
 import 'dart:convert';
-
 import 'dart:io';
-
-import 'package:QCM/CommonDrawer.dart';
-import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/ipqcTestList.dart';
@@ -51,6 +46,10 @@ class _solderingPeelState extends State<solderingPeel> {
 
   List<TextEditingController> frontControllers = [];
   List<TextEditingController> backControllers = [];
+  List shiftList = [
+    {"key": 'Day Shift', "value": 'Day Shift'},
+    {"key": 'Night Shift', "value": 'Night Shift'},
+  ];
 
   bool menu = false, user = false, face = false, home = false;
   int numberOfStringers = 0;
@@ -82,12 +81,7 @@ class _solderingPeelState extends State<solderingPeel> {
   Response.Response? _response;
 
   void addfrontControllers(int count) {
-    print("Chahahhahahhaha");
-    print(count);
-    print(sampleAInputtext);
-    print(sampleBInputText);
     for (int i = 0; i < count; i++) {
-      print("bhanu..?");
       frontControllers.add(TextEditingController());
       backControllers.add(
           TextEditingController()); // Ensure backControllers are initialized
@@ -97,7 +91,6 @@ class _solderingPeelState extends State<solderingPeel> {
           sampleAInputtext.isNotEmpty &&
           i < sampleAInputtext.length &&
           sampleAInputtext[i] != null) {
-        print(sampleAInputtext[i]['FrontController']);
         frontControllers[i].text = sampleAInputtext[i]['FrontController'] ?? "";
         backControllers[i].text = sampleAInputtext[i]['BackController'] ??
             ""; // Ensure BackController key matches the actual key
@@ -105,24 +98,11 @@ class _solderingPeelState extends State<solderingPeel> {
     }
   }
 
-  // void addbackControllers(int count) {
-  //   for (int i = 0; i < count; i++) {
-  //     backControllers.add(TextEditingController());
-  //     if (widget.id != "" && widget.id != null && sampleAInputtext.length > 0) {
-  //       backControllers[i].text =
-  //           sampleAInputtext[i]['backControllers${i + 1}'];
-  //     }
-  //   }
-  // }
-
   @override
   void initState() {
     super.initState();
     store();
     isCycleTimeTrue = true; // Set initial value
-    // setState(() {
-
-    // });
   }
 
   void store() async {
@@ -140,8 +120,6 @@ class _solderingPeelState extends State<solderingPeel> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -163,19 +141,10 @@ class _solderingPeelState extends State<solderingPeel> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
     var resBody = json.decode(allSolarData.body);
-
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print(resBody['response']);
-          print(resBody['response']['Date']);
-          // print(resBody['response']['Visual Inspection & Laminator Description']
-          //     ["Cycle_Time"]);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
           status = resBody['response']['Status'] ?? '';
           dateOfQualityCheck = resBody['response']['Date'] ?? '';
           dateController.text = resBody['response']['Date'] != ''
@@ -184,33 +153,17 @@ class _solderingPeelState extends State<solderingPeel> {
               : '';
           selectedShift = resBody['response']['Shift'] ?? '';
           LineController.text = resBody['response']['Line'] ?? '';
-
           operatorController.text = resBody['response']['OperatorName'] ?? '';
           ribbonSizeController.text = resBody['response']['RibbonSize'] ?? '';
           cellSizeController.text = resBody['response']['CellSize'] ?? '';
           ribbonMakeController.text = resBody['response']['RibbonMake'] ?? '';
           cellMakeController.text = resBody['response']['CellMake'] ?? '';
           machineController.text = resBody['response']['MachineNo'] ?? '';
-
-          //ribbonWidthController.text = resBody['response']['RibbonSize'] ?? '';
-          //busbarWidthController.text = resBody['response']['BusBarWidth'] ?? '';
           ribbonController.text =
               resBody['response']['Sample1Length'].toString() ?? '';
-
-          // ribbonController.text = (resBody['response']['Sample1Length'] != ""
-          //     ? resBody['response']['Sample1Length'].toString()
-          //     : '') as TextEditingValue;
-          print("hahahahahah");
-          print(ribbonController.text);
-
           sampleAInputtext = resBody['response']['Sample1'] ?? [];
           numberOfStringers = resBody['response']['Sample1Length'] ?? 0;
-          print(numberOfStringers);
-          // sampleBInputText = resBody['response']['Sample1'] ?? [];
-
-          // sampleBInputText = resBody['response']['Sample2'] ?? [];
           addfrontControllers(numberOfStringers);
-          // remarkController.text = resBody['response']['Remarks'] ?? '';
           referencePdfController.text = resBody['response']['Pdf'] ?? '';
         }
       });
@@ -218,16 +171,11 @@ class _solderingPeelState extends State<solderingPeel> {
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
-
     final url = (site! + "IPQC/UpdateSolderingPeelTestStatus");
-
     var params = {
       "token": token,
       "CurrentUser": personid,
@@ -242,7 +190,6 @@ class _solderingPeelState extends State<solderingPeel> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-
     if (response.statusCode == 200) {
       setState(() {
         _isLoading = false;
@@ -268,7 +215,6 @@ class _solderingPeelState extends State<solderingPeel> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -286,8 +232,6 @@ class _solderingPeelState extends State<solderingPeel> {
   }
 
   Future createData() async {
-    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
-    // print(jobCardDate);
     var data = {
       "Type": "Soldering",
       "JobCardDetailId": jobCarId != '' && jobCarId != null
@@ -332,9 +276,6 @@ class _solderingPeelState extends State<solderingPeel> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Bhanuu bhai");
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
@@ -342,9 +283,6 @@ class _solderingPeelState extends State<solderingPeel> {
 
         _isLoading = false;
       });
-
-      print(
-          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
@@ -659,42 +597,39 @@ class _solderingPeelState extends State<solderingPeel> {
                                       height: 4,
                                     ),
                                     DropdownButtonFormField<String>(
-                                      value: selectedShift,
-                                      onChanged: designation != "QC" &&
-                                              status == "Pending"
-                                          ? null
-                                          : (String? newValue) {
-                                              setState(() {
-                                                selectedShift = newValue!;
-                                                shiftController.text =
-                                                    selectedShift!;
-                                              });
-                                            },
-                                      items: <String>[
-                                        'Night Shift',
-                                        'Day Shift'
-                                      ].map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Select Shift",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
+                                              hintText: "Please Select Shift",
+                                              counterText: '',
+                                              contentPadding:
+                                                  EdgeInsets.all(10)),
+                                      borderRadius: BorderRadius.circular(20),
+                                      items: shiftList
+                                          .map((label) => DropdownMenuItem(
+                                                child: Text(label['key'],
+                                                    style: AppStyles
+                                                        .textInputTextStyle),
+                                                value:
+                                                    label['value'].toString(),
+                                              ))
+                                          .toList(),
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (val) {
+                                              setState(() {
+                                                selectedShift = val!;
+                                              });
+                                            },
+                                      value: selectedShift != ''
+                                          ? selectedShift
+                                          : null,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return "Please Select Shift";
-                                        } else {
-                                          return null;
+                                          return 'Please select a Shift';
                                         }
+                                        return null; // Return null if the validation is successful
                                       },
                                     ),
                                     // ********** Line *********
@@ -1199,24 +1134,6 @@ class _solderingPeelState extends State<solderingPeel> {
                                                               .text
                                                     });
                                                   }
-                                                  print(
-                                                      'Samplessssssssssssssssssssssssssssss');
-                                                  print(Sample1Controllers);
-                                                  // Sample2Controllers = [];
-
-                                                  // for (int i = 0;
-                                                  //     i < numberOfStringers;
-                                                  //     i++) {
-                                                  //   Sample2Controllers.add({
-                                                  //     "backControllers${i + 1}":
-                                                  //         backControllers[i]
-                                                  //             .text,
-                                                  //   });
-                                                  // }
-                                                  // print(
-                                                  //     "Arrrrrrrrdddddddddddddddddddddddddddd2222");
-                                                  // print(Sample2Controllers);
-
                                                   _registerFormKey
                                                       .currentState!.save;
                                                   if (_registerFormKey
@@ -1227,14 +1144,6 @@ class _solderingPeelState extends State<solderingPeel> {
                                                     });
                                                     createData();
                                                   }
-
-                                                  // _registerFormKey.currentState!.save;
-                                                  // if (_registerFormKey.currentState!
-                                                  //     .validate()) {
-                                                  //   createData();
-                                                  // }
-
-                                                  // print("Page set");
                                                 },
                                                 label: "Save",
                                                 organization: '',
@@ -1307,72 +1216,68 @@ class _solderingPeelState extends State<solderingPeel> {
                       : Container(),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );

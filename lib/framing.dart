@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Welcomepage.dart';
@@ -8,15 +7,11 @@ import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/ipqcTestList.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
@@ -130,97 +125,8 @@ class _framingState extends State<framing> {
   void initState() {
     super.initState();
     store();
-    print("nananananannananananna");
-    print(widget.id);
   }
 
-  // ****************************************  Send the Data where will be Used ro Backend **************************
-  // Future<void> sendDataToBackend() async {
-  //   final url =
-  //       'your-backend-url'; // Replace 'your-backend-url' with your actual backend URL
-
-  //   // Gather data from text controllers
-  //   final data = {
-  //     'DocNo': 'GSPL/IPQC/AF/011',
-  //     'RevNo': '1.0/12.08.2023',
-  //     'Date': dateController.text,
-  //     'Shift': shiftController.text,
-  //     'samples': [
-  //       {
-  //         'Sample': Sample1Controller.text,
-  //         'FramingObservation': Sample1GlueController.text,
-  //         'FramingDimension': {
-  //           'x1': Sample1x1Controller.text,
-  //           'x2': Sample1x2Controller.text,
-  //           'y1': Sample1y1Controller.text,
-  //           'y2': Sample1y2Controller.text,
-  //           'l1': Sample1L1Controller.text,
-  //           'l2': Sample1L2Controller.text,
-  //           'w1': Sample1W1Controller.text,
-  //           'w2': Sample1W2Controller.text
-  //         }
-  //       },
-  //       {
-  //         'Sample': Sample2Controller.text,
-  //         'FramingObservation': Sample2GlueController.text,
-  //         'FramingDimension': {
-  //           'x1': Sample2x1Controller.text,
-  //           'x2': Sample2x2Controller.text,
-  //           'y1': Sample2y1Controller.text,
-  //           'y2': Sample2y2Controller.text,
-  //           'l1': Sample2L1Controller.text,
-  //           'l2': Sample2L2Controller.text,
-  //           'w1': Sample2W1Controller.text,
-  //           'w2': Sample2W2Controller.text
-  //         }
-  //       },
-  //       {
-  //         'Sample': Sample3Controller.text,
-  //         'FramingObservation': Sample3GlueController.text,
-  //         'FramingDimension': {
-  //           'x1': Sample3x1Controller.text,
-  //           'x2': Sample3x2Controller.text,
-  //           'y1': Sample3y1Controller.text,
-  //           'y2': Sample3y2Controller.text,
-  //           'l1': Sample3L1Controller.text,
-  //           'l2': Sample3L2Controller.text,
-  //           'w1': Sample3W1Controller.text,
-  //           'w2': Sample3W2Controller.text
-  //         }
-  //       },
-  //       {
-  //         'Sample': Sample4Controller.text,
-  //         'FramingObservation': Sample4GlueController.text,
-  //         'FramingDimension': {
-  //           'x1': Sample4x1Controller.text,
-  //           'x2': Sample4x2Controller.text,
-  //           'y1': Sample4y1Controller.text,
-  //           'y2': Sample4y2Controller.text,
-  //           'l1': Sample4L1Controller.text,
-  //           'l2': Sample4L2Controller.text,
-  //           'w1': Sample4W1Controller.text,
-  //           'w2': Sample4W2Controller.text
-  //         }
-  //       },
-  //       {
-  //         'Sample': Sample5Controller.text,
-  //         'FramingObservation': Sample5GlueController.text,
-  //         'FramingDimension': {
-  //           'x1': Sample5x1Controller.text,
-  //           'x2': Sample5x2Controller.text,
-  //           'y1': Sample5y1Controller.text,
-  //           'y2': Sample5y2Controller.text,
-  //           'l1': Sample5L1Controller.text,
-  //           'l2': Sample5L2Controller.text,
-  //           'w1': Sample5W1Controller.text,
-  //           'w2': Sample5W2Controller.text
-  //         }
-  //       },
-  //     ],
-  //   };
-  //   print('$data');
-  //   print('Kulbhushan Singh');
-  // }
   void store() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -236,8 +142,6 @@ class _framingState extends State<framing> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -259,21 +163,10 @@ class _framingState extends State<framing> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
     var resBody = json.decode(allSolarData.body);
-    print(resBody);
-
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print(resBody['response']['Shift']);
-          print(resBody['response']['Status']);
-          // print(resBody['response']['Visual Inspection & Laminator Description']
-          //     ["Cycle_Time"]);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
-          // dateController.text = resBody['response']['Date'] ?? '';
           status = resBody['response']['Status'] ?? '';
           dateOfQualityCheck = resBody['response']['Date'] ?? '';
           dateController.text = resBody['response']['Date'] != ''
@@ -388,16 +281,11 @@ class _framingState extends State<framing> {
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
-
     final url = (site! + "IPQC/UpdateFramingStatus");
-
     var params = {
       "token": token,
       "CurrentUser": personid,
@@ -438,8 +326,6 @@ class _framingState extends State<framing> {
   }
 
   Future createData() async {
-    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
-    //print(jobCardDate);
     var data = {
       "Type": "Job Card",
       "PreLamDetailId": framingId != '' && framingId != null
@@ -534,7 +420,6 @@ class _framingState extends State<framing> {
       ],
     };
     print('$data');
-    print('Kulbhushan Singh');
 
     setState(() {
       _isLoading = true;
@@ -552,9 +437,6 @@ class _framingState extends State<framing> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Bhanuu bhai");
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
@@ -563,8 +445,6 @@ class _framingState extends State<framing> {
         _isLoading = false;
       });
 
-      print(
-          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
@@ -588,7 +468,6 @@ class _framingState extends State<framing> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -600,8 +479,6 @@ class _framingState extends State<framing> {
         referencePdfFileBytes = pdffile.readAsBytesSync();
         referencePdfController.text = result.files.single.name;
       });
-      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
-      print(referencePdfFileBytes);
     } else {
       // User canceled the file picker
     }
@@ -624,8 +501,6 @@ class _framingState extends State<framing> {
         contentType: MediaType("application", 'pdf'),
       ),
     });
-    print("Hoiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-    print(formData.files);
 
     _response = await _dio.post((site! + 'IPQC/UploadFramingPdf'), // Prod
 
@@ -637,8 +512,6 @@ class _framingState extends State<framing> {
         data: formData);
 
     try {
-      print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-      print(_response?.statusCode);
       if (_response?.statusCode == 200) {
         setState(() {
           _isLoading = false;
@@ -659,7 +532,7 @@ class _framingState extends State<framing> {
     }
   }
 
-// ***************** Done Send the Data *******************************
+  // ***************** Done Send the Data *******************************
   Widget _getFAB() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 70),
@@ -927,7 +800,7 @@ class _framingState extends State<framing> {
                                         }
                                       },
                                     ),
-//  *******************************************   Sample  ********************
+                                    //  *************   Sample  ********************
 
                                     const SizedBox(
                                       height: 15,
@@ -975,7 +848,7 @@ class _framingState extends State<framing> {
                                       height: 15,
                                     ),
 
-//  *******************************************  START THE STRINGER 1  ********************
+                                    //  ******  START THE STRINGER 1  ********************
 
                                     const SizedBox(
                                       height: 15,
@@ -1348,37 +1221,9 @@ class _framingState extends State<framing> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 15,
+                                      height: 25,
                                     ),
 
-// ------------------------------------------------   END OF THE HEADER -----------------------------------------
-                                    // Center(
-                                    //   child: Padding(
-                                    //     padding: const EdgeInsets.all(8.0),
-                                    //     child: InkWell(
-                                    //       onTap: () {
-                                    //         // Navigator.of(context).pushReplacement(
-                                    //         //     MaterialPageRoute(
-                                    //         //         builder: (BuildContext context) =>
-                                    //         //             LoginPage(
-                                    //         //                 appName: widget.appName)));
-                                    //       },
-                                    //       child: Text(
-                                    //         "BACK",
-                                    //         style: TextStyle(
-                                    //           fontFamily: appFontFamily,
-                                    //           fontSize: 16,
-                                    //           fontWeight: FontWeight.w500,
-                                    //           color: AppColors.redColor,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
                                     Padding(
                                         padding:
                                             EdgeInsets.fromLTRB(0, 10, 0, 0)),
@@ -1397,16 +1242,9 @@ class _framingState extends State<framing> {
                                                 sendStatus = "Inprogress";
                                               });
                                               createData();
-                                              // _registerFormKey.currentState!.save;
-                                              // if (_registerFormKey.currentState!
-                                              //     .validate()) {
-                                              //   sendDataToBackend();
-                                              // }
                                               setState(() {
                                                 setPage = "sample2";
                                               });
-                                              print("Page set");
-                                              print(setPage);
                                             },
                                             label: "Next",
                                             organization: '',
@@ -1546,7 +1384,7 @@ class _framingState extends State<framing> {
                                             ),
                                           ],
                                         ),
-//  *******************************************   Sample  ********************
+                                        //  ***********   Sample  ********************
 
                                         const SizedBox(
                                           height: 15,
@@ -1596,7 +1434,7 @@ class _framingState extends State<framing> {
                                           height: 15,
                                         ),
 
-//  *******************************************  START THE STRINGER 1  ********************
+                                        //  **********  START THE STRINGER 1  ********************
 
                                         const SizedBox(
                                           height: 15,
@@ -1978,37 +1816,9 @@ class _framingState extends State<framing> {
                                           ),
                                         ),
                                         const SizedBox(
-                                          height: 15,
+                                          height: 25,
                                         ),
 
-// ------------------------------------------------   END OF THE HEADER -----------------------------------------
-                                        // Center(
-                                        //   child: Padding(
-                                        //     padding: const EdgeInsets.all(8.0),
-                                        //     child: InkWell(
-                                        //       onTap: () {
-                                        //         // Navigator.of(context).pushReplacement(
-                                        //         //     MaterialPageRoute(
-                                        //         //         builder: (BuildContext context) =>
-                                        //         //             LoginPage(
-                                        //         //                 appName: widget.appName)));
-                                        //       },
-                                        //       child: Text(
-                                        //         "BACK",
-                                        //         style: TextStyle(
-                                        //           fontFamily: appFontFamily,
-                                        //           fontSize: 16,
-                                        //           fontWeight: FontWeight.w500,
-                                        //           color: AppColors.redColor,
-                                        //         ),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
                                         Padding(
                                             padding: EdgeInsets.fromLTRB(
                                                 0, 10, 0, 0)),
@@ -2031,18 +1841,10 @@ class _framingState extends State<framing> {
                                                   setState(() {
                                                     sendStatus = "Inprogress";
                                                   });
-                                                  createData(); //100
-
-                                                  // _registerFormKey.currentState!.save;
-                                                  // if (_registerFormKey.currentState!
-                                                  //     .validate()) {
-                                                  //   sendDataToBackend();
-                                                  // }
+                                                  createData();
                                                   setState(() {
                                                     setPage = "sample3";
                                                   });
-                                                  print("Page set");
-                                                  print(setPage);
                                                 },
                                                 label: "Next",
                                                 organization: '',
@@ -2061,11 +1863,6 @@ class _framingState extends State<framing> {
                                                 setState(() {
                                                   setPage = '';
                                                 });
-                                                // Navigator.of(context).pushReplacement(
-                                                //     MaterialPageRoute(
-                                                //         builder: (BuildContext context) =>
-                                                //             LoginPage(
-                                                //                 appName: widget.appName)));
                                               },
                                               child: const Text(
                                                 "BACK",
@@ -2216,7 +2013,7 @@ class _framingState extends State<framing> {
                                                 ),
                                               ],
                                             ),
-//  *******************************************   Sample  ********************
+                                            //  *********   Sample  ********************
 
                                             const SizedBox(
                                               height: 15,
@@ -2268,7 +2065,7 @@ class _framingState extends State<framing> {
                                               height: 15,
                                             ),
 
-//  *******************************************  START THE STRINGER 1  ********************
+                                            //  **********  START THE STRINGER 1  ********************
 
                                             const SizedBox(
                                               height: 15,
@@ -2668,37 +2465,9 @@ class _framingState extends State<framing> {
                                               ),
                                             ),
                                             const SizedBox(
-                                              height: 15,
+                                              height: 25,
                                             ),
 
-// ------------------------------------------------   END OF THE HEADER -----------------------------------------
-                                            // Center(
-                                            //   child: Padding(
-                                            //     padding: const EdgeInsets.all(8.0),
-                                            //     child: InkWell(
-                                            //       onTap: () {
-                                            //         // Navigator.of(context).pushReplacement(
-                                            //         //     MaterialPageRoute(
-                                            //         //         builder: (BuildContext context) =>
-                                            //         //             LoginPage(
-                                            //         //                 appName: widget.appName)));
-                                            //       },
-                                            //       child: Text(
-                                            //         "BACK",
-                                            //         style: TextStyle(
-                                            //           fontFamily: appFontFamily,
-                                            //           fontSize: 16,
-                                            //           fontWeight: FontWeight.w500,
-                                            //           color: AppColors.redColor,
-                                            //         ),
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                            // ),
-
-                                            const SizedBox(
-                                              height: 15,
-                                            ),
                                             Padding(
                                                 padding: EdgeInsets.fromLTRB(
                                                     0, 10, 0, 0)),
@@ -2720,18 +2489,10 @@ class _framingState extends State<framing> {
                                                         sendStatus =
                                                             "Inprogress";
                                                       });
-                                                      createData(); //200
-
-                                                      // _registerFormKey.currentState!.save;
-                                                      // if (_registerFormKey.currentState!
-                                                      //     .validate()) {
-                                                      //   sendDataToBackend();
-                                                      // }
+                                                      createData();
                                                       setState(() {
                                                         setPage = "sample4";
                                                       });
-                                                      print("Page set");
-                                                      print(setPage);
                                                     },
                                                     label: "Next",
                                                     organization: '',
@@ -2750,11 +2511,6 @@ class _framingState extends State<framing> {
                                                     setState(() {
                                                       setPage = 'sample2';
                                                     });
-                                                    // Navigator.of(context).pushReplacement(
-                                                    //     MaterialPageRoute(
-                                                    //         builder: (BuildContext context) =>
-                                                    //             LoginPage(
-                                                    //                 appName: widget.appName)));
                                                   },
                                                   child: const Text(
                                                     "BACK",
@@ -2916,7 +2672,7 @@ class _framingState extends State<framing> {
                                                   ],
                                                 ),
 
-//  *******************************************   Sample 4  ********************
+                                                //  ****   Sample 4  ********************
 
                                                 const SizedBox(
                                                   height: 15,
@@ -2971,7 +2727,7 @@ class _framingState extends State<framing> {
                                                   height: 15,
                                                 ),
 
-//  *******************************************  START THE STRINGER 1  ********************
+                                                //  *****************  START THE STRINGER 1  ********************
 
                                                 const SizedBox(
                                                   height: 15,
@@ -3409,37 +3165,9 @@ class _framingState extends State<framing> {
                                                   ),
                                                 ),
                                                 const SizedBox(
-                                                  height: 15,
+                                                  height: 25,
                                                 ),
 
-// ------------------------------------------------   END OF THE HEADER -----------------------------------------
-                                                // Center(
-                                                //   child: Padding(
-                                                //     padding: const EdgeInsets.all(8.0),
-                                                //     child: InkWell(
-                                                //       onTap: () {
-                                                //         // Navigator.of(context).pushReplacement(
-                                                //         //     MaterialPageRoute(
-                                                //         //         builder: (BuildContext context) =>
-                                                //         //             LoginPage(
-                                                //         //                 appName: widget.appName)));
-                                                //       },
-                                                //       child: Text(
-                                                //         "BACK",
-                                                //         style: TextStyle(
-                                                //           fontFamily: appFontFamily,
-                                                //           fontSize: 16,
-                                                //           fontWeight: FontWeight.w500,
-                                                //           color: AppColors.redColor,
-                                                //         ),
-                                                //       ),
-                                                //     ),
-                                                //   ),
-                                                // ),
-
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
                                                 Padding(
                                                     padding:
                                                         EdgeInsets.fromLTRB(
@@ -3465,18 +3193,10 @@ class _framingState extends State<framing> {
                                                             sendStatus =
                                                                 "Inprogress";
                                                           });
-                                                          createData(); //300
-
-                                                          // _registerFormKey.currentState!.save;
-                                                          // if (_registerFormKey.currentState!
-                                                          //     .validate()) {
-                                                          //   sendDataToBackend();
-                                                          // }
+                                                          createData();
                                                           setState(() {
                                                             setPage = "sample5";
                                                           });
-                                                          print("Page set");
-                                                          print(setPage);
                                                         },
                                                         label: "Next",
                                                         organization: '',
@@ -3485,28 +3205,7 @@ class _framingState extends State<framing> {
                                                 const SizedBox(
                                                   height: 25,
                                                 ),
-                                                // Back button
-                                                // const SizedBox(
-                                                //   height: 15,
-                                                // ),
-                                                // AppButton(
-                                                //   textStyle: const TextStyle(
-                                                //     fontWeight: FontWeight.w700,
-                                                //     color: AppColors.white,
-                                                //     fontSize: 16,
-                                                //   ),
-                                                //   onTap: () {
-                                                //     AppHelper.hideKeyboard(context);
 
-                                                //     setState(() {
-                                                //       setPage = 'sample3';
-                                                //     });
-                                                //     print("Page set");
-                                                //     print(setPage);
-                                                //   },
-                                                //   label: "Back",
-                                                //   organization: '',
-                                                // ),
                                                 Center(
                                                   child: Padding(
                                                     padding:
@@ -3517,11 +3216,6 @@ class _framingState extends State<framing> {
                                                         setState(() {
                                                           setPage = 'sample3';
                                                         });
-                                                        // Navigator.of(context).pushReplacement(
-                                                        //     MaterialPageRoute(
-                                                        //         builder: (BuildContext context) =>
-                                                        //             LoginPage(
-                                                        //                 appName: widget.appName)));
                                                       },
                                                       child: const Text(
                                                         "BACK",
@@ -3692,7 +3386,7 @@ class _framingState extends State<framing> {
                                                         ),
                                                       ],
                                                     ),
-//  *******************************************   Sample  ********************
+                                                    //  *************   Sample  ********************
 
                                                     const SizedBox(
                                                       height: 15,
@@ -3752,7 +3446,7 @@ class _framingState extends State<framing> {
                                                       height: 15,
                                                     ),
 
-//  *******************************************  START THE STRINGER 1  ********************
+                                                    //  *********  START THE STRINGER 1  ********************
 
                                                     const SizedBox(
                                                       height: 15,
@@ -4210,37 +3904,9 @@ class _framingState extends State<framing> {
                                                       ),
                                                     ),
                                                     const SizedBox(
-                                                      height: 15,
+                                                      height: 25,
                                                     ),
 
-// ------------------------------------------------   END OF THE HEADER -----------------------------------------
-                                                    // Center(
-                                                    //   child: Padding(
-                                                    //     padding: const EdgeInsets.all(8.0),
-                                                    //     child: InkWell(
-                                                    //       onTap: () {
-                                                    //         // Navigator.of(context).pushReplacement(
-                                                    //         //     MaterialPageRoute(
-                                                    //         //         builder: (BuildContext context) =>
-                                                    //         //             LoginPage(
-                                                    //         //                 appName: widget.appName)));
-                                                    //       },
-                                                    //       child: Text(
-                                                    //         "BACK",
-                                                    //         style: TextStyle(
-                                                    //           fontFamily: appFontFamily,
-                                                    //           fontSize: 16,
-                                                    //           fontWeight: FontWeight.w500,
-                                                    //           color: AppColors.redColor,
-                                                    //         ),
-                                                    //       ),
-                                                    //     ),
-                                                    //   ),
-                                                    // ),
-
-                                                    const SizedBox(
-                                                      height: 15,
-                                                    ),
                                                     Text(
                                                       "Reference PDF Document ",
                                                       style: AppStyles
@@ -4354,14 +4020,6 @@ class _framingState extends State<framing> {
                                                                     });
                                                                     createData();
                                                                   }
-
-                                                                  // _registerFormKey.currentState!.save;
-                                                                  // if (_registerFormKey.currentState!
-                                                                  //     .validate()) {
-                                                                  //   sendDataToBackend();
-                                                                  // }
-
-                                                                  // print("Page set");
                                                                 },
                                                                 label: "Submit",
                                                                 organization:
@@ -4376,10 +4034,7 @@ class _framingState extends State<framing> {
                                                         status == 'Pending')
                                                       Container(
                                                         color: Color.fromARGB(
-                                                            255,
-                                                            191,
-                                                            226,
-                                                            187), // Change the background color to your desired color
+                                                            255, 191, 226, 187),
                                                         child: Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
@@ -4413,29 +4068,7 @@ class _framingState extends State<framing> {
                                                           ],
                                                         ),
                                                       ),
-                                                    // Back button
-                                                    // const SizedBox(
-                                                    //   height: 15,
-                                                    // ),
-                                                    // AppButton(
-                                                    //   textStyle: const TextStyle(
-                                                    //     fontWeight: FontWeight.w700,
-                                                    //     color: AppColors.white,
-                                                    //     fontSize: 16,
-                                                    //   ),
-                                                    //   onTap: () {
-                                                    //     AppHelper.hideKeyboard(
-                                                    //         context);
 
-                                                    //     setState(() {
-                                                    //       setPage = 'sample4';
-                                                    //     });
-                                                    //     print("Page set");
-                                                    //     print(setPage);
-                                                    //   },
-                                                    //   label: "Back",
-                                                    //   organization: '',
-                                                    // ),
                                                     Center(
                                                       child: Padding(
                                                         padding:
@@ -4447,11 +4080,6 @@ class _framingState extends State<framing> {
                                                               setPage =
                                                                   'sample4';
                                                             });
-                                                            // Navigator.of(context).pushReplacement(
-                                                            //     MaterialPageRoute(
-                                                            //         builder: (BuildContext context) =>
-                                                            //             LoginPage(
-                                                            //                 appName: widget.appName)));
                                                           },
                                                           child: const Text(
                                                             "BACK",
@@ -4510,72 +4138,68 @@ class _framingState extends State<framing> {
                                       : Container(),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );

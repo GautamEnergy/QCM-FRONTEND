@@ -1,13 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:QCM/CommonDrawer.dart';
-import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/ipqcTestList.dart';
-import 'package:QCM/machineCard.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -122,6 +117,11 @@ class _stringer3State extends State<stringer3> {
   TextEditingController BS1TrackAHController = TextEditingController();
   TextEditingController referencePdfController = new TextEditingController();
 
+  List shiftList = [
+    {"key": 'Day Shift', "value": 'Day Shift'},
+    {"key": 'Night Shift', "value": 'Night Shift'},
+  ];
+
   bool menu = false, user = false, face = false, home = false;
   int numberOfStringers = 0;
   bool _isLoading = false;
@@ -204,8 +204,6 @@ class _stringer3State extends State<stringer3> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -227,19 +225,11 @@ class _stringer3State extends State<stringer3> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
     var resBody = json.decode(allSolarData.body);
 
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print(resBody['response']);
-          print(resBody['response']['Date']);
-          // print(resBody['response']['Visual Inspection & Laminator Description']
-          //     ["Cycle_Time"]);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
           status = resBody['response']['Status'] ?? '';
           dateOfQualityCheck = resBody['response']['Date'] ?? '';
           dateController.text = resBody['response']['Date'] != ''
@@ -318,14 +308,10 @@ class _stringer3State extends State<stringer3> {
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
-
     final url = (site! + "IPQC/UpdatePreLamStatus");
 
     var params = {
@@ -368,7 +354,6 @@ class _stringer3State extends State<stringer3> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -386,8 +371,6 @@ class _stringer3State extends State<stringer3> {
   }
 
   Future createData() async {
-    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
-    // print(jobCardDate);
     var data = {
       "JobCardDetailId": jobCarId != '' && jobCarId != null
           ? jobCarId
@@ -533,9 +516,6 @@ class _stringer3State extends State<stringer3> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print("Bhanuu bhai");
-    print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
@@ -543,9 +523,6 @@ class _stringer3State extends State<stringer3> {
 
         _isLoading = false;
       });
-
-      print(
-          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
@@ -850,40 +827,39 @@ class _stringer3State extends State<stringer3> {
                                       height: 4,
                                     ),
                                     DropdownButtonFormField<String>(
-                                      value: selectedShift,
-                                      onChanged: designation != "QC" &&
-                                              status == "Pending"
-                                          ? null
-                                          : (String? newValue) {
-                                              setState(() {
-                                                selectedShift = newValue!;
-                                                shiftController.text =
-                                                    selectedShift!;
-                                              });
-                                            },
-                                      items: <String>[
-                                        'Night Shift',
-                                        'Day Shift'
-                                      ].map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Select Shift",
-                                        counterText: '',
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
+                                              hintText: "Please Select Shift",
+                                              counterText: '',
+                                              contentPadding:
+                                                  EdgeInsets.all(10)),
+                                      borderRadius: BorderRadius.circular(20),
+                                      items: shiftList
+                                          .map((label) => DropdownMenuItem(
+                                                child: Text(label['key'],
+                                                    style: AppStyles
+                                                        .textInputTextStyle),
+                                                value:
+                                                    label['value'].toString(),
+                                              ))
+                                          .toList(),
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (val) {
+                                              setState(() {
+                                                selectedShift = val!;
+                                              });
+                                            },
+                                      value: selectedShift != ''
+                                          ? selectedShift
+                                          : null,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
-                                          return "Please Select Shift";
-                                        } else {
-                                          return null;
+                                          return 'Please select a Shift';
                                         }
+                                        return null; // Return null if the validation is successful
                                       },
                                     ),
 
@@ -1673,49 +1649,15 @@ class _stringer3State extends State<stringer3> {
                                                   sendStatus = 'Inprogress';
                                                 });
                                                 createData();
-                                              } //400
-
-                                              // _registerFormKey.currentState!.save;
-                                              // if (_registerFormKey.currentState!
-                                              //     .validate()) {
-                                              //   createData();
-                                              // }
+                                              }
                                               setState(() {
                                                 setPage = "TrackB";
                                               });
-                                              // print("Page set");
                                               print(setPage);
                                             },
                                             label: "Next",
                                             organization: '',
                                           ),
-
-                                    // Back button
-                                    // const SizedBox(
-                                    //   height: 15,
-                                    // ),
-                                    // AppButton(
-                                    //   textStyle: const TextStyle(
-                                    //     fontWeight: FontWeight.w700,
-                                    //     color: AppColors.white,
-                                    //     fontSize: 16,
-                                    //   ),
-                                    //   onTap: () {
-                                    //     AppHelper.hideKeyboard(context);
-
-                                    //     setState(() {
-                                    //       setPage = 'backpage';
-                                    //     });
-                                    //     print("Page set");
-                                    //     print(setPage);
-                                    //   },
-                                    //   label: "Back",
-                                    //   organization: '',
-                                    // ),
-                                    // const SizedBox(
-                                    //   height: 10,
-                                    // ),
-
                                     const SizedBox(
                                       height: 25,
                                     ),
@@ -2723,12 +2665,6 @@ class _stringer3State extends State<stringer3> {
                                                         });
                                                         createData();
                                                       }
-
-                                                      // _registerFormKey.currentState!.save;
-                                                      // if (_registerFormKey.currentState!
-                                                      //     .validate()) {
-                                                      //   createData();
-                                                      // }
                                                     },
                                                     label: "SAVE",
                                                     organization: '',
@@ -2741,8 +2677,8 @@ class _stringer3State extends State<stringer3> {
                                             widget.id != null &&
                                             status == 'Pending')
                                           Container(
-                                            color: Color.fromARGB(255, 191, 226,
-                                                187), // Change the background color to your desired color
+                                            color: Color.fromARGB(
+                                                255, 191, 226, 187),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.stretch,
@@ -2780,11 +2716,6 @@ class _stringer3State extends State<stringer3> {
                                                 setState(() {
                                                   setPage = '';
                                                 });
-                                                // Navigator.of(context).pushReplacement(
-                                                //     MaterialPageRoute(
-                                                //         builder: (BuildContext context) =>
-                                                //             LoginPage(
-                                                //                 appName: widget.appName)));
                                               },
                                               child: const Text(
                                                 "BACK",
@@ -2834,72 +2765,72 @@ class _stringer3State extends State<stringer3> {
                           : Container(),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           // onTap: () {
+          //           //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //           //       builder: (BuildContext context) => Attendance()));
+          //           // },
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );

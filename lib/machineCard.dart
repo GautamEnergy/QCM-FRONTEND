@@ -3,7 +3,6 @@ import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Welcomepage.dart';
-import 'package:QCM/addeditemployee.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
@@ -15,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:QCM/stringerCards.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constant/app_assets.dart';
-
-// import '../BoxCricket.dart';
 
 class MachineCard extends StatefulWidget {
   MachineCard({Key? key}) : super(key: key);
@@ -78,17 +75,11 @@ class _WelcomePageState extends State<MachineCard> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // buttonAttendance(),
-        // buttonReport(),
-      ],
+      children: [],
     );
   }
 
   Future<bool> redirectto() async {
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     MaterialPageRoute(builder: (BuildContext context) => WelcomePage()),
-    //     (Route<dynamic> route) => false);
     return true;
   }
 
@@ -138,60 +129,14 @@ class _WelcomePageState extends State<MachineCard> {
               ],
             ),
 
-            SizedBox(
-              height: 10,
-            ),
             //1st row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                // Expanded(
-                //     child: tabDashboard(
-                //         'Pre-Lam IPQC Check Sheet', AppAssets.prelam, () {
-                //   Navigator.of(context).pushAndRemoveUntil(
-                //       MaterialPageRoute(
-                //           builder: (BuildContext context) => PreLam()),
-                //       (Route<dynamic> route) => false);
-                // })),
-                SizedBox(
-                  width: 10,
-                ),
-                // Expanded(
-                //     child: tabDashboard(
-                //         'Post-Lam IPQC Check Sheet', AppAssets.postlam, () {
-                //   Navigator.of(context).pushAndRemoveUntil(
-                //       MaterialPageRoute(
-                //           builder: (BuildContext context) => Postlam()),
-                //       (Route<dynamic> route) => false);
-                // })),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-
             SizedBox(
               height: 10,
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 10,
-                ),
-                // Expanded(
-                //     child: tabDashboard('Testing', AppAssets.testing, () {
-                //   // Navigator.of(context).pushAndRemoveUntil(
-                //   //     MaterialPageRoute(
-                //   //         builder: (BuildContext context) => InOut()),
-                //   //     (Route<dynamic> route) => false);
-                // })),
                 SizedBox(
                   width: 10,
                 ),
@@ -455,12 +400,6 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
                           AppAssets.icEllipse,
                         ),
                         fit: BoxFit.fill)),
-                // child: Image.asset(
-                //   AppAssets.icEllipse,
-                //   fit: BoxFit.fill,
-                //   height: 50,
-                //   width: 155,
-                // ),
               )),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -486,7 +425,6 @@ Widget tabDashboard(String title, String img, final Function onPressed) {
                         img,
                         height: 36,
                         width: 36,
-                        //fit: BoxFit.cover,
                       )))
             ],
           )

@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/ipqcTestList.dart';
@@ -136,8 +133,6 @@ class _ipqcSelantState extends State<ipqcSelant> {
 
   void store() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Hoooooooooooooooooo");
-    print(prefs);
     setState(() {
       pic = prefs.getString('pic')!;
       personid = prefs.getString('personid')!;
@@ -151,8 +146,6 @@ class _ipqcSelantState extends State<ipqcSelant> {
 
   Future _get() async {
     final prefs = await SharedPreferences.getInstance();
-    print("Bhanuuuuuuuuuuuuuuuuuuuuuu");
-    print(widget.id);
     setState(() {
       if (widget.id != '' && widget.id != null) {
         _isLoading = true;
@@ -174,20 +167,11 @@ class _ipqcSelantState extends State<ipqcSelant> {
     setState(() {
       _isLoading = false;
     });
-    print("hhhhhhhhhhhhhhhh");
     var resBody = json.decode(allSolarData.body);
 
     if (mounted) {
       setState(() {
         if (resBody != '') {
-          print(resBody['response']);
-          print(resBody['response']['Date']);
-          // print(resBody['response']['Visual Inspection & Laminator Description']
-          //     ["Cycle_Time"]);
-
-          print("saiffffffffffffffffffffffffffffffffffffffffff");
-          print("kulllllllllllllllllllllllllllllllllllllllllll");
-          // dateController.text = resBody['response']['Date'] ?? '';
           status = resBody['response']['Status'] ?? '';
           dateOfQualityCheck = resBody['response']['Date'] ?? '';
           dateController.text = resBody['response']['Date'] != ''
@@ -229,13 +213,10 @@ class _ipqcSelantState extends State<ipqcSelant> {
   }
 
   Future setApprovalStatus() async {
-    print("kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    print(approvalStatus);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("goooooooooooooooooooooooooooooooooooooooooooooooo");
 
     final url = (site! + "IPQC/UpdateSealentStatus");
 
@@ -279,7 +260,6 @@ class _ipqcSelantState extends State<ipqcSelant> {
   }
 
   Future<void> _pickReferencePDF() async {
-    print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -291,18 +271,12 @@ class _ipqcSelantState extends State<ipqcSelant> {
         referencePdfFileBytes = pdffile.readAsBytesSync();
         referencePdfController.text = result.files.single.name;
       });
-      print("aaaaaaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjj");
-      print(referencePdfFileBytes);
     } else {
       // User canceled the file picker
     }
   }
 
   Future createData() async {
-    print("Naveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeen");
-    // print(jobCardDate);
-    print(personid);
-
     var data = {
       "Type": "Sealent",
       "JobCardDetailId": jobCarId != '' && jobCarId != null
@@ -346,21 +320,13 @@ class _ipqcSelantState extends State<ipqcSelant> {
         },
       ]
     };
-    print(data);
     setState(() {
       _isLoading = true;
     });
     FocusScope.of(context).unfocus();
-    print("LAlAlallalallalalallalalallal");
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site')!;
-    print(site);
-
     final url = (site! + "IPQC/AddSealentWeight");
-    print("LAlAlallalallalalallalalallal");
-
-    print("Muuuuuuuuuuu");
-
     var response = await http.post(
       Uri.parse(url),
       body: json.encode(data),
@@ -370,7 +336,6 @@ class _ipqcSelantState extends State<ipqcSelant> {
     );
     print("Bhanuu bhai");
     print(response.statusCode);
-    print(response.body);
     if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {
@@ -378,10 +343,6 @@ class _ipqcSelantState extends State<ipqcSelant> {
 
         _isLoading = false;
       });
-
-      print(
-          "RESPONSHTEEEEEEEEEEEEEEEEEEEEEEEEEHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-      print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
             duration: Toast.lengthLong,
@@ -876,18 +837,10 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                                   sendStatus = 'Inprogress';
                                                 });
                                                 createData();
-                                              } //400
-
-                                              // _registerFormKey.currentState!.save;
-                                              // if (_registerFormKey.currentState!
-                                              //     .validate()) {
-                                              //   createData();
-                                              // }
+                                              }
                                               setState(() {
                                                 setPage = "shortFrame";
                                               });
-                                              // print("Page set");
-                                              print(setPage);
                                             },
                                             label: "Next",
                                             organization: '',
@@ -1186,18 +1139,11 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                                       sendStatus = 'Inprogress';
                                                     });
                                                     createData();
-                                                  } //400
+                                                  }
 
-                                                  // _registerFormKey.currentState!.save;
-                                                  // if (_registerFormKey.currentState!
-                                                  //     .validate()) {
-                                                  //   createData();
-                                                  // }
                                                   setState(() {
                                                     setPage = 'JunctionBox';
                                                   });
-                                                  // print("Page set");
-                                                  print(setPage);
                                                 },
                                                 label: "Next",
                                                 organization: '',
@@ -1541,17 +1487,10 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                                               'Inprogress';
                                                         });
                                                         createData();
-                                                      } //400
-
-                                                      // _registerFormKey.currentState!.save;
-                                                      // if (_registerFormKey.currentState!
-                                                      //     .validate()) {
-                                                      // }
+                                                      }
                                                       setState(() {
                                                         setPage = 'Potting';
                                                       });
-                                                      // print("Page set");
-                                                      print(setPage);
                                                     },
                                                     label: "Next",
                                                     organization: '',
@@ -1995,15 +1934,6 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                                                 });
                                                                 createData();
                                                               }
-
-                                                              // _registerFormKey.currentState!.save;
-                                                              // if (_registerFormKey.currentState!
-                                                              //     .validate()) {
-
-                                                              // }
-
-                                                              // print("Page set");
-                                                              print(setPage);
                                                             },
                                                             label: "Save",
                                                             organization: '',
@@ -2128,72 +2058,72 @@ class _ipqcSelantState extends State<ipqcSelant> {
                                   : Container(),
                 ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
-          bottomNavigationBar: Container(
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 245, 203, 19),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              department == 'IPQC' &&
-                                      designation != 'Super Admin'
-                                  ? IpqcPage()
-                                  : WelcomePage()));
-                    },
-                    child: Image.asset(
-                        home
-                            ? AppAssets.icHomeSelected
-                            : AppAssets.icHomeUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddEditProfile()));
-                    },
-                    child: Image.asset(
-                        user
-                            ? AppAssets.imgSelectedPerson
-                            : AppAssets.imgPerson,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (BuildContext context) => Attendance()));
-                    // },
-                    child: Image.asset(
-                        face
-                            ? AppAssets.icSearchSelected
-                            : AppAssets.icSearchUnSelected,
-                        height: 25)),
-                const SizedBox(
-                  width: 8,
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => PublicDrawer()));
-                    },
-                    child: Image.asset(
-                        menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
-                        height: 25)),
-              ],
-            ),
-          ),
+          // bottomNavigationBar: Container(
+          //   height: 60,
+          //   decoration: const BoxDecoration(
+          //     color: Color.fromARGB(255, 245, 203, 19),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(20),
+          //       topRight: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) =>
+          //                     department == 'IPQC' &&
+          //                             designation != 'Super Admin'
+          //                         ? IpqcPage()
+          //                         : WelcomePage()));
+          //           },
+          //           child: Image.asset(
+          //               home
+          //                   ? AppAssets.icHomeSelected
+          //                   : AppAssets.icHomeUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //             //     builder: (BuildContext context) => AddEditProfile()));
+          //           },
+          //           child: Image.asset(
+          //               user
+          //                   ? AppAssets.imgSelectedPerson
+          //                   : AppAssets.imgPerson,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           // onTap: () {
+          //           //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //           //       builder: (BuildContext context) => Attendance()));
+          //           // },
+          //           child: Image.asset(
+          //               face
+          //                   ? AppAssets.icSearchSelected
+          //                   : AppAssets.icSearchUnSelected,
+          //               height: 25)),
+          //       const SizedBox(
+          //         width: 8,
+          //       ),
+          //       InkWell(
+          //           onTap: () {
+          //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //                 builder: (BuildContext context) => PublicDrawer()));
+          //           },
+          //           child: Image.asset(
+          //               menu ? AppAssets.imgSelectedMenu : AppAssets.imgMenu,
+          //               height: 25)),
+          //     ],
+          //   ),
+          // ),
         );
       }),
     );
