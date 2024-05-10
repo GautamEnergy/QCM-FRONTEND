@@ -1,12 +1,11 @@
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
-import 'package:QCM/InOutList.dart';
+
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/Jobcard.dart';
-import 'package:QCM/SolarCell.dart';
+
 import 'package:QCM/Welcomepage.dart';
-import 'package:QCM/addeditemployee.dart';
-import 'package:QCM/attendance.dart';
+
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
@@ -18,9 +17,7 @@ import 'package:QCM/machineCard.dart';
 import 'package:QCM/postlam.dart';
 import 'package:QCM/bomcard.dart';
 import 'package:QCM/prelam.dart';
-import 'package:QCM/salaryreports.dart';
-import 'package:QCM/stringer1.dart';
-import 'package:QCM/stringerCards.dart';
+
 import 'package:QCM/testingCard.dart';
 import 'package:flutter/material.dart';
 
@@ -29,8 +26,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import '../BoxCricket.dart';
 
 import '../constant/app_assets.dart';
-
-import '../main.dart';
 
 class IpqcPage extends StatefulWidget {
   IpqcPage({Key? key}) : super(key: key);
