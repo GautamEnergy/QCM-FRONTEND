@@ -1,18 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:QCM/AluminiumFrame.dart';
-import 'package:QCM/Backsheet.dart';
 import 'package:QCM/CommonDrawer.dart';
-import 'package:QCM/Encapsulant.dart';
-import 'package:QCM/Flux.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/FqcAddEdit.dart';
-import 'package:QCM/Iqcp.dart';
-import 'package:QCM/JunctionBox.dart';
-import 'package:QCM/Ribbon.dart';
-import 'package:QCM/Sealant.dart';
-import 'package:QCM/SolarCell.dart';
-import 'package:QCM/SolarGlass.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
@@ -23,7 +13,6 @@ import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/Fqc_list_model.dart';
 import 'package:QCM/directory.dart';
 import 'package:intl/intl.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -902,9 +891,6 @@ class _FqcTestListState extends State<FqcTestList> {
                       children: [
                         InkWell(
                           onTap: () {
-                            print("id..........??");
-                            print(id);
-                            print(materialname);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>

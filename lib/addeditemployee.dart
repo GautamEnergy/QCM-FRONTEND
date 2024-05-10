@@ -4,14 +4,9 @@ import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/QualityPage.dart';
-import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:dio/src/response.dart' as Response;
 import 'package:QCM/components/app_button_widget.dart';
-import 'package:QCM/dialogs/city_list_model.dart';
-import 'package:QCM/dialogs/dialog_role_city.dart';
-import 'package:QCM/dialogs/dialog_role_state.dart';
-import 'package:QCM/dialogs/state_list_model.dart';
 import 'package:QCM/directory.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http_parser/http_parser.dart';
@@ -20,11 +15,8 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
-import 'package:intl/intl.dart';
-import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'components/appbar.dart';
@@ -33,7 +25,6 @@ import 'constant/app_color.dart';
 import 'constant/app_fonts.dart';
 import 'constant/app_strings.dart';
 import 'constant/app_styles.dart';
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class AddEditProfile extends StatefulWidget {
   final String? id;
@@ -167,8 +158,7 @@ class _ScoreDetailsState extends State<AddEditProfile> {
 
     getDepartmentData();
     getDsignationData();
-    print("ProfilePicccc");
-    print(profilepicture);
+
     super.initState();
   }
 
@@ -183,13 +173,9 @@ class _ScoreDetailsState extends State<AddEditProfile> {
       token = prefs.getString('token');
     });
     _get();
-    print("Iddd...........");
-    print(widget.id);
   }
 
   Future _get() async {
-    print("Id.....AddEditProfile");
-    print(personid);
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       if (widget.id != '' && widget.id != null) {
@@ -949,8 +935,6 @@ class _ScoreDetailsState extends State<AddEditProfile> {
                     color: AppColors.white,
                     fontSize: 16),
                 onTap: () async {
-                  print("personlogoBytes ??????");
-                  print(personlogoBytes);
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
 

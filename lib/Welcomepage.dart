@@ -1,33 +1,21 @@
-import 'dart:io';
-
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
-import 'package:QCM/FqcAddEdit.dart';
 import 'package:QCM/FqcTestList.dart';
-import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/QualityList.dart';
 import 'package:QCM/QualityPage.dart';
-import 'package:QCM/SolarCell.dart';
-import 'package:QCM/addeditemployee.dart';
-import 'package:QCM/attendance.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
 import 'package:QCM/ipqcTestList.dart';
-import 'package:QCM/salaryreports.dart';
 import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-
 // import '../BoxCricket.dart';
-
 import '../constant/app_assets.dart';
-
 import '../main.dart';
 
 class WelcomePage extends StatefulWidget {

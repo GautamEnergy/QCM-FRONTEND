@@ -1,6 +1,5 @@
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/FqcTestList.dart';
-import 'package:QCM/InOutList.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
 import 'package:QCM/IqcpTestList.dart';
@@ -8,16 +7,13 @@ import 'package:QCM/QualityList.dart';
 import 'package:QCM/QualityPage.dart';
 import 'package:QCM/QualityReport.dart';
 import 'package:QCM/Welcomepage.dart';
-import 'package:QCM/attendance.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
 import 'package:QCM/ipqcTestList.dart';
-import 'package:QCM/salaryreports.dart';
 import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../BoxCricket.dart';

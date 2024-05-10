@@ -5,11 +5,9 @@ import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
-import 'package:QCM/LoginPage.dart';
 import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
-import 'package:QCM/attendance.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_assets.dart';
@@ -17,14 +15,12 @@ import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
 import 'package:QCM/constant/app_strings.dart';
 import 'package:QCM/constant/app_styles.dart';
-import 'package:QCM/main.dart';
 import 'package:QCM/user_list_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class EmployeeList extends StatefulWidget {
   EmployeeList();
@@ -95,8 +91,6 @@ class _DirectoryState extends State<EmployeeList> {
       designation = prefs.getString('designation');
       department = prefs.getString('department');
     });
-    print(site);
-    print("Hi...?");
 
     userdata = getData();
   }
@@ -122,9 +116,6 @@ class _DirectoryState extends State<EmployeeList> {
           _isLoading = false;
           decodedResult = jsonDecode(response.body);
         });
-        print("Decode......");
-        print(decodedResult);
-        //  prefs.setString(DBConst.directory, response.body);
       }
     });
 
@@ -135,9 +126,7 @@ class _DirectoryState extends State<EmployeeList> {
     setState(() {
       _isLoading = true;
     });
-    print("Delete........");
-    print(id);
-    print(status);
+
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
     final url = (site!) + 'Employee/DeleteEmployee';
@@ -441,12 +430,9 @@ class _DirectoryState extends State<EmployeeList> {
     return FutureBuilder(
       future: userdata,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print("PPPPPPP....................???????");
-        print(UserModel.fromJson(decodedResult));
         if (snapshot.connectionState == ConnectionState.done) {
           aUserModel = UserModel.fromJson(decodedResult);
-          print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKK....................???????");
-          print(aUserModel);
+
           List<UserData> data = aUserModel.data!;
 
           return _user(aUserModel);
@@ -657,8 +643,6 @@ class _DirectoryState extends State<EmployeeList> {
                 itemCount: data.data!.length,
                 itemBuilder: (context, index) {
                   if (SearchController.text.isEmpty) {
-                    print("Image ka link..........");
-                    print(data.data![index].profileImg);
                     return Container(
                         child: _tile(
                             data.data![index].personID ?? '',
@@ -922,231 +906,6 @@ class _DirectoryState extends State<EmployeeList> {
                         const SizedBox(
                           height: 2,
                         ),
-
-                        // detail == id
-                        //     ? SizedBox(
-                        //         child: Padding(
-                        //         padding: const EdgeInsets.only(top: 10),
-                        //         child: Column(
-                        //           mainAxisAlignment: MainAxisAlignment.start,
-                        //           crossAxisAlignment: CrossAxisAlignment.start,
-                        //           children: [
-                        //             //Row 1
-                        //             Row(
-                        //                 mainAxisAlignment:
-                        //                     MainAxisAlignment.start,
-                        //                 crossAxisAlignment:
-                        //                     CrossAxisAlignment.start,
-                        //                 children: <Widget>[
-                        //                   InkWell(
-                        //                     onTap: () {
-                        //                       UrlLauncher.launch(
-                        //                           'tel:+${'+91' + officialcontactno}');
-                        //                     },
-                        //                     child: Image.asset(
-                        //                       AppAssets.icRoundCallBlue,
-                        //                       height: 40,
-                        //                       width: 40,
-                        //                     ),
-                        //                   ),
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   InkWell(
-                        //                     onTap: () {
-                        //                       UrlLauncher.launch(
-                        //                           'whatsapp://send?text=Hello&phone=${'+91' + officialcontactno}');
-                        //                     },
-                        //                     child: Image.asset(
-                        //                       AppAssets.icRoundWhtspGreen,
-                        //                       height: 40,
-                        //                       width: 40,
-                        //                     ),
-                        //                   ),
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   InkWell(
-                        //                     onTap: () {
-                        //                       UrlLauncher.launch(
-                        //                           'mailto:${officialemail}');
-                        //                     },
-                        //                     child: Image.asset(
-                        //                       AppAssets.icRoundEmailYellow,
-                        //                       height: 40,
-                        //                       width: 40,
-                        //                     ),
-                        //                   ),
-                        //                   //  if (isAllowedEdit)
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   // if (isAllowedEdit)
-                        //                   InkWell(
-                        //                       child: Image.asset(
-                        //                         AppAssets.icMemberEdit,
-                        //                         height: 40,
-                        //                         width: 40,
-                        //                       ),
-                        //                       onTap: () {
-                        //                         Navigator.of(context)
-                        //                             .pushAndRemoveUntil(
-                        //                                 MaterialPageRoute(
-                        //                                     builder: (BuildContext
-                        //                                             context) =>
-                        //                                         AddEditProfile(
-                        //                                             id: id)),
-                        //                                 (Route<dynamic>
-                        //                                         route) =>
-                        //                                     false);
-                        //                       }),
-                        //                   //  if (isAllowedEdit)
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   //  if (isAllowedEdit)
-                        //                   InkWell(
-                        //                       child: Image.asset(
-                        //                         AppAssets.icMemberDelete,
-                        //                         height: 40,
-                        //                         width: 40,
-                        //                       ),
-                        //                       onTap: () {
-                        //                         showDialog(
-                        //                           context: context,
-                        //                           builder:
-                        //                               (BuildContext context) {
-                        //                             return Dialog(
-                        //                               shape:
-                        //                                   RoundedRectangleBorder(
-                        //                                 borderRadius:
-                        //                                     BorderRadius
-                        //                                         .circular(21),
-                        //                               ),
-                        //                               elevation: 0,
-                        //                               backgroundColor:
-                        //                                   Colors.transparent,
-                        //                               child: contentBox(
-                        //                                   context, id),
-                        //                             );
-                        //                           },
-                        //                         );
-                        //                       })
-                        //                 ]),
-
-                        //             // Row 2
-                        //             const SizedBox(
-                        //               height: 7,
-                        //             ),
-                        //             if (employeementtype == 'External')
-                        //               Row(
-                        //                 mainAxisAlignment:
-                        //                     MainAxisAlignment.start,
-                        //                 crossAxisAlignment:
-                        //                     CrossAxisAlignment.center,
-                        //                 children: [
-                        //                   GestureDetector(
-                        //                     onTap: () {
-                        //                       print(id);
-
-                        //                       showDialog(
-                        //                         context: context,
-                        //                         builder:
-                        //                             (BuildContext context) {
-                        //                           return Dialog(
-                        //                             shape:
-                        //                                 RoundedRectangleBorder(
-                        //                               borderRadius:
-                        //                                   BorderRadius.circular(
-                        //                                       21),
-                        //                             ),
-                        //                             elevation: 0,
-                        //                             backgroundColor:
-                        //                                 Colors.transparent,
-                        //                             child: attendanceBox(
-                        //                                 context, employeeid),
-                        //                           );
-                        //                         },
-                        //                       );
-                        //                     },
-                        //                     child: Container(
-                        //                       padding: EdgeInsets.symmetric(
-                        //                           horizontal: 10, vertical: 5),
-                        //                       decoration: BoxDecoration(
-                        //                         color: Colors
-                        //                             .blue, // Background color
-                        //                         borderRadius: BorderRadius.circular(
-                        //                             10), // Optional: Add border radius for rounded corners
-                        //                       ),
-                        //                       child: const Text(
-                        //                         'IN',
-                        //                         style: TextStyle(
-                        //                           fontWeight: FontWeight.bold,
-                        //                           fontSize: 16,
-                        //                           color: Colors
-                        //                               .white, // Optional: Set text color
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                   GestureDetector(
-                        //                     onTap: () {
-                        //                       print(id);
-                        //                       showDialog(
-                        //                         context: context,
-                        //                         builder:
-                        //                             (BuildContext context) {
-                        //                           return Dialog(
-                        //                             shape:
-                        //                                 RoundedRectangleBorder(
-                        //                               borderRadius:
-                        //                                   BorderRadius.circular(
-                        //                                       21),
-                        //                             ),
-                        //                             elevation: 0,
-                        //                             backgroundColor:
-                        //                                 Colors.transparent,
-                        //                             child: attendanceBox(
-                        //                                 context, employeeid),
-                        //                           );
-                        //                         },
-                        //                       );
-                        //                     },
-                        //                     child: Container(
-                        //                       padding: EdgeInsets.symmetric(
-                        //                           horizontal: 10, vertical: 5),
-                        //                       decoration: BoxDecoration(
-                        //                         color: Colors
-                        //                             .blue, // Background color
-                        //                         borderRadius: BorderRadius.circular(
-                        //                             10), // Optional: Add border radius for rounded corners
-                        //                       ),
-                        //                       child: const Text(
-                        //                         'OUT',
-                        //                         style: TextStyle(
-                        //                           fontWeight: FontWeight.bold,
-                        //                           fontSize: 16,
-                        //                           color: Colors
-                        //                               .white, // Optional: Set text color
-                        //                         ),
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                   const SizedBox(
-                        //                     width: 5,
-                        //                   ),
-                        //                 ],
-                        //               )
-                        //           ],
-                        //         ),
-                        //       ))
-                        //     : const Row(),
                       ],
                     )),
                   ),
@@ -1156,9 +915,6 @@ class _DirectoryState extends State<EmployeeList> {
                     children: [
                       InkWell(
                         onTap: () {
-                          print("piccc.......");
-                          print(id);
-                          print(profilepic);
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>

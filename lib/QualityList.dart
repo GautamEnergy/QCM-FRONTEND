@@ -5,28 +5,22 @@ import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
 import 'package:QCM/Iqcp.dart';
-import 'package:QCM/LoginPage.dart';
 import 'package:QCM/QualityPage.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/addeditemployee.dart';
-import 'package:QCM/attendance.dart';
 import 'package:QCM/components/app_loader.dart';
 import 'package:QCM/components/appbar.dart';
 import 'package:QCM/constant/app_assets.dart';
 import 'package:QCM/constant/app_color.dart';
 import 'package:QCM/constant/app_fonts.dart';
-import 'package:QCM/constant/app_strings.dart';
 import 'package:QCM/constant/app_styles.dart';
 import 'package:QCM/directory.dart';
-import 'package:QCM/main.dart';
 import 'package:QCM/quality_list_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class QualityList extends StatefulWidget {
   QualityList();
@@ -97,8 +91,6 @@ class _DirectoryState extends State<QualityList> {
       designation = prefs.getString('designation');
       department = prefs.getString('department');
     });
-    print(site);
-    print("Hi...?");
 
     userdata = getData();
   }
@@ -124,8 +116,7 @@ class _DirectoryState extends State<QualityList> {
           _isLoading = false;
           decodedResult = jsonDecode(response.body);
         });
-        print("Decode......");
-        print(decodedResult);
+
         //  prefs.setString(DBConst.directory, response.body);
       }
     });
@@ -137,9 +128,7 @@ class _DirectoryState extends State<QualityList> {
     setState(() {
       _isLoading = true;
     });
-    print("Delete........");
-    print(id);
-    print(status);
+
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site');
     final url = (site!) + 'Employee/DeleteEmployee';
@@ -357,12 +346,9 @@ class _DirectoryState extends State<QualityList> {
     return FutureBuilder(
       future: userdata,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print("PPPPPPP....................???????");
-        print(UserModel.fromJson(decodedResult));
         if (snapshot.connectionState == ConnectionState.done) {
           aUserModel = UserModel.fromJson(decodedResult);
-          print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKK....................???????");
-          print(aUserModel);
+
           List<UserData> data = aUserModel.data!;
 
           return _user(aUserModel);

@@ -1,30 +1,19 @@
-// ignore: file_names
 import 'dart:convert';
-// import 'dart:html';
 import 'dart:io';
-
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/FqcTestList.dart';
-import 'package:QCM/Iqcp.dart';
-import 'package:QCM/IqcpTestList.dart';
 import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_button_widget.dart';
 import 'package:QCM/components/app_loader.dart';
-import 'package:QCM/constant/role_list_model.dart';
-import 'package:QCM/dialogs/countrty_model.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dio/src/response.dart' as Response;
 import 'package:flutter/material.dart';
-
 import 'package:form_field_validator/form_field_validator.dart';
-// import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
@@ -34,7 +23,6 @@ import '../constant/app_assets.dart';
 import '../constant/app_color.dart';
 import '../constant/app_fonts.dart';
 import '../constant/app_helper.dart';
-
 import '../constant/app_styles.dart';
 
 class FqcAddEdit extends StatefulWidget {
@@ -895,8 +883,6 @@ class _FqcAddEditState extends State<FqcAddEdit> {
   }
 
   Future _get() async {
-    print("Id.....");
-    print(widget.id);
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       if (widget.id != '' && widget.id != null) {
@@ -922,8 +908,6 @@ class _FqcAddEditState extends State<FqcAddEdit> {
         data = resBody['data'];
         if (data != null && data.length > 0) {
           final dataMap = data.asMap();
-          print("Datata........??");
-          print(dataMap[0]);
 
           productSpecsController.text = dataMap[0]['ProductSpecs'] ?? '';
           productBatchNoController.text = dataMap[0]['ProductBatchNo'] ?? '';
@@ -1475,7 +1459,6 @@ class _FqcAddEditState extends State<FqcAddEdit> {
   }
 
   Future createData() async {
-    print(FqcId);
     setState(() {
       _isLoading = true;
     });
@@ -1904,9 +1887,6 @@ class _FqcAddEditState extends State<FqcAddEdit> {
         "Reason": rejectionReasonController.text
       }
     };
-
-    print("Data is........");
-    print(params);
 
     var response = await http.post(
       Uri.parse(url),
