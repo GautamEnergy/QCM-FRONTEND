@@ -553,7 +553,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
-                            data.data![index].referencePdf ?? ''));
+                            data.data![index].referencePdf ?? '',
+                            data.data![index].date ?? ''));
                   } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
@@ -571,7 +572,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
-                            data.data![index].referencePdf ?? ''));
+                            data.data![index].referencePdf ?? '',
+                            data.data![index].date ?? ''));
                   } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -586,7 +588,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
-                            data.data![index].referencePdf ?? ''));
+                            data.data![index].referencePdf ?? '',
+                            data.data![index].date ?? ''));
                   } else if (data.data![index].moduleNo!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -601,7 +604,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
-                            data.data![index].referencePdf ?? ''));
+                            data.data![index].referencePdf ?? '',
+                            data.data![index].date ?? ''));
                   } else if ((data.data![index].employeeID!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -616,7 +620,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
-                            data.data![index].referencePdf ?? ''));
+                            data.data![index].referencePdf ?? '',
+                            data.data![index].date ?? ''));
                   } else if (data.data![index].jobCardDetailID!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -631,7 +636,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
-                            data.data![index].referencePdf ?? ''));
+                            data.data![index].referencePdf ?? '',
+                            data.data![index].date ?? ''));
                   } else {
                     return Container();
                   }
@@ -652,7 +658,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
       String invoiceno,
       String employeeid,
       String type,
-      String referencePdf) {
+      String referencePdf,
+      String date) {
     return InkWell(
       onTap: () {},
       child: Padding(
@@ -844,8 +851,32 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             height: 5,
                           ),
                         //Occupication
-                        if (referencePdf != '' && referencePdf != null)
-                          Row(children: <Widget>[
+
+                        Row(children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(
+                                  255, 2, 45, 236), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              date,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                          if (referencePdf != '' && referencePdf != null)
+                            const SizedBox(
+                              width: 5,
+                            ),
+                          if (referencePdf != '' && referencePdf != null)
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
@@ -865,22 +896,22 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                UrlLauncher.launch(referencePdf);
-                              },
-                              child: ClipRRect(
-                                child: Image.asset(
-                                  AppAssets.icPdf,
-                                  width: 30,
-                                  height: 30,
-                                ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              UrlLauncher.launch(referencePdf);
+                            },
+                            child: ClipRRect(
+                              child: Image.asset(
+                                AppAssets.icPdf,
+                                width: 30,
+                                height: 30,
                               ),
                             ),
-                          ]),
+                          ),
+                        ]),
 
                         const SizedBox(
                           height: 2,
@@ -895,8 +926,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                       children: [
                         InkWell(
                           onTap: () {
-                            print("Ham......??");
-                            print(id);
+                            print("Dateeeeeeeeeeeeeeeee");
+                            print(date);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) => type ==

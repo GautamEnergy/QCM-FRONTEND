@@ -39,6 +39,7 @@ class UserData {
   String? jobCardDetailID;
   String? moduleNo;
   String? materialName;
+  String? date;
 
   UserData(
       {this.employeeID,
@@ -49,7 +50,8 @@ class UserData {
       this.referencePdf,
       this.jobCardDetailID,
       this.moduleNo,
-      this.materialName});
+      this.materialName,
+      this.date});
 
   UserData.fromJson(Map<String, dynamic> json) {
     employeeID = json['EmployeeID'];
@@ -61,6 +63,7 @@ class UserData {
     jobCardDetailID = json['JobCardDetailID'];
     moduleNo = json['ModuleNo'];
     materialName = json['MaterialName'];
+    date = json['Date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -74,6 +77,7 @@ class UserData {
     data['JobCardDetailID'] = this.jobCardDetailID;
     data['ModuleNo'] = this.moduleNo;
     data['MaterialName'] = this.materialName;
+    data['Date'] = this.date;
     return data;
   }
 }
