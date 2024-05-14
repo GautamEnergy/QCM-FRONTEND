@@ -551,7 +551,7 @@ class _DirectoryState extends State<QualityList> {
                       fontFamily: appFontFamily,
                       fontSize: 15,
                       color: AppColors.greyColor)),
-              filter()
+              // filter()
             ],
           )),
       Container(

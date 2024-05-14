@@ -129,7 +129,6 @@ class _AddQualityState extends State<AddQuality> {
   TextEditingController actiontakenController = new TextEditingController();
   TextEditingController otherissuetypeController = new TextEditingController();
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<FormState> qualityformKey = GlobalKey<FormState>();
 
   Future<void> _pickPDF() async {
@@ -884,6 +883,47 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(
               height: 25,
             ),
+
+            Text(
+              "Capture Module Pic*",
+              style: AppStyles.textfieldCaptionTextStyle,
+            ),
+            const SizedBox(height: 10),
+            _image == null
+                ? Container(
+                    width: 300, // Set the desired width
+                    height: 300, // Set the desired height
+                    child: GestureDetector(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            10), // Adjust the radius to your preference
+                        child: Image.asset(
+                          AppAssets.camera,
+                          fit: BoxFit.cover,
+                          width:
+                              300, // Set width and height to match Container's size
+                          height: 300,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    width: 300, // Set the desired width
+                    height: 300, // Set the desired height
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        _image!, // Assuming _image is a File object
+                        fit: BoxFit.cover,
+                        width:
+                            300, // Set width and height to match Container's size
+                        height: 300,
+                      ),
+                    ),
+                  ),
             const SizedBox(height: 10),
             Text(
               "Shift*",
@@ -1024,46 +1064,46 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(height: 5),
             textActionTaken(),
             const SizedBox(height: 15),
-            Text(
-              "Capture Module Pic*",
-              style: AppStyles.textfieldCaptionTextStyle,
-            ),
-            const SizedBox(height: 10),
-            _image == null
-                ? Container(
-                    width: 300, // Set the desired width
-                    height: 300, // Set the desired height
-                    child: GestureDetector(
-                      onTap: () {
-                        getImage();
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            10), // Adjust the radius to your preference
-                        child: Image.asset(
-                          AppAssets.camera,
-                          fit: BoxFit.cover,
-                          width:
-                              300, // Set width and height to match Container's size
-                          height: 300,
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(
-                    width: 300, // Set the desired width
-                    height: 300, // Set the desired height
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.file(
-                        _image!, // Assuming _image is a File object
-                        fit: BoxFit.cover,
-                        width:
-                            300, // Set width and height to match Container's size
-                        height: 300,
-                      ),
-                    ),
-                  ),
+            // Text(
+            //   "Capture Module Pic*",
+            //   style: AppStyles.textfieldCaptionTextStyle,
+            // ),
+            // const SizedBox(height: 10),
+            // _image == null
+            //     ? Container(
+            //         width: 300, // Set the desired width
+            //         height: 300, // Set the desired height
+            //         child: GestureDetector(
+            //           onTap: () {
+            //             getImage();
+            //           },
+            //           child: ClipRRect(
+            //             borderRadius: BorderRadius.circular(
+            //                 10), // Adjust the radius to your preference
+            //             child: Image.asset(
+            //               AppAssets.camera,
+            //               fit: BoxFit.cover,
+            //               width:
+            //                   300, // Set width and height to match Container's size
+            //               height: 300,
+            //             ),
+            //           ),
+            //         ),
+            //       )
+            //     : Container(
+            //         width: 300, // Set the desired width
+            //         height: 300, // Set the desired height
+            //         child: ClipRRect(
+            //           borderRadius: BorderRadius.circular(10),
+            //           child: Image.file(
+            //             _image!, // Assuming _image is a File object
+            //             fit: BoxFit.cover,
+            //             width:
+            //                 300, // Set width and height to match Container's size
+            //             height: 300,
+            //           ),
+            //         ),
+            //       ),
 
             const SizedBox(height: 30),
 
@@ -1077,8 +1117,22 @@ class _AddQualityState extends State<AddQuality> {
                 print("personlogoBytes ??????");
                 print(_imageBytes);
                 if (qualityformKey.currentState!.validate()) {
-                  qualityformKey.currentState!.save();
-                  if (_imageBytes != "" && _imageBytes != null) {
+                  if (_imageBytes != "" &&
+                      _imageBytes != null &&
+                      shiftController != null &&
+                      shiftController != "" &&
+                      shiftinchargeprelimeController.text != "" &&
+                      shiftinchargepostlimeController.text != "" &&
+                      productBarcodeController.text != "" &&
+                      wattageController.text != "" &&
+                      modelNumberController != "" &&
+                      modelNumberController != null &&
+                      issuetypeController != "" &&
+                      issuetypeController != null &&
+                      stageController.text != "" &&
+                      responsiblepersonController.text != "" &&
+                      reasonofissueController.text != "" &&
+                      actiontakenController.text != "") {
                     createData(
                       shiftController ?? "",
                       shiftinchargeprelimeController.text,
@@ -1096,11 +1150,12 @@ class _AddQualityState extends State<AddQuality> {
                       actiontakenController.text,
                     );
                   } else {
-                    Toast.show("Please Capture Mudule Pic.",
+                    Toast.show("Please Enter All Required Fields.",
                         duration: Toast.lengthLong,
                         gravity: Toast.center,
                         backgroundColor: Colors.redAccent);
                   }
+                  qualityformKey.currentState!.save();
                 }
               },
               label: AppStrings.SAVE,
