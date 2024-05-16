@@ -1117,9 +1117,7 @@ class _AddQualityState extends State<AddQuality> {
                 print("personlogoBytes ??????");
                 print(_imageBytes);
                 if (qualityformKey.currentState!.validate()) {
-                  if (_imageBytes != "" &&
-                      _imageBytes != null &&
-                      shiftController != null &&
+                  if (shiftController != null &&
                       shiftController != "" &&
                       shiftinchargeprelimeController.text != "" &&
                       shiftinchargepostlimeController.text != "" &&
