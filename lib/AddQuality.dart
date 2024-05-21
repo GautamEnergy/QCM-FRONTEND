@@ -1,34 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:QCM/Fqc.dart';
-import 'package:QCM/Ipqc.dart';
-import 'package:QCM/Iqcp.dart';
 import 'package:QCM/QualityList.dart';
 import 'package:QCM/QualityPage.dart';
-import 'package:QCM/Welcomepage.dart';
 import 'package:QCM/components/app_loader.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/src/response.dart' as Response;
 import 'package:QCM/components/app_button_widget.dart';
-import 'package:QCM/dialogs/city_list_model.dart';
-import 'package:QCM/dialogs/dialog_role_city.dart';
-import 'package:QCM/dialogs/dialog_role_state.dart';
-import 'package:QCM/dialogs/state_list_model.dart';
-import 'package:QCM/directory.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:email_validator/email_validator.dart' as email_validator;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'components/appbar.dart';
@@ -37,7 +23,6 @@ import 'constant/app_color.dart';
 import 'constant/app_fonts.dart';
 import 'constant/app_strings.dart';
 import 'constant/app_styles.dart';
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class AddQuality extends StatefulWidget {
   final String? id;
@@ -65,7 +50,7 @@ class _AddQualityState extends State<AddQuality> {
       shiftController,
       reportingManagerController,
       modelNumberController,
-      profilepicture,
+      modulepicture,
       personLogoname,
       personid,
       designation,
@@ -87,22 +72,8 @@ class _AddQualityState extends State<AddQuality> {
       endDate,
       announcementStatus;
   bool _isLoading = false;
+  String setStatus = "Active";
 
-  List bloodGroupList = [
-    {"label": 'A+', "value": 'A+'},
-    {"label": 'A-', "value": 'A-'},
-    {"label": 'AB+', "value": 'AB+'},
-    {"label": 'AB-', "value": 'AB-'},
-    {"label": 'B+', "value": 'B+'},
-    {"label": 'B-', "value": 'B-'},
-    {"label": 'O+', "value": 'O+'},
-    {"label": 'O-', "value": 'O-'},
-  ];
-
-  // List departmentList = [
-  //       {"key": "Wire Frame", "value": "Wire Frame"},
-  //       {"key": "Breakdown", "value": "Breakdown"},
-  //     ],
   List issueList = [],
       modelNumberList = [],
       reportingManagerList = [],
@@ -156,7 +127,7 @@ class _AddQualityState extends State<AddQuality> {
     getIssueData();
     getModelNumberData();
     print("ProfilePicccc");
-    print(profilepicture);
+    print(modulepicture);
     super.initState();
   }
 
@@ -170,7 +141,10 @@ class _AddQualityState extends State<AddQuality> {
       site = prefs.getString('site');
       token = prefs.getString('token');
     });
-    _get();
+    if (widget.id != "" && widget.id != null) {
+      _get();
+    }
+
     print("Iddd...........");
     print(widget.id);
   }
@@ -211,32 +185,48 @@ class _AddQualityState extends State<AddQuality> {
       }
       site = prefs.getString('site');
     });
-    final EmployeeData = ((site!) + 'Employee/GetSpecificEmployee');
-    final employeeData = await http.post(
-      Uri.parse(EmployeeData),
-      body: jsonEncode(<String, String>{"PersonID": widget.id ?? ''}),
+    final QualityData = ((site!) + 'Quality/QualityList');
+    final qualityData = await http.post(
+      Uri.parse(QualityData),
+      body: jsonEncode(
+          <String, String>{"QualityId": widget.id ?? '', "token": token!}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
 
-    var resBody = json.decode(employeeData.body);
+    var resBody = json.decode(qualityData.body);
 
     if (mounted) {
       setState(() {
         data = resBody['data'];
-
+        print("Data ......??");
+        print(data);
         if (data != null && data.length > 0) {
           _isLoading = false;
           final dataMap = data.asMap();
 
-          // shiftinchargeprelimeController.text = dataMap[0]['EmployeeID'] ?? '';
-          // shiftinchargepostlimeController.text = dataMap[0]['LoginID'] ?? '';
-
-          // shiftController = dataMap[0]['WorkLocation'] ?? '';
-          // issuetypeController = dataMap[0]['Department'] ?? '';
-          //   modelNumberController = dataMap[0]['Desgination'] ?? '';
-          //   profilepicture = dataMap[0]['ProfileImg'] ?? '';
+          print(dataMap[0]['ModulePicture']);
+          print("Datamap////?");
+          modulepicture = dataMap[0]['ModulePicture'] ?? "";
+          shiftController = dataMap[0]['Shift'] ?? "";
+          shiftinchargeprelimeController.text =
+              dataMap[0]['ShiftInChargePreLime'] ?? '';
+          shiftinchargepostlimeController.text =
+              dataMap[0]['ShiftInChargePostLim'] ?? '';
+          productBarcodeController.text = dataMap[0]['ProductBarCode'] ?? '';
+          wattageController.text = dataMap[0]['Wattage'] ?? '';
+          issuetypeController = dataMap[0]['IssueType'] ?? '';
+          otherissuetypeController.text = dataMap[0]['OtherIssueType'] ?? '';
+          modelNumberController = dataMap[0]['ModelNumber'] ?? '';
+          othermodelnumberController.text =
+              dataMap[0]['OtherModelNumber'] ?? '';
+          stageController.text = dataMap[0]['Stage'] ?? '';
+          responsiblepersonController.text =
+              dataMap[0]['ResposiblePerson'] ?? '';
+          reasonofissueController.text = dataMap[0]['ReasonOfIssue'] ?? '';
+          issuecomefromController.text = dataMap[0]['IssueComeFrom'] ?? '';
+          actiontakenController.text = dataMap[0]['ActionTaken'] ?? '';
         }
       });
     }
@@ -244,7 +234,9 @@ class _AddQualityState extends State<AddQuality> {
 
   Future<bool> redirectto() async {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return QualityPage();
+      return widget.id != "" && widget.id != null
+          ? QualityList()
+          : QualityPage();
     }));
     return true;
   }
@@ -273,7 +265,9 @@ class _AddQualityState extends State<AddQuality> {
                 logo: "logo",
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return QualityPage();
+                    return widget.id != "" && widget.id != null
+                        ? QualityList()
+                        : QualityPage();
                   }));
                 },
               ),
@@ -281,7 +275,45 @@ class _AddQualityState extends State<AddQuality> {
                 padding: EdgeInsets.only(left: 10.0, right: 10, top: 15),
                 child: _isLoading ? AppLoader() : _user(),
               ),
+              floatingActionButton: _getFAB(),
             )));
+  }
+
+  Widget _getFAB() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 70),
+      child: FloatingActionButton(
+        onPressed: () {
+          createData(
+            "Inprogress",
+            shiftController ?? "",
+            shiftinchargeprelimeController.text,
+            shiftinchargepostlimeController.text,
+            productBarcodeController.text,
+            wattageController.text,
+            modelNumberController ?? "",
+            othermodelnumberController.text,
+            issuetypeController ?? "",
+            otherissuetypeController.text,
+            stageController.text,
+            responsiblepersonController.text,
+            reasonofissueController.text,
+            issuecomefromController.text,
+            actiontakenController.text,
+          );
+          // setState(() {
+          //   setStatus = 'Inprogress';
+          // });
+        },
+        child: ClipOval(
+          child: Image.asset(
+            AppAssets.save,
+            height: 70,
+            width: 60,
+          ),
+        ),
+      ),
+    );
   }
 
   TextFormField textShiftInchargePrelime() {
@@ -701,6 +733,7 @@ class _AddQualityState extends State<AddQuality> {
   }
 
   Future createData(
+    String status,
     String shift,
     String shiftinchargeprelime,
     String shiftinchargepostlime,
@@ -730,7 +763,10 @@ class _AddQualityState extends State<AddQuality> {
     final response = await http.post(
       Uri.parse(url),
       body: jsonEncode(<String, String>{
+        "qualityid":
+            widget.id != "" && widget.id != null ? widget.id.toString() : "",
         "currentuser": personid ?? '',
+        "status": status,
         "shift": shift,
         "shiftinchargename": "",
         "shiftinchargeprelime": shiftinchargeprelime,
@@ -778,6 +814,14 @@ class _AddQualityState extends State<AddQuality> {
         _isLoading = false;
       });
       Toast.show("This Issue is Already Reported.",
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.redAccent);
+    } else if (response.statusCode == 409) {
+      setState(() {
+        _isLoading = false;
+      });
+      Toast.show("This Barcode Number is Already Exist.",
           duration: Toast.lengthLong,
           gravity: Toast.center,
           backgroundColor: Colors.redAccent);
@@ -891,35 +935,46 @@ class _AddQualityState extends State<AddQuality> {
             const SizedBox(height: 10),
             _image == null
                 ? Container(
-                    width: 300, // Set the desired width
-                    height: 300, // Set the desired height
+                    width: 300,
+                    height: 300,
                     child: GestureDetector(
                       onTap: () {
+                        print("image.....?");
+                        print(_image);
                         getImage();
                       },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            10), // Adjust the radius to your preference
-                        child: Image.asset(
-                          AppAssets.camera,
-                          fit: BoxFit.cover,
-                          width:
-                              300, // Set width and height to match Container's size
-                          height: 300,
-                        ),
-                      ),
+                      child: widget.id != "" &&
+                              widget.id != null &&
+                              modulepicture != ""
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: ((modulepicture ?? '')),
+                                fit: BoxFit.cover,
+                                width: 300,
+                                height: 300,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                AppAssets.camera,
+                                fit: BoxFit.cover,
+                                width: 300,
+                                height: 300,
+                              ),
+                            ),
                     ),
                   )
                 : Container(
-                    width: 300, // Set the desired width
-                    height: 300, // Set the desired height
+                    width: 300,
+                    height: 300,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.file(
-                        _image!, // Assuming _image is a File object
+                        _image!,
                         fit: BoxFit.cover,
-                        width:
-                            300, // Set width and height to match Container's size
+                        width: 300,
                         height: 300,
                       ),
                     ),
@@ -1114,8 +1169,6 @@ class _AddQualityState extends State<AddQuality> {
                   color: AppColors.white,
                   fontSize: 16),
               onTap: () async {
-                print("personlogoBytes ??????");
-                print(_imageBytes);
                 if (qualityformKey.currentState!.validate()) {
                   if (shiftController != null &&
                       shiftController != "" &&
@@ -1132,6 +1185,7 @@ class _AddQualityState extends State<AddQuality> {
                       reasonofissueController.text != "" &&
                       actiontakenController.text != "") {
                     createData(
+                      "Active",
                       shiftController ?? "",
                       shiftinchargeprelimeController.text,
                       shiftinchargepostlimeController.text,
@@ -1167,7 +1221,10 @@ class _AddQualityState extends State<AddQuality> {
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                            builder: (BuildContext context) => QualityPage()),
+                            builder: (BuildContext context) =>
+                                widget.id != "" && widget.id != null
+                                    ? QualityList()
+                                    : QualityPage()),
                         (Route<dynamic> route) => false);
                   },
                   child: const Text(

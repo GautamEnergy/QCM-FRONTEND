@@ -96,8 +96,8 @@ class _QualityReportState extends State<QualityReport> {
       modelNumberList = [],
       reportingManagerList = [],
       shiftList = [
-        {"key": "Day", "value": "Day"},
-        {"key": "Night", "value": "Night"},
+        {"key": "Active", "value": "Active"},
+        {"key": "Inprogress", "value": "Inprogress"},
       ];
 
   SharedPreferences? prefs;
@@ -200,7 +200,8 @@ class _QualityReportState extends State<QualityReport> {
       body: jsonEncode(<String, String>{
         "CurrentUser": personid ?? '',
         "FromDate": fromdate ?? '',
-        "ToDate": todate ?? ''
+        "ToDate": todate ?? '',
+        "Status": shiftController ?? ""
       }),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -275,6 +276,44 @@ class _QualityReportState extends State<QualityReport> {
               height: 25,
             ),
             const SizedBox(height: 10),
+
+            Text(
+              "Status*",
+              style: AppStyles.textfieldCaptionTextStyle,
+            ),
+            const SizedBox(height: 5),
+
+            DropdownButtonFormField<String>(
+              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                  hintText: "Please Select Status",
+                  counterText: '',
+                  contentPadding: EdgeInsets.all(10)),
+              borderRadius: BorderRadius.circular(20),
+              items: shiftList
+                  .map((label) => DropdownMenuItem(
+                        child: Text(label['key']!,
+                            style: AppStyles.textInputTextStyle),
+                        value: label['value'].toString(),
+                      ))
+                  .toList(),
+              onChanged: (val) {
+                setState(() {
+                  shiftController = val!;
+                });
+              },
+              value: shiftController != '' ? shiftController : null,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select a status';
+                }
+                return null; // Return null if the validation is successful
+              },
+            ),
+
+            const SizedBox(
+              height: 15,
+            ),
+
             Text(
               "From*",
               style: AppStyles.textfieldCaptionTextStyle,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:QCM/AddQuality.dart';
 import 'package:QCM/CommonDrawer.dart';
 import 'package:QCM/Fqc.dart';
 import 'package:QCM/Ipqc.dart';
@@ -44,6 +45,7 @@ class _DirectoryState extends State<QualityList> {
   String? _paymentModeController;
   List paymentModeData = [];
   String? personid,
+      token,
       vCard,
       firstname,
       lastname,
@@ -60,7 +62,7 @@ class _DirectoryState extends State<QualityList> {
       _hasBeenPressedorganization = '',
       organizationtype,
       _hasBeenPressed = '',
-      _hasBeenPressed1 = 'Pending',
+      _hasBeenPressed1 = 'Active',
       _hasBeenPressed2 = '',
       Expirydate,
       Paymentdate;
@@ -90,6 +92,7 @@ class _DirectoryState extends State<QualityList> {
       site = prefs.getString('site');
       designation = prefs.getString('designation');
       department = prefs.getString('department');
+      token = prefs.getString('token');
     });
 
     userdata = getData();
@@ -101,12 +104,11 @@ class _DirectoryState extends State<QualityList> {
     setState(() {
       _isLoading = true;
     });
-
     final url = (site! + 'Quality/QualityList');
-
-    http.get(
+    http.post(
       Uri.parse(url),
-      // body: jsonEncode(<String, String>{"personid": personid!}),
+      body: jsonEncode(
+          <String, String>{"Status": _hasBeenPressed1!, "token": token!}),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -375,18 +377,18 @@ class _DirectoryState extends State<QualityList> {
             InkWell(
                 onTap: () {
                   setState(() {
-                    _hasBeenPressed1 = 'Pending';
+                    _hasBeenPressed1 = 'Active';
                     _hasBeenPressed2 = '';
                   });
                   userdata = getData();
                 },
-                child: Text('Pending',
+                child: Text('Active',
                     style: TextStyle(
                         fontFamily: appFontFamily,
-                        color: _hasBeenPressed1 == 'Pending'
+                        color: _hasBeenPressed1 == 'Active'
                             ? AppColors.blueColor
                             : AppColors.black,
-                        fontWeight: _hasBeenPressed1 == 'Pending'
+                        fontWeight: _hasBeenPressed1 == 'Active'
                             ? FontWeight.w700
                             : FontWeight.normal))),
 
@@ -402,86 +404,22 @@ class _DirectoryState extends State<QualityList> {
             InkWell(
               onTap: () {
                 setState(() {
-                  _hasBeenPressed1 = 'Resolved';
+                  _hasBeenPressed1 = 'Inprogress';
                 });
                 userdata = getData();
               },
               child: Text(
-                'Resolved',
+                'Inprogress',
                 style: TextStyle(
                     fontFamily: appFontFamily,
-                    color: _hasBeenPressed1 == 'Resolved'
+                    color: _hasBeenPressed1 == 'Inprogress'
                         ? AppColors.blueColor
                         : AppColors.black,
-                    fontWeight: _hasBeenPressed1 == 'Resolved'
+                    fontWeight: _hasBeenPressed1 == 'Inprogress'
                         ? FontWeight.w700
                         : FontWeight.normal),
               ),
             ),
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              const Text(
-                ' | ',
-                style: TextStyle(
-                    fontFamily: appFontFamily,
-                    color: AppColors.blueColor,
-                    fontWeight: FontWeight.w700),
-              ),
-
-            //#3 Pending
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _hasBeenPressed1 = 'Pending';
-                  });
-                  userdata = getData();
-                },
-                child: Text(
-                  'Pending',
-                  style: TextStyle(
-                      fontFamily: appFontFamily,
-                      color: _hasBeenPressed1 == 'Pending'
-                          ? AppColors.blueColor
-                          : AppColors.black,
-                      fontWeight: _hasBeenPressed1 == 'Pending'
-                          ? FontWeight.w700
-                          : FontWeight.normal),
-                ),
-              ),
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              const Text(
-                ' | ',
-                style: TextStyle(
-                    fontFamily: appFontFamily,
-                    color: AppColors.blueColor,
-                    fontWeight: FontWeight.w700),
-              ),
-
-            //#4 Decline
-            if (organizationtype == 'RMB Chapter' ||
-                organizationtype == 'Me-connect Chapter')
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _hasBeenPressed1 = 'Decline';
-                  });
-                  userdata = getData();
-                },
-                child: Text(
-                  'Declined',
-                  style: TextStyle(
-                      fontFamily: appFontFamily,
-                      color: _hasBeenPressed1 == 'Decline'
-                          ? AppColors.blueColor
-                          : AppColors.black,
-                      fontWeight: _hasBeenPressed1 == 'Decline'
-                          ? FontWeight.w700
-                          : FontWeight.normal),
-                ),
-              ),
           ],
         ));
   }
@@ -551,7 +489,7 @@ class _DirectoryState extends State<QualityList> {
                       fontFamily: appFontFamily,
                       fontSize: 15,
                       color: AppColors.greyColor)),
-              // filter()
+              filter()
             ],
           )),
       Container(
@@ -854,6 +792,27 @@ class _DirectoryState extends State<QualityList> {
                       ],
                     )),
                   ),
+                  if (_hasBeenPressed1 == "Inprogress")
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        AddQuality(id: id)),
+                                (Route<dynamic> route) => false);
+                          },
+                          child: Image.asset(
+                            AppAssets.icMemberEdit,
+                            height: 40,
+                            width: 40,
+                          ),
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ),
