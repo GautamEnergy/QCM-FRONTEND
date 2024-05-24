@@ -62,7 +62,7 @@ class _DirectoryState extends State<QualityList> {
       _hasBeenPressedorganization = '',
       organizationtype,
       _hasBeenPressed = '',
-      _hasBeenPressed1 = 'Active',
+      _hasBeenPressed1 = 'Completed',
       _hasBeenPressed2 = '',
       Expirydate,
       Paymentdate;
@@ -373,22 +373,22 @@ class _DirectoryState extends State<QualityList> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            //#1 Active
+            //#1 Completed
             InkWell(
                 onTap: () {
                   setState(() {
-                    _hasBeenPressed1 = 'Active';
+                    _hasBeenPressed1 = 'Completed';
                     _hasBeenPressed2 = '';
                   });
                   userdata = getData();
                 },
-                child: Text('Active',
+                child: Text('Completed',
                     style: TextStyle(
                         fontFamily: appFontFamily,
-                        color: _hasBeenPressed1 == 'Active'
+                        color: _hasBeenPressed1 == 'Completed'
                             ? AppColors.blueColor
                             : AppColors.black,
-                        fontWeight: _hasBeenPressed1 == 'Active'
+                        fontWeight: _hasBeenPressed1 == 'Completed'
                             ? FontWeight.w700
                             : FontWeight.normal))),
 
@@ -792,7 +792,8 @@ class _DirectoryState extends State<QualityList> {
                       ],
                     )),
                   ),
-                  if (_hasBeenPressed1 == "Inprogress")
+                  if (_hasBeenPressed1 == "Inprogress" &&
+                      designation != "Super Admin")
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

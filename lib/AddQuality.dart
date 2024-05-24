@@ -1185,7 +1185,7 @@ class _AddQualityState extends State<AddQuality> {
                       reasonofissueController.text != "" &&
                       actiontakenController.text != "") {
                     createData(
-                      "Active",
+                      "Completed",
                       shiftController ?? "",
                       shiftinchargeprelimeController.text,
                       shiftinchargepostlimeController.text,

@@ -96,7 +96,7 @@ class _QualityReportState extends State<QualityReport> {
       modelNumberList = [],
       reportingManagerList = [],
       shiftList = [
-        {"key": "Active", "value": "Active"},
+        {"key": "Completed", "value": "Completed"},
         {"key": "Inprogress", "value": "Inprogress"},
       ];
 
@@ -278,14 +278,14 @@ class _QualityReportState extends State<QualityReport> {
             const SizedBox(height: 10),
 
             Text(
-              "Status*",
+              "Quality Type*",
               style: AppStyles.textfieldCaptionTextStyle,
             ),
             const SizedBox(height: 5),
 
             DropdownButtonFormField<String>(
               decoration: AppStyles.textFieldInputDecoration.copyWith(
-                  hintText: "Please Select Status",
+                  hintText: "Please Select Quality Type",
                   counterText: '',
                   contentPadding: EdgeInsets.all(10)),
               borderRadius: BorderRadius.circular(20),
@@ -304,7 +304,7 @@ class _QualityReportState extends State<QualityReport> {
               value: shiftController != '' ? shiftController : null,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please select a status';
+                  return 'Please select quality type';
                 }
                 return null; // Return null if the validation is successful
               },
