@@ -525,7 +525,7 @@ class _PreCardState extends State<PreCard> {
       CellLoadingWICriteriaController.text = "As per WI";
 
       CellLoadingAvabilityFrequencyController.text = "Once per Shift ";
-      CellAvabilityofCriteriaController.text =
+      CellLoadingAvabilityCriteriaController.text =
           "Avability of WI & Operator should be aware with WI";
 
       CellLoadingVerificationFrequencyController.text = "Once per Shift";
