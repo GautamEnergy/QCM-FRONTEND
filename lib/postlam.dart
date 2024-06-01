@@ -427,11 +427,12 @@ class _PostlamState extends State<Postlam> {
       framingCornerFrequencyController.text = "5 Piece per Shift";
       framingCornerCrieteriaController.text = "No Corner Gap,No overlapping";
       framingTopFrequencyController.text = "Once a Shift";
-      framingTopFrequencyController.text = "As per PO or process card";
+      framingTopCrieteriaController.text = "As per PO or process card";
       framingMountingFrequencyController.text = "once a Shift";
-      framingTopCrieteriaController.text = "+-1mm ";
+      framingMountingCrieteriaController.text = "+-1mm ";
       framingAnodizingFrequencyController.text = "onc a Shift";
-      framingAnodizingFrequencyController.text = ">=15micron ";
+      framingAnodizingCrieteriaController.text = ">=15micron ";
+
       // Junction Box Assembly
       junctionWiFrequencyController.text = "Once a Shift";
       junctionWiCrieteriaController.text = "Must be Present";
@@ -831,7 +832,7 @@ class _PostlamState extends State<Postlam> {
           "CheckPoint": {
             "Avaibillity of WI": hipotWiController.text,
             "parameter": hipotParameterController.text,
-            "DCW-4.0KV ": {
+            "DCW-4.0KV": {
               "Observation 1": hipotDCWObs1Controller.text,
               "Observation 2": hipotDCWObs2Controller.text,
               "Observation 3": hipotDCWObs3Controller.text,
@@ -845,7 +846,7 @@ class _PostlamState extends State<Postlam> {
               "Observation 4": hipotIRObs4Controller.text,
               "Observation 5": hipotIRObs5Controller.text,
             },
-            "Ground Continuity-62.5A ": {
+            "Ground Continuity-62.5A": {
               "Observation 1": hipotGroundObs1Controller.text,
               "Observation 2": hipotGroundObs2Controller.text,
               "Observation 3": hipotGroundObs3Controller.text,
@@ -858,14 +859,14 @@ class _PostlamState extends State<Postlam> {
             "parameter": hipotParameterCrieteriaController.text,
             "DCW-4.0KV": hipotDCWCrieteriaController.text,
             "IR-1.5 KV": hipotIRCrieteriaController.text,
-            "Ground Continuity-62.5A.": hipotGroundCrieteriaController.text,
+            "Ground Continuity-62.5A": hipotGroundCrieteriaController.text,
           },
           "Frequency": {
             "Avaibillity of WI": hipotWiFrequencyController.text,
             "parameter": hipotParameterFrequencyController.text,
             "DCW-4.0KV": hipotDCWFrequencyController.text,
             "IR-1.5 KV": hipotIRFrequencyController.text,
-            "Ground Continuity-62.5A.": hipotGroundFrequencyController.text,
+            "Ground Continuity-62.5A": hipotGroundFrequencyController.text,
           },
           "Remark": ""
         },
@@ -970,7 +971,7 @@ class _PostlamState extends State<Postlam> {
         {
           "Stage": "Final Visual Inspection",
           "CheckPoint": {
-            "Visual inspection ": {
+            "Visual inspection": {
               "Observation 1": finalInspectionObs1Controller.text,
               "Observation 2": finalInspectionObs2Controller.text,
               "Observation 3": finalInspectionObs3Controller.text,
@@ -1003,7 +1004,7 @@ class _PostlamState extends State<Postlam> {
         {
           "Stage": "Packaging",
           "CheckPoint": {
-            "Barcode Defects(unclear/duplication) ": {
+            "Barcode Defects(unclear/duplication)": {
               "Observation 1": packagingBarcodeObs1Controller.text,
               "Observation 2": packagingBarcodeObs2Controller.text,
               "Observation 3": packagingBarcodeObs3Controller.text,
@@ -1469,19 +1470,19 @@ class _PostlamState extends State<Postlam> {
           hipotParameterController.text =
               resBody['response']['HipotCheckPoint']['parameter'] ?? '';
           hipotDCWObs1Controller.text = resBody['response']['HipotCheckPoint']
-                  ['DCW-4.0KV ']['Observation 1'] ??
+                  ['DCW-4.0KV']['Observation 1'] ??
               '';
           hipotDCWObs2Controller.text = resBody['response']['HipotCheckPoint']
-                  ['DCW-4.0KV ']['Observation 2'] ??
+                  ['DCW-4.0KV']['Observation 2'] ??
               '';
           hipotDCWObs3Controller.text = resBody['response']['HipotCheckPoint']
-                  ['DCW-4.0KV ']['Observation 3'] ??
+                  ['DCW-4.0KV']['Observation 3'] ??
               '';
           hipotDCWObs4Controller.text = resBody['response']['HipotCheckPoint']
-                  ['DCW-4.0KV ']['Observation 4'] ??
+                  ['DCW-4.0KV']['Observation 4'] ??
               '';
           hipotDCWObs5Controller.text = resBody['response']['HipotCheckPoint']
-                  ['DCW-4.0KV ']['Observation 5'] ??
+                  ['DCW-4.0KV']['Observation 5'] ??
               '';
           //2nd
           hipotIRObs1Controller.text = resBody['response']['HipotCheckPoint']
@@ -1501,23 +1502,23 @@ class _PostlamState extends State<Postlam> {
               '';
           // 3rd
           hipotGroundObs1Controller.text = resBody['response']
-                      ['HipotCheckPoint']['Ground Continuity-62.5A ']
+                      ['HipotCheckPoint']['Ground Continuity-62.5A']
                   ['Observation 1'] ??
               '';
           hipotGroundObs2Controller.text = resBody['response']
-                      ['HipotCheckPoint']['Ground Continuity-62.5A ']
+                      ['HipotCheckPoint']['Ground Continuity-62.5A']
                   ['Observation 2'] ??
               '';
           hipotGroundObs3Controller.text = resBody['response']
-                      ['HipotCheckPoint']['Ground Continuity-62.5A ']
+                      ['HipotCheckPoint']['Ground Continuity-62.5A']
                   ['Observation 3'] ??
               '';
           hipotGroundObs4Controller.text = resBody['response']
-                      ['HipotCheckPoint']['Ground Continuity-62.5A ']
+                      ['HipotCheckPoint']['Ground Continuity-62.5A']
                   ['Observation 4'] ??
               '';
           hipotGroundObs5Controller.text = resBody['response']
-                      ['HipotCheckPoint']['Ground Continuity-62.5A ']
+                      ['HipotCheckPoint']['Ground Continuity-62.5A']
                   ['Observation 5'] ??
               '';
 
@@ -1627,23 +1628,23 @@ class _PostlamState extends State<Postlam> {
               '';
           // Final Visual
           finalInspectionObs1Controller.text = resBody['response']
-                      ['FinalVisualInspectionCheckPoint']['Visual inspection ']
+                      ['FinalVisualInspectionCheckPoint']['Visual inspection']
                   ['Observation 1'] ??
               '';
           finalInspectionObs2Controller.text = resBody['response']
-                      ['FinalVisualInspectionCheckPoint']['Visual inspection ']
+                      ['FinalVisualInspectionCheckPoint']['Visual inspection']
                   ['Observation 2'] ??
               '';
           finalInspectionObs3Controller.text = resBody['response']
-                      ['FinalVisualInspectionCheckPoint']['Visual inspection ']
+                      ['FinalVisualInspectionCheckPoint']['Visual inspection']
                   ['Observation 3'] ??
               '';
           finalInspectionObs4Controller.text = resBody['response']
-                      ['FinalVisualInspectionCheckPoint']['Visual inspection ']
+                      ['FinalVisualInspectionCheckPoint']['Visual inspection']
                   ['Observation 4'] ??
               '';
           finalInspectionObs5Controller.text = resBody['response']
-                      ['FinalVisualInspectionCheckPoint']['Visual inspection ']
+                      ['FinalVisualInspectionCheckPoint']['Visual inspection']
                   ['Observation 5'] ??
               '';
           finalFitmentObs1Controller.text = resBody['response']
@@ -1673,23 +1674,23 @@ class _PostlamState extends State<Postlam> {
           // Packaging
           packagingBarcodeObs1Controller.text = resBody['response']
                       ['PackagingCheckPoint']
-                  ['Barcode Defects(unclear/duplication) ']['Observation 1'] ??
+                  ['Barcode Defects(unclear/duplication)']['Observation 1'] ??
               '';
           packagingBarcodeObs2Controller.text = resBody['response']
                       ['PackagingCheckPoint']
-                  ['Barcode Defects(unclear/duplication) ']['Observation 2'] ??
+                  ['Barcode Defects(unclear/duplication)']['Observation 2'] ??
               '';
           packagingBarcodeObs3Controller.text = resBody['response']
                       ['PackagingCheckPoint']
-                  ['Barcode Defects(unclear/duplication) ']['Observation 3'] ??
+                  ['Barcode Defects(unclear/duplication)']['Observation 3'] ??
               '';
           packagingBarcodeObs4Controller.text = resBody['response']
                       ['PackagingCheckPoint']
-                  ['Barcode Defects(unclear/duplication) ']['Observation 4'] ??
+                  ['Barcode Defects(unclear/duplication)']['Observation 4'] ??
               '';
           packagingBarcodeObs5Controller.text = resBody['response']
                       ['PackagingCheckPoint']
-                  ['Barcode Defects(unclear/duplication) ']['Observation 5'] ??
+                  ['Barcode Defects(unclear/duplication)']['Observation 5'] ??
               '';
           //2nd
           packagingpackingObs1Controller.text = resBody['response']
