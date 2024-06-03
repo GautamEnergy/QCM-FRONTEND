@@ -846,10 +846,10 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             ),
                           ),
                         ]),
-                        if (referencePdf != '' && referencePdf != null)
-                          const SizedBox(
-                            height: 5,
-                          ),
+
+                        const SizedBox(
+                          height: 5,
+                        ),
                         //Occupication
 
                         Row(children: <Widget>[
@@ -872,10 +872,9 @@ class _IpqcTestListState extends State<IpqcTestList> {
                               ),
                             ),
                           ),
-                          if (referencePdf != '' && referencePdf != null)
-                            const SizedBox(
-                              width: 5,
-                            ),
+                          const SizedBox(
+                            width: 5,
+                          ),
                           if (referencePdf != '' && referencePdf != null)
                             Container(
                               padding: const EdgeInsets.symmetric(
@@ -899,18 +898,19 @@ class _IpqcTestListState extends State<IpqcTestList> {
                           const SizedBox(
                             width: 5,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              UrlLauncher.launch(referencePdf);
-                            },
-                            child: ClipRRect(
-                              child: Image.asset(
-                                AppAssets.icPdf,
-                                width: 30,
-                                height: 30,
+                          if (referencePdf != '' && referencePdf != null)
+                            GestureDetector(
+                              onTap: () {
+                                UrlLauncher.launch(referencePdf);
+                              },
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  AppAssets.icPdf,
+                                  width: 30,
+                                  height: 30,
+                                ),
                               ),
                             ),
-                          ),
                         ]),
 
                         const SizedBox(
