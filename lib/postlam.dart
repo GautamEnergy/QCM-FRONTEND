@@ -1764,6 +1764,7 @@ class _PostlamState extends State<Postlam> {
     final url = (site! + "IPQC/UpdatePreLamStatus");
 
     var params = {
+      "Type": "Postlam",
       "token": token,
       "CurrentUser": personid,
       "ApprovalStatus": approvalStatus,

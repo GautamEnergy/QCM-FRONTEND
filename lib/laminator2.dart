@@ -304,6 +304,7 @@ class _laminator2State extends State<laminator2> {
     final url = (site! + "IPQC/UpdatePreLamStatus");
 
     var params = {
+      "Type": "Laminator",
       "token": token,
       "CurrentUser": personid,
       "ApprovalStatus": approvalStatus,

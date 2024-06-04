@@ -1042,6 +1042,7 @@ class _PreCardState extends State<PreCard> {
     FocusScope.of(context).unfocus();
     final url = (site! + "IPQC/UpdatePreLamStatus");
     var params = {
+      "Type": "Prelam",
       "token": token,
       "CurrentUser": personid,
       "ApprovalStatus": approvalStatus,

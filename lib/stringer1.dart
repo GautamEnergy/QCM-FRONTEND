@@ -315,6 +315,7 @@ class _stringer1State extends State<stringer1> {
     final url = (site! + "IPQC/UpdatePreLamStatus");
 
     var params = {
+      "Type": "Stringer",
       "token": token,
       "CurrentUser": personid,
       "ApprovalStatus": approvalStatus,
