@@ -876,7 +876,7 @@ class _EncapsulantState extends State<Encapsulant> {
                                   ),
                                   TextFormField(
                                       controller: lotSizeController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration
@@ -1776,22 +1776,22 @@ class _EncapsulantState extends State<Encapsulant> {
                                       },
                                     ),
                                   ),
-                                  floatingActionButton: status != 'Pending'
-                                      ? FloatingActionButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              numberOfPackagingSampleFields++; // Increment the number of fields
-                                              packagingBarcodeControllers
-                                                  .add(TextEditingController());
-                                              packagingRemarksControllers
-                                                  .add(TextEditingController());
-                                              selectedPackagingTestValues
-                                                  .add(false);
-                                            });
-                                          },
-                                          child: Icon(Icons.add),
-                                        )
-                                      : Container(),
+                                  // floatingActionButton: status != 'Pending'
+                                  //     ? FloatingActionButton(
+                                  //         onPressed: () {
+                                  //           setState(() {
+                                  //             numberOfPackagingSampleFields++; // Increment the number of fields
+                                  //             packagingBarcodeControllers
+                                  //                 .add(TextEditingController());
+                                  //             packagingRemarksControllers
+                                  //                 .add(TextEditingController());
+                                  //             selectedPackagingTestValues
+                                  //                 .add(false);
+                                  //           });
+                                  //         },
+                                  //         child: Icon(Icons.add),
+                                  //       )
+                                  //     : Container(),
                                   bottomNavigationBar: Padding(
                                     padding: const EdgeInsets.all(14.0),
                                     child: Row(
@@ -2455,42 +2455,48 @@ class _EncapsulantState extends State<Encapsulant> {
                                                           ),
                                                         ],
                                                       ),
-                                                      if (selectedVisualTestValues[
-                                                              index] ==
-                                                          false)
-                                                        const SizedBox(
-                                                            height: 8),
-                                                      if (selectedVisualTestValues[
-                                                              index] ==
-                                                          false)
-                                                        TextFormField(
-                                                          controller:
-                                                              visualRemarksControllers[
-                                                                  index],
-                                                          decoration: AppStyles
-                                                              .textFieldInputDecoration
-                                                              .copyWith(
-                                                            hintText:
-                                                                "Please Enter Remarks",
-                                                            counterText: '',
-                                                            contentPadding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                          ),
-                                                          style: AppStyles
-                                                              .textInputTextStyle,
-                                                          readOnly: status ==
-                                                                  'Pending'
-                                                              ? true
-                                                              : false,
-                                                          validator: (value) {
-                                                            if (value == null ||
-                                                                value.isEmpty) {
-                                                              return 'Please Enter Remarks.';
-                                                            }
-                                                            return null;
-                                                          },
+                                                      // if (selectedVisualTestValues[
+                                                      //         index] ==
+                                                      //     false)
+                                                      const SizedBox(height: 8),
+                                                      // if (selectedVisualTestValues[
+                                                      //         index] ==
+                                                      //     false)
+                                                      TextFormField(
+                                                        controller:
+                                                            visualRemarksControllers[
+                                                                index],
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText: (selectedVisualTestValues[
+                                                                      index] ==
+                                                                  false)
+                                                              ? "Please Enter Value & Remarks"
+                                                              : "Please Enter Value",
+                                                          counterText: '',
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                                  10),
                                                         ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly:
+                                                            status == 'Pending'
+                                                                ? true
+                                                                : false,
+                                                        validator: (value) {
+                                                          if (value == null ||
+                                                              value.isEmpty) {
+                                                            return (selectedVisualTestValues[
+                                                                        index] ==
+                                                                    false)
+                                                                ? "Please Enter Value & Remarks."
+                                                                : "Please Enter Value.";
+                                                          }
+                                                          return null;
+                                                        },
+                                                      ),
 
                                                       const SizedBox(height: 8),
                                                       Container(
@@ -3218,46 +3224,53 @@ class _EncapsulantState extends State<Encapsulant> {
                                                                 ],
                                                               ),
 
-                                                              if (selectedPhysicalTestValues[
-                                                                      index] ==
-                                                                  false)
-                                                                const SizedBox(
-                                                                    height: 8),
-                                                              if (selectedPhysicalTestValues[
-                                                                      index] ==
-                                                                  false)
-                                                                TextFormField(
-                                                                  controller:
-                                                                      physicalRemarksControllers[
-                                                                          index],
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Please Enter Remarks",
-                                                                    counterText:
-                                                                        '',
-                                                                    contentPadding:
-                                                                        EdgeInsets.all(
-                                                                            10),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                          'Pending'
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      (value) {
-                                                                    if (value ==
-                                                                            null ||
-                                                                        value
-                                                                            .isEmpty) {
-                                                                      return 'Please Enter Remarks.';
-                                                                    }
-                                                                    return null;
-                                                                  },
+                                                              // if (selectedPhysicalTestValues[
+                                                              //         index] ==
+                                                              //     false)
+                                                              const SizedBox(
+                                                                  height: 8),
+                                                              // if (selectedPhysicalTestValues[
+                                                              //         index] ==
+                                                              //     false)
+                                                              TextFormField(
+                                                                controller:
+                                                                    physicalRemarksControllers[
+                                                                        index],
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText: (selectedPhysicalTestValues[
+                                                                              index] ==
+                                                                          false)
+                                                                      ? "Please Enter Value & Remarks"
+                                                                      : "Please Enter Value",
+                                                                  counterText:
+                                                                      '',
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              10),
                                                                 ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                        'Pending'
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    (value) {
+                                                                  if (value ==
+                                                                          null ||
+                                                                      value
+                                                                          .isEmpty) {
+                                                                    return (selectedPhysicalTestValues[index] ==
+                                                                            false)
+                                                                        ? "Please Enter Value & Remarks."
+                                                                        : "Please Enter Value.";
+                                                                  }
+                                                                  return null;
+                                                                },
+                                                              ),
 
                                                               const SizedBox(
                                                                   height: 8),
@@ -3989,42 +4002,46 @@ class _EncapsulantState extends State<Encapsulant> {
                                                                           ),
                                                                         ],
                                                                       ),
-                                                                      if (selectedFrontbusTestValues[
-                                                                              index] ==
-                                                                          false)
-                                                                        const SizedBox(
-                                                                            height:
-                                                                                8),
-                                                                      if (selectedFrontbusTestValues[
-                                                                              index] ==
-                                                                          false)
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              frontbusRemarksControllers[index],
-                                                                          decoration: AppStyles
-                                                                              .textFieldInputDecoration
-                                                                              .copyWith(
-                                                                            hintText:
-                                                                                "Please Enter Remarks",
-                                                                            counterText:
-                                                                                '',
-                                                                            contentPadding:
-                                                                                EdgeInsets.all(10),
-                                                                          ),
-                                                                          style:
-                                                                              AppStyles.textInputTextStyle,
-                                                                          readOnly: status == 'Pending'
-                                                                              ? true
-                                                                              : false,
-                                                                          validator:
-                                                                              (value) {
-                                                                            if (value == null ||
-                                                                                value.isEmpty) {
-                                                                              return 'Please Enter Remarks.';
-                                                                            }
-                                                                            return null;
-                                                                          },
+                                                                      // if (selectedFrontbusTestValues[
+                                                                      //         index] ==
+                                                                      //     false)
+                                                                      const SizedBox(
+                                                                          height:
+                                                                              8),
+                                                                      // if (selectedFrontbusTestValues[
+                                                                      //         index] ==
+                                                                      //     false)
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            frontbusRemarksControllers[index],
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText: (selectedFrontbusTestValues[index] == false)
+                                                                              ? "Please Enter Value & Remarks"
+                                                                              : "Please Enter Value",
+                                                                          counterText:
+                                                                              '',
+                                                                          contentPadding:
+                                                                              EdgeInsets.all(10),
                                                                         ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status ==
+                                                                                'Pending'
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            (value) {
+                                                                          if (value == null ||
+                                                                              value.isEmpty) {
+                                                                            return (selectedFrontbusTestValues[index] == false)
+                                                                                ? "Please Enter Value & Remarks."
+                                                                                : "Please Enter Value.";
+                                                                          }
+                                                                          return null;
+                                                                        },
+                                                                      ),
                                                                       const SizedBox(
                                                                           height:
                                                                               8),

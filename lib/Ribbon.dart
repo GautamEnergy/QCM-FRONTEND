@@ -881,7 +881,7 @@ class _RibbonState extends State<Ribbon> {
                                   ),
                                   TextFormField(
                                       controller: lotSizeController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration

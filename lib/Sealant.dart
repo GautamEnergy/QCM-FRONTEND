@@ -926,7 +926,7 @@ class _SealantState extends State<Sealant> {
                                   ),
                                   TextFormField(
                                       controller: lotSizeController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration

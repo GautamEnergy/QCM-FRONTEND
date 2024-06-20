@@ -872,7 +872,7 @@ class _JunctionBoxState extends State<JunctionBox> {
                                   ),
                                   TextFormField(
                                       controller: lotSizeController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration
@@ -1772,22 +1772,22 @@ class _JunctionBoxState extends State<JunctionBox> {
                                       },
                                     ),
                                   ),
-                                  floatingActionButton: status != 'Pending'
-                                      ? FloatingActionButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              numberOfPackagingSampleFields++; // Increment the number of fields
-                                              packagingBarcodeControllers
-                                                  .add(TextEditingController());
-                                              packagingRemarksControllers
-                                                  .add(TextEditingController());
-                                              selectedPackagingTestValues
-                                                  .add(false);
-                                            });
-                                          },
-                                          child: Icon(Icons.add),
-                                        )
-                                      : Container(),
+                                  // floatingActionButton: status != 'Pending'
+                                  //     ? FloatingActionButton(
+                                  //         onPressed: () {
+                                  //           setState(() {
+                                  //             numberOfPackagingSampleFields++; // Increment the number of fields
+                                  //             packagingBarcodeControllers
+                                  //                 .add(TextEditingController());
+                                  //             packagingRemarksControllers
+                                  //                 .add(TextEditingController());
+                                  //             selectedPackagingTestValues
+                                  //                 .add(false);
+                                  //           });
+                                  //         },
+                                  //         child: Icon(Icons.add),
+                                  //       )
+                                  //     : Container(),
                                   bottomNavigationBar: Padding(
                                     padding: const EdgeInsets.all(14.0),
                                     child: Row(

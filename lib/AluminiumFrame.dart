@@ -875,7 +875,7 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                   ),
                                   TextFormField(
                                       controller: lotSizeController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration
@@ -1775,22 +1775,22 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                       },
                                     ),
                                   ),
-                                  floatingActionButton: status != 'Pending'
-                                      ? FloatingActionButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              numberOfPackagingSampleFields++; // Increment the number of fields
-                                              packagingBarcodeControllers
-                                                  .add(TextEditingController());
-                                              packagingRemarksControllers
-                                                  .add(TextEditingController());
-                                              selectedPackagingTestValues
-                                                  .add(false);
-                                            });
-                                          },
-                                          child: Icon(Icons.add),
-                                        )
-                                      : Container(),
+                                  // floatingActionButton: status != 'Pending'
+                                  //     ? FloatingActionButton(
+                                  //         onPressed: () {
+                                  //           setState(() {
+                                  //             numberOfPackagingSampleFields++; // Increment the number of fields
+                                  //             packagingBarcodeControllers
+                                  //                 .add(TextEditingController());
+                                  //             packagingRemarksControllers
+                                  //                 .add(TextEditingController());
+                                  //             selectedPackagingTestValues
+                                  //                 .add(false);
+                                  //           });
+                                  //         },
+                                  //         child: Icon(Icons.add),
+                                  //       )
+                                  //     : Container(),
                                   bottomNavigationBar: Padding(
                                     padding: const EdgeInsets.all(14.0),
                                     child: Row(
@@ -3995,42 +3995,46 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                                           ),
                                                                         ],
                                                                       ),
-                                                                      if (selectedFrontbusTestValues[
-                                                                              index] ==
-                                                                          false)
-                                                                        const SizedBox(
-                                                                            height:
-                                                                                8),
-                                                                      if (selectedFrontbusTestValues[
-                                                                              index] ==
-                                                                          false)
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              frontbusRemarksControllers[index],
-                                                                          decoration: AppStyles
-                                                                              .textFieldInputDecoration
-                                                                              .copyWith(
-                                                                            hintText:
-                                                                                "Please Enter Remarks",
-                                                                            counterText:
-                                                                                '',
-                                                                            contentPadding:
-                                                                                EdgeInsets.all(10),
-                                                                          ),
-                                                                          style:
-                                                                              AppStyles.textInputTextStyle,
-                                                                          readOnly: status == 'Pending'
-                                                                              ? true
-                                                                              : false,
-                                                                          validator:
-                                                                              (value) {
-                                                                            if (value == null ||
-                                                                                value.isEmpty) {
-                                                                              return 'Please Enter Remarks.';
-                                                                            }
-                                                                            return null;
-                                                                          },
+                                                                      // if (selectedFrontbusTestValues[
+                                                                      //         index] ==
+                                                                      //     false)
+                                                                      const SizedBox(
+                                                                          height:
+                                                                              8),
+                                                                      // if (selectedFrontbusTestValues[
+                                                                      //         index] ==
+                                                                      //     false)
+                                                                      TextFormField(
+                                                                        controller:
+                                                                            frontbusRemarksControllers[index],
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText: (selectedFrontbusTestValues[index] == false)
+                                                                              ? "Please Enter Value & Remarks"
+                                                                              : "Please Enter Value",
+                                                                          counterText:
+                                                                              '',
+                                                                          contentPadding:
+                                                                              EdgeInsets.all(10),
                                                                         ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status ==
+                                                                                'Pending'
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            (value) {
+                                                                          if (value == null ||
+                                                                              value.isEmpty) {
+                                                                            return (selectedFrontbusTestValues[index] == false)
+                                                                                ? "Please Enter Value & Remarks."
+                                                                                : "Please Enter Value.";
+                                                                          }
+                                                                          return null;
+                                                                        },
+                                                                      ),
                                                                       const SizedBox(
                                                                           height:
                                                                               8),
@@ -4674,25 +4678,25 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                                                   ),
                                                                                 ],
                                                                               ),
-                                                                              if (selectedVerificationTestValues[index] == false)
-                                                                                const SizedBox(height: 8),
-                                                                              if (selectedVerificationTestValues[index] == false)
-                                                                                TextFormField(
-                                                                                  controller: verificationRemarksControllers[index],
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Remarks",
-                                                                                    counterText: '',
-                                                                                    contentPadding: EdgeInsets.all(10),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' ? true : false,
-                                                                                  validator: (value) {
-                                                                                    if (value == null || value.isEmpty) {
-                                                                                      return 'Please Enter Remarks.';
-                                                                                    }
-                                                                                    return null;
-                                                                                  },
+                                                                              // if (selectedVerificationTestValues[index] == false)
+                                                                              const SizedBox(height: 8),
+                                                                              // if (selectedVerificationTestValues[index] == false)
+                                                                              TextFormField(
+                                                                                controller: verificationRemarksControllers[index],
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: (selectedVerificationTestValues[index] == false) ? "Please Enter Value & Remarks" : "Please Enter Value",
+                                                                                  counterText: '',
+                                                                                  contentPadding: EdgeInsets.all(10),
                                                                                 ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' ? true : false,
+                                                                                validator: (value) {
+                                                                                  if (value == null || value.isEmpty) {
+                                                                                    return (selectedVerificationTestValues[index] == false) ? "Please Enter Value & Remarks." : "Please Enter Value.";
+                                                                                  }
+                                                                                  return null;
+                                                                                },
+                                                                              ),
                                                                               const SizedBox(height: 8),
                                                                               Container(
                                                                                 width: MediaQuery.of(context).size.width,
