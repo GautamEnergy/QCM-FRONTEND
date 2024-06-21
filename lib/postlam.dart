@@ -8434,229 +8434,237 @@ class _PostlamState extends State<Postlam> {
                                                                         2.0,
                                                                   ),
                                                                 ),
+
                                                                 // Last Callibration
-                                                                Text(
-                                                                  "Frequency",
-                                                                  style: AppStyles
-                                                                      .textfieldCaptionTextStyle,
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      sunLastFrequencyController,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Every Four Hour  ",
-                                                                    counterText:
-                                                                        '',
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly:
-                                                                      true,
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                Text(
-                                                                  "Last Calibration Date And Time ",
-                                                                  style: AppStyles
-                                                                      .textfieldCaptionTextStyle,
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      sunLast1Controller,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "First Inspection  ",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      MultiValidator(
-                                                                    [
-                                                                      RequiredValidator(
-                                                                        errorText:
-                                                                            "Please Enter First Inspection ",
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      sunLast2Controller,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Second Inspection  ",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      MultiValidator(
-                                                                    [
-                                                                      RequiredValidator(
-                                                                        errorText:
-                                                                            "Please Enter Second Inspection ",
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      sunLast3Controller,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Third Inspection  ",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      MultiValidator(
-                                                                    [
-                                                                      RequiredValidator(
-                                                                        errorText:
-                                                                            "Please Enter Third Inspection ",
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
 
-                                                                Text(
-                                                                  "Criteria",
-                                                                  style: AppStyles
-                                                                      .textfieldCaptionTextStyle,
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      sunLastCrieteriaController,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Verify also its result ",
-                                                                    counterText:
-                                                                        '',
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly:
-                                                                      true,
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 15,
-                                                                ),
+                                                                // Text(
+                                                                //   "Frequency",
+                                                                //   style: AppStyles
+                                                                //       .textfieldCaptionTextStyle,
+                                                                // ),
+                                                                // SizedBox(
+                                                                //   height: 15,
+                                                                // ),
 
-                                                                Container(
-                                                                  margin: EdgeInsets
-                                                                      .symmetric(
-                                                                          vertical:
-                                                                              10.0),
-                                                                  child:
-                                                                      Divider(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    height: 2.0,
-                                                                    thickness:
-                                                                        2.0,
-                                                                  ),
-                                                                ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       sunLastFrequencyController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Every Four Hour  ",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly:
+                                                                //       true,
+                                                                // ),
+                                                                // const SizedBox(
+                                                                //   height: 15,
+                                                                // ),
+                                                                // Text(
+                                                                //   "Last Calibration Date And Time ",
+                                                                //   style: AppStyles
+                                                                //       .textfieldCaptionTextStyle,
+                                                                // ),
+
+                                                                // SizedBox(
+                                                                //   height: 15,
+                                                                // ),
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       sunLast1Controller,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "First Inspection  ",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter First Inspection ",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+                                                                // const SizedBox(
+                                                                //   height: 15,
+                                                                // ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       sunLast2Controller,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Second Inspection  ",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Second Inspection ",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+                                                                // const SizedBox(
+                                                                //   height: 15,
+                                                                // ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       sunLast3Controller,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Third Inspection  ",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Third Inspection ",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+                                                                // const SizedBox(
+                                                                //   height: 15,
+                                                                // ),
+
+                                                                // Text(
+                                                                //   "Criteria",
+                                                                //   style: AppStyles
+                                                                //       .textfieldCaptionTextStyle,
+                                                                // ),
+
+                                                                // SizedBox(
+                                                                //   height: 15,
+                                                                // ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       sunLastCrieteriaController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Verify also its result ",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly:
+                                                                //       true,
+                                                                // ),
+
+                                                                // const SizedBox(
+                                                                //   height: 15,
+                                                                // ),
+
+                                                                // Container(
+                                                                //   margin: EdgeInsets
+                                                                //       .symmetric(
+                                                                //           vertical:
+                                                                //               10.0),
+                                                                //   child:
+                                                                //       Divider(
+                                                                //     color: Colors
+                                                                //         .black,
+                                                                //     height: 2.0,
+                                                                //     thickness:
+                                                                //         2.0,
+                                                                //   ),
+                                                                // ),
+
                                                                 //  Sun Simulator Expiry Date
                                                                 Text(
                                                                   "Frequency",
@@ -9639,7 +9647,7 @@ class _PostlamState extends State<Postlam> {
                                                                           15,
                                                                     ),
                                                                     Text(
-                                                                      "1R-2.5KV ",
+                                                                      "1R-1.5KV ",
                                                                       style: AppStyles
                                                                           .textfieldCaptionTextStyle,
                                                                     ),
