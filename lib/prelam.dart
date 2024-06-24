@@ -83,14 +83,21 @@ class _PreCardState extends State<PreCard> {
   //4. Cell Cutting Machine
   TextEditingController CellSizeFrequencyController = TextEditingController();
   TextEditingController CellSizelengthController = TextEditingController();
+  TextEditingController CellSizelengthController1 = TextEditingController();
+  TextEditingController CellSizelengthController2 = TextEditingController();
+
   TextEditingController CellSizeCriteriaController = TextEditingController();
   TextEditingController CellManufactureFrequencyController =
       TextEditingController();
   TextEditingController CellManufactureEffController = TextEditingController();
+  TextEditingController CellManufactureEffController1 = TextEditingController();
+  TextEditingController CellManufactureEffController2 = TextEditingController();
   TextEditingController CellManufactureCriteriaController =
       TextEditingController();
   TextEditingController CellcolorFrequencyController = TextEditingController();
   TextEditingController CellcolorController = TextEditingController();
+  TextEditingController CellcolorController1 = TextEditingController();
+  TextEditingController CellcolorController2 = TextEditingController();
   TextEditingController CellcolorCriteriaController = TextEditingController();
   TextEditingController CellAvabilityofFrequencyController =
       TextEditingController();
@@ -103,6 +110,10 @@ class _PreCardState extends State<PreCard> {
   TextEditingController CellLoadingcellFrequencyController =
       TextEditingController();
   TextEditingController CellLoadingcellColorController =
+      TextEditingController();
+  TextEditingController CellLoadingcellColorController1 =
+      TextEditingController();
+  TextEditingController CellLoadingcellColorController2 =
       TextEditingController();
   TextEditingController CellLoadingcellCriteriaController =
       TextEditingController();
@@ -135,16 +146,20 @@ class _PreCardState extends State<PreCard> {
   TextEditingController CellLoadingnumberOfStringerController =
       TextEditingController();
   List<TextEditingController> cellLoaderVerificationControllers = [];
+  List<TextEditingController> cellLoaderTimeControllers = [];
   // TextEditingController LoadstrinGapController = TextEditingController();
   TextEditingController cellLoaderStringCriteriaController =
       TextEditingController();
   TextEditingController cellLoaderRemarkController = TextEditingController();
   //6. Tabber & Stringer
+  TextEditingController TabberNumberofStringerController =
+      TextEditingController();
   TextEditingController TabberVisualFrequencyController =
       TextEditingController();
   TextEditingController TabberVisualnumberOfStringersController =
       TextEditingController();
   List<TextEditingController> TabberVisualStringerControllers = [];
+  List<TextEditingController> TabberVisualTimeControllers1 = [];
   TextEditingController TabberVisualCriteriaController =
       TextEditingController();
   TextEditingController TabberEIimageFrequencyController =
@@ -152,6 +167,7 @@ class _PreCardState extends State<PreCard> {
   TextEditingController tabberEIimagenumberOfStringersController =
       TextEditingController();
   List<TextEditingController> TabberEIimageofStringerControllers = [];
+  List<TextEditingController> TabberEIimageofStringerTimeControllers = [];
   TextEditingController TabberEIimageCriteriaController =
       TextEditingController();
   TextEditingController TabberVerificationFrequencyController =
@@ -181,6 +197,9 @@ class _PreCardState extends State<PreCard> {
   TextEditingController AutoCelledgeFrequencyController =
       TextEditingController();
   TextEditingController AutoCelledController = TextEditingController();
+  TextEditingController AutoCelledController1 = TextEditingController();
+  TextEditingController AutoCelledController2 = TextEditingController();
+  TextEditingController AutoCelledController3 = TextEditingController();
   TextEditingController AutoCellEdgeCriteriaController =
       TextEditingController();
   TextEditingController AutoStringerRemarkController = TextEditingController();
@@ -201,23 +220,33 @@ class _PreCardState extends State<PreCard> {
       TextEditingController();
   TextEditingController AutoSolderingQualityController =
       TextEditingController();
+  TextEditingController AutoSolderingQualityController1 =
+      TextEditingController();
+  TextEditingController AutoSolderingQualityController2 =
+      TextEditingController();
   TextEditingController AutoSolderingQualityCriteriaController =
       TextEditingController();
 
   TextEditingController AutoClearanceFrequencyController =
       TextEditingController();
   TextEditingController AutoClearanceController = TextEditingController();
+  TextEditingController AutoClearanceController1 = TextEditingController();
+  TextEditingController AutoClearanceController2 = TextEditingController();
   TextEditingController AutoClearanceCriteriaController =
       TextEditingController();
 
   TextEditingController AutoPositionFrequencyController =
       TextEditingController();
   TextEditingController AutoPositionController = TextEditingController();
+  TextEditingController AutoPositionController1 = TextEditingController();
+  TextEditingController AutoPositionController2 = TextEditingController();
   TextEditingController AutoPositionCriteriaController =
       TextEditingController();
 
   TextEditingController AutoTopFrequencyController = TextEditingController();
   TextEditingController AutoTopController = TextEditingController();
+  TextEditingController AutoTopController1 = TextEditingController();
+  TextEditingController AutoTopController2 = TextEditingController();
   TextEditingController AutoTopCriteriaController = TextEditingController();
 
   TextEditingController AutoqualityofFrequencyController =
@@ -259,11 +288,13 @@ class _PreCardState extends State<PreCard> {
   TextEditingController EVABacksheetRemarkController = TextEditingController();
 
   // 10. Pre Lamination El & Visual inspection
+  TextEditingController PreNumberElMachineController = TextEditingController();
   TextEditingController PreLaminationEIinspectionFrequencyController =
       TextEditingController();
   TextEditingController PreLaminationEInumberOfStringersController =
       TextEditingController();
   List<TextEditingController> PreLaminationEIinspectionrControllers = [];
+  List<TextEditingController> PreLaminationEIinspectionrTimeControllers = [];
   TextEditingController PreLaminationEIinspectionCriteriaController =
       TextEditingController();
 
@@ -272,6 +303,8 @@ class _PreCardState extends State<PreCard> {
   TextEditingController PreLaminationVisualnumberOfStringersController =
       TextEditingController();
   List<TextEditingController> PreLaminationVisualinspectionrControllers = [];
+  List<TextEditingController> PreLaminationVisualinspectionrTimeControllers =
+      [];
   TextEditingController PreLaminationVisualinspectionCriteriaController =
       TextEditingController();
 
@@ -394,11 +427,47 @@ class _PreCardState extends State<PreCard> {
   List tabberVerification = [];
   List preLaminationEi = [];
   List preLaminationVisual = [];
+  List Time = [
+    "(Time: 10:00)",
+    "(Time: 12:00)",
+    "(Time: 02:00)",
+    "(Time: 04:00)",
+    "(Time: 06:00)"
+  ];
+  List Time1 = [
+    "(Time: 10:00)",
+    "(Time: 12:00)",
+    "(Time: 02:00)",
+    "(Time: 04:00)",
+    "(Time: 06:00)"
+  ];
+  List Time2 = [
+    "(Time: 10:00)",
+    "(Time: 12:00)",
+    "(Time: 02:00)",
+    "(Time: 04:00)",
+    "(Time: 06:00)"
+  ];
+  List Time3 = [
+    "(Time: 10:00)",
+    "(Time: 12:00)",
+    "(Time: 02:00)",
+    "(Time: 04:00)",
+    "(Time: 06:00)"
+  ];
+  List Time4 = [
+    "(Time: 10:00)",
+    "(Time: 12:00)",
+    "(Time: 02:00)",
+    "(Time: 04:00)",
+    "(Time: 06:00)"
+  ];
 
   void addControllers(int count) {
     for (int i = 0; i < count; i++) {
       cellLoaderVerificationControllers.add(TextEditingController());
-
+      cellLoaderTimeControllers.add(TextEditingController());
+      cellLoaderTimeControllers[i].text = Time[i];
       if (widget.id != "" &&
           widget.id != null &&
           cellLoadingInputtext.length > 0) {
@@ -411,6 +480,8 @@ class _PreCardState extends State<PreCard> {
   void addTabberVisualControllers(int count) {
     for (int i = 0; i < count; i++) {
       TabberVisualStringerControllers.add(TextEditingController());
+      TabberVisualTimeControllers1.add(TextEditingController());
+      TabberVisualTimeControllers1[i].text = Time1[i];
       if (widget.id != "" && widget.id != null && tabberVisual.length > 0) {
         TabberVisualStringerControllers[i].text =
             tabberVisual[i]['TabberVisualStringerControllers${i + 1}'];
@@ -421,6 +492,8 @@ class _PreCardState extends State<PreCard> {
   void addTabberEImageControllers(int count) {
     for (int i = 0; i < count; i++) {
       TabberEIimageofStringerControllers.add(TextEditingController());
+      TabberEIimageofStringerTimeControllers.add(TextEditingController());
+      TabberEIimageofStringerTimeControllers[i].text = Time2[i];
       if (widget.id != "" && widget.id != null && tabberEI.length > 0) {
         TabberEIimageofStringerControllers[i].text =
             tabberEI[i]['TabberEIimageofStringerControllers${i + 1}'];
@@ -443,6 +516,10 @@ class _PreCardState extends State<PreCard> {
   void addPreLaminationEIControllers(int count) {
     for (int i = 0; i < count; i++) {
       PreLaminationEIinspectionrControllers.add(TextEditingController());
+
+      PreLaminationEIinspectionrTimeControllers.add(TextEditingController());
+      PreLaminationEIinspectionrTimeControllers[i].text = Time3[i];
+
       if (widget.id != "" && widget.id != null && preLaminationEi.length > 0) {
         PreLaminationEIinspectionrControllers[i].text =
             preLaminationEi[i]['PreLaminationEIinspectionrControllers${i + 1}'];
@@ -453,6 +530,10 @@ class _PreCardState extends State<PreCard> {
   void addPreLaminationVisualControllers(int count) {
     for (int i = 0; i < count; i++) {
       PreLaminationVisualinspectionrControllers.add(TextEditingController());
+      PreLaminationVisualinspectionrTimeControllers.add(
+          TextEditingController());
+      PreLaminationVisualinspectionrTimeControllers[i].text = Time4[i];
+
       if (widget.id != "" &&
           widget.id != null &&
           preLaminationVisual.length > 0) {
@@ -545,7 +626,7 @@ class _PreCardState extends State<PreCard> {
 
       TabberVerificationFrequencyController.text = "2 string/stringer/shift ";
       TabberVerificationCriteriaController.text =
-          ">=0.5N  |  Refer:GSPL/IPQC/GP/001";
+          ">=1.0N  |  Refer:GSPL/IPQC/GP/001";
       TabberAvaibilityFrequencyController.text = "Once per Shift";
       TabberAvabilityofCriteriaController.text =
           "Avaibility of specification and wi & operator should be aware with specification";
@@ -762,13 +843,42 @@ class _PreCardState extends State<PreCard> {
 
           // Cell Cutting machine
           CellSizelengthController.text = resBody['response']
-                  ['CellcuttingmachineCheckPoint']['cell Size'] ??
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell Size  (Time: 10:00)'] ??
               '';
+
+          CellSizelengthController1.text = resBody['response']
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell Size  (Time: 02:00)'] ??
+              '';
+          CellSizelengthController2.text = resBody['response']
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell Size  (Time: 06:00)'] ??
+              '';
+
           CellManufactureEffController.text = resBody['response']
-                  ['CellcuttingmachineCheckPoint']['Cell manufacture & Eff.'] ??
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell manufacture & Eff.(Time: 10:00)'] ??
+              '';
+          CellManufactureEffController1.text = resBody['response']
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell manufacture & Eff.(Time: 02:00)'] ??
+              '';
+          CellManufactureEffController2.text = resBody['response']
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell manufacture & Eff.(Time: 06:00)'] ??
               '';
           CellcolorController.text = resBody['response']
-                  ['CellcuttingmachineCheckPoint']['cell color '] ??
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell color (Time: 10:00)'] ??
+              '';
+          CellcolorController1.text = resBody['response']
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell color (Time: 02:00)'] ??
+              '';
+          CellcolorController2.text = resBody['response']
+                      ['CellcuttingmachineCheckPoint']
+                  ['Cell color (Time: 06:00)'] ??
               '';
           CellAvabilityofSpecificationController.text = resBody['response']
                       ['CellcuttingmachineCheckPoint']
@@ -778,8 +888,15 @@ class _PreCardState extends State<PreCard> {
               resBody['response']['CellcuttingmachineRemark'] ?? '';
 
           // Cell Loading
-          CellLoadingcellColorController.text =
-              resBody['response']['CellLoadingCheckPoint']['cellcolor'] ?? '';
+          CellLoadingcellColorController.text = resBody['response']
+                  ['CellLoadingCheckPoint']['CellColor (Time: 10:00)'] ??
+              '';
+          CellLoadingcellColorController1.text = resBody['response']
+                  ['CellLoadingCheckPoint']['CellColor (Time: 02:00)'] ??
+              '';
+          CellLoadingcellColorController2.text = resBody['response']
+                  ['CellLoadingCheckPoint']['CellColor (Time: 06:00)'] ??
+              '';
           CellLoadingCleanLinessController.text = resBody['response']
                       ['CellLoadingCheckPoint']
                   ['cleanlines of cell Loading Area '] ??
@@ -822,6 +939,9 @@ class _PreCardState extends State<PreCard> {
 
           tabberVisual = resBody['response']['Tabber&StringerFrequency'][
                   'Visual Check after stringer Number of Created Input text '] ??
+              [];
+          TabberNumberofStringerController.text = resBody['response']
+                  ['Tabber&StringerCheckPoint']['Number of Stringer'] ??
               [];
           numberOfStringers1 =
               int.tryParse(TabberVisualnumberOfStringersController.text) ?? 0;
@@ -875,7 +995,19 @@ class _PreCardState extends State<PreCard> {
               '';
           AutoCelledController.text = resBody['response']
                       ['AutoStringLayupCheckPoint']
-                  ['cell edge to glass edge(Top,bottom & sides)'] ??
+                  ['Cell edge to glass edge(Top)'] ??
+              '';
+          AutoCelledController1.text = resBody['response']
+                      ['AutoStringLayupCheckPoint']
+                  ['Cell edge to glass edge(Bottom)'] ??
+              '';
+          AutoCelledController2.text = resBody['response']
+                      ['AutoStringLayupCheckPoint']
+                  ['Cell edge to glass edge(Left)'] ??
+              '';
+          AutoCelledController3.text = resBody['response']
+                      ['AutoStringLayupCheckPoint']
+                  ['Cell edge to glass edge(Right)'] ??
               '';
           AutoStringerRemarkController.text =
               resBody['response']['AutoStringLayupRemark'] ?? '';
@@ -891,19 +1023,51 @@ class _PreCardState extends State<PreCard> {
               '';
           AutoSolderingQualityController.text = resBody['response']
                       ['AutoBussing&TappingCheckPoint']
-                  ['soldering quality of Ribbon to busbar'] ??
+                  ['Soldering quality of Ribbon to busbar (Time: 10:00)'] ??
+              '';
+          AutoSolderingQualityController1.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint']
+                  ['Soldering quality of Ribbon to busbar (Time: 02:00)'] ??
+              '';
+          AutoSolderingQualityController2.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint']
+                  ['Soldering quality of Ribbon to busbar (Time: 06:00)'] ??
               '';
           AutoClearanceController.text = resBody['response']
-                      ['AutoBussing&TappingCheckPoint']
-                  ['Clearance between RFID&Logo patch to cell in module'] ??
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Clearance between RFID&Logo patch to cell in module (Time: 10:00)'] ??
+              '';
+          AutoClearanceController1.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Clearance between RFID&Logo patch to cell in module (Time: 02:00)'] ??
+              '';
+          AutoClearanceController2.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Clearance between RFID&Logo patch to cell in module (Time: 06:00)'] ??
               '';
           AutoPositionController.text = resBody['response']
-                      ['AutoBussing&TappingCheckPoint']
-                  ['Position verification of RFID& Logo Patch on Module'] ??
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Position verification of RFID& Logo Patch on Module (Time: 10:00)'] ??
+              '';
+          AutoPositionController1.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Position verification of RFID& Logo Patch on Module (Time: 02:00)'] ??
+              '';
+          AutoPositionController2.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Position verification of RFID& Logo Patch on Module (Time: 06:00)'] ??
               '';
           AutoTopController.text = resBody['response']
                       ['AutoBussing&TappingCheckPoint'][
-                  'Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass'] ??
+                  'Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 10:00)'] ??
+              '';
+          AutoTopController1.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 02:00)'] ??
+              '';
+          AutoTopController2.text = resBody['response']
+                      ['AutoBussing&TappingCheckPoint'][
+                  'Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 06:00)'] ??
               '';
           AutoQualityController.text = resBody['response']
                   ['AutoBussing&TappingCheckPoint']['quality of auto taping'] ??
@@ -940,6 +1104,10 @@ class _PreCardState extends State<PreCard> {
               resBody['response']['EVA/BacksheetcuttingRemark'] ?? '';
 
           // Pre LAmination El And Visual
+          PreNumberElMachineController.text = resBody['response']
+                      ['PrelaminationEL&VisualCheckPoint']
+                  ['Number of EL Machine'] ??
+              '';
           PreLaminationEInumberOfStringersController.text = resBody['response']
                           ['PrelaminationEL&VisualCheckPoint']
                       ['EI Inspection after stringer Number of Stringer'] !=
@@ -1236,23 +1404,53 @@ class _PreCardState extends State<PreCard> {
         {
           "Stage": "Cell cutting machine",
           "CheckPoint": {
-            "cell Size": CellSizelengthController.text,
-            "Cell manufacture & Eff.": CellManufactureEffController.text,
-            "cell color ": CellcolorController.text,
+            "Cell Size  (Time: 10:00)": CellSizelengthController.text,
+            "Cell Size  (Time: 02:00)": CellSizelengthController1.text,
+            "Cell Size  (Time: 06:00)": CellSizelengthController2.text,
+            "Cell manufacture & Eff.(Time: 10:00)":
+                CellManufactureEffController.text,
+            "Cell manufacture & Eff.(Time: 02:00)":
+                CellManufactureEffController1.text,
+            "Cell manufacture & Eff.(Time: 06:00)":
+                CellManufactureEffController2.text,
+            "Cell color (Time: 10:00)": CellcolorController.text,
+            "Cell color (Time: 02:00)": CellcolorController1.text,
+            "Cell color (Time: 06:00)": CellcolorController2.text,
             "Avability of Specification & WI.":
                 CellAvabilityofSpecificationController.text,
           },
           "AcceptanceCriteria": {
-            "cell Size": CellSizeCriteriaController.text,
-            "Cell manufacture & Eff.": CellManufactureCriteriaController.text,
-            "cell color ": CellcolorCriteriaController.text,
+            // "cell Size": CellSizeCriteriaController.text,
+            "Cell Size  (Time: 10:00)": CellSizeCriteriaController.text,
+            "Cell Size  (Time: 02:00)": CellSizeCriteriaController.text,
+            "Cell Size  (Time: 06:00)": CellSizeCriteriaController.text,
+            "Cell manufacture & Eff.(Time: 10:00)":
+                CellManufactureCriteriaController.text,
+            "Cell manufacture & Eff.(Time: 02:00)":
+                CellManufactureCriteriaController.text,
+            "Cell manufacture & Eff.(Time: 06:00)":
+                CellManufactureCriteriaController.text,
+
+            "Cell color (Time: 10:00)": CellcolorCriteriaController.text,
+            "Cell color (Time: 02:00)": CellcolorCriteriaController.text,
+            "Cell color (Time: 06:00)": CellcolorCriteriaController.text,
             "Avability of Specification & WI.":
                 CellAvabilityofCriteriaController.text,
           },
           "Frequency": {
-            "cell Size": CellSizeFrequencyController.text,
-            "Cell manufacture & Eff.": CellManufactureFrequencyController.text,
-            "cell color ": CellcolorFrequencyController.text,
+            // "cell Size": CellSizeFrequencyController.text,
+            "Cell Size  (Time: 10:00)": CellSizeFrequencyController.text,
+            "Cell Size  (Time: 02:00)": CellSizeFrequencyController.text,
+            "Cell Size  (Time: 06:00)": CellSizeFrequencyController.text,
+            "Cell manufacture & Eff.(Time: 10:00)":
+                CellManufactureFrequencyController.text,
+            "Cell manufacture & Eff.(Time: 02:00)":
+                CellManufactureFrequencyController.text,
+            "Cell manufacture & Eff.(Time: 06:00)":
+                CellManufactureFrequencyController.text,
+            "Cell color (Time: 10:00)": CellcolorFrequencyController.text,
+            "Cell color (Time: 02:00)": CellcolorFrequencyController.text,
+            "Cell color (Time: 06:00)": CellcolorFrequencyController.text,
             "Avability of Specification & WI.":
                 CellAvabilityofFrequencyController.text,
           },
@@ -1261,7 +1459,9 @@ class _PreCardState extends State<PreCard> {
         {
           "Stage": "Cell Loading",
           "CheckPoint": {
-            "cellcolor": CellLoadingcellColorController.text,
+            "CellColor (Time: 10:00)": CellLoadingcellColorController.text,
+            "CellColor (Time: 02:00)": CellLoadingcellColorController1.text,
+            "CellColor (Time: 06:00)": CellLoadingcellColorController2.text,
             "cleanlines of cell Loading Area ":
                 CellLoadingCleanLinessController.text,
             "Cell loading as per WI": CellLoadingWIController.text,
@@ -1271,7 +1471,9 @@ class _PreCardState extends State<PreCard> {
             // "string length & cell to cell gap": LoadstrinGapController.text,
           },
           "AcceptanceCriteria": {
-            "cell color": CellLoadingcellCriteriaController.text,
+            "CellColor (Time: 10:00)": CellLoadingcellCriteriaController.text,
+            "CellColor (Time: 02:00)": CellLoadingcellCriteriaController.text,
+            "CellColor (Time: 06:00)": CellLoadingcellCriteriaController.text,
             "cleanlines of cell Loading Area ":
                 CellLoadingCleanCriteriaController.text,
             "Cell loading as per WI": CellLoadingWICriteriaController.text,
@@ -1282,7 +1484,9 @@ class _PreCardState extends State<PreCard> {
                 cellLoaderStringCriteriaController.text,
           },
           "Frequency": {
-            "cell color": CellLoadingcellFrequencyController.text,
+            "CellColor (Time: 10:00)": CellLoadingcellFrequencyController.text,
+            "CellColor (Time: 02:00)": CellLoadingcellFrequencyController.text,
+            "CellColor (Time: 06:00)": CellLoadingcellFrequencyController.text,
             "cleanlines of cell Loading Area ":
                 CellLoadingCleanFrequencyController.text,
             "Cell loading as per WI": CellLoadingWIFrequencyController.text,
@@ -1305,10 +1509,12 @@ class _PreCardState extends State<PreCard> {
             // "EI image of string": TabberEIimageCheckController.text,
             // "Verification of sildering peel strength":
             //     TabberVerificationCheckController.text,
+            "Number of Stringer": TabberNumberofStringerController.text,
             "Avaibility os Specification & WI":
                 TabberAvabilityofSpecificationController.text,
           },
           "AcceptanceCriteria": {
+            "Number of Stringer": "N/A",
             "Visual Check after stringer": TabberVisualCriteriaController.text,
             "EI image of string": TabberEIimageCriteriaController.text,
             "Verification of sildering peel strength":
@@ -1317,6 +1523,7 @@ class _PreCardState extends State<PreCard> {
                 TabberAvabilityofCriteriaController.text,
           },
           "Frequency": {
+            "Number of Stringer": "N/A",
             "Visual Check after stringer": TabberVisualFrequencyController.text,
             "Visual Check after stringer Number of Stringer":
                 TabberVisualnumberOfStringersController.text,
@@ -1343,19 +1550,32 @@ class _PreCardState extends State<PreCard> {
           "CheckPoint": {
             "Cell to cell gap": AutoCellController.text,
             "String to string gap": AutoStringController.text,
-            "cell edge to glass edge(Top,bottom & sides)":
-                AutoCelledController.text,
+            "Cell edge to glass edge(Top)": AutoCelledController.text,
+            "Cell edge to glass edge(Bottom)": AutoCelledController1.text,
+            "Cell edge to glass edge(Left)": AutoCelledController2.text,
+            "Cell edge to glass edge(Right)": AutoCelledController3.text,
           },
           "AcceptanceCriteria": {
             "Cell to cell gap": AutoCellCriteriaController.text,
             "String to string gap": AutoStringCriteriaController.text,
-            "cell edge to glass edge(Top,bottom & sides)":
+            "Cell edge to glass edge(Top)": AutoCellEdgeCriteriaController.text,
+            "Cell edge to glass edge(Bottom)":
+                AutoCellEdgeCriteriaController.text,
+            "Cell edge to glass edge(Left)":
+                AutoCellEdgeCriteriaController.text,
+            "Cell edge to glass edge(Right)":
                 AutoCellEdgeCriteriaController.text,
           },
           "Frequency": {
             "Cell to cell gap": AutoCellFrequencyController.text,
             "String to string gap": AutoStringFrequencyController.text,
-            "cell edge to glass edge(Top,bottom & sides)":
+            "Cell edge to glass edge(Top)":
+                AutoCelledgeFrequencyController.text,
+            "Cell edge to glass edge(Bottom)":
+                AutoCelledgeFrequencyController.text,
+            "Cell edge to glass edge(Left)":
+                AutoCelledgeFrequencyController.text,
+            "Cell edge to glass edge(Right)":
                 AutoCelledgeFrequencyController.text,
           },
           "Remark": AutoStringerRemarkController.text
@@ -1367,14 +1587,30 @@ class _PreCardState extends State<PreCard> {
                 AutoSolderingController.text,
             "Terminal busbar to edge of cell":
                 AutoTerminalStringController.text,
-            "soldering quality of Ribbon to busbar":
+            "Soldering quality of Ribbon to busbar (Time: 10:00)":
                 AutoSolderingQualityController.text,
-            "Clearance between RFID&Logo patch to cell in module":
+            "Soldering quality of Ribbon to busbar (Time: 02:00)":
+                AutoSolderingQualityController1.text,
+            "Soldering quality of Ribbon to busbar (Time: 06:00)":
+                AutoSolderingQualityController2.text,
+            "Clearance between RFID&Logo patch to cell in module (Time: 10:00)":
                 AutoClearanceController.text,
-            "Position verification of RFID& Logo Patch on Module":
+            "Clearance between RFID&Logo patch to cell in module (Time: 02:00)":
+                AutoClearanceController1.text,
+            "Clearance between RFID&Logo patch to cell in module (Time: 06:00)":
+                AutoClearanceController2.text,
+            "Position verification of RFID& Logo Patch on Module (Time: 10:00)":
                 AutoPositionController.text,
-            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass":
+            "Position verification of RFID& Logo Patch on Module (Time: 02:00)":
+                AutoPositionController1.text,
+            "Position verification of RFID& Logo Patch on Module (Time: 06:00)":
+                AutoPositionController2.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 10:00)":
                 AutoTopController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 02:00)":
+                AutoTopController1.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 06:00)":
+                AutoTopController2.text,
             "quality of auto taping": AutoQualityController.text,
             "Avaibility of specification & WI": AutoAvaibilityController.text,
           },
@@ -1383,13 +1619,29 @@ class _PreCardState extends State<PreCard> {
                 AutoSolderingCriteriaController.text,
             "Terminal busbar to edge of cell":
                 AutoTerminalCriteriaController.text,
-            "soldering quality of Ribbon to busbar":
+            "Soldering quality of Ribbon to busbar (Time: 10:00)":
                 AutoSolderingQualityCriteriaController.text,
-            "Clearance between RFID&Logo patch to cell in module":
+            "Soldering quality of Ribbon to busbar (Time: 02:00)":
+                AutoSolderingQualityCriteriaController.text,
+            "Soldering quality of Ribbon to busbar (Time: 06:00)":
+                AutoSolderingQualityCriteriaController.text,
+            "Clearance between RFID&Logo patch to cell in module (Time: 10:00)":
                 AutoClearanceCriteriaController.text,
-            "Position verification of RFID& Logo Patch on Module":
+            "Clearance between RFID&Logo patch to cell in module (Time: 02:00)":
+                AutoClearanceCriteriaController.text,
+            "Clearance between RFID&Logo patch to cell in module (Time: 06:00)":
+                AutoClearanceCriteriaController.text,
+            "Position verification of RFID& Logo Patch on Module (Time: 10:00)":
                 AutoPositionCriteriaController.text,
-            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass":
+            "Position verification of RFID& Logo Patch on Module (Time: 02:00)":
+                AutoPositionCriteriaController.text,
+            "Position verification of RFID& Logo Patch on Module (Time: 06:00)":
+                AutoPositionCriteriaController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 10:00)":
+                AutoTopCriteriaController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 02:00)":
+                AutoTopCriteriaController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 06:00)":
                 AutoTopCriteriaController.text,
             "quality of auto taping": AutoQualityCriteriaController.text,
             "Avaibility of specification & WI":
@@ -1400,13 +1652,29 @@ class _PreCardState extends State<PreCard> {
                 AutoSolderingFrequencyController.text,
             "Terminal busbar to edge of cell":
                 AutoTerminalFrequencyController.text,
-            "soldering quality of Ribbon to busbar":
-                AutoSolderingFrequencyController.text,
-            "Clearance between RFID&Logo patch to cell in module":
+            "Soldering quality of Ribbon to busbar (Time: 10:00)":
+                AutoSolderingQualityFrequencyController.text,
+            "Soldering quality of Ribbon to busbar (Time: 02:00)":
+                AutoSolderingQualityFrequencyController.text,
+            "Soldering quality of Ribbon to busbar (Time: 06:00)":
+                AutoSolderingQualityFrequencyController.text,
+            "Clearance between RFID&Logo patch to cell in module (Time: 10:00)":
                 AutoClearanceFrequencyController.text,
-            "Position verification of RFID& Logo Patch on Module":
+            "Clearance between RFID&Logo patch to cell in module (Time: 02:00)":
+                AutoClearanceFrequencyController.text,
+            "Clearance between RFID&Logo patch to cell in module (Time: 06:00)":
+                AutoClearanceFrequencyController.text,
+            "Position verification of RFID& Logo Patch on Module (Time: 10:00)":
                 AutoPositionFrequencyController.text,
-            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass":
+            "Position verification of RFID& Logo Patch on Module (Time: 02:00)":
+                AutoPositionFrequencyController.text,
+            "Position verification of RFID& Logo Patch on Module (Time: 06:00)":
+                AutoPositionFrequencyController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 10:00)":
+                AutoTopFrequencyController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 02:00)":
+                AutoTopFrequencyController.text,
+            "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass (Time: 06:00)":
                 AutoTopFrequencyController.text,
             "quality of auto taping": AutoqualityofFrequencyController.text,
             "Avaibility of specification & WI":
@@ -1455,6 +1723,7 @@ class _PreCardState extends State<PreCard> {
         {
           "Stage": "Pre lamination EL &Visual",
           "CheckPoint": {
+            "Number of EL Machine": PreNumberElMachineController.text,
             "EI Inspection after stringer Number of Stringer":
                 PreLaminationEInumberOfStringersController.text,
             "EI Inspection after stringer Number of Created Input text ":
@@ -1467,6 +1736,7 @@ class _PreCardState extends State<PreCard> {
                 PreLaminationAvaibilityController.text,
           },
           "AcceptanceCriteria": {
+            "Number of EL Machine": 'N/A',
             "EI Inspection": PreLaminationEIinspectionCriteriaController.text,
             "Visual inspection":
                 PreLaminationVisualinspectionCriteriaController.text,
@@ -1474,6 +1744,7 @@ class _PreCardState extends State<PreCard> {
                 PreLaminationAvaibilityWIController.text,
           },
           "Frequency": {
+            "Number of EL Machine": 'N/A',
             "EI Inspection after stringer":
                 PreLaminationEIinspectionFrequencyController.text,
             "Visual inspection of string":
@@ -1566,6 +1837,8 @@ class _PreCardState extends State<PreCard> {
     setState(() {
       _isLoading = true;
     });
+    print('teeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    print(data);
     final prefs = await SharedPreferences.getInstance();
     site = prefs.getString('site')!;
     FocusScope.of(context).unfocus();
@@ -3586,37 +3859,215 @@ class _PreCardState extends State<PreCard> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      CellSizelengthController,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Enter the Cell Size(Lengthxwidth)",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Correct Cell Size(Lengthxwidth)",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellSizelengthController,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Size(Lengthxwidth)",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
-                                                    ],
-                                                  ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Size(Lengthxwidth)",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 10:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+
+                                                Text(
+                                                  "Cell Size(Lengthxwidth)",
+                                                  style: AppStyles
+                                                      .textfieldCaptionTextStyle,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellSizelengthController1,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Size(Lengthxwidth)",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Size(Lengthxwidth)",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 02:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+
+                                                Text(
+                                                  "Cell Size(Lengthxwidth)",
+                                                  style: AppStyles
+                                                      .textfieldCaptionTextStyle,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellSizelengthController2,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Size(Lengthxwidth)",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Size(Lengthxwidth)",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 06:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
 
                                                 const SizedBox(
@@ -3688,6 +4139,7 @@ class _PreCardState extends State<PreCard> {
                                                 const SizedBox(
                                                   height: 20,
                                                 ),
+
                                                 Text(
                                                   "Cell Menufacturer & Eff.",
                                                   style: AppStyles
@@ -3696,37 +4148,307 @@ class _PreCardState extends State<PreCard> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      CellManufactureEffController,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Enter the Cell Menufacturer & Eff.  ",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Correct Cell Menufacturer & Eff.",
+
+                                                // TextFormField(
+                                                //   controller:
+                                                //       CellManufactureEffController,
+                                                //   keyboardType:
+                                                //       TextInputType.text,
+                                                //   textInputAction:
+                                                //       TextInputAction.next,
+                                                //   decoration: AppStyles
+                                                //       .textFieldInputDecoration
+                                                //       .copyWith(
+                                                //     hintText:
+                                                //         "Enter the Cell Menufacturer & Eff.  ",
+                                                //     counterText: '',
+                                                //     fillColor: Color.fromARGB(
+                                                //         255, 215, 243, 207),
+                                                //   ),
+                                                //   style: AppStyles
+                                                //       .textInputTextStyle,
+                                                //   readOnly: status ==
+                                                //               'Pending' &&
+                                                //           designation != "QC"
+                                                //       ? true
+                                                //       : false,
+                                                //   validator: MultiValidator(
+                                                //     [
+                                                //       RequiredValidator(
+                                                //         errorText:
+                                                //             "Please Enter Correct Cell Menufacturer & Eff.",
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellManufactureEffController,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Menufacturer & Eff.  ",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
-                                                    ],
-                                                  ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Menufacturer & Eff.",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 10:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+
+                                                Text(
+                                                  "Cell Menufacturer & Eff.",
+                                                  style: AppStyles
+                                                      .textfieldCaptionTextStyle,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+
+                                                // TextFormField(
+                                                //   controller:
+                                                //       CellManufactureEffController,
+                                                //   keyboardType:
+                                                //       TextInputType.text,
+                                                //   textInputAction:
+                                                //       TextInputAction.next,
+                                                //   decoration: AppStyles
+                                                //       .textFieldInputDecoration
+                                                //       .copyWith(
+                                                //     hintText:
+                                                //         "Enter the Cell Menufacturer & Eff.  ",
+                                                //     counterText: '',
+                                                //     fillColor: Color.fromARGB(
+                                                //         255, 215, 243, 207),
+                                                //   ),
+                                                //   style: AppStyles
+                                                //       .textInputTextStyle,
+                                                //   readOnly: status ==
+                                                //               'Pending' &&
+                                                //           designation != "QC"
+                                                //       ? true
+                                                //       : false,
+                                                //   validator: MultiValidator(
+                                                //     [
+                                                //       RequiredValidator(
+                                                //         errorText:
+                                                //             "Please Enter Correct Cell Menufacturer & Eff.",
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellManufactureEffController1,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Menufacturer & Eff.  ",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Menufacturer & Eff.",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 02:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  "Cell Menufacturer & Eff.",
+                                                  style: AppStyles
+                                                      .textfieldCaptionTextStyle,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+
+                                                // TextFormField(
+                                                //   controller:
+                                                //       CellManufactureEffController,
+                                                //   keyboardType:
+                                                //       TextInputType.text,
+                                                //   textInputAction:
+                                                //       TextInputAction.next,
+                                                //   decoration: AppStyles
+                                                //       .textFieldInputDecoration
+                                                //       .copyWith(
+                                                //     hintText:
+                                                //         "Enter the Cell Menufacturer & Eff.  ",
+                                                //     counterText: '',
+                                                //     fillColor: Color.fromARGB(
+                                                //         255, 215, 243, 207),
+                                                //   ),
+                                                //   style: AppStyles
+                                                //       .textInputTextStyle,
+                                                //   readOnly: status ==
+                                                //               'Pending' &&
+                                                //           designation != "QC"
+                                                //       ? true
+                                                //       : false,
+                                                //   validator: MultiValidator(
+                                                //     [
+                                                //       RequiredValidator(
+                                                //         errorText:
+                                                //             "Please Enter Correct Cell Menufacturer & Eff.",
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellManufactureEffController2,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Menufacturer & Eff.  ",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Menufacturer & Eff.",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 06:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
 
                                                 const SizedBox(
@@ -3798,6 +4520,7 @@ class _PreCardState extends State<PreCard> {
                                                 const SizedBox(
                                                   height: 20,
                                                 ),
+
                                                 Text(
                                                   "Cell Color",
                                                   style: AppStyles
@@ -3806,39 +4529,307 @@ class _PreCardState extends State<PreCard> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      CellcolorController,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Enter the Cell Color ",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Correct Cell Color",
+                                                // TextFormField(
+                                                //   controller:
+                                                //       CellcolorController,
+                                                //   keyboardType:
+                                                //       TextInputType.text,
+                                                //   textInputAction:
+                                                //       TextInputAction.next,
+                                                //   decoration: AppStyles
+                                                //       .textFieldInputDecoration
+                                                //       .copyWith(
+                                                //     hintText:
+                                                //         "Enter the Cell Color ",
+                                                //     counterText: '',
+                                                //     fillColor: Color.fromARGB(
+                                                //         255, 215, 243, 207),
+                                                //   ),
+                                                //   style: AppStyles
+                                                //       .textInputTextStyle,
+                                                //   readOnly: status ==
+                                                //               'Pending' &&
+                                                //           designation != "QC"
+                                                //       ? true
+                                                //       : false,
+                                                //   validator: MultiValidator(
+                                                //     [
+                                                //       RequiredValidator(
+                                                //         errorText:
+                                                //             "Please Enter Correct Cell Color",
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellcolorController,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Color ",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
-                                                    ],
-                                                  ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Color",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 06:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
-
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "Cell Color",
+                                                  style: AppStyles
+                                                      .textfieldCaptionTextStyle,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                // TextFormField(
+                                                //   controller:
+                                                //       CellcolorController,
+                                                //   keyboardType:
+                                                //       TextInputType.text,
+                                                //   textInputAction:
+                                                //       TextInputAction.next,
+                                                //   decoration: AppStyles
+                                                //       .textFieldInputDecoration
+                                                //       .copyWith(
+                                                //     hintText:
+                                                //         "Enter the Cell Color ",
+                                                //     counterText: '',
+                                                //     fillColor: Color.fromARGB(
+                                                //         255, 215, 243, 207),
+                                                //   ),
+                                                //   style: AppStyles
+                                                //       .textInputTextStyle,
+                                                //   readOnly: status ==
+                                                //               'Pending' &&
+                                                //           designation != "QC"
+                                                //       ? true
+                                                //       : false,
+                                                //   validator: MultiValidator(
+                                                //     [
+                                                //       RequiredValidator(
+                                                //         errorText:
+                                                //             "Please Enter Correct Cell Color",
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellcolorController1,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Color ",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Color",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 06:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "Cell Color",
+                                                  style: AppStyles
+                                                      .textfieldCaptionTextStyle,
+                                                ),
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                // TextFormField(
+                                                //   controller:
+                                                //       CellcolorController,
+                                                //   keyboardType:
+                                                //       TextInputType.text,
+                                                //   textInputAction:
+                                                //       TextInputAction.next,
+                                                //   decoration: AppStyles
+                                                //       .textFieldInputDecoration
+                                                //       .copyWith(
+                                                //     hintText:
+                                                //         "Enter the Cell Color ",
+                                                //     counterText: '',
+                                                //     fillColor: Color.fromARGB(
+                                                //         255, 215, 243, 207),
+                                                //   ),
+                                                //   style: AppStyles
+                                                //       .textInputTextStyle,
+                                                //   readOnly: status ==
+                                                //               'Pending' &&
+                                                //           designation != "QC"
+                                                //       ? true
+                                                //       : false,
+                                                //   validator: MultiValidator(
+                                                //     [
+                                                //       RequiredValidator(
+                                                //         errorText:
+                                                //             "Please Enter Correct Cell Color",
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      controller:
+                                                          CellcolorController2,
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText:
+                                                            "Enter the Cell Color ",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly:
+                                                          status == 'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                      validator: MultiValidator(
+                                                        [
+                                                          RequiredValidator(
+                                                            errorText:
+                                                                "Please Enter Correct Cell Color",
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 06:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
@@ -4302,39 +5293,358 @@ class _PreCardState extends State<PreCard> {
                                                     SizedBox(
                                                       height: 5,
                                                     ),
-                                                    TextFormField(
-                                                      controller:
-                                                          CellLoadingcellColorController,
-                                                      keyboardType:
-                                                          TextInputType.text,
-                                                      textInputAction:
-                                                          TextInputAction.next,
-                                                      decoration: AppStyles
-                                                          .textFieldInputDecoration
-                                                          .copyWith(
-                                                        hintText:
-                                                            "Enter the Cell Color",
-                                                        counterText: '',
-                                                        fillColor:
-                                                            Color.fromARGB(255,
-                                                                215, 243, 207),
-                                                      ),
-                                                      style: AppStyles
-                                                          .textInputTextStyle,
-                                                      readOnly:
-                                                          status == 'Pending' &&
+                                                    // TextFormField(
+                                                    //   controller:
+                                                    //       CellLoadingcellColorController,
+                                                    //   keyboardType:
+                                                    //       TextInputType.text,
+                                                    //   textInputAction:
+                                                    //       TextInputAction.next,
+                                                    //   decoration: AppStyles
+                                                    //       .textFieldInputDecoration
+                                                    //       .copyWith(
+                                                    //     hintText:
+                                                    //         "Enter the Cell Color",
+                                                    //     counterText: '',
+                                                    //     fillColor:
+                                                    //         Color.fromARGB(255,
+                                                    //             215, 243, 207),
+                                                    //   ),
+                                                    //   style: AppStyles
+                                                    //       .textInputTextStyle,
+                                                    //   readOnly:
+                                                    //       status == 'Pending' &&
+                                                    //               designation !=
+                                                    //                   "QC"
+                                                    //           ? true
+                                                    //           : false,
+                                                    //   validator: MultiValidator(
+                                                    //     [
+                                                    //       RequiredValidator(
+                                                    //         errorText:
+                                                    //             "Please Enter Correct Cell color",
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                          controller:
+                                                              CellLoadingcellColorController,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .next,
+                                                          decoration: AppStyles
+                                                              .textFieldInputDecoration
+                                                              .copyWith(
+                                                            hintText:
+                                                                "Enter the Cell Color",
+                                                            counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
+                                                          ),
+                                                          style: AppStyles
+                                                              .textInputTextStyle,
+                                                          readOnly: status ==
+                                                                      'Pending' &&
                                                                   designation !=
                                                                       "QC"
                                                               ? true
                                                               : false,
-                                                      validator: MultiValidator(
-                                                        [
-                                                          RequiredValidator(
-                                                            errorText:
-                                                                "Please Enter Correct Cell color",
+                                                          validator:
+                                                              MultiValidator(
+                                                            [
+                                                              RequiredValidator(
+                                                                errorText:
+                                                                    "Please Enter Correct Cell color",
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
+                                                        )),
+                                                        SizedBox(
+                                                            width:
+                                                                16.0), // Add some space between the text fields
+                                                        Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .next,
+                                                          decoration: AppStyles
+                                                              .textFieldInputDecoration
+                                                              .copyWith(
+                                                            hintText:
+                                                                "Time: 10:00",
+                                                            counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
+                                                          ),
+                                                          style: AppStyles
+                                                              .textInputTextStyle,
+                                                          readOnly: true,
+                                                        )),
+                                                      ],
+                                                    ),
+
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
+
+                                                    Text(
+                                                      "Cell Color",
+                                                      style: AppStyles
+                                                          .textfieldCaptionTextStyle,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    // TextFormField(
+                                                    //   controller:
+                                                    //       CellLoadingcellColorController,
+                                                    //   keyboardType:
+                                                    //       TextInputType.text,
+                                                    //   textInputAction:
+                                                    //       TextInputAction.next,
+                                                    //   decoration: AppStyles
+                                                    //       .textFieldInputDecoration
+                                                    //       .copyWith(
+                                                    //     hintText:
+                                                    //         "Enter the Cell Color",
+                                                    //     counterText: '',
+                                                    //     fillColor:
+                                                    //         Color.fromARGB(255,
+                                                    //             215, 243, 207),
+                                                    //   ),
+                                                    //   style: AppStyles
+                                                    //       .textInputTextStyle,
+                                                    //   readOnly:
+                                                    //       status == 'Pending' &&
+                                                    //               designation !=
+                                                    //                   "QC"
+                                                    //           ? true
+                                                    //           : false,
+                                                    //   validator: MultiValidator(
+                                                    //     [
+                                                    //       RequiredValidator(
+                                                    //         errorText:
+                                                    //             "Please Enter Correct Cell color",
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                          controller:
+                                                              CellLoadingcellColorController1,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .next,
+                                                          decoration: AppStyles
+                                                              .textFieldInputDecoration
+                                                              .copyWith(
+                                                            hintText:
+                                                                "Enter the Cell Color",
+                                                            counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
+                                                          ),
+                                                          style: AppStyles
+                                                              .textInputTextStyle,
+                                                          readOnly: status ==
+                                                                      'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                          validator:
+                                                              MultiValidator(
+                                                            [
+                                                              RequiredValidator(
+                                                                errorText:
+                                                                    "Please Enter Correct Cell color",
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )),
+                                                        SizedBox(
+                                                            width:
+                                                                16.0), // Add some space between the text fields
+                                                        Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .next,
+                                                          decoration: AppStyles
+                                                              .textFieldInputDecoration
+                                                              .copyWith(
+                                                            hintText:
+                                                                "Time: 10:00",
+                                                            counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
+                                                          ),
+                                                          style: AppStyles
+                                                              .textInputTextStyle,
+                                                          readOnly: true,
+                                                        )),
+                                                      ],
+                                                    ),
+
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
+
+                                                    Text(
+                                                      "Cell Color",
+                                                      style: AppStyles
+                                                          .textfieldCaptionTextStyle,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    // TextFormField(
+                                                    //   controller:
+                                                    //       CellLoadingcellColorController,
+                                                    //   keyboardType:
+                                                    //       TextInputType.text,
+                                                    //   textInputAction:
+                                                    //       TextInputAction.next,
+                                                    //   decoration: AppStyles
+                                                    //       .textFieldInputDecoration
+                                                    //       .copyWith(
+                                                    //     hintText:
+                                                    //         "Enter the Cell Color",
+                                                    //     counterText: '',
+                                                    //     fillColor:
+                                                    //         Color.fromARGB(255,
+                                                    //             215, 243, 207),
+                                                    //   ),
+                                                    //   style: AppStyles
+                                                    //       .textInputTextStyle,
+                                                    //   readOnly:
+                                                    //       status == 'Pending' &&
+                                                    //               designation !=
+                                                    //                   "QC"
+                                                    //           ? true
+                                                    //           : false,
+                                                    //   validator: MultiValidator(
+                                                    //     [
+                                                    //       RequiredValidator(
+                                                    //         errorText:
+                                                    //             "Please Enter Correct Cell color",
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                          controller:
+                                                              CellLoadingcellColorController2,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .next,
+                                                          decoration: AppStyles
+                                                              .textFieldInputDecoration
+                                                              .copyWith(
+                                                            hintText:
+                                                                "Enter the Cell Color",
+                                                            counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
+                                                          ),
+                                                          style: AppStyles
+                                                              .textInputTextStyle,
+                                                          readOnly: status ==
+                                                                      'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                          validator:
+                                                              MultiValidator(
+                                                            [
+                                                              RequiredValidator(
+                                                                errorText:
+                                                                    "Please Enter Correct Cell color",
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )),
+                                                        SizedBox(
+                                                            width:
+                                                                16.0), // Add some space between the text fields
+                                                        Expanded(
+                                                            child:
+                                                                TextFormField(
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .next,
+                                                          decoration: AppStyles
+                                                              .textFieldInputDecoration
+                                                              .copyWith(
+                                                            hintText:
+                                                                "Time: 10:00",
+                                                            counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
+                                                          ),
+                                                          style: AppStyles
+                                                              .textInputTextStyle,
+                                                          readOnly: true,
+                                                        )),
+                                                      ],
                                                     ),
 
                                                     const SizedBox(
@@ -4862,11 +6172,13 @@ class _PreCardState extends State<PreCard> {
                                                     //   height: 15,
                                                     // ),
                                                     Text(
-                                                      "String length & cell to cell gap",
+                                                      // "String length & cell to cell gap",
+                                                      "Tabber & Stringe Section",
                                                       style: AppStyles
                                                           .textfieldCaptionTextStyle,
                                                     ),
                                                     SizedBox(height: 5),
+
                                                     TextFormField(
                                                       controller:
                                                           CellLoadingnumberOfStringerController,
@@ -4942,45 +6254,85 @@ class _PreCardState extends State<PreCard> {
                                                               ),
                                                             SizedBox(
                                                                 height: 10),
-                                                            TextFormField(
-                                                              controller:
-                                                                  cellLoaderVerificationControllers[
-                                                                      index],
-                                                              decoration: AppStyles
-                                                                  .textFieldInputDecoration
-                                                                  .copyWith(
-                                                                hintText:
-                                                                    "Please Enter stringer data",
-                                                                counterText: '',
-                                                                fillColor: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        215,
-                                                                        243,
-                                                                        207),
-                                                                contentPadding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            10),
-                                                              ),
-                                                              style: AppStyles
-                                                                  .textInputTextStyle,
-                                                              readOnly: status ==
-                                                                          'Pending' &&
-                                                                      designation !=
-                                                                          "QC"
-                                                                  ? true
-                                                                  : false,
-                                                              validator:
-                                                                  (value) {
-                                                                if (value ==
-                                                                        null ||
-                                                                    value
-                                                                        .isEmpty) {
-                                                                  return 'Please Enter correcr stringer data';
-                                                                }
-                                                                return null;
-                                                              },
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Expanded(
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        cellLoaderVerificationControllers[
+                                                                            index],
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter stringer data",
+                                                                      counterText:
+                                                                          '',
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                      contentPadding:
+                                                                          EdgeInsets.all(
+                                                                              10),
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        (value) {
+                                                                      if (value ==
+                                                                              null ||
+                                                                          value
+                                                                              .isEmpty) {
+                                                                        return 'Please Enter correcr stringer data';
+                                                                      }
+                                                                      return null;
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                    width:
+                                                                        16.0), // Add some space between the text fields
+                                                                Expanded(
+                                                                    child:
+                                                                        TextFormField(
+                                                                  controller:
+                                                                      cellLoaderTimeControllers[
+                                                                          index],
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  decoration: AppStyles
+                                                                      .textFieldInputDecoration
+                                                                      .copyWith(
+                                                                    hintText:
+                                                                        "",
+                                                                    counterText:
+                                                                        '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                  ),
+                                                                  style: AppStyles
+                                                                      .textInputTextStyle,
+                                                                  readOnly:
+                                                                      true,
+                                                                )),
+                                                              ],
                                                             ),
                                                           ],
                                                         );
@@ -5337,6 +6689,62 @@ class _PreCardState extends State<PreCard> {
                                                                             .w700))),
 
                                                         // **********  start Tabber ***********
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Text(
+                                                          "Number of Stringer",
+                                                          style: AppStyles
+                                                              .textfieldCaptionTextStyle,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        TextFormField(
+                                                          controller:
+                                                              TabberNumberofStringerController,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          textInputAction:
+                                                              TextInputAction
+                                                                  .next,
+                                                          decoration: AppStyles
+                                                              .textFieldInputDecoration
+                                                              .copyWith(
+                                                            hintText:
+                                                                "Enter the stringer",
+                                                            counterText: '',
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    215,
+                                                                    243,
+                                                                    207),
+                                                          ),
+                                                          style: AppStyles
+                                                              .textInputTextStyle,
+                                                          readOnly: status ==
+                                                                      'Pending' &&
+                                                                  designation !=
+                                                                      "QC"
+                                                              ? true
+                                                              : false,
+                                                          validator:
+                                                              MultiValidator(
+                                                            [
+                                                              RequiredValidator(
+                                                                errorText:
+                                                                    "Please Enter Correct stringer",
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+
+                                                        const SizedBox(
+                                                          height: 15,
+                                                        ),
+                                                        // **********  start Tabber ***********
 
                                                         const SizedBox(
                                                           height: 15,
@@ -5466,46 +6874,120 @@ class _PreCardState extends State<PreCard> {
                                                                   ),
                                                                 SizedBox(
                                                                     height: 10),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      TabberVisualStringerControllers[
-                                                                          index],
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Please Enter stringer data",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                      child:
+                                                                          TextFormField(
+                                                                        controller:
+                                                                            TabberVisualStringerControllers[index],
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Please Enter stringer data",
+                                                                          counterText:
+                                                                              '',
+                                                                          fillColor: Color.fromARGB(
+                                                                              255,
+                                                                              215,
+                                                                              243,
+                                                                              207),
+                                                                          contentPadding:
+                                                                              EdgeInsets.all(10),
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            (value) {
+                                                                          if (value == null ||
+                                                                              value.isEmpty) {
+                                                                            return 'Please Enter correcr stringer data';
+                                                                          }
+                                                                          return null;
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          TabberVisualTimeControllers1[
+                                                                              index],
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
                                                                             255,
                                                                             215,
                                                                             243,
                                                                             207),
-                                                                    contentPadding:
-                                                                        EdgeInsets.all(
-                                                                            10),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      (value) {
-                                                                    if (value ==
-                                                                            null ||
-                                                                        value
-                                                                            .isEmpty) {
-                                                                      return 'Please Enter correct stringer data .';
-                                                                    }
-                                                                    return null;
-                                                                  },
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
                                                                 ),
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       TabberVisualStringerControllers[
+                                                                //           index],
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Please Enter stringer data",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //     contentPadding:
+                                                                //         EdgeInsets.all(
+                                                                //             10),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       (value) {
+                                                                //     if (value ==
+                                                                //             null ||
+                                                                //         value
+                                                                //             .isEmpty) {
+                                                                //       return 'Please Enter correct stringer data .';
+                                                                //     }
+                                                                //     return null;
+                                                                //   },
+                                                                // ),
                                                               ],
                                                             );
                                                           },
@@ -5674,45 +7156,119 @@ class _PreCardState extends State<PreCard> {
                                                                   ),
                                                                 SizedBox(
                                                                     height: 10),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      TabberEIimageofStringerControllers[
-                                                                          index],
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Please Enter Stringers",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       TabberEIimageofStringerControllers[
+                                                                //           index],
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Please Enter Stringers",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //     contentPadding:
+                                                                //         EdgeInsets.all(
+                                                                //             10),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       (value) {
+                                                                //     if (value ==
+                                                                //             null ||
+                                                                //         value
+                                                                //             .isEmpty) {
+                                                                //       return 'Please Enter stringers.';
+                                                                //     }
+                                                                //     return null;
+                                                                //   },
+                                                                // ),
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                      child:
+                                                                          TextFormField(
+                                                                        controller:
+                                                                            TabberEIimageofStringerControllers[index],
+                                                                        decoration: AppStyles
+                                                                            .textFieldInputDecoration
+                                                                            .copyWith(
+                                                                          hintText:
+                                                                              "Please Enter stringer data",
+                                                                          counterText:
+                                                                              '',
+                                                                          fillColor: Color.fromARGB(
+                                                                              255,
+                                                                              215,
+                                                                              243,
+                                                                              207),
+                                                                          contentPadding:
+                                                                              EdgeInsets.all(10),
+                                                                        ),
+                                                                        style: AppStyles
+                                                                            .textInputTextStyle,
+                                                                        readOnly: status == 'Pending' &&
+                                                                                designation != "QC"
+                                                                            ? true
+                                                                            : false,
+                                                                        validator:
+                                                                            (value) {
+                                                                          if (value == null ||
+                                                                              value.isEmpty) {
+                                                                            return 'Please Enter correcr stringer data';
+                                                                          }
+                                                                          return null;
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          TabberEIimageofStringerTimeControllers[
+                                                                              index],
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
                                                                             255,
                                                                             215,
                                                                             243,
                                                                             207),
-                                                                    contentPadding:
-                                                                        EdgeInsets.all(
-                                                                            10),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      (value) {
-                                                                    if (value ==
-                                                                            null ||
-                                                                        value
-                                                                            .isEmpty) {
-                                                                      return 'Please Enter stringers.';
-                                                                    }
-                                                                    return null;
-                                                                  },
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
                                                                 ),
                                                               ],
                                                             );
@@ -5950,7 +7506,7 @@ class _PreCardState extends State<PreCard> {
                                                               .textFieldInputDecoration
                                                               .copyWith(
                                                             hintText:
-                                                                ">=0.5N  |  Refer:GSPL/IPQC/GP/001",
+                                                                ">=1.0N  |  Refer:GSPL/IPQC/GP/001",
                                                             counterText: '',
                                                           ),
                                                           style: AppStyles
@@ -6722,13 +8278,14 @@ class _PreCardState extends State<PreCard> {
                                                               height: 20,
                                                             ),
                                                             Text(
-                                                              "Cell edge to glass edge(Top, bottom & sides)",
+                                                              "Cell edge to glass edge(Top)",
                                                               style: AppStyles
                                                                   .textfieldCaptionTextStyle,
                                                             ),
                                                             SizedBox(
                                                               height: 5,
                                                             ),
+
                                                             TextFormField(
                                                               controller:
                                                                   AutoCelledController,
@@ -6742,7 +8299,7 @@ class _PreCardState extends State<PreCard> {
                                                                   .textFieldInputDecoration
                                                                   .copyWith(
                                                                 hintText:
-                                                                    "Enter the Cell edge to glass edge(Top, bottom & sides)",
+                                                                    "Enter the Cell edge to glass edge(Top)",
                                                                 counterText: '',
                                                                 fillColor: Color
                                                                     .fromARGB(
@@ -6764,7 +8321,169 @@ class _PreCardState extends State<PreCard> {
                                                                 [
                                                                   RequiredValidator(
                                                                     errorText:
-                                                                        "Please Enter Correct Cell edge to glass edge(Top, bottom & sides)",
+                                                                        "Please Enter Correct Cell edge to glass edge(Top)",
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+
+                                                            const SizedBox(
+                                                              height: 15,
+                                                            ),
+
+                                                            Text(
+                                                              "Cell edge to glass edge(Bottom)",
+                                                              style: AppStyles
+                                                                  .textfieldCaptionTextStyle,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+
+                                                            TextFormField(
+                                                              controller:
+                                                                  AutoCelledController1,
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Enter the Cell edge to glass edge(Bottom)",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: status ==
+                                                                          'Pending' &&
+                                                                      designation !=
+                                                                          "QC"
+                                                                  ? true
+                                                                  : false,
+                                                              validator:
+                                                                  MultiValidator(
+                                                                [
+                                                                  RequiredValidator(
+                                                                    errorText:
+                                                                        "Please Enter Correct Cell edge to glass edge(Bottom)",
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+
+                                                            const SizedBox(
+                                                              height: 15,
+                                                            ),
+
+                                                            Text(
+                                                              "Cell edge to glass edge(Left)",
+                                                              style: AppStyles
+                                                                  .textfieldCaptionTextStyle,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+
+                                                            TextFormField(
+                                                              controller:
+                                                                  AutoCelledController2,
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Enter the Cell edge to glass edge(Left)",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: status ==
+                                                                          'Pending' &&
+                                                                      designation !=
+                                                                          "QC"
+                                                                  ? true
+                                                                  : false,
+                                                              validator:
+                                                                  MultiValidator(
+                                                                [
+                                                                  RequiredValidator(
+                                                                    errorText:
+                                                                        "Please Enter Correct Cell edge to glass edge(Left)",
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+
+                                                            const SizedBox(
+                                                              height: 15,
+                                                            ),
+
+                                                            Text(
+                                                              "Cell edge to glass edge(Right)",
+                                                              style: AppStyles
+                                                                  .textfieldCaptionTextStyle,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+
+                                                            TextFormField(
+                                                              controller:
+                                                                  AutoCelledController3,
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Enter the Cell edge to glass edge(Right)",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: status ==
+                                                                          'Pending' &&
+                                                                      designation !=
+                                                                          "QC"
+                                                                  ? true
+                                                                  : false,
+                                                              validator:
+                                                                  MultiValidator(
+                                                                [
+                                                                  RequiredValidator(
+                                                                    errorText:
+                                                                        "Please Enter Correct Cell edge to glass edge(Right)",
                                                                   ),
                                                                 ],
                                                               ),
@@ -7416,54 +9135,386 @@ class _PreCardState extends State<PreCard> {
                                                                 const SizedBox(
                                                                   height: 20,
                                                                 ),
+
                                                                 Text(
-                                                                  "soldering quality of Ribbon to busbar",
+                                                                  "Soldering quality of Ribbon to busbar",
                                                                   style: AppStyles
                                                                       .textfieldCaptionTextStyle,
                                                                 ),
                                                                 SizedBox(
                                                                   height: 5,
                                                                 ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      AutoSolderingQualityController,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Enter the soldering quality of Ribbon to busbar",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoSolderingQualityController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the soldering quality of Ribbon to busbar",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct soldering quality of Ribbon to busbar",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoSolderingQualityController,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the soldering quality of Ribbon to busbar",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
                                                                             255,
                                                                             215,
                                                                             243,
                                                                             207),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      MultiValidator(
-                                                                    [
-                                                                      RequiredValidator(
-                                                                        errorText:
-                                                                            "Please Enter Correct soldering quality of Ribbon to busbar",
                                                                       ),
-                                                                    ],
-                                                                  ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct soldering quality of Ribbon to busbar",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 10:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
+
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
+                                                                Text(
+                                                                  "Soldering quality of Ribbon to busbar",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoSolderingQualityController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the soldering quality of Ribbon to busbar",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct soldering quality of Ribbon to busbar",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoSolderingQualityController1,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the soldering quality of Ribbon to busbar",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct soldering quality of Ribbon to busbar",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 02:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
+
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
+                                                                Text(
+                                                                  "Soldering quality of Ribbon to busbar",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoSolderingQualityController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the soldering quality of Ribbon to busbar",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct soldering quality of Ribbon to busbar",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoSolderingQualityController2,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the soldering quality of Ribbon to busbar",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct soldering quality of Ribbon to busbar",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 06:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
                                                                 ),
 
                                                                 const SizedBox(
@@ -7545,6 +9596,7 @@ class _PreCardState extends State<PreCard> {
                                                                 const SizedBox(
                                                                   height: 20,
                                                                 ),
+
                                                                 Text(
                                                                   "Clearance between RFID&Logo patch to cell in module",
                                                                   style: AppStyles
@@ -7553,52 +9605,384 @@ class _PreCardState extends State<PreCard> {
                                                                 SizedBox(
                                                                   height: 5,
                                                                 ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      AutoClearanceController,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Enter the Clearance between RFID&Logo patch to cell in module",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoClearanceController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Clearance between RFID&Logo patch to cell in module",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoClearanceController,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Clearance between RFID&Logo patch to cell in module",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
                                                                             255,
                                                                             215,
                                                                             243,
                                                                             207),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      MultiValidator(
-                                                                    [
-                                                                      RequiredValidator(
-                                                                        errorText:
-                                                                            "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
                                                                       ),
-                                                                    ],
-                                                                  ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 06:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
                                                                 ),
 
                                                                 const SizedBox(
                                                                   height: 15,
                                                                 ),
 
+                                                                Text(
+                                                                  "Clearance between RFID&Logo patch to cell in module",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoClearanceController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Clearance between RFID&Logo patch to cell in module",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoClearanceController1,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Clearance between RFID&Logo patch to cell in module",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 02:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
+
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
+
+                                                                Text(
+                                                                  "Clearance between RFID&Logo patch to cell in module",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoClearanceController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Clearance between RFID&Logo patch to cell in module",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoClearanceController2,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Clearance between RFID&Logo patch to cell in module",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Clearance between RFID&Logo patch to cell in module",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 06:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
+
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
                                                                 Text(
                                                                   "Acceptance Criteria",
                                                                   style: AppStyles
@@ -7674,6 +10058,7 @@ class _PreCardState extends State<PreCard> {
                                                                 const SizedBox(
                                                                   height: 20,
                                                                 ),
+
                                                                 Text(
                                                                   "Position verification of RFID& Logo Patch on Module",
                                                                   style: AppStyles
@@ -7682,48 +10067,381 @@ class _PreCardState extends State<PreCard> {
                                                                 SizedBox(
                                                                   height: 5,
                                                                 ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      AutoPositionController,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Enter the Position verification of RFID& Logo Patch on Module",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoPositionController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Position verification of RFID& Logo Patch on Module",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Position verification of RFID& Logo Patch on Module",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoPositionController,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Position verification of RFID& Logo Patch on Module",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
                                                                             255,
                                                                             215,
                                                                             243,
                                                                             207),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      MultiValidator(
-                                                                    [
-                                                                      RequiredValidator(
-                                                                        errorText:
-                                                                            "Please Enter Correct Position verification of RFID& Logo Patch on Module",
                                                                       ),
-                                                                    ],
-                                                                  ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Position verification of RFID& Logo Patch on Module",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 10:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
                                                                 ),
 
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
+                                                                Text(
+                                                                  "Position verification of RFID& Logo Patch on Module",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoPositionController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Position verification of RFID& Logo Patch on Module",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Position verification of RFID& Logo Patch on Module",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoPositionController1,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Position verification of RFID& Logo Patch on Module",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Position verification of RFID& Logo Patch on Module",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 02:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
+
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
+                                                                Text(
+                                                                  "Position verification of RFID& Logo Patch on Module",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoPositionController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Position verification of RFID& Logo Patch on Module",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Position verification of RFID& Logo Patch on Module",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoPositionController2,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Position verification of RFID& Logo Patch on Module",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Position verification of RFID& Logo Patch on Module",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 06:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
                                                                 const SizedBox(
                                                                   height: 15,
                                                                 ),
@@ -7803,6 +10521,7 @@ class _PreCardState extends State<PreCard> {
                                                                 const SizedBox(
                                                                   height: 20,
                                                                 ),
+
                                                                 Text(
                                                                   "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
                                                                   style: AppStyles
@@ -7811,52 +10530,380 @@ class _PreCardState extends State<PreCard> {
                                                                 SizedBox(
                                                                   height: 5,
                                                                 ),
-                                                                TextFormField(
-                                                                  controller:
-                                                                      AutoTopController,
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  textInputAction:
-                                                                      TextInputAction
-                                                                          .next,
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
-                                                                    counterText:
-                                                                        '',
-                                                                    fillColor: Color
-                                                                        .fromARGB(
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoTopController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoTopController,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
                                                                             255,
                                                                             215,
                                                                             243,
                                                                             207),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                              'Pending' &&
-                                                                          designation !=
-                                                                              "QC"
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      MultiValidator(
-                                                                    [
-                                                                      RequiredValidator(
-                                                                        errorText:
-                                                                            "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
                                                                       ),
-                                                                    ],
-                                                                  ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 10:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
                                                                 ),
-
                                                                 const SizedBox(
                                                                   height: 15,
                                                                 ),
 
+                                                                Text(
+                                                                  "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoTopController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoTopController1,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 02:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
+                                                                Text(
+                                                                  "Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                  style: AppStyles
+                                                                      .textfieldCaptionTextStyle,
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+
+                                                                // TextFormField(
+                                                                //   controller:
+                                                                //       AutoTopController,
+                                                                //   keyboardType:
+                                                                //       TextInputType
+                                                                //           .text,
+                                                                //   textInputAction:
+                                                                //       TextInputAction
+                                                                //           .next,
+                                                                //   decoration: AppStyles
+                                                                //       .textFieldInputDecoration
+                                                                //       .copyWith(
+                                                                //     hintText:
+                                                                //         "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                //     counterText:
+                                                                //         '',
+                                                                //     fillColor: Color
+                                                                //         .fromARGB(
+                                                                //             255,
+                                                                //             215,
+                                                                //             243,
+                                                                //             207),
+                                                                //   ),
+                                                                //   style: AppStyles
+                                                                //       .textInputTextStyle,
+                                                                //   readOnly: status ==
+                                                                //               'Pending' &&
+                                                                //           designation !=
+                                                                //               "QC"
+                                                                //       ? true
+                                                                //       : false,
+                                                                //   validator:
+                                                                //       MultiValidator(
+                                                                //     [
+                                                                //       RequiredValidator(
+                                                                //         errorText:
+                                                                //             "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                //       ),
+                                                                //     ],
+                                                                //   ),
+                                                                // ),
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      controller:
+                                                                          AutoTopController2,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Enter the Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly: status == 'Pending' &&
+                                                                              designation != "QC"
+                                                                          ? true
+                                                                          : false,
+                                                                      validator:
+                                                                          MultiValidator(
+                                                                        [
+                                                                          RequiredValidator(
+                                                                            errorText:
+                                                                                "Please Enter Correct Top & Bottom Creepage Distance/Terminal busbar to Edge of Glass",
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                                    SizedBox(
+                                                                        width:
+                                                                            16.0), // Add some space between the text fields
+                                                                    Expanded(
+                                                                        child:
+                                                                            TextFormField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      textInputAction:
+                                                                          TextInputAction
+                                                                              .next,
+                                                                      decoration: AppStyles
+                                                                          .textFieldInputDecoration
+                                                                          .copyWith(
+                                                                        hintText:
+                                                                            "Time: 06:00",
+                                                                        counterText:
+                                                                            '',
+                                                                        fillColor: Color.fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                      ),
+                                                                      style: AppStyles
+                                                                          .textInputTextStyle,
+                                                                      readOnly:
+                                                                          true,
+                                                                    )),
+                                                                  ],
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 15,
+                                                                ),
                                                                 Text(
                                                                   "Acceptance Criteria",
                                                                   style: AppStyles
@@ -8494,7 +11541,7 @@ class _PreCardState extends State<PreCard> {
                                                                           20,
                                                                     ),
                                                                     Text(
-                                                                      "Rear EVA dimension & sift cutting width(mm)",
+                                                                      "Rear EVA dimension & slit cutting width(mm)",
                                                                       style: AppStyles
                                                                           .textfieldCaptionTextStyle,
                                                                     ),
@@ -8514,7 +11561,7 @@ class _PreCardState extends State<PreCard> {
                                                                           .textFieldInputDecoration
                                                                           .copyWith(
                                                                         hintText:
-                                                                            "Enter the  Rear EVA dimension & sift cutting width(mm)",
+                                                                            "Enter the  Rear EVA dimension & slit cutting width(mm)",
                                                                         counterText:
                                                                             '',
                                                                         fillColor: Color.fromARGB(
@@ -9387,6 +12434,61 @@ class _PreCardState extends State<PreCard> {
                                                                           height:
                                                                               15,
                                                                         ),
+
+                                                                        /**   Start */
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              20,
+                                                                        ),
+                                                                        Text(
+                                                                          "Number of Stringer",
+                                                                          style:
+                                                                              AppStyles.textfieldCaptionTextStyle,
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              5,
+                                                                        ),
+                                                                        TextFormField(
+                                                                          controller:
+                                                                              PreNumberElMachineController,
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Enter the Number of El Machine",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly: status == 'Pending' && designation != "QC"
+                                                                              ? true
+                                                                              : false,
+                                                                          validator:
+                                                                              MultiValidator(
+                                                                            [
+                                                                              RequiredValidator(
+                                                                                errorText: "Please Enter Correct  Number of El Machine",
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              15,
+                                                                        ),
+                                                                        /**   Start */
                                                                         Divider(
                                                                           color:
                                                                               Colors.black,
@@ -9504,22 +12606,60 @@ class _PreCardState extends State<PreCard> {
                                                                                     ),
                                                                                   ),
                                                                                 SizedBox(height: 10),
-                                                                                TextFormField(
-                                                                                  controller: PreLaminationEIinspectionrControllers[index],
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter stringer data",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                    contentPadding: EdgeInsets.all(10),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: (value) {
-                                                                                    if (value == null || value.isEmpty) {
-                                                                                      return 'Please Enter correct string data.';
-                                                                                    }
-                                                                                    return null;
-                                                                                  },
+
+                                                                                // TextFormField(
+                                                                                //   controller: PreLaminationEIinspectionrControllers[index],
+                                                                                //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                //     hintText: "Please Enter stringer data",
+                                                                                //     counterText: '',
+                                                                                //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                //     contentPadding: EdgeInsets.all(10),
+                                                                                //   ),
+                                                                                //   style: AppStyles.textInputTextStyle,
+                                                                                //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                //   validator: (value) {
+                                                                                //     if (value == null || value.isEmpty) {
+                                                                                //       return 'Please Enter correct string data.';
+                                                                                //     }
+                                                                                //     return null;
+                                                                                //   },
+                                                                                // ),
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: PreLaminationEIinspectionrControllers[index],
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter stringer data",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          contentPadding: EdgeInsets.all(10),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: (value) {
+                                                                                          if (value == null || value.isEmpty) {
+                                                                                            return 'Please Enter correcr stringer data';
+                                                                                          }
+                                                                                          return null;
+                                                                                        },
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      controller: PreLaminationEIinspectionrTimeControllers[index],
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
                                                                               ],
                                                                             );
@@ -9682,22 +12822,60 @@ class _PreCardState extends State<PreCard> {
                                                                                     ),
                                                                                   ),
                                                                                 SizedBox(height: 10),
-                                                                                TextFormField(
-                                                                                  controller: PreLaminationVisualinspectionrControllers[index],
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter stringer",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                    contentPadding: EdgeInsets.all(10),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: (value) {
-                                                                                    if (value == null || value.isEmpty) {
-                                                                                      return 'Please Enter correct Stringer.';
-                                                                                    }
-                                                                                    return null;
-                                                                                  },
+
+                                                                                // TextFormField(
+                                                                                //   controller: PreLaminationVisualinspectionrControllers[index],
+                                                                                //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                //     hintText: "Please Enter stringer",
+                                                                                //     counterText: '',
+                                                                                //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                //     contentPadding: EdgeInsets.all(10),
+                                                                                //   ),
+                                                                                //   style: AppStyles.textInputTextStyle,
+                                                                                //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                //   validator: (value) {
+                                                                                //     if (value == null || value.isEmpty) {
+                                                                                //       return 'Please Enter correct Stringer.';
+                                                                                //     }
+                                                                                //     return null;
+                                                                                //   },
+                                                                                // ),
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: PreLaminationVisualinspectionrControllers[index],
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter stringer data",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          contentPadding: EdgeInsets.all(10),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: (value) {
+                                                                                          if (value == null || value.isEmpty) {
+                                                                                            return 'Please Enter correcr stringer data';
+                                                                                          }
+                                                                                          return null;
+                                                                                        },
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      controller: PreLaminationVisualinspectionrTimeControllers[index],
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
                                                                               ],
                                                                             );

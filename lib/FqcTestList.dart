@@ -768,29 +768,29 @@ class _FqcTestListState extends State<FqcTestList> {
                         ),
                         //Occupication
                         Row(children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(
-                                  255, 0, 0, 0), // Background color
-                              borderRadius: BorderRadius.circular(
-                                  10), // Optional: Add border radius for rounded corners
-                            ),
-                            child: Text(
-                              DateFormat("dd MMM yyyy").format(DateTime.parse(
-                                  dateOfQualityCheck.toString())),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
-                                color: Color.fromARGB(255, 255, 255,
-                                    255), // Optional: Set text color
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          // Container(
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: 10, vertical: 5),
+                          //   decoration: BoxDecoration(
+                          //     color: Color.fromARGB(
+                          //         255, 0, 0, 0), // Background color
+                          //     borderRadius: BorderRadius.circular(
+                          //         10), // Optional: Add border radius for rounded corners
+                          //   ),
+                          //   child: Text(
+                          //     DateFormat("dd MMM yyyy").format(DateTime.parse(
+                          //         dateOfQualityCheck.toString())),
+                          //     style: const TextStyle(
+                          //       fontWeight: FontWeight.bold,
+                          //       fontSize: 11,
+                          //       color: Color.fromARGB(255, 255, 255,
+                          //           255), // Optional: Set text color
+                          //     ),
+                          //   ),
+                          // ),
+                          // const SizedBox(
+                          //   width: 10,
+                          // ),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),

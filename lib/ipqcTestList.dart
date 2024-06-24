@@ -853,28 +853,28 @@ class _IpqcTestListState extends State<IpqcTestList> {
                         //Occupication
 
                         Row(children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(
-                                  255, 2, 45, 236), // Background color
-                              borderRadius: BorderRadius.circular(
-                                  10), // Optional: Add border radius for rounded corners
-                            ),
-                            child: Text(
-                              date,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
-                                color: Color.fromARGB(255, 255, 255,
-                                    255), // Optional: Set text color
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
+                          // Container(
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: 10, vertical: 5),
+                          //   decoration: BoxDecoration(
+                          //     color: const Color.fromARGB(
+                          //         255, 2, 45, 236), // Background color
+                          //     borderRadius: BorderRadius.circular(
+                          //         10), // Optional: Add border radius for rounded corners
+                          //   ),
+                          //   child: Text(
+                          //     date,
+                          //     style: const TextStyle(
+                          //       fontWeight: FontWeight.bold,
+                          //       fontSize: 11,
+                          //       color: Color.fromARGB(255, 255, 255,
+                          //           255), // Optional: Set text color
+                          //     ),
+                          //   ),
+                          // ),
+                          // const SizedBox(
+                          //   width: 5,
+                          // ),
                           if (referencePdf != '' && referencePdf != null)
                             Container(
                               padding: const EdgeInsets.symmetric(

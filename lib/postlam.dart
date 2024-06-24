@@ -430,8 +430,9 @@ class _PostlamState extends State<Postlam> {
       framingTopCrieteriaController.text = "As per PO or process card";
       framingMountingFrequencyController.text = "once a Shift";
       framingMountingCrieteriaController.text = "+-1mm ";
-      framingAnodizingFrequencyController.text = "onc a Shift";
-      framingAnodizingCrieteriaController.text = ">=15micron ";
+      framingAnodizingFrequencyController.text = "once a Shift";
+      framingAnodizingCrieteriaController.text =
+          ">=15 micron as per PO & Process Card";
 
       // Junction Box Assembly
       junctionWiFrequencyController.text = "Once a Shift";
@@ -451,7 +452,8 @@ class _PostlamState extends State<Postlam> {
       curingTimeFrequencyController.text = "Continuos";
       curingTimeCrieteriaController.text = ">=4Hr";
       curingTempFrequencyController.text = "Once a Shift";
-      curingTempCrieteriaController.text = "25+-5oc &>=50%RH";
+      curingTempCrieteriaController.text = "25+-5°C &>=50%RH";
+      // curingTempCrieteriaController.text = "25+-5°C &>=50%RH";
       // Buffing
       buffingWiFrequencyController.text = "Once a Shift";
       buffingWiCrieteriaController.text = "Must be Present";
@@ -2334,7 +2336,8 @@ class _PostlamState extends State<Postlam> {
                                       height: 15,
                                     ),
                                     Text(
-                                      "Physical verification of union trimming & Blade replacing frequency",
+                                      "Physical verification of uniform trimming & Blade replacing frequency",
+                                      // "Physical verification of union trimming & Blade replacing frequency",
                                       style:
                                           AppStyles.textfieldCaptionTextStyle,
                                     ),
@@ -3331,7 +3334,8 @@ class _PostlamState extends State<Postlam> {
                                               height: 15,
                                             ),
                                             Text(
-                                              "Glue uniformity & continuty in frame group",
+                                              "Glue uniformity & continuty in frame groove",
+                                              // "Glue uniformity & continuty in frame group",
                                               style: AppStyles
                                                   .textfieldCaptionTextStyle,
                                             ),
@@ -4181,7 +4185,9 @@ class _PostlamState extends State<Postlam> {
                                               decoration: AppStyles
                                                   .textFieldInputDecoration
                                                   .copyWith(
-                                                hintText: ">=15 micron",
+                                                hintText:
+                                                    ">=15 micron as per PO & Process Card",
+                                                // hintText: ">=15 micron",
                                                 counterText: '',
                                               ),
                                               style:
@@ -5730,7 +5736,8 @@ class _PostlamState extends State<Postlam> {
                                                     ),
 
                                                     Text(
-                                                      "Tempratue And Humadity",
+                                                      "Temperature And Humidity",
+                                                      // "Tempratue And Humadity",
                                                       style: AppStyles
                                                           .textfieldCaptionTextStyle,
                                                     ),
@@ -5794,7 +5801,8 @@ class _PostlamState extends State<Postlam> {
                                                           .textFieldInputDecoration
                                                           .copyWith(
                                                         hintText:
-                                                            "25+-oc&>=50%RH",
+                                                            "25+-5°C &>=50%RH",
+                                                        // "25+-oc&>=50%RH",
                                                         counterText: '',
                                                       ),
                                                       style: AppStyles
