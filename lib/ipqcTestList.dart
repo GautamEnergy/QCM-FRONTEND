@@ -558,7 +558,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                   } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
-                      data.data![index].materialName!
+                      data.data![index].type!
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase())) {
                     return Container(

@@ -2344,152 +2344,282 @@ class _PostlamState extends State<Postlam> {
                                     SizedBox(
                                       height: 15,
                                     ),
-                                    TextFormField(
-                                      controller:
-                                          trimmingPhysicalObs1Controller,
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: AppStyles
-                                          .textFieldInputDecoration
-                                          .copyWith(
-                                        hintText: "Please Enter Observation 1 ",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
-                                      validator: MultiValidator(
-                                        [
-                                          RequiredValidator(
-                                            errorText:
-                                                "Please Enter Observation 1",
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: TextFormField(
+                                            controller:
+                                                trimmingPhysicalObs1Controller,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Please Enter Observation 1 ",
+                                              counterText: '',
+                                              fillColor: Color.fromARGB(
+                                                  255, 215, 243, 207),
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Observation 1",
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                            width:
+                                                16.0), // Add some space between the text fields
+                                        Expanded(
+                                            child: TextFormField(
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText: "Time: 10:00",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        )),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 15,
                                     ),
-                                    TextFormField(
-                                      controller:
-                                          trimmingPhysicalObs2Controller,
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: AppStyles
-                                          .textFieldInputDecoration
-                                          .copyWith(
-                                        hintText: "Please Enter Observation 2 ",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
-                                      validator: MultiValidator(
-                                        [
-                                          RequiredValidator(
-                                            errorText:
-                                                "Please Enter Observation 2 ",
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: TextFormField(
+                                            controller:
+                                                trimmingPhysicalObs2Controller,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Please Enter Observation 2 ",
+                                              counterText: '',
+                                              fillColor: Color.fromARGB(
+                                                  255, 215, 243, 207),
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Observation 2 ",
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                            width:
+                                                16.0), // Add some space between the text fields
+                                        Expanded(
+                                            child: TextFormField(
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText: "Time: 12:00",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        )),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 15,
                                     ),
-                                    TextFormField(
-                                      controller:
-                                          trimmingPhysicalObs3Controller,
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: AppStyles
-                                          .textFieldInputDecoration
-                                          .copyWith(
-                                        hintText: "Please Enter Observation 3 ",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
-                                      validator: MultiValidator(
-                                        [
-                                          RequiredValidator(
-                                            errorText:
-                                                "Please Enter Observation 3",
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: TextFormField(
+                                            controller:
+                                                trimmingPhysicalObs3Controller,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Please Enter Observation 3 ",
+                                              counterText: '',
+                                              fillColor: Color.fromARGB(
+                                                  255, 215, 243, 207),
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Observation 3",
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                            width:
+                                                16.0), // Add some space between the text fields
+                                        Expanded(
+                                            child: TextFormField(
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText: "Time: 02:00",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        )),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 15,
                                     ),
-                                    TextFormField(
-                                      controller:
-                                          trimmingPhysicalObs4Controller,
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: AppStyles
-                                          .textFieldInputDecoration
-                                          .copyWith(
-                                        hintText: "Please Enter Observation 4 ",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
-                                      validator: MultiValidator(
-                                        [
-                                          RequiredValidator(
-                                            errorText:
-                                                "Please Enter Observation 4",
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: TextFormField(
+                                            controller:
+                                                trimmingPhysicalObs4Controller,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Please Enter Observation 4 ",
+                                              counterText: '',
+                                              fillColor: Color.fromARGB(
+                                                  255, 215, 243, 207),
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Observation 4",
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                            width:
+                                                16.0), // Add some space between the text fields
+                                        Expanded(
+                                            child: TextFormField(
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText: "Time: 04:00",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        )),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 15,
                                     ),
-                                    TextFormField(
-                                      controller:
-                                          trimmingPhysicalObs5Controller,
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
-                                      decoration: AppStyles
-                                          .textFieldInputDecoration
-                                          .copyWith(
-                                        hintText: "Please Enter Observation 5 ",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
-                                      validator: MultiValidator(
-                                        [
-                                          RequiredValidator(
-                                            errorText:
-                                                "Please Enter Observation 5",
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: TextFormField(
+                                            controller:
+                                                trimmingPhysicalObs5Controller,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            decoration: AppStyles
+                                                .textFieldInputDecoration
+                                                .copyWith(
+                                              hintText:
+                                                  "Please Enter Observation 5 ",
+                                              counterText: '',
+                                              fillColor: Color.fromARGB(
+                                                  255, 215, 243, 207),
+                                            ),
+                                            style: AppStyles.textInputTextStyle,
+                                            readOnly: status == 'Pending' &&
+                                                    designation != "QC"
+                                                ? true
+                                                : false,
+                                            validator: MultiValidator(
+                                              [
+                                                RequiredValidator(
+                                                  errorText:
+                                                      "Please Enter Observation 5",
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                            width:
+                                                16.0), // Add some space between the text fields
+                                        Expanded(
+                                            child: TextFormField(
+                                          keyboardType: TextInputType.text,
+                                          textInputAction: TextInputAction.next,
+                                          decoration: AppStyles
+                                              .textFieldInputDecoration
+                                              .copyWith(
+                                            hintText: "Time: 06:00",
+                                            counterText: '',
+                                            fillColor: Color.fromARGB(
+                                                255, 215, 243, 207),
+                                          ),
+                                          style: AppStyles.textInputTextStyle,
+                                          readOnly: true,
+                                        )),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 15,
@@ -2821,156 +2951,302 @@ class _PostlamState extends State<Postlam> {
                                         SizedBox(
                                           height: 15,
                                         ),
-                                        TextFormField(
-                                          controller:
-                                              postLamVisualObs1Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText:
-                                                "Please Enter Observation 1 ",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: MultiValidator(
-                                            [
-                                              RequiredValidator(
-                                                errorText:
-                                                    "Please Enter Observation 1",
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: TextFormField(
+                                                controller:
+                                                    postLamVisualObs1Controller,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Please Enter Observation 1 ",
+                                                  counterText: '',
+                                                  fillColor: Color.fromARGB(
+                                                      255, 215, 243, 207),
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Observation 1",
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    16.0), // Add some space between the text fields
+                                            Expanded(
+                                                child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              decoration: AppStyles
+                                                  .textFieldInputDecoration
+                                                  .copyWith(
+                                                hintText: "Time: 10:00",
+                                                counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
+                                              ),
+                                              style:
+                                                  AppStyles.textInputTextStyle,
+                                              readOnly: true,
+                                            )),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        TextFormField(
-                                          controller:
-                                              postLamVisualObs2Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText:
-                                                "Please Enter Observation 2 ",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: MultiValidator(
-                                            [
-                                              RequiredValidator(
-                                                errorText:
-                                                    "Please Enter Observation 2",
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: TextFormField(
+                                                controller:
+                                                    postLamVisualObs2Controller,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Please Enter Observation 2 ",
+                                                  counterText: '',
+                                                  fillColor: Color.fromARGB(
+                                                      255, 215, 243, 207),
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Observation 2",
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    16.0), // Add some space between the text fields
+                                            Expanded(
+                                                child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              decoration: AppStyles
+                                                  .textFieldInputDecoration
+                                                  .copyWith(
+                                                hintText: "Time: 12:00",
+                                                counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
+                                              ),
+                                              style:
+                                                  AppStyles.textInputTextStyle,
+                                              readOnly: true,
+                                            )),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        TextFormField(
-                                          controller:
-                                              postLamVisualObs3Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText:
-                                                "Please Enter Observation 3 ",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: MultiValidator(
-                                            [
-                                              RequiredValidator(
-                                                errorText:
-                                                    "Please Enter Observation 3",
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: TextFormField(
+                                                controller:
+                                                    postLamVisualObs3Controller,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Please Enter Observation 3 ",
+                                                  counterText: '',
+                                                  fillColor: Color.fromARGB(
+                                                      255, 215, 243, 207),
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Observation 3",
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    16.0), // Add some space between the text fields
+                                            Expanded(
+                                                child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              decoration: AppStyles
+                                                  .textFieldInputDecoration
+                                                  .copyWith(
+                                                hintText: "Time: 02:00",
+                                                counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
+                                              ),
+                                              style:
+                                                  AppStyles.textInputTextStyle,
+                                              readOnly: true,
+                                            )),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        TextFormField(
-                                          controller:
-                                              postLamVisualObs4Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText:
-                                                "Please Enter Observation 4 ",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: MultiValidator(
-                                            [
-                                              RequiredValidator(
-                                                errorText:
-                                                    "Please Enter Observation 4",
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: TextFormField(
+                                                controller:
+                                                    postLamVisualObs4Controller,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Please Enter Observation 4 ",
+                                                  counterText: '',
+                                                  fillColor: Color.fromARGB(
+                                                      255, 215, 243, 207),
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter Observation 4",
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    16.0), // Add some space between the text fields
+                                            Expanded(
+                                                child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              decoration: AppStyles
+                                                  .textFieldInputDecoration
+                                                  .copyWith(
+                                                hintText: "Time: 04:00",
+                                                counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
+                                              ),
+                                              style:
+                                                  AppStyles.textInputTextStyle,
+                                              readOnly: true,
+                                            )),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 15,
                                         ),
-                                        TextFormField(
-                                          controller:
-                                              postLamVisualObs5Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText:
-                                                "Please Enter Observation 5 ",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: MultiValidator(
-                                            [
-                                              RequiredValidator(
-                                                errorText: "Please Enter 5",
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: TextFormField(
+                                                controller:
+                                                    postLamVisualObs5Controller,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                textInputAction:
+                                                    TextInputAction.next,
+                                                decoration: AppStyles
+                                                    .textFieldInputDecoration
+                                                    .copyWith(
+                                                  hintText:
+                                                      "Please Enter Observation 5 ",
+                                                  counterText: '',
+                                                  fillColor: Color.fromARGB(
+                                                      255, 215, 243, 207),
+                                                ),
+                                                style: AppStyles
+                                                    .textInputTextStyle,
+                                                readOnly: status == 'Pending' &&
+                                                        designation != "QC"
+                                                    ? true
+                                                    : false,
+                                                validator: MultiValidator(
+                                                  [
+                                                    RequiredValidator(
+                                                      errorText:
+                                                          "Please Enter 5",
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    16.0), // Add some space between the text fields
+                                            Expanded(
+                                                child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              decoration: AppStyles
+                                                  .textFieldInputDecoration
+                                                  .copyWith(
+                                                hintText: "Time: 06:00",
+                                                counterText: '',
+                                                fillColor: Color.fromARGB(
+                                                    255, 215, 243, 207),
+                                              ),
+                                              style:
+                                                  AppStyles.textInputTextStyle,
+                                              readOnly: true,
+                                            )),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 15,
@@ -3342,167 +3618,319 @@ class _PostlamState extends State<Postlam> {
                                             SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingGlueUniObs1Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Observation 1 ",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Observation 1",
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingGlueUniObs1Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Observation 1 ",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Observation 1",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 10:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
+
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingGlueUniObs2Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Observation 2 ",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Observation 2",
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingGlueUniObs2Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Observation 2 ",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Observation 2",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 12:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
+
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingGlueUniObs3Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Observation 3 ",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Observation 3",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingGlueUniObs3Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Observation 3 ",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Observation 3",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 02:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
+
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingGlueUniObs4Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Observation 4",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Observation 4",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingGlueUniObs4Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Observation 4",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Observation 4",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 04:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
+
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingGlueUniObs5Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Observation 5 ",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Observation 5",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingGlueUniObs5Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Observation 5 ",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Observation 5",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 06:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
                                             const SizedBox(
                                               height: 15,
@@ -3687,167 +4115,317 @@ class _PostlamState extends State<Postlam> {
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingCornerObs1Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Obsevation 1",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Obsevation 1",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingCornerObs1Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Obsevation 1",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Obsevation 1",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 10:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingCornerObs2Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Obsevation 2",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Obsevation 2 ",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingCornerObs2Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Obsevation 2",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Obsevation 2 ",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 12:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingCornerObs3Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Obsevation 3",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Obsevation 3 ",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingCornerObs3Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Obsevation 3",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Obsevation 3 ",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 02:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingCornerObs4Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Obsevation 4",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Obsevation 4 ",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingCornerObs4Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Obsevation 4",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Obsevation 4 ",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 04:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            TextFormField(
-                                              controller:
-                                                  framingCornerObs5Controller,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: AppStyles
-                                                  .textFieldInputDecoration
-                                                  .copyWith(
-                                                hintText:
-                                                    "Please Enter Obsevation 5",
-                                                counterText: '',
-                                                fillColor: Color.fromARGB(
-                                                    255, 215, 243, 207),
-                                              ),
-                                              style:
-                                                  AppStyles.textInputTextStyle,
-                                              readOnly: status == 'Pending' &&
-                                                      designation != "QC"
-                                                  ? true
-                                                  : false,
-                                              validator: MultiValidator(
-                                                [
-                                                  RequiredValidator(
-                                                    errorText:
-                                                        "Please Enter Obsevation 5 ",
+
+                                            Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: TextFormField(
+                                                    controller:
+                                                        framingCornerObs5Controller,
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    decoration: AppStyles
+                                                        .textFieldInputDecoration
+                                                        .copyWith(
+                                                      hintText:
+                                                          "Please Enter Obsevation 5",
+                                                      counterText: '',
+                                                      fillColor: Color.fromARGB(
+                                                          255, 215, 243, 207),
+                                                    ),
+                                                    style: AppStyles
+                                                        .textInputTextStyle,
+                                                    readOnly: status ==
+                                                                'Pending' &&
+                                                            designation != "QC"
+                                                        ? true
+                                                        : false,
+                                                    validator: MultiValidator(
+                                                      [
+                                                        RequiredValidator(
+                                                          errorText:
+                                                              "Please Enter Obsevation 5 ",
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        16.0), // Add some space between the text fields
+                                                Expanded(
+                                                    child: TextFormField(
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  decoration: AppStyles
+                                                      .textFieldInputDecoration
+                                                      .copyWith(
+                                                    hintText: "Time: 06:00",
+                                                    counterText: '',
+                                                    fillColor: Color.fromARGB(
+                                                        255, 215, 243, 207),
+                                                  ),
+                                                  style: AppStyles
+                                                      .textInputTextStyle,
+                                                  readOnly: true,
+                                                )),
+                                              ],
                                             ),
                                             const SizedBox(
                                               height: 15,
@@ -4566,177 +5144,358 @@ class _PostlamState extends State<Postlam> {
                                                 SizedBox(
                                                   height: 15,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionGlueObs1Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Observation 1 ",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Observation 1",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionGlueObs1Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 1 ",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 1",
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 10:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionGlueObs2Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Observation 2 ",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Observation 2",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionGlueObs2Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 2 ",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 2",
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 12:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionGlueObs3Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 3 ",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 3",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 02:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionGlueObs3Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Observation 3 ",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Observation 3",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionGlueObs4Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 4",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 4",
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 04:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionGlueObs4Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Observation 4",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Observation 4",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionGlueObs5Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Observation 5 ",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Observation 5",
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionGlueObs5Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Observation 5 ",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Observation 5",
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 06:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
-                                                    ],
-                                                  ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
@@ -4818,177 +5577,359 @@ class _PostlamState extends State<Postlam> {
                                                 SizedBox(
                                                   height: 5,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionJbObs1Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Obsevation1",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Obsevation 1",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionJbObs1Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Obsevation1",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Obsevation 1",
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 10:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionJbObs2Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Obsevation 2",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Obsevation 2 ",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionJbObs2Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Obsevation 2",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Obsevation 2 ",
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 12:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionJbObs3Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Obsevation 3",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Obsevation 3",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 02:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
+                                                ),
+
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionJbObs4Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Obsevation 4",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Obsevation 4 ",
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 04:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
+                                                      ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionJbObs3Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Obsevation 3",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Obsevation 3",
+
+                                                Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      child: TextFormField(
+                                                        controller:
+                                                            junctionJbObs5Controller,
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText:
+                                                              "Please Enter Obsevation 5",
+                                                          counterText: '',
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  215,
+                                                                  243,
+                                                                  207),
+                                                        ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly: status ==
+                                                                    'Pending' &&
+                                                                designation !=
+                                                                    "QC"
+                                                            ? true
+                                                            : false,
+                                                        validator:
+                                                            MultiValidator(
+                                                          [
+                                                            RequiredValidator(
+                                                              errorText:
+                                                                  "Please Enter Obsevation 5",
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionJbObs4Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Obsevation 4",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Obsevation 4 ",
+                                                    ),
+                                                    SizedBox(
+                                                        width:
+                                                            16.0), // Add some space between the text fields
+                                                    Expanded(
+                                                        child: TextFormField(
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration: AppStyles
+                                                          .textFieldInputDecoration
+                                                          .copyWith(
+                                                        hintText: "Time: 06:00",
+                                                        counterText: '',
+                                                        fillColor:
+                                                            Color.fromARGB(255,
+                                                                215, 243, 207),
                                                       ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
-                                                TextFormField(
-                                                  controller:
-                                                      junctionJbObs5Controller,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  textInputAction:
-                                                      TextInputAction.next,
-                                                  decoration: AppStyles
-                                                      .textFieldInputDecoration
-                                                      .copyWith(
-                                                    hintText:
-                                                        "Please Enter Obsevation 5",
-                                                    counterText: '',
-                                                    fillColor: Color.fromARGB(
-                                                        255, 215, 243, 207),
-                                                  ),
-                                                  style: AppStyles
-                                                      .textInputTextStyle,
-                                                  readOnly: status ==
-                                                              'Pending' &&
-                                                          designation != "QC"
-                                                      ? true
-                                                      : false,
-                                                  validator: MultiValidator(
-                                                    [
-                                                      RequiredValidator(
-                                                        errorText:
-                                                            "Please Enter Obsevation 5",
-                                                      ),
-                                                    ],
-                                                  ),
+                                                      style: AppStyles
+                                                          .textInputTextStyle,
+                                                      readOnly: true,
+                                                    )),
+                                                  ],
                                                 ),
                                                 const SizedBox(
                                                   height: 15,
@@ -6221,217 +7162,407 @@ class _PostlamState extends State<Postlam> {
                                                         SizedBox(
                                                           height: 15,
                                                         ),
-                                                        TextFormField(
-                                                          controller:
-                                                              buffingEdseObs1Controller,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .text,
-                                                          textInputAction:
-                                                              TextInputAction
-                                                                  .next,
-                                                          decoration: AppStyles
-                                                              .textFieldInputDecoration
-                                                              .copyWith(
-                                                            hintText:
-                                                                "Please Enter Observation 1 ",
-                                                            counterText: '',
-                                                            fillColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    215,
-                                                                    243,
-                                                                    207),
-                                                          ),
-                                                          style: AppStyles
-                                                              .textInputTextStyle,
-                                                          readOnly: status ==
-                                                                      'Pending' &&
-                                                                  designation !=
-                                                                      "QC"
-                                                              ? true
-                                                              : false,
-                                                          validator:
-                                                              MultiValidator(
-                                                            [
-                                                              RequiredValidator(
-                                                                errorText:
-                                                                    "Please Enter Observation 1",
+
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    buffingEdseObs1Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 1 ",
+                                                                  counterText:
+                                                                      '',
+                                                                  fillColor: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 1",
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                            SizedBox(
+                                                                width:
+                                                                    16.0), // Add some space between the text fields
+                                                            Expanded(
+                                                                child:
+                                                                    TextFormField(
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Time: 10:00",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: true,
+                                                            )),
+                                                          ],
                                                         ),
                                                         const SizedBox(
                                                           height: 15,
                                                         ),
-                                                        TextFormField(
-                                                          controller:
-                                                              buffingEdseObs2Controller,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .text,
-                                                          textInputAction:
-                                                              TextInputAction
-                                                                  .next,
-                                                          decoration: AppStyles
-                                                              .textFieldInputDecoration
-                                                              .copyWith(
-                                                            hintText:
-                                                                "Please Enter Observation 2 ",
-                                                            counterText: '',
-                                                            fillColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    215,
-                                                                    243,
-                                                                    207),
-                                                          ),
-                                                          style: AppStyles
-                                                              .textInputTextStyle,
-                                                          readOnly: status ==
-                                                                      'Pending' &&
-                                                                  designation !=
-                                                                      "QC"
-                                                              ? true
-                                                              : false,
-                                                          validator:
-                                                              MultiValidator(
-                                                            [
-                                                              RequiredValidator(
-                                                                errorText:
-                                                                    "Please Enter Observation 2",
+
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    buffingEdseObs2Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 2 ",
+                                                                  counterText:
+                                                                      '',
+                                                                  fillColor: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 2",
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                            SizedBox(
+                                                                width:
+                                                                    16.0), // Add some space between the text fields
+                                                            Expanded(
+                                                                child:
+                                                                    TextFormField(
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Time: 12:00",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: true,
+                                                            )),
+                                                          ],
                                                         ),
                                                         const SizedBox(
                                                           height: 15,
                                                         ),
-                                                        TextFormField(
-                                                          controller:
-                                                              buffingEdseObs3Controller,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .text,
-                                                          textInputAction:
-                                                              TextInputAction
-                                                                  .next,
-                                                          decoration: AppStyles
-                                                              .textFieldInputDecoration
-                                                              .copyWith(
-                                                            hintText:
-                                                                "Please Enter Observation 3 ",
-                                                            counterText: '',
-                                                            fillColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    215,
-                                                                    243,
-                                                                    207),
-                                                          ),
-                                                          style: AppStyles
-                                                              .textInputTextStyle,
-                                                          readOnly: status ==
-                                                                      'Pending' &&
-                                                                  designation !=
-                                                                      "QC"
-                                                              ? true
-                                                              : false,
-                                                          validator:
-                                                              MultiValidator(
-                                                            [
-                                                              RequiredValidator(
-                                                                errorText:
-                                                                    "Please Enter Observation 3",
+
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    buffingEdseObs3Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 3 ",
+                                                                  counterText:
+                                                                      '',
+                                                                  fillColor: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 3",
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                            SizedBox(
+                                                                width:
+                                                                    16.0), // Add some space between the text fields
+                                                            Expanded(
+                                                                child:
+                                                                    TextFormField(
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Time: 02:00",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: true,
+                                                            )),
+                                                          ],
                                                         ),
                                                         const SizedBox(
                                                           height: 15,
                                                         ),
-                                                        TextFormField(
-                                                          controller:
-                                                              buffingEdseObs4Controller,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .text,
-                                                          textInputAction:
-                                                              TextInputAction
-                                                                  .next,
-                                                          decoration: AppStyles
-                                                              .textFieldInputDecoration
-                                                              .copyWith(
-                                                            hintText:
-                                                                "Please Enter Observation 4 ",
-                                                            counterText: '',
-                                                            fillColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    215,
-                                                                    243,
-                                                                    207),
-                                                          ),
-                                                          style: AppStyles
-                                                              .textInputTextStyle,
-                                                          readOnly: status ==
-                                                                      'Pending' &&
-                                                                  designation !=
-                                                                      "QC"
-                                                              ? true
-                                                              : false,
-                                                          validator:
-                                                              MultiValidator(
-                                                            [
-                                                              RequiredValidator(
-                                                                errorText:
-                                                                    "Please Enter Observation 4",
+
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    buffingEdseObs4Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 4 ",
+                                                                  counterText:
+                                                                      '',
+                                                                  fillColor: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 4",
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                            SizedBox(
+                                                                width:
+                                                                    16.0), // Add some space between the text fields
+                                                            Expanded(
+                                                                child:
+                                                                    TextFormField(
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Time: 04:00",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: true,
+                                                            )),
+                                                          ],
                                                         ),
                                                         const SizedBox(
                                                           height: 15,
                                                         ),
-                                                        TextFormField(
-                                                          controller:
-                                                              buffingEdseObs5Controller,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .text,
-                                                          textInputAction:
-                                                              TextInputAction
-                                                                  .next,
-                                                          decoration: AppStyles
-                                                              .textFieldInputDecoration
-                                                              .copyWith(
-                                                            hintText:
-                                                                "Please Enter Observation 5 ",
-                                                            counterText: '',
-                                                            fillColor:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    215,
-                                                                    243,
-                                                                    207),
-                                                          ),
-                                                          style: AppStyles
-                                                              .textInputTextStyle,
-                                                          readOnly: status ==
-                                                                      'Pending' &&
-                                                                  designation !=
-                                                                      "QC"
-                                                              ? true
-                                                              : false,
-                                                          validator:
-                                                              MultiValidator(
-                                                            [
-                                                              RequiredValidator(
-                                                                errorText:
-                                                                    "Please Enter Observation 5",
+
+                                                        Row(
+                                                          children: <Widget>[
+                                                            Expanded(
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    buffingEdseObs5Controller,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .text,
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText:
+                                                                      "Please Enter Observation 5 ",
+                                                                  counterText:
+                                                                      '',
+                                                                  fillColor: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                            'Pending' &&
+                                                                        designation !=
+                                                                            "QC"
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    MultiValidator(
+                                                                  [
+                                                                    RequiredValidator(
+                                                                      errorText:
+                                                                          "Please Enter Observation 5",
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                            SizedBox(
+                                                                width:
+                                                                    16.0), // Add some space between the text fields
+                                                            Expanded(
+                                                                child:
+                                                                    TextFormField(
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .text,
+                                                              textInputAction:
+                                                                  TextInputAction
+                                                                      .next,
+                                                              decoration: AppStyles
+                                                                  .textFieldInputDecoration
+                                                                  .copyWith(
+                                                                hintText:
+                                                                    "Time: 06:00",
+                                                                counterText: '',
+                                                                fillColor: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        215,
+                                                                        243,
+                                                                        207),
+                                                              ),
+                                                              style: AppStyles
+                                                                  .textInputTextStyle,
+                                                              readOnly: true,
+                                                            )),
+                                                          ],
                                                         ),
                                                         const SizedBox(
                                                           height: 15,
@@ -6883,217 +8014,412 @@ class _PostlamState extends State<Postlam> {
                                                             SizedBox(
                                                               height: 15,
                                                             ),
-                                                            TextFormField(
-                                                              controller:
-                                                                  cleaningModuleObs1Controller,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .text,
-                                                              textInputAction:
-                                                                  TextInputAction
-                                                                      .next,
-                                                              decoration: AppStyles
-                                                                  .textFieldInputDecoration
-                                                                  .copyWith(
-                                                                hintText:
-                                                                    "Please Enter Observation 1 ",
-                                                                counterText: '',
-                                                                fillColor: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        215,
-                                                                        243,
-                                                                        207),
-                                                              ),
-                                                              style: AppStyles
-                                                                  .textInputTextStyle,
-                                                              readOnly: status ==
-                                                                          'Pending' &&
-                                                                      designation !=
-                                                                          "QC"
-                                                                  ? true
-                                                                  : false,
-                                                              validator:
-                                                                  MultiValidator(
-                                                                [
-                                                                  RequiredValidator(
-                                                                    errorText:
-                                                                        "Please Enter Observation 1",
+
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Expanded(
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        cleaningModuleObs1Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 1 ",
+                                                                      counterText:
+                                                                          '',
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 1",
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                                SizedBox(
+                                                                    width:
+                                                                        16.0), // Add some space between the text fields
+                                                                Expanded(
+                                                                    child:
+                                                                        TextFormField(
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  decoration: AppStyles
+                                                                      .textFieldInputDecoration
+                                                                      .copyWith(
+                                                                    hintText:
+                                                                        "Time: 10:00",
+                                                                    counterText:
+                                                                        '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                  ),
+                                                                  style: AppStyles
+                                                                      .textInputTextStyle,
+                                                                  readOnly:
+                                                                      true,
+                                                                )),
+                                                              ],
                                                             ),
                                                             const SizedBox(
                                                               height: 15,
                                                             ),
-                                                            TextFormField(
-                                                              controller:
-                                                                  cleaningModuleObs2Controller,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .text,
-                                                              textInputAction:
-                                                                  TextInputAction
-                                                                      .next,
-                                                              decoration: AppStyles
-                                                                  .textFieldInputDecoration
-                                                                  .copyWith(
-                                                                hintText:
-                                                                    "Please Enter Observation 2 ",
-                                                                counterText: '',
-                                                                fillColor: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        215,
-                                                                        243,
-                                                                        207),
-                                                              ),
-                                                              style: AppStyles
-                                                                  .textInputTextStyle,
-                                                              readOnly: status ==
-                                                                          'Pending' &&
-                                                                      designation !=
-                                                                          "QC"
-                                                                  ? true
-                                                                  : false,
-                                                              validator:
-                                                                  MultiValidator(
-                                                                [
-                                                                  RequiredValidator(
-                                                                    errorText:
-                                                                        "Please Enter Observation 2",
+
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Expanded(
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        cleaningModuleObs2Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 2 ",
+                                                                      counterText:
+                                                                          '',
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 2",
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                                SizedBox(
+                                                                    width:
+                                                                        16.0), // Add some space between the text fields
+                                                                Expanded(
+                                                                    child:
+                                                                        TextFormField(
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  decoration: AppStyles
+                                                                      .textFieldInputDecoration
+                                                                      .copyWith(
+                                                                    hintText:
+                                                                        "Time: 12:00",
+                                                                    counterText:
+                                                                        '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                  ),
+                                                                  style: AppStyles
+                                                                      .textInputTextStyle,
+                                                                  readOnly:
+                                                                      true,
+                                                                )),
+                                                              ],
                                                             ),
                                                             const SizedBox(
                                                               height: 15,
                                                             ),
-                                                            TextFormField(
-                                                              controller:
-                                                                  cleaningModuleObs3Controller,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .text,
-                                                              textInputAction:
-                                                                  TextInputAction
-                                                                      .next,
-                                                              decoration: AppStyles
-                                                                  .textFieldInputDecoration
-                                                                  .copyWith(
-                                                                hintText:
-                                                                    "Please Enter Observation 3 ",
-                                                                counterText: '',
-                                                                fillColor: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        215,
-                                                                        243,
-                                                                        207),
-                                                              ),
-                                                              style: AppStyles
-                                                                  .textInputTextStyle,
-                                                              readOnly: status ==
-                                                                          'Pending' &&
-                                                                      designation !=
-                                                                          "QC"
-                                                                  ? true
-                                                                  : false,
-                                                              validator:
-                                                                  MultiValidator(
-                                                                [
-                                                                  RequiredValidator(
-                                                                    errorText:
-                                                                        "Please Enter Observation 3",
+
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Expanded(
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        cleaningModuleObs3Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 3 ",
+                                                                      counterText:
+                                                                          '',
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 3",
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                                SizedBox(
+                                                                    width:
+                                                                        16.0), // Add some space between the text fields
+                                                                Expanded(
+                                                                    child:
+                                                                        TextFormField(
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  decoration: AppStyles
+                                                                      .textFieldInputDecoration
+                                                                      .copyWith(
+                                                                    hintText:
+                                                                        "Time: 02:00",
+                                                                    counterText:
+                                                                        '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                  ),
+                                                                  style: AppStyles
+                                                                      .textInputTextStyle,
+                                                                  readOnly:
+                                                                      true,
+                                                                )),
+                                                              ],
                                                             ),
                                                             const SizedBox(
                                                               height: 15,
                                                             ),
-                                                            TextFormField(
-                                                              controller:
-                                                                  cleaningModuleObs4Controller,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .text,
-                                                              textInputAction:
-                                                                  TextInputAction
-                                                                      .next,
-                                                              decoration: AppStyles
-                                                                  .textFieldInputDecoration
-                                                                  .copyWith(
-                                                                hintText:
-                                                                    "Please Enter Observation 4 ",
-                                                                counterText: '',
-                                                                fillColor: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        215,
-                                                                        243,
-                                                                        207),
-                                                              ),
-                                                              style: AppStyles
-                                                                  .textInputTextStyle,
-                                                              readOnly: status ==
-                                                                          'Pending' &&
-                                                                      designation !=
-                                                                          "QC"
-                                                                  ? true
-                                                                  : false,
-                                                              validator:
-                                                                  MultiValidator(
-                                                                [
-                                                                  RequiredValidator(
-                                                                    errorText:
-                                                                        "Please Enter Observation 4",
+
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Expanded(
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        cleaningModuleObs4Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 4 ",
+                                                                      counterText:
+                                                                          '',
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 4",
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                                SizedBox(
+                                                                    width:
+                                                                        16.0), // Add some space between the text fields
+                                                                Expanded(
+                                                                    child:
+                                                                        TextFormField(
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  decoration: AppStyles
+                                                                      .textFieldInputDecoration
+                                                                      .copyWith(
+                                                                    hintText:
+                                                                        "Time: 04:00",
+                                                                    counterText:
+                                                                        '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                  ),
+                                                                  style: AppStyles
+                                                                      .textInputTextStyle,
+                                                                  readOnly:
+                                                                      true,
+                                                                )),
+                                                              ],
                                                             ),
                                                             const SizedBox(
                                                               height: 15,
                                                             ),
-                                                            TextFormField(
-                                                              controller:
-                                                                  cleaningModuleObs5Controller,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .text,
-                                                              textInputAction:
-                                                                  TextInputAction
-                                                                      .next,
-                                                              decoration: AppStyles
-                                                                  .textFieldInputDecoration
-                                                                  .copyWith(
-                                                                hintText:
-                                                                    "Please Enter Observation 5 ",
-                                                                counterText: '',
-                                                                fillColor: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        215,
-                                                                        243,
-                                                                        207),
-                                                              ),
-                                                              style: AppStyles
-                                                                  .textInputTextStyle,
-                                                              readOnly: status ==
-                                                                          'Pending' &&
-                                                                      designation !=
-                                                                          "QC"
-                                                                  ? true
-                                                                  : false,
-                                                              validator:
-                                                                  MultiValidator(
-                                                                [
-                                                                  RequiredValidator(
-                                                                    errorText:
-                                                                        "Please Enter Observation 5",
+
+                                                            Row(
+                                                              children: <Widget>[
+                                                                Expanded(
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        cleaningModuleObs5Controller,
+                                                                    keyboardType:
+                                                                        TextInputType
+                                                                            .text,
+                                                                    textInputAction:
+                                                                        TextInputAction
+                                                                            .next,
+                                                                    decoration: AppStyles
+                                                                        .textFieldInputDecoration
+                                                                        .copyWith(
+                                                                      hintText:
+                                                                          "Please Enter Observation 5 ",
+                                                                      counterText:
+                                                                          '',
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          215,
+                                                                          243,
+                                                                          207),
+                                                                    ),
+                                                                    style: AppStyles
+                                                                        .textInputTextStyle,
+                                                                    readOnly: status ==
+                                                                                'Pending' &&
+                                                                            designation !=
+                                                                                "QC"
+                                                                        ? true
+                                                                        : false,
+                                                                    validator:
+                                                                        MultiValidator(
+                                                                      [
+                                                                        RequiredValidator(
+                                                                          errorText:
+                                                                              "Please Enter Observation 5",
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                                SizedBox(
+                                                                    width:
+                                                                        16.0), // Add some space between the text fields
+                                                                Expanded(
+                                                                    child:
+                                                                        TextFormField(
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  textInputAction:
+                                                                      TextInputAction
+                                                                          .next,
+                                                                  decoration: AppStyles
+                                                                      .textFieldInputDecoration
+                                                                      .copyWith(
+                                                                    hintText:
+                                                                        "Time: 06:00",
+                                                                    counterText:
+                                                                        '',
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            215,
+                                                                            243,
+                                                                            207),
+                                                                  ),
+                                                                  style: AppStyles
+                                                                      .textInputTextStyle,
+                                                                  readOnly:
+                                                                      true,
+                                                                )),
+                                                              ],
                                                             ),
                                                             const SizedBox(
                                                               height: 15,
@@ -9356,211 +10682,336 @@ class _PostlamState extends State<Postlam> {
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotDCWObs1Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 1  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 1",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotDCWObs1Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 1  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 1",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 10:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotDCWObs2Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 2  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 2",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotDCWObs2Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 2  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 2",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 12:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotDCWObs3Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 3  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 3",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotDCWObs3Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 3  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 3",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 02:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotDCWObs4Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 4  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 4",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotDCWObs4Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 4  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 4",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 04:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotDCWObs5Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 5  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 5",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotDCWObs5Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 5  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 5",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 06:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
@@ -9663,211 +11114,339 @@ class _PostlamState extends State<Postlam> {
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotIRObs1Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 1  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 1 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotIRObs1Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 1  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 1 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 10:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
+                                                                    ),
+
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          15,
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotIRObs2Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 2  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 2 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 12:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotIRObs2Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 2  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 2 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotIRObs3Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 3  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 3 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 02:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
+
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotIRObs3Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 3  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 3 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotIRObs4Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 4  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 4 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 04:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
+
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotIRObs4Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 4  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 4 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotIRObs5Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 5  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 5 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height:
-                                                                          15,
-                                                                    ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotIRObs5Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 5  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 5 ",
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 06:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
@@ -9970,211 +11549,336 @@ class _PostlamState extends State<Postlam> {
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotGroundObs1Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 1  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 1 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotGroundObs1Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 1  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 1 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 10:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotGroundObs2Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 2  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 2 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotGroundObs2Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 2  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 2 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 12:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotGroundObs3Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 3  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 3 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotGroundObs3Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 3  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 3 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 02:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotGroundObs4Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 4  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 4 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotGroundObs4Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 4  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 4 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 04:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
                                                                           15,
                                                                     ),
-                                                                    TextFormField(
-                                                                      controller:
-                                                                          hipotGroundObs5Controller,
-                                                                      keyboardType:
-                                                                          TextInputType
-                                                                              .text,
-                                                                      textInputAction:
-                                                                          TextInputAction
-                                                                              .next,
-                                                                      decoration: AppStyles
-                                                                          .textFieldInputDecoration
-                                                                          .copyWith(
-                                                                        hintText:
-                                                                            "Please Enter Observation 5  ",
-                                                                        counterText:
-                                                                            '',
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            215,
-                                                                            243,
-                                                                            207),
-                                                                      ),
-                                                                      style: AppStyles
-                                                                          .textInputTextStyle,
-                                                                      readOnly: status == 'Pending' &&
-                                                                              designation != "QC"
-                                                                          ? true
-                                                                          : false,
-                                                                      validator:
-                                                                          MultiValidator(
-                                                                        [
-                                                                          RequiredValidator(
-                                                                            errorText:
-                                                                                "Please Enter Observation 5 ",
+
+                                                                    Row(
+                                                                      children: <Widget>[
+                                                                        Expanded(
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                hipotGroundObs5Controller,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            decoration:
+                                                                                AppStyles.textFieldInputDecoration.copyWith(
+                                                                              hintText: "Please Enter Observation 5  ",
+                                                                              counterText: '',
+                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                            ),
+                                                                            style:
+                                                                                AppStyles.textInputTextStyle,
+                                                                            readOnly: status == 'Pending' && designation != "QC"
+                                                                                ? true
+                                                                                : false,
+                                                                            validator:
+                                                                                MultiValidator(
+                                                                              [
+                                                                                RequiredValidator(
+                                                                                  errorText: "Please Enter Observation 5 ",
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
-                                                                        ],
-                                                                      ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                16.0), // Add some space between the text fields
+                                                                        Expanded(
+                                                                            child:
+                                                                                TextFormField(
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          textInputAction:
+                                                                              TextInputAction.next,
+                                                                          decoration: AppStyles
+                                                                              .textFieldInputDecoration
+                                                                              .copyWith(
+                                                                            hintText:
+                                                                                "Time: 06:00",
+                                                                            counterText:
+                                                                                '',
+                                                                            fillColor: Color.fromARGB(
+                                                                                255,
+                                                                                215,
+                                                                                243,
+                                                                                207),
+                                                                          ),
+                                                                          style:
+                                                                              AppStyles.textInputTextStyle,
+                                                                          readOnly:
+                                                                              true,
+                                                                        )),
+                                                                      ],
                                                                     ),
                                                                     const SizedBox(
                                                                       height:
@@ -10719,191 +12423,217 @@ class _PostlamState extends State<Postlam> {
                                                                           height:
                                                                               15,
                                                                         ),
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              elDefectsObs1Controller,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          textInputAction:
-                                                                              TextInputAction.next,
-                                                                          decoration: AppStyles
-                                                                              .textFieldInputDecoration
-                                                                              .copyWith(
-                                                                            hintText:
-                                                                                "Please Enter Observation 1 ",
-                                                                            counterText:
-                                                                                '',
-                                                                            fillColor: Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                243,
-                                                                                207),
-                                                                          ),
-                                                                          style:
-                                                                              AppStyles.textInputTextStyle,
-                                                                          readOnly: status == 'Pending' && designation != "QC"
-                                                                              ? true
-                                                                              : false,
-                                                                          validator:
-                                                                              MultiValidator(
-                                                                            [
-                                                                              RequiredValidator(
-                                                                                errorText: "Please Enter Observation 1",
+
+                                                                        Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              child: TextFormField(
+                                                                                controller: elDefectsObs1Controller,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Please Enter Observation 1 ",
+                                                                                  counterText: '',
+                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Observation 1",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            ],
-                                                                          ),
+                                                                            ),
+                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                            Expanded(
+                                                                                child: TextFormField(
+                                                                              keyboardType: TextInputType.text,
+                                                                              textInputAction: TextInputAction.next,
+                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                hintText: "Time: 10:00",
+                                                                                counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                              ),
+                                                                              style: AppStyles.textInputTextStyle,
+                                                                              readOnly: true,
+                                                                            )),
+                                                                          ],
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
                                                                               15,
                                                                         ),
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              elDefectsObs2Controller,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          textInputAction:
-                                                                              TextInputAction.next,
-                                                                          decoration: AppStyles
-                                                                              .textFieldInputDecoration
-                                                                              .copyWith(
-                                                                            hintText:
-                                                                                "Please Enter Observation 2 ",
-                                                                            counterText:
-                                                                                '',
-                                                                            fillColor: Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                243,
-                                                                                207),
-                                                                          ),
-                                                                          style:
-                                                                              AppStyles.textInputTextStyle,
-                                                                          readOnly: status == 'Pending' && designation != "QC"
-                                                                              ? true
-                                                                              : false,
-                                                                          validator:
-                                                                              MultiValidator(
-                                                                            [
-                                                                              RequiredValidator(
-                                                                                errorText: "Please Enter Observation 2",
+
+                                                                        Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              child: TextFormField(
+                                                                                controller: elDefectsObs2Controller,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Please Enter Observation 2 ",
+                                                                                  counterText: '',
+                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Observation 2",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            ],
-                                                                          ),
+                                                                            ),
+                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                            Expanded(
+                                                                                child: TextFormField(
+                                                                              keyboardType: TextInputType.text,
+                                                                              textInputAction: TextInputAction.next,
+                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                hintText: "Time: 12:00",
+                                                                                counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                              ),
+                                                                              style: AppStyles.textInputTextStyle,
+                                                                              readOnly: true,
+                                                                            )),
+                                                                          ],
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
                                                                               15,
                                                                         ),
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              elDefectsObs3Controller,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          textInputAction:
-                                                                              TextInputAction.next,
-                                                                          decoration: AppStyles
-                                                                              .textFieldInputDecoration
-                                                                              .copyWith(
-                                                                            hintText:
-                                                                                "Please Enter Observation 3 ",
-                                                                            counterText:
-                                                                                '',
-                                                                            fillColor: Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                243,
-                                                                                207),
-                                                                          ),
-                                                                          style:
-                                                                              AppStyles.textInputTextStyle,
-                                                                          readOnly: status == 'Pending' && designation != "QC"
-                                                                              ? true
-                                                                              : false,
-                                                                          validator:
-                                                                              MultiValidator(
-                                                                            [
-                                                                              RequiredValidator(
-                                                                                errorText: "Please Enter Observation 3",
+
+                                                                        Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              child: TextFormField(
+                                                                                controller: elDefectsObs3Controller,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Please Enter Observation 3 ",
+                                                                                  counterText: '',
+                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Observation 3",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            ],
-                                                                          ),
+                                                                            ),
+                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                            Expanded(
+                                                                                child: TextFormField(
+                                                                              keyboardType: TextInputType.text,
+                                                                              textInputAction: TextInputAction.next,
+                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                hintText: "Time: 02:00",
+                                                                                counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                              ),
+                                                                              style: AppStyles.textInputTextStyle,
+                                                                              readOnly: true,
+                                                                            )),
+                                                                          ],
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
                                                                               15,
                                                                         ),
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              elDefectsObs4Controller,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          textInputAction:
-                                                                              TextInputAction.next,
-                                                                          decoration: AppStyles
-                                                                              .textFieldInputDecoration
-                                                                              .copyWith(
-                                                                            hintText:
-                                                                                "Please Enter Observation 4 ",
-                                                                            counterText:
-                                                                                '',
-                                                                            fillColor: Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                243,
-                                                                                207),
-                                                                          ),
-                                                                          style:
-                                                                              AppStyles.textInputTextStyle,
-                                                                          readOnly: status == 'Pending' && designation != "QC"
-                                                                              ? true
-                                                                              : false,
-                                                                          validator:
-                                                                              MultiValidator(
-                                                                            [
-                                                                              RequiredValidator(
-                                                                                errorText: "Please Enter Observation 4",
+
+                                                                        Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              child: TextFormField(
+                                                                                controller: elDefectsObs4Controller,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Please Enter Observation 4 ",
+                                                                                  counterText: '',
+                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Observation 4",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            ],
-                                                                          ),
+                                                                            ),
+                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                            Expanded(
+                                                                                child: TextFormField(
+                                                                              keyboardType: TextInputType.text,
+                                                                              textInputAction: TextInputAction.next,
+                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                hintText: "Time: 04:00",
+                                                                                counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                              ),
+                                                                              style: AppStyles.textInputTextStyle,
+                                                                              readOnly: true,
+                                                                            )),
+                                                                          ],
                                                                         ),
+
                                                                         const SizedBox(
                                                                           height:
                                                                               15,
                                                                         ),
-                                                                        TextFormField(
-                                                                          controller:
-                                                                              elDefectsObs5Controller,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          textInputAction:
-                                                                              TextInputAction.next,
-                                                                          decoration: AppStyles
-                                                                              .textFieldInputDecoration
-                                                                              .copyWith(
-                                                                            hintText:
-                                                                                "Please Enter Observation 5 ",
-                                                                            counterText:
-                                                                                '',
-                                                                            fillColor: Color.fromARGB(
-                                                                                255,
-                                                                                215,
-                                                                                243,
-                                                                                207),
-                                                                          ),
-                                                                          style:
-                                                                              AppStyles.textInputTextStyle,
-                                                                          readOnly: status == 'Pending' && designation != "QC"
-                                                                              ? true
-                                                                              : false,
-                                                                          validator:
-                                                                              MultiValidator(
-                                                                            [
-                                                                              RequiredValidator(
-                                                                                errorText: "Please Enter Observation 5",
+
+                                                                        Row(
+                                                                          children: <Widget>[
+                                                                            Expanded(
+                                                                              child: TextFormField(
+                                                                                controller: elDefectsObs5Controller,
+                                                                                keyboardType: TextInputType.text,
+                                                                                textInputAction: TextInputAction.next,
+                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                  hintText: "Please Enter Observation 5 ",
+                                                                                  counterText: '',
+                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                ),
+                                                                                style: AppStyles.textInputTextStyle,
+                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                validator: MultiValidator(
+                                                                                  [
+                                                                                    RequiredValidator(
+                                                                                      errorText: "Please Enter Observation 5",
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            ],
-                                                                          ),
+                                                                            ),
+                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                            Expanded(
+                                                                                child: TextFormField(
+                                                                              keyboardType: TextInputType.text,
+                                                                              textInputAction: TextInputAction.next,
+                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                hintText: "Time: 06:00",
+                                                                                counterText: '',
+                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                              ),
+                                                                              style: AppStyles.textInputTextStyle,
+                                                                              readOnly: true,
+                                                                            )),
+                                                                          ],
                                                                         ),
                                                                         const SizedBox(
                                                                           height:
@@ -11225,112 +12955,216 @@ class _PostlamState extends State<Postlam> {
                                                                             SizedBox(
                                                                               height: 5,
                                                                             ),
-                                                                            TextFormField(
-                                                                              controller: rfidFixingObs1Controller,
-                                                                              keyboardType: TextInputType.text,
-                                                                              textInputAction: TextInputAction.next,
-                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                hintText: "Please Enter Obsevation 1",
-                                                                                counterText: '',
-                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                              ),
-                                                                              style: AppStyles.textInputTextStyle,
-                                                                              readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                              validator: MultiValidator(
-                                                                                [
-                                                                                  RequiredValidator(
-                                                                                    errorText: "Please Enter Obsevation 1",
+
+                                                                            Row(
+                                                                              children: <Widget>[
+                                                                                Expanded(
+                                                                                  child: TextFormField(
+                                                                                    controller: rfidFixingObs1Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 1",
+                                                                                      counterText: '',
+                                                                                      fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 1",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                Expanded(
+                                                                                    child: TextFormField(
+                                                                                  keyboardType: TextInputType.text,
+                                                                                  textInputAction: TextInputAction.next,
+                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                    hintText: "Time: 10:00",
+                                                                                    counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                  ),
+                                                                                  style: AppStyles.textInputTextStyle,
+                                                                                  readOnly: true,
+                                                                                )),
+                                                                              ],
                                                                             ),
+
                                                                             const SizedBox(
                                                                               height: 15,
                                                                             ),
-                                                                            TextFormField(
-                                                                              controller: rfidFixingObs2Controller,
-                                                                              keyboardType: TextInputType.text,
-                                                                              textInputAction: TextInputAction.next,
-                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                hintText: "Please Enter Obsevation 2",
-                                                                                counterText: '',
-                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                              ),
-                                                                              style: AppStyles.textInputTextStyle,
-                                                                              readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                              validator: MultiValidator(
-                                                                                [
-                                                                                  RequiredValidator(
-                                                                                    errorText: "Please Enter Obsevation 2",
+
+                                                                            Row(
+                                                                              children: <Widget>[
+                                                                                Expanded(
+                                                                                  child: TextFormField(
+                                                                                    controller: rfidFixingObs2Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 2",
+                                                                                      counterText: '',
+                                                                                      fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 2",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                Expanded(
+                                                                                    child: TextFormField(
+                                                                                  keyboardType: TextInputType.text,
+                                                                                  textInputAction: TextInputAction.next,
+                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                    hintText: "Time: 12:00",
+                                                                                    counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                  ),
+                                                                                  style: AppStyles.textInputTextStyle,
+                                                                                  readOnly: true,
+                                                                                )),
+                                                                              ],
                                                                             ),
+
                                                                             const SizedBox(
                                                                               height: 15,
                                                                             ),
-                                                                            TextFormField(
-                                                                              controller: rfidFixingObs3Controller,
-                                                                              keyboardType: TextInputType.text,
-                                                                              textInputAction: TextInputAction.next,
-                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                hintText: "Please Enter Obsevation 3",
-                                                                                counterText: '',
-                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                              ),
-                                                                              style: AppStyles.textInputTextStyle,
-                                                                              readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                              validator: MultiValidator(
-                                                                                [
-                                                                                  RequiredValidator(
-                                                                                    errorText: "Please Enter Obsevation 3",
+
+                                                                            Row(
+                                                                              children: <Widget>[
+                                                                                Expanded(
+                                                                                  child: TextFormField(
+                                                                                    controller: rfidFixingObs3Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 3",
+                                                                                      counterText: '',
+                                                                                      fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 3",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                Expanded(
+                                                                                    child: TextFormField(
+                                                                                  keyboardType: TextInputType.text,
+                                                                                  textInputAction: TextInputAction.next,
+                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                    hintText: "Time: 02:00",
+                                                                                    counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                  ),
+                                                                                  style: AppStyles.textInputTextStyle,
+                                                                                  readOnly: true,
+                                                                                )),
+                                                                              ],
                                                                             ),
+
                                                                             const SizedBox(
                                                                               height: 15,
                                                                             ),
-                                                                            TextFormField(
-                                                                              controller: rfidFixingObs4Controller,
-                                                                              keyboardType: TextInputType.text,
-                                                                              textInputAction: TextInputAction.next,
-                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                hintText: "Please Enter Obsevation 4",
-                                                                                counterText: '',
-                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                              ),
-                                                                              style: AppStyles.textInputTextStyle,
-                                                                              readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                              validator: MultiValidator(
-                                                                                [
-                                                                                  RequiredValidator(
-                                                                                    errorText: "Please Enter Obsevation 4",
+
+                                                                            Row(
+                                                                              children: <Widget>[
+                                                                                Expanded(
+                                                                                  child: TextFormField(
+                                                                                    controller: rfidFixingObs4Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 4",
+                                                                                      counterText: '',
+                                                                                      fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 4",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                Expanded(
+                                                                                    child: TextFormField(
+                                                                                  keyboardType: TextInputType.text,
+                                                                                  textInputAction: TextInputAction.next,
+                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                    hintText: "Time: 04:00",
+                                                                                    counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                  ),
+                                                                                  style: AppStyles.textInputTextStyle,
+                                                                                  readOnly: true,
+                                                                                )),
+                                                                              ],
                                                                             ),
+
                                                                             const SizedBox(
                                                                               height: 15,
                                                                             ),
-                                                                            TextFormField(
-                                                                              controller: rfidFixingObs5Controller,
-                                                                              keyboardType: TextInputType.text,
-                                                                              textInputAction: TextInputAction.next,
-                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                hintText: "Please Enter Obsevation 5",
-                                                                                counterText: '',
-                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                              ),
-                                                                              style: AppStyles.textInputTextStyle,
-                                                                              readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                              validator: MultiValidator(
-                                                                                [
-                                                                                  RequiredValidator(
-                                                                                    errorText: "Please Enter Obsevation 5",
+
+                                                                            Row(
+                                                                              children: <Widget>[
+                                                                                Expanded(
+                                                                                  child: TextFormField(
+                                                                                    controller: rfidFixingObs5Controller,
+                                                                                    keyboardType: TextInputType.text,
+                                                                                    textInputAction: TextInputAction.next,
+                                                                                    decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                      hintText: "Please Enter Obsevation 5",
+                                                                                      counterText: '',
+                                                                                      fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                    ),
+                                                                                    style: AppStyles.textInputTextStyle,
+                                                                                    readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                    validator: MultiValidator(
+                                                                                      [
+                                                                                        RequiredValidator(
+                                                                                          errorText: "Please Enter Obsevation 5",
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                Expanded(
+                                                                                    child: TextFormField(
+                                                                                  keyboardType: TextInputType.text,
+                                                                                  textInputAction: TextInputAction.next,
+                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                    hintText: "Time: 06:00",
+                                                                                    counterText: '',
+                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                  ),
+                                                                                  style: AppStyles.textInputTextStyle,
+                                                                                  readOnly: true,
+                                                                                )),
+                                                                              ],
                                                                             ),
                                                                             const SizedBox(
                                                                               height: 15,
@@ -11871,112 +13705,214 @@ class _PostlamState extends State<Postlam> {
                                                                                 SizedBox(
                                                                                   height: 5,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelDataObs1Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Obsevation 1",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Obsevation 1",
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelDataObs1Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Obsevation 1",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Obsevation 1",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 10:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
+                                                                                ),
+
+                                                                                const SizedBox(
+                                                                                  height: 15,
+                                                                                ),
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelDataObs2Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Obsevation 2",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Obsevation 2",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 12:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelDataObs2Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Obsevation 2",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Obsevation 2",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelDataObs3Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Obsevation 3",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Obsevation 3",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 02:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
+
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelDataObs3Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Obsevation 3",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Obsevation 3",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelDataObs4Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Obsevation 4",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Obsevation 4",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 04:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
+
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelDataObs4Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Obsevation 4",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Obsevation 4",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelDataObs5Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Obsevation 5",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Obsevation 5",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                const SizedBox(
-                                                                                  height: 15,
-                                                                                ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelDataObs5Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Obsevation 5",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Obsevation 5",
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 06:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
                                                                                 const SizedBox(
                                                                                   height: 15,
@@ -12040,113 +13976,218 @@ class _PostlamState extends State<Postlam> {
                                                                                 SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelAirObs1Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Observation 1 ",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Observation 1",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelAirObs1Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Observation 1 ",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Observation 1",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 10:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
+
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelAirObs2Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Observation 2 ",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Observation 2",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelAirObs2Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Observation 2 ",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Observation 2",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 12:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
+
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelAirObs3Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Observation 3 ",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Observation 3",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelAirObs3Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Observation 3 ",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Observation 3",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 02:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
+
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelAirObs4Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Observation 4 ",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Observation 4",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelAirObs4Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Observation 4 ",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Observation 4",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 04:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
+
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
-                                                                                TextFormField(
-                                                                                  controller: backLabelAirObs5Controller,
-                                                                                  keyboardType: TextInputType.text,
-                                                                                  textInputAction: TextInputAction.next,
-                                                                                  decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                    hintText: "Please Enter Observation 5 ",
-                                                                                    counterText: '',
-                                                                                    fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                  ),
-                                                                                  style: AppStyles.textInputTextStyle,
-                                                                                  readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                  validator: MultiValidator(
-                                                                                    [
-                                                                                      RequiredValidator(
-                                                                                        errorText: "Please Enter Observation 5",
+
+                                                                                Row(
+                                                                                  children: <Widget>[
+                                                                                    Expanded(
+                                                                                      child: TextFormField(
+                                                                                        controller: backLabelAirObs5Controller,
+                                                                                        keyboardType: TextInputType.text,
+                                                                                        textInputAction: TextInputAction.next,
+                                                                                        decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                          hintText: "Please Enter Observation 5 ",
+                                                                                          counterText: '',
+                                                                                          fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        ),
+                                                                                        style: AppStyles.textInputTextStyle,
+                                                                                        readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        validator: MultiValidator(
+                                                                                          [
+                                                                                            RequiredValidator(
+                                                                                              errorText: "Please Enter Observation 5",
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
+                                                                                    ),
+                                                                                    SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                    Expanded(
+                                                                                        child: TextFormField(
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      textInputAction: TextInputAction.next,
+                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        hintText: "Time: 06:00",
+                                                                                        counterText: '',
+                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                      ),
+                                                                                      style: AppStyles.textInputTextStyle,
+                                                                                      readOnly: true,
+                                                                                    )),
+                                                                                  ],
                                                                                 ),
+
                                                                                 const SizedBox(
                                                                                   height: 15,
                                                                                 ),
@@ -12353,112 +14394,216 @@ class _PostlamState extends State<Postlam> {
                                                                                     SizedBox(
                                                                                       height: 5,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalInspectionObs1Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Obsevation 1",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Obsevation 1 ",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalInspectionObs1Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Obsevation 1",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Obsevation 1 ",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 10:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalInspectionObs2Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Obsevation 2",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Obsevation 2 ",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalInspectionObs2Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Obsevation 2",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Obsevation 2 ",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 12:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalInspectionObs3Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Obsevation 3",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Obsevation 3 ",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalInspectionObs3Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Obsevation 3",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Obsevation 3 ",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 02:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalInspectionObs4Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Obsevation 4",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Obsevation 4 ",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalInspectionObs4Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Obsevation 4",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Obsevation 4 ",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 04:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalInspectionObs5Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Obsevation 5",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Obsevation 5 ",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalInspectionObs5Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Obsevation 5",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Obsevation 5 ",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 06:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
                                                                                     const SizedBox(
                                                                                       height: 15,
@@ -12523,112 +14668,216 @@ class _PostlamState extends State<Postlam> {
                                                                                     SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalFitmentObs1Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Observation 1 ",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Observation 1",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalFitmentObs1Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Observation 1 ",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Observation 1",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 10:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalFitmentObs2Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Observation 2 ",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Observation 2",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalFitmentObs2Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Observation 2 ",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Observation 2",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 12:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalFitmentObs3Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Observation 3 ",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Observation 3",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalFitmentObs3Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Observation 3 ",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Observation 3",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 02:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalFitmentObs4Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Observation 4 ",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Observation 4",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalFitmentObs4Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Observation 4 ",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Observation 4",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 04:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
+
                                                                                     const SizedBox(
                                                                                       height: 15,
                                                                                     ),
-                                                                                    TextFormField(
-                                                                                      controller: finalFitmentObs5Controller,
-                                                                                      keyboardType: TextInputType.text,
-                                                                                      textInputAction: TextInputAction.next,
-                                                                                      decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                        hintText: "Please Enter Observation 5 ",
-                                                                                        counterText: '',
-                                                                                        fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                      ),
-                                                                                      style: AppStyles.textInputTextStyle,
-                                                                                      readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                      validator: MultiValidator(
-                                                                                        [
-                                                                                          RequiredValidator(
-                                                                                            errorText: "Please Enter Observation 5",
+
+                                                                                    Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                          child: TextFormField(
+                                                                                            controller: finalFitmentObs5Controller,
+                                                                                            keyboardType: TextInputType.text,
+                                                                                            textInputAction: TextInputAction.next,
+                                                                                            decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                              hintText: "Please Enter Observation 5 ",
+                                                                                              counterText: '',
+                                                                                              fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                            ),
+                                                                                            style: AppStyles.textInputTextStyle,
+                                                                                            readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                            validator: MultiValidator(
+                                                                                              [
+                                                                                                RequiredValidator(
+                                                                                                  errorText: "Please Enter Observation 5",
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
                                                                                           ),
-                                                                                        ],
-                                                                                      ),
+                                                                                        ),
+                                                                                        SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                        Expanded(
+                                                                                            child: TextFormField(
+                                                                                          keyboardType: TextInputType.text,
+                                                                                          textInputAction: TextInputAction.next,
+                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                            hintText: "Time: 06:00",
+                                                                                            counterText: '',
+                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                          ),
+                                                                                          style: AppStyles.textInputTextStyle,
+                                                                                          readOnly: true,
+                                                                                        )),
+                                                                                      ],
                                                                                     ),
                                                                                     const SizedBox(
                                                                                       height: 15,
@@ -12915,116 +15164,331 @@ class _PostlamState extends State<Postlam> {
                                                                                         SizedBox(
                                                                                           height: 5,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBarcodeObs1Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Obsevation 1",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Obsevation 1",
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBarcodeObs1Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Obsevation 1",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Obsevation 1",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
                                                                                               ),
-                                                                                            ],
-                                                                                          ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 10:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBarcodeObs2Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Obsevation 2",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Obsevation 2",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 12:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBarcodeObs3Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Obsevation 3",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Obsevation 3",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 02:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBarcodeObs4Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Obsevation 4",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Obsevation 4",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 04:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBarcodeObs5Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Obsevation 5",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Obsevation 5",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 06:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
                                                                                         ),
                                                                                         const SizedBox(
                                                                                           height: 15,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBarcodeObs2Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Obsevation 2",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Obsevation 2",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBarcodeObs3Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Obsevation 3",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Obsevation 3",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBarcodeObs4Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Obsevation 4",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Obsevation 4",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBarcodeObs5Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Obsevation 5",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Obsevation 5",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
+
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBarcodeObs1Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Obsevation 1",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Obsevation 1",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBarcodeObs2Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Obsevation 2",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Obsevation 2",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBarcodeObs3Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Obsevation 3",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Obsevation 3",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBarcodeObs4Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Obsevation 4",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Obsevation 4",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBarcodeObs5Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Obsevation 5",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Obsevation 5",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
 
                                                                                         Text(
                                                                                           "Crieteria",
@@ -13085,116 +15549,331 @@ class _PostlamState extends State<Postlam> {
                                                                                         SizedBox(
                                                                                           height: 15,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingpackingObs1Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 1 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 1",
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingpackingObs1Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 1 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 1",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
                                                                                               ),
-                                                                                            ],
-                                                                                          ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 10:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingpackingObs2Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 2 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 2",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 12:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingpackingObs3Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 3 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 3",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 02:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingpackingObs4Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 4 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 4",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 04:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingpackingObs5Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 5 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 5",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 06:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
                                                                                         ),
                                                                                         const SizedBox(
                                                                                           height: 15,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingpackingObs2Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 2 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 2",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingpackingObs3Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 3 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 3",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingpackingObs4Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 4 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 4",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingpackingObs5Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 5 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 5",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
+
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingpackingObs1Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 1 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 1",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingpackingObs2Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 2 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 2",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingpackingObs3Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 3 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 3",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingpackingObs4Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 4 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 4",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingpackingObs5Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 5 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 5",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
 
                                                                                         Text(
                                                                                           "Criteria",
@@ -13254,113 +15933,330 @@ class _PostlamState extends State<Postlam> {
                                                                                         SizedBox(
                                                                                           height: 15,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBoxObs1Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 1 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 1",
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBoxObs1Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 1 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 1",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
                                                                                               ),
-                                                                                            ],
-                                                                                          ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 10:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBoxObs2Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 2 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 2",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 12:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBoxObs3Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 3 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 3",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 02:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBoxObs4Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 4 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 4",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 04:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingBoxObs5Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 5 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 5",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 06:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
                                                                                         ),
                                                                                         const SizedBox(
                                                                                           height: 15,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBoxObs2Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 2 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 2",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBoxObs3Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 3 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 3",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBoxObs4Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 4 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 4",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingBoxObs5Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 5 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 5",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
+
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBoxObs1Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 1 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 1",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBoxObs2Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 2 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 2",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBoxObs3Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 3 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 3",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBoxObs4Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 4 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 4",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingBoxObs5Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 5 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 5",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+
                                                                                         const SizedBox(
                                                                                           height: 15,
                                                                                         ),
@@ -13423,116 +16319,332 @@ class _PostlamState extends State<Postlam> {
                                                                                         SizedBox(
                                                                                           height: 15,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingStretchObs1Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 1 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 1",
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingStretchObs1Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 1 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 1",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
                                                                                               ),
-                                                                                            ],
-                                                                                          ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 10:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingStretchObs2Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 2 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 2",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 12:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingStretchObs3Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 3 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 3",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 02:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingStretchObs4Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 4 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 4",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 04:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
+                                                                                        ),
+
+                                                                                        const SizedBox(
+                                                                                          height: 15,
+                                                                                        ),
+
+                                                                                        Row(
+                                                                                          children: <Widget>[
+                                                                                            Expanded(
+                                                                                              child: TextFormField(
+                                                                                                controller: packagingStretchObs5Controller,
+                                                                                                keyboardType: TextInputType.text,
+                                                                                                textInputAction: TextInputAction.next,
+                                                                                                decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                  hintText: "Please Enter Observation 5 ",
+                                                                                                  counterText: '',
+                                                                                                  fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                                ),
+                                                                                                style: AppStyles.textInputTextStyle,
+                                                                                                readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                                validator: MultiValidator(
+                                                                                                  [
+                                                                                                    RequiredValidator(
+                                                                                                      errorText: "Please Enter Observation 5",
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            SizedBox(width: 16.0), // Add some space between the text fields
+                                                                                            Expanded(
+                                                                                                child: TextFormField(
+                                                                                              keyboardType: TextInputType.text,
+                                                                                              textInputAction: TextInputAction.next,
+                                                                                              decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                                hintText: "Time: 06:00",
+                                                                                                counterText: '',
+                                                                                                fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                              ),
+                                                                                              style: AppStyles.textInputTextStyle,
+                                                                                              readOnly: true,
+                                                                                            )),
+                                                                                          ],
                                                                                         ),
                                                                                         const SizedBox(
                                                                                           height: 15,
                                                                                         ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingStretchObs2Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 2 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 2",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingStretchObs3Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 3 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 3",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingStretchObs4Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 4 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 4",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
-                                                                                        TextFormField(
-                                                                                          controller: packagingStretchObs5Controller,
-                                                                                          keyboardType: TextInputType.text,
-                                                                                          textInputAction: TextInputAction.next,
-                                                                                          decoration: AppStyles.textFieldInputDecoration.copyWith(
-                                                                                            hintText: "Please Enter Observation 5 ",
-                                                                                            counterText: '',
-                                                                                            fillColor: Color.fromARGB(255, 215, 243, 207),
-                                                                                          ),
-                                                                                          style: AppStyles.textInputTextStyle,
-                                                                                          readOnly: status == 'Pending' && designation != "QC" ? true : false,
-                                                                                          validator: MultiValidator(
-                                                                                            [
-                                                                                              RequiredValidator(
-                                                                                                errorText: "Please Enter Observation 5",
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 15,
-                                                                                        ),
+
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingStretchObs1Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 1 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 1",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingStretchObs2Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 2 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 2",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingStretchObs3Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 3 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 3",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingStretchObs4Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 4 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 4",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
+                                                                                        // TextFormField(
+                                                                                        //   controller: packagingStretchObs5Controller,
+                                                                                        //   keyboardType: TextInputType.text,
+                                                                                        //   textInputAction: TextInputAction.next,
+                                                                                        //   decoration: AppStyles.textFieldInputDecoration.copyWith(
+                                                                                        //     hintText: "Please Enter Observation 5 ",
+                                                                                        //     counterText: '',
+                                                                                        //     fillColor: Color.fromARGB(255, 215, 243, 207),
+                                                                                        //   ),
+                                                                                        //   style: AppStyles.textInputTextStyle,
+                                                                                        //   readOnly: status == 'Pending' && designation != "QC" ? true : false,
+                                                                                        //   validator: MultiValidator(
+                                                                                        //     [
+                                                                                        //       RequiredValidator(
+                                                                                        //         errorText: "Please Enter Observation 5",
+                                                                                        //       ),
+                                                                                        //     ],
+                                                                                        //   ),
+                                                                                        // ),
+                                                                                        // const SizedBox(
+                                                                                        //   height: 15,
+                                                                                        // ),
 
                                                                                         Text(
                                                                                           "Criteria",
