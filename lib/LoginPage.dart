@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   String? uid, deviceType, designation, department;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-  // String path = "http://192.168.0.100:8080/"; //local
+  // String path = "http://192.168.1.8:8080/"; //local
   // String path =
   //     "https://fair-gray-gharial-wig.cyclic.app/"; // QCM Cyclic Dev
 
