@@ -716,7 +716,7 @@ class _JobcardState extends State<Jobcard> {
                                       date = (await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
+                                          firstDate: DateTime(2024),
                                           lastDate: DateTime.now()))!;
                                       dateController.text =
                                           DateFormat("EEE MMM dd, yyyy").format(

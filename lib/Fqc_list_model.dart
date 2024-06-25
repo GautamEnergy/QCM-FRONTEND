@@ -38,6 +38,7 @@ class UserData {
   String? product;
   String? productBatchNo;
   String? partyName;
+  String? excelURL;
   DateTime? dateOfQualityCheck;
   String? pdf;
 
@@ -50,6 +51,7 @@ class UserData {
       this.product,
       this.productBatchNo,
       this.partyName,
+      this.excelURL,
       this.dateOfQualityCheck,
       this.pdf});
 
@@ -62,6 +64,7 @@ class UserData {
     product = json['Product'];
     productBatchNo = json['ProductBatchNo'];
     partyName = json['PartyName'];
+    excelURL = json['ExcelURL'];
     dateOfQualityCheck = DateTime.parse(json['DateOfQualityCheck']);
     pdf = json['Pdf'];
   }
@@ -76,6 +79,7 @@ class UserData {
     data['Product'] = this.product;
     data['ProductBatchNo'] = this.productBatchNo;
     data['PartyName'] = this.partyName;
+    data['ExcelURL'] = this.excelURL;
     data['DateOfQualityCheck'] = this.dateOfQualityCheck;
     data['Pdf'] = this.pdf;
     return data;

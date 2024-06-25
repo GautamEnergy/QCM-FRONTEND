@@ -553,6 +553,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
                             data.data![index].date ?? ''));
                   } else if ((data.data![index].name ?? '')
@@ -572,6 +573,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
                             data.data![index].date ?? ''));
                   } else if (data.data![index].location!
@@ -588,6 +590,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
                             data.data![index].date ?? ''));
                   } else if (data.data![index].moduleNo!
@@ -604,6 +607,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
                             data.data![index].date ?? ''));
                   } else if ((data.data![index].employeeID!)
@@ -620,6 +624,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
                             data.data![index].date ?? ''));
                   } else if (data.data![index].jobCardDetailID!
@@ -636,6 +641,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].moduleNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].type ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
                             data.data![index].date ?? ''));
                   } else {
@@ -658,10 +664,11 @@ class _IpqcTestListState extends State<IpqcTestList> {
       String invoiceno,
       String employeeid,
       String type,
+      String excelUrl,
       String referencePdf,
       String date) {
     return InkWell(
-      onTap: () {},
+      // onTap: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
         child: Column(
@@ -853,28 +860,28 @@ class _IpqcTestListState extends State<IpqcTestList> {
                         //Occupication
 
                         Row(children: <Widget>[
-                          // Container(
-                          //   padding: const EdgeInsets.symmetric(
-                          //       horizontal: 10, vertical: 5),
-                          //   decoration: BoxDecoration(
-                          //     color: const Color.fromARGB(
-                          //         255, 2, 45, 236), // Background color
-                          //     borderRadius: BorderRadius.circular(
-                          //         10), // Optional: Add border radius for rounded corners
-                          //   ),
-                          //   child: Text(
-                          //     date,
-                          //     style: const TextStyle(
-                          //       fontWeight: FontWeight.bold,
-                          //       fontSize: 11,
-                          //       color: Color.fromARGB(255, 255, 255,
-                          //           255), // Optional: Set text color
-                          //     ),
-                          //   ),
-                          // ),
-                          // const SizedBox(
-                          //   width: 5,
-                          // ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(
+                                  255, 2, 45, 236), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              date,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
                           if (referencePdf != '' && referencePdf != null)
                             Container(
                               padding: const EdgeInsets.symmetric(
@@ -911,11 +918,57 @@ class _IpqcTestListState extends State<IpqcTestList> {
                                 ),
                               ),
                             ),
+                          SizedBox(
+                            width: 10,
+                          ),
                         ]),
 
                         const SizedBox(
                           height: 2,
                         ),
+                        if ((_hasBeenPressed1 == 'Approved' ||
+                                _hasBeenPressed1 == 'Rejected') &&
+                            excelUrl != "" &&
+                            excelUrl != null)
+                          Row(children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(
+                                    255, 172, 69, 141), // Background color
+                                borderRadius: BorderRadius.circular(
+                                    10), // Optional: Add border radius for rounded corners
+                              ),
+                              child: const Text(
+                                "Excell Report :",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Color.fromARGB(255, 255, 255,
+                                      255), // Optional: Set text color
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                UrlLauncher.launch(excelUrl);
+                              },
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  AppAssets.icPdf,
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                          ]),
                       ],
                     )),
                   ),

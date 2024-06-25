@@ -35,6 +35,7 @@ class UserData {
   String? profileImg;
   String? location;
   String? type;
+  String? excelURL;
   String? referencePdf;
   String? jobCardDetailID;
   String? moduleNo;
@@ -47,6 +48,7 @@ class UserData {
       this.profileImg,
       this.location,
       this.type,
+      this.excelURL,
       this.referencePdf,
       this.jobCardDetailID,
       this.moduleNo,
@@ -59,6 +61,7 @@ class UserData {
     profileImg = json['ProfileImg'];
     location = json['Location'];
     type = json['Type'];
+    excelURL = json['ExcelURL'];
     referencePdf = json['ReferencePdf'];
     jobCardDetailID = json['JobCardDetailID'];
     moduleNo = json['ModuleNo'];
@@ -73,6 +76,7 @@ class UserData {
     data['ProfileImg'] = this.profileImg;
     data['Location'] = this.location;
     data['Type'] = this.type;
+    data['ExcelURL'] = this.excelURL;
     data['ReferencePdf'] = this.referencePdf;
     data['JobCardDetailID'] = this.jobCardDetailID;
     data['ModuleNo'] = this.moduleNo;

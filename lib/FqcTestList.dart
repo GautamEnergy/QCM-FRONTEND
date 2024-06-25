@@ -493,6 +493,8 @@ class _FqcTestListState extends State<FqcTestList> {
             child: ListView.builder(
                 itemCount: data.data!.length,
                 itemBuilder: (context, index) {
+                  print("Bhanuuuuu");
+                  print(data.data![index].excelURL);
                   if (SearchController.text.isEmpty) {
                     return Container(
                         child: _tile(
@@ -504,6 +506,7 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].productBatchNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].partyName ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].dateOfQualityCheck.toString() ??
                                 '',
                             data.data![index].pdf ?? ''));
@@ -524,6 +527,7 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].productBatchNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].partyName ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].dateOfQualityCheck.toString() ??
                                 '',
                             data.data![index].pdf ?? ''));
@@ -541,6 +545,7 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].productBatchNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].partyName ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].dateOfQualityCheck.toString() ??
                                 '',
                             data.data![index].pdf ?? ''));
@@ -558,6 +563,7 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].productBatchNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].partyName ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].dateOfQualityCheck.toString() ??
                                 '',
                             data.data![index].pdf ?? ''));
@@ -575,6 +581,7 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].productBatchNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].partyName ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].dateOfQualityCheck.toString() ??
                                 '',
                             data.data![index].pdf ?? ''));
@@ -592,6 +599,7 @@ class _FqcTestListState extends State<FqcTestList> {
                             data.data![index].productBatchNo ?? '',
                             data.data![index].employeeID ?? '',
                             data.data![index].partyName ?? '',
+                            data.data![index].excelURL ?? '',
                             data.data![index].dateOfQualityCheck.toString() ??
                                 '',
                             data.data![index].pdf ?? ''));
@@ -615,11 +623,12 @@ class _FqcTestListState extends State<FqcTestList> {
     String invoiceno,
     String employeeid,
     String partyname,
+    String excelUrl,
     String dateOfQualityCheck,
     String pdf,
   ) {
     return InkWell(
-      onTap: () {},
+      // onTap: () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
         child: Column(
@@ -768,29 +777,29 @@ class _FqcTestListState extends State<FqcTestList> {
                         ),
                         //Occupication
                         Row(children: <Widget>[
-                          // Container(
-                          //   padding: const EdgeInsets.symmetric(
-                          //       horizontal: 10, vertical: 5),
-                          //   decoration: BoxDecoration(
-                          //     color: Color.fromARGB(
-                          //         255, 0, 0, 0), // Background color
-                          //     borderRadius: BorderRadius.circular(
-                          //         10), // Optional: Add border radius for rounded corners
-                          //   ),
-                          //   child: Text(
-                          //     DateFormat("dd MMM yyyy").format(DateTime.parse(
-                          //         dateOfQualityCheck.toString())),
-                          //     style: const TextStyle(
-                          //       fontWeight: FontWeight.bold,
-                          //       fontSize: 11,
-                          //       color: Color.fromARGB(255, 255, 255,
-                          //           255), // Optional: Set text color
-                          //     ),
-                          //   ),
-                          // ),
-                          // const SizedBox(
-                          //   width: 10,
-                          // ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 0, 0, 0), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              DateFormat("dd MMM yyyy").format(DateTime.parse(
+                                  dateOfQualityCheck.toString())),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
@@ -845,6 +854,51 @@ class _FqcTestListState extends State<FqcTestList> {
                               GestureDetector(
                                 onTap: () {
                                   UrlLauncher.launch(pdf);
+                                },
+                                child: ClipRRect(
+                                  child: Image.asset(
+                                    AppAssets.icPdf,
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ),
+                              ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            if ((_hasBeenPressed1 == 'Approved' ||
+                                    _hasBeenPressed1 == 'Rejected') &&
+                                excelUrl != "" &&
+                                excelUrl != null)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(
+                                      255, 172, 69, 141), // Background color
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Optional: Add border radius for rounded corners
+                                ),
+                                child: const Text(
+                                  "Excell Report :",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Color.fromARGB(255, 255, 255,
+                                        255), // Optional: Set text color
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            if ((_hasBeenPressed1 == 'Approved' ||
+                                    _hasBeenPressed1 == 'Rejected') &&
+                                excelUrl != "" &&
+                                excelUrl != null)
+                              GestureDetector(
+                                onTap: () {
+                                  UrlLauncher.launch(excelUrl);
                                 },
                                 child: ClipRRect(
                                   child: Image.asset(

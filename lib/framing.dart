@@ -725,7 +725,7 @@ class _framingState extends State<framing> {
                                           date = (await showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
-                                            firstDate: DateTime.now(),
+                                            firstDate: DateTime(2024),
                                             lastDate: DateTime.now(),
                                           ))!;
                                           dateController.text =
