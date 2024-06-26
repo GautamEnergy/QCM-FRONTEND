@@ -2450,42 +2450,48 @@ class _BacksheetState extends State<Backsheet> {
                                                           ),
                                                         ],
                                                       ),
-                                                      if (selectedVisualTestValues[
-                                                              index] ==
-                                                          false)
-                                                        const SizedBox(
-                                                            height: 8),
-                                                      if (selectedVisualTestValues[
-                                                              index] ==
-                                                          false)
-                                                        TextFormField(
-                                                          controller:
-                                                              visualRemarksControllers[
-                                                                  index],
-                                                          decoration: AppStyles
-                                                              .textFieldInputDecoration
-                                                              .copyWith(
-                                                            hintText:
-                                                                "Please Enter Remarks",
-                                                            counterText: '',
-                                                            contentPadding:
-                                                                EdgeInsets.all(
-                                                                    10),
-                                                          ),
-                                                          style: AppStyles
-                                                              .textInputTextStyle,
-                                                          readOnly: status ==
-                                                                  'Pending'
-                                                              ? true
-                                                              : false,
-                                                          validator: (value) {
-                                                            if (value == null ||
-                                                                value.isEmpty) {
-                                                              return 'Please Enter Remarks.';
-                                                            }
-                                                            return null;
-                                                          },
+                                                      // if (selectedVisualTestValues[
+                                                      //         index] ==
+                                                      //     false)
+                                                      const SizedBox(height: 8),
+                                                      // if (selectedVisualTestValues[
+                                                      //         index] ==
+                                                      //     false)
+                                                      TextFormField(
+                                                        controller:
+                                                            visualRemarksControllers[
+                                                                index],
+                                                        decoration: AppStyles
+                                                            .textFieldInputDecoration
+                                                            .copyWith(
+                                                          hintText: (selectedVisualTestValues[
+                                                                      index] ==
+                                                                  false)
+                                                              ? "Please Enter Value & Remarks"
+                                                              : "Please Enter Value",
+                                                          counterText: '',
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                                  10),
                                                         ),
+                                                        style: AppStyles
+                                                            .textInputTextStyle,
+                                                        readOnly:
+                                                            status == 'Pending'
+                                                                ? true
+                                                                : false,
+                                                        validator: (value) {
+                                                          if (value == null ||
+                                                              value.isEmpty) {
+                                                            return (selectedVisualTestValues[
+                                                                        index] ==
+                                                                    false)
+                                                                ? "Please Enter Value & Remarks."
+                                                                : "Please Enter Value.";
+                                                          }
+                                                          return null;
+                                                        },
+                                                      ),
 
                                                       const SizedBox(height: 8),
                                                       Container(
