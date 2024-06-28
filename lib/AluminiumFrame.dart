@@ -3221,46 +3221,53 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                                                 ],
                                                               ),
 
-                                                              if (selectedPhysicalTestValues[
-                                                                      index] ==
-                                                                  false)
-                                                                const SizedBox(
-                                                                    height: 8),
-                                                              if (selectedPhysicalTestValues[
-                                                                      index] ==
-                                                                  false)
-                                                                TextFormField(
-                                                                  controller:
-                                                                      physicalRemarksControllers[
-                                                                          index],
-                                                                  decoration: AppStyles
-                                                                      .textFieldInputDecoration
-                                                                      .copyWith(
-                                                                    hintText:
-                                                                        "Please Enter Remarks",
-                                                                    counterText:
-                                                                        '',
-                                                                    contentPadding:
-                                                                        EdgeInsets.all(
-                                                                            10),
-                                                                  ),
-                                                                  style: AppStyles
-                                                                      .textInputTextStyle,
-                                                                  readOnly: status ==
-                                                                          'Pending'
-                                                                      ? true
-                                                                      : false,
-                                                                  validator:
-                                                                      (value) {
-                                                                    if (value ==
-                                                                            null ||
-                                                                        value
-                                                                            .isEmpty) {
-                                                                      return 'Please Enter Remarks.';
-                                                                    }
-                                                                    return null;
-                                                                  },
+                                                              // if (selectedPhysicalTestValues[
+                                                              //         index] ==
+                                                              //     false)
+                                                              const SizedBox(
+                                                                  height: 8),
+                                                              // if (selectedPhysicalTestValues[
+                                                              //         index] ==
+                                                              //     false)
+                                                              TextFormField(
+                                                                controller:
+                                                                    physicalRemarksControllers[
+                                                                        index],
+                                                                decoration: AppStyles
+                                                                    .textFieldInputDecoration
+                                                                    .copyWith(
+                                                                  hintText: (selectedPhysicalTestValues[
+                                                                              index] ==
+                                                                          false)
+                                                                      ? "Please Enter Value & Remarks"
+                                                                      : "Please Enter Value",
+                                                                  counterText:
+                                                                      '',
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              10),
                                                                 ),
+                                                                style: AppStyles
+                                                                    .textInputTextStyle,
+                                                                readOnly: status ==
+                                                                        'Pending'
+                                                                    ? true
+                                                                    : false,
+                                                                validator:
+                                                                    (value) {
+                                                                  if (value ==
+                                                                          null ||
+                                                                      value
+                                                                          .isEmpty) {
+                                                                    return (selectedPhysicalTestValues[index] ==
+                                                                            false)
+                                                                        ? "Please Enter Value & Remarks."
+                                                                        : "Please Enter Value.";
+                                                                  }
+                                                                  return null;
+                                                                },
+                                                              ),
 
                                                               const SizedBox(
                                                                   height: 8),
