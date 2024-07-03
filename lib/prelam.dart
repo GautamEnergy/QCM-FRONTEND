@@ -467,7 +467,8 @@ class _PreCardState extends State<PreCard> {
     for (int i = 0; i < count; i++) {
       cellLoaderVerificationControllers.add(TextEditingController());
       cellLoaderTimeControllers.add(TextEditingController());
-      cellLoaderTimeControllers[i].text = Time[i];
+      // cellLoaderTimeControllers[i].text = Time[i];
+      cellLoaderTimeControllers[i].text = Time[i % Time.length];
       if (widget.id != "" &&
           widget.id != null &&
           cellLoadingInputtext.length > 0) {
@@ -481,7 +482,7 @@ class _PreCardState extends State<PreCard> {
     for (int i = 0; i < count; i++) {
       TabberVisualStringerControllers.add(TextEditingController());
       TabberVisualTimeControllers1.add(TextEditingController());
-      TabberVisualTimeControllers1[i].text = Time1[i];
+      TabberVisualTimeControllers1[i].text = Time1[i % Time.length];
       if (widget.id != "" && widget.id != null && tabberVisual.length > 0) {
         TabberVisualStringerControllers[i].text =
             tabberVisual[i]['TabberVisualStringerControllers${i + 1}'];
@@ -493,7 +494,7 @@ class _PreCardState extends State<PreCard> {
     for (int i = 0; i < count; i++) {
       TabberEIimageofStringerControllers.add(TextEditingController());
       TabberEIimageofStringerTimeControllers.add(TextEditingController());
-      TabberEIimageofStringerTimeControllers[i].text = Time2[i];
+      TabberEIimageofStringerTimeControllers[i].text = Time2[i % Time.length];
       if (widget.id != "" && widget.id != null && tabberEI.length > 0) {
         TabberEIimageofStringerControllers[i].text =
             tabberEI[i]['TabberEIimageofStringerControllers${i + 1}'];
@@ -518,7 +519,8 @@ class _PreCardState extends State<PreCard> {
       PreLaminationEIinspectionrControllers.add(TextEditingController());
 
       PreLaminationEIinspectionrTimeControllers.add(TextEditingController());
-      PreLaminationEIinspectionrTimeControllers[i].text = Time3[i];
+      PreLaminationEIinspectionrTimeControllers[i].text =
+          Time3[i % Time.length];
 
       if (widget.id != "" && widget.id != null && preLaminationEi.length > 0) {
         PreLaminationEIinspectionrControllers[i].text =
@@ -532,7 +534,8 @@ class _PreCardState extends State<PreCard> {
       PreLaminationVisualinspectionrControllers.add(TextEditingController());
       PreLaminationVisualinspectionrTimeControllers.add(
           TextEditingController());
-      PreLaminationVisualinspectionrTimeControllers[i].text = Time4[i];
+      PreLaminationVisualinspectionrTimeControllers[i].text =
+          Time4[i % Time.length];
 
       if (widget.id != "" &&
           widget.id != null &&
