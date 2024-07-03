@@ -1149,7 +1149,7 @@ class _SealantState extends State<Sealant> {
                                   ),
                                   TextFormField(
                                       controller: rMBatchNoController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration

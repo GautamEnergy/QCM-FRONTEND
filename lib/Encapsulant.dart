@@ -1099,7 +1099,7 @@ class _EncapsulantState extends State<Encapsulant> {
                                   ),
                                   TextFormField(
                                       controller: rMBatchNoController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration

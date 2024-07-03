@@ -1098,7 +1098,7 @@ class _AluminiumFrameState extends State<AluminiumFrame> {
                                   ),
                                   TextFormField(
                                       controller: rMBatchNoController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration

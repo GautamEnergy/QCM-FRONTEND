@@ -47,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   //     "https://sore-rose-kingfisher-tutu.cyclic.app/"; // QCM App Cyclic Prod
 
   // String path = "https://xvvmywehv3.ap-south-1.awsapprunner.com/"; // AWS Prod
+
   String path = "http://srv515471.hstgr.cloud:8080/"; // Hostinger Dev
 
   // String path = "http://srv515471.hstgr.cloud:9090/"; // Hostinger Prod
@@ -97,6 +98,14 @@ class _LoginPageState extends State<LoginPage> {
             gravity: Toast.center,
             backgroundColor: Colors.red);
       }
+    } else if (response.statusCode == 401) {
+      setState(() {
+        _isLoading = false;
+      });
+      Toast.show("Login id is not registered.",
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.red);
     } else if (response.statusCode == 200) {
       var objData = json.decode(response.body);
       setState(() {

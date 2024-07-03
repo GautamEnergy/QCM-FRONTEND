@@ -1093,7 +1093,7 @@ class _SolarGlassState extends State<SolarGlass> {
                                   ),
                                   TextFormField(
                                       controller: rMBatchNoController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.next,
                                       decoration: AppStyles
                                           .textFieldInputDecoration
