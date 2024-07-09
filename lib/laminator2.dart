@@ -27,10 +27,10 @@ class laminator2 extends StatefulWidget {
   final String? id;
   laminator2({this.id});
   @override
-  _laminator2State createState() => _laminator2State();
+  _laminator1State createState() => _laminator1State();
 }
 
-class _laminator2State extends State<laminator2> {
+class _laminator1State extends State<laminator2> {
   final _registerFormKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
   TextEditingController shiftController = TextEditingController();
@@ -196,7 +196,6 @@ class _laminator2State extends State<laminator2> {
       _isLoading = false;
     });
     var resBody = json.decode(allSolarData.body);
-
     if (mounted) {
       setState(() {
         if (resBody != '') {
@@ -207,7 +206,6 @@ class _laminator2State extends State<laminator2> {
                   DateTime.parse(resBody['response']['Date'].toString()))
               : '';
           selectedShift = resBody['response']['Shift'] ?? '';
-
           evaController.text =
               resBody['response']['EVAMake_ObservedValueA'] ?? '';
           evaBController.text =
@@ -481,6 +479,7 @@ class _laminator2State extends State<laminator2> {
         }
       ]
     };
+    print('Sending data to backend: $data');
 
     setState(() {
       _isLoading = true;
@@ -505,6 +504,7 @@ class _laminator2State extends State<laminator2> {
 
         _isLoading = false;
       });
+
       print(objData['UUID']);
       if (objData['success'] == false) {
         Toast.show(objData['message'],
@@ -2178,6 +2178,66 @@ class _laminator2State extends State<laminator2> {
                                         }
                                       },
                                     ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+
+                                    Text(
+                                      "Reference PDF Document ",
+                                      style:
+                                          AppStyles.textfieldCaptionTextStyle,
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextFormField(
+                                      controller: referencePdfController,
+                                      keyboardType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      decoration: AppStyles
+                                          .textFieldInputDecoration
+                                          .copyWith(
+                                              hintText:
+                                                  "Please Select Reference Pdf",
+                                              suffixIcon: IconButton(
+                                                onPressed: () async {
+                                                  if (widget.id != null &&
+                                                      widget.id != '' &&
+                                                      referencePdfController
+                                                              .text !=
+                                                          '') {
+                                                    UrlLauncher.launch(
+                                                        referencePdfController
+                                                            .text);
+                                                  } else if (status !=
+                                                      'Pending') {
+                                                    _pickReferencePDF();
+                                                  }
+                                                },
+                                                icon: widget.id != null &&
+                                                        widget.id != '' &&
+                                                        referencePdfController
+                                                                .text !=
+                                                            ''
+                                                    ? const Icon(Icons.download)
+                                                    : const Icon(
+                                                        Icons.upload_file),
+                                              ),
+                                              counterText: ''),
+                                      style: AppStyles.textInputTextStyle,
+                                      maxLines: 1,
+                                      readOnly: true,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Please Select Reference Pdf";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
 
                                     Padding(
                                         padding:
@@ -2185,31 +2245,69 @@ class _laminator2State extends State<laminator2> {
                                     _isLoading
                                         ? Center(
                                             child: CircularProgressIndicator())
-                                        : AppButton(
-                                            textStyle: const TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.white,
-                                              fontSize: 16,
-                                            ),
-                                            onTap: () {
-                                              AppHelper.hideKeyboard(context);
-                                              if (status != 'Pending') {
-                                                setState(() {
-                                                  sendStatus = 'Inprogress';
-                                                });
-                                                createData();
-                                              }
-                                              setState(() {
-                                                setPage = "location";
-                                              });
-                                            },
-                                            label: "Next",
-                                            organization: '',
-                                          ),
+                                        : (widget.id == "" ||
+                                                    widget.id == null) ||
+                                                (status == 'Inprogress' &&
+                                                    widget.id != null)
+                                            ? AppButton(
+                                                textStyle: const TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: AppColors.white,
+                                                  fontSize: 16,
+                                                ),
+                                                onTap: () {
+                                                  AppHelper.hideKeyboard(
+                                                      context);
+                                                  _registerFormKey
+                                                      .currentState!.save;
+                                                  if (_registerFormKey
+                                                      .currentState!
+                                                      .validate()) {
+                                                    setState(() {
+                                                      sendStatus = "Pending";
+                                                    });
+                                                    createData();
+                                                  }
+                                                },
+                                                label: "Submit",
+                                                organization: '',
+                                              )
+                                            : Container(),
 
                                     const SizedBox(
-                                      height: 25,
+                                      height: 15,
                                     ),
+                                    if (widget.id != "" &&
+                                        widget.id != null &&
+                                        status == 'Pending')
+                                      Container(
+                                        color:
+                                            Color.fromARGB(255, 191, 226, 187),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children: [
+                                            Divider(),
+                                            SizedBox(height: 15),
+                                            AppButton(
+                                              textStyle: const TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: AppColors.white,
+                                                  fontSize: 16),
+                                              onTap: () {
+                                                AppHelper.hideKeyboard(context);
+                                                setApprovalStatus();
+                                              },
+                                              label: "Approve",
+                                              organization: '',
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Divider(),
+                                          ],
+                                        ),
+                                      ),
                                     Container(
                                       alignment: Alignment.center,
                                       child: const Column(
@@ -2239,535 +2337,10 @@ class _laminator2State extends State<laminator2> {
                             ),
                           ],
                         )
-                      : setPage == "location"
-                          ? Stack(
-                              alignment: Alignment.center,
-                              fit: StackFit.expand,
-                              children: [
-                                SingleChildScrollView(
-                                  child: Form(
-                                    key: _registerFormKey,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                alignment: Alignment.center,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset(
-                                                      AppAssets.imgLogo,
-                                                      height: 100,
-                                                      width: 230,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const Center(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(top: 10),
-                                            child: Text(
-                                              "Monitoring Of Laminator Process Parameter",
-                                              style: TextStyle(
-                                                fontSize: 27,
-                                                color: Color.fromARGB(
-                                                    255, 56, 57, 56),
-                                                fontFamily: appFontFamily,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                      : Container()),
 
-                                        // **************** Document Number *******************
-                                        const SizedBox(
-                                          height: 35,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Document No : ',
-                                              style: AppStyles
-                                                  .textfieldCaptionTextStyle,
-                                            ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
-                                            Text(
-                                              'GSPL/IPQC/LM/008',
-                                              style: AppStyles
-                                                  .textfieldCaptionTextStyle,
-                                            ),
-                                          ],
-                                        ),
+          // **************** Document Number *******************
 
-                                        // *************************** Revisional Number ********************
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Rev.No./Dated : ',
-                                              style: AppStyles
-                                                  .textfieldCaptionTextStyle,
-                                            ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
-                                            Text(
-                                              'Ver.1.0 & 12-08-2023',
-                                              style: AppStyles
-                                                  .textfieldCaptionTextStyle,
-                                            ),
-                                          ],
-                                        ),
-
-                                        //  ****************  Monitoring Of Laminator Process Parameter ******
-
-                                        const SizedBox(
-                                          height: 25,
-                                        ),
-
-                                        const Center(
-                                          child: Text(
-                                            "Laminator Thermocouple Reading",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Color.fromARGB(
-                                                  255, 250, 4, 4),
-                                              fontFamily: appFontFamily,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        const Center(
-                                          child: Text(
-                                            "Location ",
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Color.fromARGB(
-                                                  255, 86, 104, 243),
-                                              fontFamily: appFontFamily,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-
-                                        // ***************  position's  ****************
-                                        Text(
-                                          "1st Position",
-                                          style: AppStyles
-                                              .textfieldCaptionTextStyle,
-                                        ),
-                                        TextFormField(
-                                          controller: position1Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText: "Enter First position",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Enter Correct  First position";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          "2nd Position",
-                                          style: AppStyles
-                                              .textfieldCaptionTextStyle,
-                                        ),
-                                        TextFormField(
-                                          controller: position2Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText: "Enter Second position",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Enter Correct Second position";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          "3rd Position",
-                                          style: AppStyles
-                                              .textfieldCaptionTextStyle,
-                                        ),
-                                        TextFormField(
-                                          controller: position3Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText: "Enter Third position",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Enter Correct  Third position";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          "4th Position",
-                                          style: AppStyles
-                                              .textfieldCaptionTextStyle,
-                                        ),
-                                        TextFormField(
-                                          controller: position4Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText: "Enter Fourth position",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Enter Correct  Fourth position";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          "5th Position",
-                                          style: AppStyles
-                                              .textfieldCaptionTextStyle,
-                                        ),
-                                        TextFormField(
-                                          controller: position5Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText: "Enter Fifth position",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Enter Correct  Fifth position";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          "6th Position",
-                                          style: AppStyles
-                                              .textfieldCaptionTextStyle,
-                                        ),
-                                        TextFormField(
-                                          controller: position6Controller,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                            hintText: "Enter sixth position",
-                                            counterText: '',
-                                            fillColor: Color.fromARGB(
-                                                255, 215, 243, 207),
-                                          ),
-                                          style: AppStyles.textInputTextStyle,
-                                          readOnly: status == 'Pending' &&
-                                                  designation != "QC"
-                                              ? true
-                                              : false,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Enter Correct  sixth position";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Text(
-                                          "Reference PDF Document ",
-                                          style: AppStyles
-                                              .textfieldCaptionTextStyle,
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        TextFormField(
-                                          controller: referencePdfController,
-                                          keyboardType: TextInputType.text,
-                                          textInputAction: TextInputAction.next,
-                                          decoration: AppStyles
-                                              .textFieldInputDecoration
-                                              .copyWith(
-                                                  hintText:
-                                                      "Please Select Reference Pdf",
-                                                  suffixIcon: IconButton(
-                                                    onPressed: () async {
-                                                      if (widget.id != null &&
-                                                          widget.id != '' &&
-                                                          referencePdfController
-                                                                  .text !=
-                                                              '') {
-                                                        UrlLauncher.launch(
-                                                            referencePdfController
-                                                                .text);
-                                                      } else if (status !=
-                                                          'Pending') {
-                                                        _pickReferencePDF();
-                                                      }
-                                                    },
-                                                    icon: widget.id != null &&
-                                                            widget.id != '' &&
-                                                            referencePdfController
-                                                                    .text !=
-                                                                ''
-                                                        ? const Icon(
-                                                            Icons.download)
-                                                        : const Icon(
-                                                            Icons.upload_file),
-                                                  ),
-                                                  counterText: ''),
-                                          style: AppStyles.textInputTextStyle,
-                                          maxLines: 1,
-                                          readOnly: true,
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return "Please Select Reference Pdf";
-                                            } else {
-                                              return null;
-                                            }
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-
-                                        Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0, 10, 0, 0)),
-                                        _isLoading
-                                            ? Center(
-                                                child:
-                                                    CircularProgressIndicator())
-                                            : (widget.id == "" ||
-                                                        widget.id == null) ||
-                                                    (status == 'Inprogress' &&
-                                                        widget.id != null)
-                                                ? AppButton(
-                                                    textStyle: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: AppColors.white,
-                                                      fontSize: 16,
-                                                    ),
-                                                    onTap: () {
-                                                      AppHelper.hideKeyboard(
-                                                          context);
-                                                      _registerFormKey
-                                                          .currentState!.save;
-                                                      if (_registerFormKey
-                                                          .currentState!
-                                                          .validate()) {
-                                                        setState(() {
-                                                          sendStatus =
-                                                              "Pending";
-                                                        });
-                                                        createData();
-                                                      }
-                                                    },
-                                                    label: "Submit",
-                                                    organization: '',
-                                                  )
-                                                : Container(),
-
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        if (widget.id != "" &&
-                                            widget.id != null &&
-                                            status == 'Pending')
-                                          Container(
-                                            color: Color.fromARGB(
-                                                255, 191, 226, 187),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              children: [
-                                                Divider(),
-                                                SizedBox(height: 15),
-                                                AppButton(
-                                                  textStyle: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: AppColors.white,
-                                                      fontSize: 16),
-                                                  onTap: () {
-                                                    AppHelper.hideKeyboard(
-                                                        context);
-                                                    setApprovalStatus();
-                                                  },
-                                                  label: "Approve",
-                                                  organization: '',
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Divider(),
-                                              ],
-                                            ),
-                                          ),
-
-                                        // Back button
-                                        Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  setPage = 'home';
-                                                });
-                                              },
-                                              child: const Text(
-                                                "BACK",
-                                                style: TextStyle(
-                                                    fontFamily: appFontFamily,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: AppColors.redColor),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                        const SizedBox(
-                                          height: 25,
-                                        ),
-                                        Container(
-                                          alignment: Alignment.center,
-                                          child: const Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Powered By Gautam Solar Pvt. Ltd.",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: appFontFamily,
-                                                  color: AppColors.greyColor,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Container(),
-                ),
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
           // bottomNavigationBar: Container(
           //   height: 60,
