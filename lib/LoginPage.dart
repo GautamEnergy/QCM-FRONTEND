@@ -48,7 +48,9 @@ class _LoginPageState extends State<LoginPage> {
 
   // String path = "https://xvvmywehv3.ap-south-1.awsapprunner.com/"; // AWS Prod
 
-  String path = "http://srv515471.hstgr.cloud:8080/"; // Hostinger Dev
+  String path = "http://srv515471.hstgr.cloud:8081/"; // Hostinger New Prod
+
+  // String path = "http://srv515471.hstgr.cloud:8080/"; // Hostinger Dev
 
   // String path = "http://srv515471.hstgr.cloud:9090/"; // Hostinger Prod
 
