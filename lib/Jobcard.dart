@@ -82,6 +82,7 @@ class _JobcardState extends State<Jobcard> {
   String invoiceDate = '';
   String jobCardDate = '';
   bool? isCycleTimeTrue = false;
+  String selectedShift = "Day Shift";
   List<int>? referencePdfFileBytes;
   bool? isBacksheetCuttingTrue = false;
   late String sendStatus;
@@ -93,6 +94,10 @@ class _JobcardState extends State<Jobcard> {
       department = '';
   final _dio = Dio();
   List data = [];
+  List shiftList = [
+    {"key": 'Day Shift', "value": 'Day Shift'},
+    {"key": 'Night Shift', "value": 'Night Shift'},
+  ];
 
   Response.Response? _response;
 
@@ -140,6 +145,8 @@ class _JobcardState extends State<Jobcard> {
       _isLoading = false;
     });
     var resBody = json.decode(allSolarData.body);
+    print("rebodyyyyyy");
+    print(resBody);
 
     if (mounted) {
       setState(() {
@@ -150,6 +157,7 @@ class _JobcardState extends State<Jobcard> {
               ? DateFormat("EEE MMM dd, yyyy").format(
                   DateTime.parse(resBody['response']['Date'].toString()))
               : '';
+          selectedShift = resBody['response']['Shift'] ?? '';
           moduleTypeController.text = resBody['response']['ModuleType'] ?? '';
 
           matrixSizeController.text = resBody['response']['MatrixSize'] ?? '';
@@ -338,6 +346,7 @@ class _JobcardState extends State<Jobcard> {
                   ? widget.id
                   : '',
           "date": jobCardDate,
+          "Shift": selectedShift,
           "moduleType": moduleTypeController.text,
           "matrixSize": matrixSizeController.text,
           "moduleNo": moduleNoController.text,
@@ -443,6 +452,8 @@ class _JobcardState extends State<Jobcard> {
     setState(() {
       _isLoading = true;
     });
+    print("dataaaaaaaaaaa");
+    print(data);
     FocusScope.of(context).unfocus();
 
     final url = (site! + "IPQC/AddJobCard");
@@ -732,6 +743,48 @@ class _JobcardState extends State<Jobcard> {
                                     RequiredValidator(
                                         errorText: "Please Enter Date")
                                   ])),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                "Shift",
+                                style: AppStyles.textfieldCaptionTextStyle,
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              DropdownButtonFormField<String>(
+                                decoration: AppStyles.textFieldInputDecoration
+                                    .copyWith(
+                                        hintText: "Please Select Shift",
+                                        counterText: '',
+                                        contentPadding: EdgeInsets.all(10)),
+                                borderRadius: BorderRadius.circular(20),
+                                items: shiftList
+                                    .map((label) => DropdownMenuItem(
+                                          child: Text(label['key'],
+                                              style:
+                                                  AppStyles.textInputTextStyle),
+                                          value: label['value'].toString(),
+                                        ))
+                                    .toList(),
+                                onChanged:
+                                    designation != "QC" && status == "Pending"
+                                        ? null
+                                        : (val) {
+                                            setState(() {
+                                              selectedShift = val!;
+                                            });
+                                          },
+                                value:
+                                    selectedShift != '' ? selectedShift : null,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select a Shift';
+                                  }
+                                  return null; // Return null if the validation is successful
+                                },
+                              ),
                               const SizedBox(
                                 height: 15,
                               ),

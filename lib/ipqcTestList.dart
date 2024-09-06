@@ -555,7 +555,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].type ?? '',
                             data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
-                            data.data![index].date ?? ''));
+                            data.data![index].date ?? '',
+                            data.data![index].shift ?? ''));
                   } else if ((data.data![index].name ?? '')
                           .toLowerCase()
                           .contains((SearchController.text).toLowerCase()) ||
@@ -575,7 +576,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].type ?? '',
                             data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
-                            data.data![index].date ?? ''));
+                            data.data![index].date ?? '',
+                            data.data![index].shift ?? ''));
                   } else if (data.data![index].location!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -592,7 +594,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].type ?? '',
                             data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
-                            data.data![index].date ?? ''));
+                            data.data![index].date ?? '',
+                            data.data![index].shift ?? ''));
                   } else if (data.data![index].moduleNo!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -609,7 +612,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].type ?? '',
                             data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
-                            data.data![index].date ?? ''));
+                            data.data![index].date ?? '',
+                            data.data![index].shift ?? ''));
                   } else if ((data.data![index].employeeID!)
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -626,7 +630,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].type ?? '',
                             data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
-                            data.data![index].date ?? ''));
+                            data.data![index].date ?? '',
+                            data.data![index].shift ?? ''));
                   } else if (data.data![index].jobCardDetailID!
                       .toLowerCase()
                       .contains((SearchController.text).toLowerCase())) {
@@ -643,7 +648,8 @@ class _IpqcTestListState extends State<IpqcTestList> {
                             data.data![index].type ?? '',
                             data.data![index].excelURL ?? '',
                             data.data![index].referencePdf ?? '',
-                            data.data![index].date ?? ''));
+                            data.data![index].date ?? '',
+                            data.data![index].shift ?? ''));
                   } else {
                     return Container();
                   }
@@ -666,6 +672,7 @@ class _IpqcTestListState extends State<IpqcTestList> {
       String type,
       String excelUrl,
       String referencePdf,
+      String shift,
       String date) {
     return InkWell(
       // onTap: () {},
@@ -800,11 +807,18 @@ class _IpqcTestListState extends State<IpqcTestList> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Text(invoiceno,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  fontFamily: appFontFamily)),
+                          if (type == "PreLam" ||
+                              type == "PostLam" ||
+                              type == "Busbar" ||
+                              type == "Job Card" ||
+                              type == "Bom Verifivation" ||
+                              type == "Framing" ||
+                              type == "Soldering")
+                            Text(invoiceno,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                    fontFamily: appFontFamily)),
                         ]),
                         const SizedBox(
                           height: 5,
@@ -852,11 +866,39 @@ class _IpqcTestListState extends State<IpqcTestList> {
                               ),
                             ),
                           ),
+                          const SizedBox(
+                            width: 5,
+                          ),
                         ]),
 
                         const SizedBox(
                           height: 5,
                         ),
+                        //Shift
+                        Row(children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(
+                                  255, 66, 85, 170), // Background color
+                              borderRadius: BorderRadius.circular(
+                                  10), // Optional: Add border radius for rounded corners
+                            ),
+                            child: Text(
+                              shift,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 255, 255,
+                                    255), // Optional: Set text color
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                        ]),
                         //Occupication
 
                         Row(children: <Widget>[

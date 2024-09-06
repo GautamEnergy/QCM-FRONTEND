@@ -7,6 +7,7 @@ import 'package:QCM/ipqcTestList.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
@@ -32,7 +33,7 @@ class Postlam extends StatefulWidget {
 class _PostlamState extends State<Postlam> {
   TextEditingController lotSizeController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  TextEditingController shiftController = TextEditingController();
+
   TextEditingController lineController = TextEditingController();
   TextEditingController poController = TextEditingController();
 
@@ -384,6 +385,7 @@ class _PostlamState extends State<Postlam> {
   String setPage = 'trimming', pic = '', site = '', personid = '';
   String invoiceDate = '';
   String date = '';
+  String selectedShift = "Day Shift";
   bool? isCycleTimeTrue;
   bool? isBacksheetCuttingTrue;
   String sendStatus = '';
@@ -393,9 +395,15 @@ class _PostlamState extends State<Postlam> {
       designation = '',
       token = '',
       department = '';
+
   final _dio = Dio();
+
   Response.Response? _response;
   List data = [];
+  List shiftList = [
+    {"key": 'Day Shift', "value": 'Day Shift'},
+    {"key": 'Night Shift', "value": 'Night Shift'},
+  ];
   List<int>? referencePdfFileBytes;
   String dateOfPostLam = '';
 
@@ -556,7 +564,7 @@ class _PostlamState extends State<Postlam> {
         "DocNo": "GSPL/IPQC/IPC/003",
         "RevNo": "1.0 dated 12.08.2023",
         "Date": dateOfPostLam,
-        "Shift": shiftController.text,
+        "Shift": selectedShift,
         "Line": lineController.text,
         "PONo": poController.text
       },
@@ -1147,7 +1155,7 @@ class _PostlamState extends State<Postlam> {
               ? DateFormat("EEE MMM dd, yyyy").format(
                   DateTime.parse(resBody['response']['Date'].toString()))
               : '';
-          shiftController.text = resBody['response']['Shift'] ?? '';
+          selectedShift = resBody['response']['Shift'] ?? '';
           lineController.text = resBody['response']['Line'] ?? '';
           poController.text = resBody['response']['PONo'] ?? '';
           // Trimming
@@ -2101,29 +2109,40 @@ class _PostlamState extends State<Postlam> {
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                    TextFormField(
-                                      controller: shiftController,
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
+                                    DropdownButtonFormField<String>(
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Please Enter Shift",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
+                                              hintText: "Please Select Shift",
+                                              counterText: '',
+                                              contentPadding:
+                                                  EdgeInsets.all(10)),
+                                      borderRadius: BorderRadius.circular(20),
+                                      items: shiftList
+                                          .map((label) => DropdownMenuItem(
+                                                child: Text(label['key'],
+                                                    style: AppStyles
+                                                        .textInputTextStyle),
+                                                value:
+                                                    label['value'].toString(),
+                                              ))
+                                          .toList(),
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (val) {
+                                              setState(() {
+                                                selectedShift = val!;
+                                              });
+                                            },
+                                      value: selectedShift != ''
+                                          ? selectedShift
+                                          : null,
                                       validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return "Please Enter Shift";
-                                        } else {
-                                          return null;
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please select a Shift';
                                         }
+                                        return null; // Return null if the validation is successful
                                       },
                                     ),
                                     SizedBox(

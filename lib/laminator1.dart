@@ -2340,7 +2340,6 @@ class _laminator1State extends State<laminator1> {
                       : Container()),
 
           // **************** Document Number *******************
-
           floatingActionButton: (status == "Pending") ? null : _getFAB(),
           // bottomNavigationBar: Container(
           //   height: 60,

@@ -37,7 +37,7 @@ class BomCard extends StatefulWidget {
 class _BomCardState extends State<BomCard> {
   final _bomCardFormKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
-  TextEditingController shiftController = TextEditingController();
+  // TextEditingController shiftController = TextEditingController();
   TextEditingController LineController = TextEditingController();
   TextEditingController poController = TextEditingController();
 
@@ -123,6 +123,7 @@ class _BomCardState extends State<BomCard> {
   TextEditingController referencePdfController = new TextEditingController();
   bool menu = false, user = false, face = false, home = false;
   bool _isLoading = false;
+  String selectedShift = "Day Shift";
   String setPage = '',
       pic = '',
       site = '',
@@ -143,6 +144,10 @@ class _BomCardState extends State<BomCard> {
   bool? isBacksheetCuttingTrue;
   Response.Response? _response;
   final _dio = dio.Dio();
+  List shiftList = [
+    {"key": 'Day Shift', "value": 'Day Shift'},
+    {"key": 'Night Shift', "value": 'Night Shift'},
+  ];
 
   @override
   void initState() {
@@ -198,7 +203,7 @@ class _BomCardState extends State<BomCard> {
               ? DateFormat("EEE MMM dd, yyyy")
                   .format(DateTime.parse(resBody['data']['Date'].toString()))
               : '';
-          shiftController.text = resBody['data']['Shift'] ?? '';
+          selectedShift = resBody['data']['Shift'] ?? '';
           LineController.text = resBody['data']['Line'] ?? '';
           poController.text = resBody['data']['PONo'] ?? '';
           // Solar Cell
@@ -393,7 +398,7 @@ class _BomCardState extends State<BomCard> {
         "RevNo": "1.0 & 12.08.2023",
         "PONo": poController.text,
         "Date": bomCardDate,
-        "Shift": shiftController.text,
+        "Shift": selectedShift,
         "Line": LineController.text,
       },
       [
@@ -795,29 +800,38 @@ class _BomCardState extends State<BomCard> {
                               const SizedBox(
                                 height: 4,
                               ),
-                              TextFormField(
-                                controller: shiftController,
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.next,
-                                decoration:
-                                    AppStyles.textFieldInputDecoration.copyWith(
-                                  hintText: "Please Enter Shift",
-                                  counterText: '',
-                                ),
-                                style: AppStyles.textInputTextStyle,
-                                readOnly:
-                                    status == 'Pending' && designation != "QC"
-                                        ? true
-                                        : false,
+                              DropdownButtonFormField<String>(
+                                decoration: AppStyles.textFieldInputDecoration
+                                    .copyWith(
+                                        hintText: "Please Select Shift",
+                                        counterText: '',
+                                        contentPadding: EdgeInsets.all(10)),
+                                borderRadius: BorderRadius.circular(20),
+                                items: shiftList
+                                    .map((label) => DropdownMenuItem(
+                                          child: Text(label['key'],
+                                              style:
+                                                  AppStyles.textInputTextStyle),
+                                          value: label['value'].toString(),
+                                        ))
+                                    .toList(),
+                                onChanged:
+                                    designation != "QC" && status == "Pending"
+                                        ? null
+                                        : (val) {
+                                            setState(() {
+                                              selectedShift = val!;
+                                            });
+                                          },
+                                value:
+                                    selectedShift != '' ? selectedShift : null,
                                 validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "Please Enter Shift";
-                                  } else {
-                                    return null;
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select a Shift';
                                   }
+                                  return null; // Return null if the validation is successful
                                 },
                               ),
-
                               // *********** Line ********
 
                               const SizedBox(

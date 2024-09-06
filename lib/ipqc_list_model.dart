@@ -41,6 +41,7 @@ class UserData {
   String? moduleNo;
   String? materialName;
   String? date;
+  String? shift;
 
   UserData(
       {this.employeeID,
@@ -53,7 +54,8 @@ class UserData {
       this.jobCardDetailID,
       this.moduleNo,
       this.materialName,
-      this.date});
+      this.date,
+      this.shift});
 
   UserData.fromJson(Map<String, dynamic> json) {
     employeeID = json['EmployeeID'];
@@ -67,6 +69,7 @@ class UserData {
     moduleNo = json['ModuleNo'];
     materialName = json['MaterialName'];
     date = json['Date'];
+    shift = json['Shift'];
   }
 
   Map<String, dynamic> toJson() {
@@ -82,6 +85,7 @@ class UserData {
     data['ModuleNo'] = this.moduleNo;
     data['MaterialName'] = this.materialName;
     data['Date'] = this.date;
+    data['Shift'] = this.shift;
     return data;
   }
 }

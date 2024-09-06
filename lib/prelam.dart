@@ -32,7 +32,7 @@ class PreCard extends StatefulWidget {
 class _PreCardState extends State<PreCard> {
   final _preLamFormKey = GlobalKey<FormState>();
   TextEditingController DayController = TextEditingController();
-  TextEditingController shiftController = TextEditingController();
+
   TextEditingController lineController = TextEditingController();
   TextEditingController PoController = TextEditingController();
   //1. Glass Loader
@@ -403,6 +403,7 @@ class _PreCardState extends State<PreCard> {
   String dateOfQualityCheck = '';
   bool? isCycleTimeTrue;
   String sendStatus = '';
+  String selectedShift = "Day Shift";
   String status = '',
       prelamId = '',
       approvalStatus = "Approved",
@@ -412,6 +413,10 @@ class _PreCardState extends State<PreCard> {
   final _dio = Dio();
   Response.Response? _response;
   List data = [];
+  List shiftList = [
+    {"key": 'Day Shift', "value": 'Day Shift'},
+    {"key": 'Night Shift', "value": 'Night Shift'},
+  ];
   List<int>? referencePdfFileBytes;
 
   List sample1Controller = [];
@@ -787,6 +792,8 @@ class _PreCardState extends State<PreCard> {
       _isLoading = false;
     });
     var resBody = json.decode(allSolarData.body);
+    print("HiiiiiiiRes");
+    print(resBody);
 
     if (mounted) {
       setState(() {
@@ -797,7 +804,7 @@ class _PreCardState extends State<PreCard> {
               ? DateFormat("EEE MMM dd, yyyy").format(
                   DateTime.parse(resBody['response']['Date'].toString()))
               : '';
-          shiftController.text = resBody['response']['Shift'] ?? '';
+          selectedShift = resBody['response']['Shift'] ?? '';
           lineController.text = resBody['response']['Line'] ?? '';
           PoController.text = resBody['response']['PONo'] ?? '';
           // Glass Loader
@@ -1332,7 +1339,7 @@ class _PreCardState extends State<PreCard> {
         "DocNo": "GSPL/IPQC/IPC/003",
         "RevNo": "1.0 dated 12.08.2023",
         "Date": dateOfQualityCheck,
-        "Shift": shiftController.text,
+        "Shift": selectedShift,
         "Line": lineController.text,
         "PONo": PoController.text
       },
@@ -2149,29 +2156,40 @@ class _PreCardState extends State<PreCard> {
                                     const SizedBox(
                                       height: 4,
                                     ),
-                                    TextFormField(
-                                      controller: shiftController,
-                                      keyboardType: TextInputType.text,
-                                      textInputAction: TextInputAction.next,
+                                    DropdownButtonFormField<String>(
                                       decoration: AppStyles
                                           .textFieldInputDecoration
                                           .copyWith(
-                                        hintText: "Please Enter Shift",
-                                        counterText: '',
-                                        fillColor:
-                                            Color.fromARGB(255, 215, 243, 207),
-                                      ),
-                                      style: AppStyles.textInputTextStyle,
-                                      readOnly: status == 'Pending' &&
-                                              designation != "QC"
-                                          ? true
-                                          : false,
+                                              hintText: "Please Select Shift",
+                                              counterText: '',
+                                              contentPadding:
+                                                  EdgeInsets.all(10)),
+                                      borderRadius: BorderRadius.circular(20),
+                                      items: shiftList
+                                          .map((label) => DropdownMenuItem(
+                                                child: Text(label['key'],
+                                                    style: AppStyles
+                                                        .textInputTextStyle),
+                                                value:
+                                                    label['value'].toString(),
+                                              ))
+                                          .toList(),
+                                      onChanged: designation != "QC" &&
+                                              status == "Pending"
+                                          ? null
+                                          : (val) {
+                                              setState(() {
+                                                selectedShift = val!;
+                                              });
+                                            },
+                                      value: selectedShift != ''
+                                          ? selectedShift
+                                          : null,
                                       validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return "Please Enter Shift";
-                                        } else {
-                                          return null;
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please select a Shift';
                                         }
+                                        return null; // Return null if the validation is successful
                                       },
                                     ),
 
